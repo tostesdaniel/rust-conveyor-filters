@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { SITE_NAV_ITEMS } from "./header";
 import { Button } from "./ui/button";
@@ -13,11 +13,15 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='outline' size='icon' className=''>
+        <Button
+          variant='ghost'
+          className='ml-2 w-9 px-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden    '
+        >
           <Menu className='h-6 w-6' />
           <span className='sr-only'>Toggle Menu</span>
         </Button>
@@ -41,7 +45,17 @@ export function MobileNav() {
         <div className='mt-6 pl-6'>
           <div className='flex flex-col space-y-2'>
             {SITE_NAV_ITEMS.map((item, i) => (
-              <MobileLink key={i} href={item.href} onOpenChange={setOpen}>
+              <MobileLink
+                key={i}
+                href={item.href}
+                onOpenChange={setOpen}
+                className={cn(
+                  "transition-colors hover:text-foreground",
+                  pathname?.startsWith(item.href)
+                    ? "text-foreground"
+                    : "text-foreground/60",
+                )}
+              >
                 {item.name}
               </MobileLink>
             ))}

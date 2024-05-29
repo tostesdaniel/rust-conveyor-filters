@@ -2,7 +2,7 @@ import { siteConfig } from "@/app/config/site";
 import { cn } from "@/lib/utils";
 import {
   ClerkLoaded,
-  SignIn,
+  SignInButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -66,7 +66,7 @@ export function Header() {
                   className='hidden min-[800px]:block'
                   asChild
                 >
-                  <SignIn />
+                  <SignInButton />
                 </Button>
               </SignedOut>
               <SignedIn>

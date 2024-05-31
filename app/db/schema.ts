@@ -25,14 +25,15 @@ export const itemsRelations = relations(items, ({ many }) => ({
 export const collections = pgTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
+  authorId: integer("author_id").notNull(),
 });
-
-export type Collection = typeof collections.$inferSelect;
-export type NewCollection = typeof collections.$inferInsert;
 
 export const collectionsRelations = relations(collections, ({ many }) => ({
   itemsToCollections: many(itemsToCollections),
 }));
+
+export type Collection = typeof collections.$inferSelect;
+export type NewCollection = typeof collections.$inferInsert;
 
 export const itemsToCollections = pgTable(
   "items_to_collections",
@@ -46,6 +47,20 @@ export const itemsToCollections = pgTable(
   },
   (t) => ({
     pk: primaryKey({ columns: [t.itemId, t.collectionId] }),
+  }),
+);
+
+export const itemsToCollectionsRelations = relations(
+  itemsToCollections,
+  ({ one }) => ({
+    collections: one(collections, {
+      fields: [itemsToCollections.collectionId],
+      references: [collections.id],
+    }),
+    items: one(items, {
+      fields: [itemsToCollections.itemId],
+      references: [items.id],
+    }),
   }),
 );
 

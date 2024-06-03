@@ -9,6 +9,7 @@
     "lint": "next lint",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
+    "seed": "bun run ./app/db/seed.ts",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {

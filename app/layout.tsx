@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -33,8 +34,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            {children}
+            <div className='flex h-full flex-col'>
+              <Header />
+              <main className='max-w-screen-2xl flex-1 px-4 sm:px-6 lg:px-8'>
+                {children}
+              </main>
+              <Footer />
+            </div>
           </ThemeProvider>
         </body>
       </html>

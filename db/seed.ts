@@ -1,8 +1,9 @@
-import { eq, or } from "drizzle-orm";
 import * as fs from "fs";
 import path from "path";
+import { eq, or } from "drizzle-orm";
+
 import { db } from ".";
-import { NewItem, collections, items, itemsToCollections } from "./schema";
+import { collections, items, itemsToCollections, NewItem } from "./schema";
 
 async function seed() {
   await insertItems();

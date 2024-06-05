@@ -13,6 +13,7 @@ export const items = pgTable("items", {
   shortname: varchar("shortname", { length: 256 }).notNull(),
   Name: varchar("name", { length: 256 }).notNull(),
   Category: varchar("category", { length: 256 }).notNull(),
+  imagePath: varchar("image_path", { length: 256 }).notNull(),
 });
 
 export type Item = typeof items.$inferSelect;
@@ -25,7 +26,8 @@ export const itemsRelations = relations(items, ({ many }) => ({
 export const collections = pgTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
-  authorId: integer("author_id").notNull(),
+  authorId: varchar("author_id", { length: 256 }).notNull(),
+  imagePath: varchar("image_path", { length: 256 }).notNull(),
 });
 
 export const collectionsRelations = relations(collections, ({ many }) => ({

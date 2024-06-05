@@ -34,7 +34,7 @@ export function Header() {
   return (
     <header className='sticky top-0 border-b border-border/40 bg-background'>
       <div className='mx-auto flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8'>
-        <div className='mr-6'>
+        <div className='mr-6 shrink-0'>
           <Link href='/' className='flex items-center space-x-2'>
             <Image src='/logo.png' width={40} height={40} alt='Logo' />
             <span className='hidden font-semibold tracking-tighter min-[414px]:inline-block'>

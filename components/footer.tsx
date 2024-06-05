@@ -1,7 +1,9 @@
-import { siteConfig } from "@/app/config/site";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+
 import { Icons } from "./ui/icons";
 
 export function Footer() {

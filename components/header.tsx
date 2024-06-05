@@ -1,14 +1,16 @@
-import { siteConfig } from "@/app/config/site";
-import { cn } from "@/lib/utils";
-import {
-  ClerkLoaded,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  ClerkLoaded,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
+
+import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
+
 import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
 import { ModeToggle } from "./mode-toggle";

@@ -1,7 +1,6 @@
-import { defineConfig } from "drizzle-kit";
-
-import { loadEnvConfig } from "@next/env";
 import { cwd } from "process";
+import { loadEnvConfig } from "@next/env";
+import { defineConfig } from "drizzle-kit";
 
 loadEnvConfig(cwd());
 

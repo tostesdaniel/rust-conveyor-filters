@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import path from "path";
-import { db } from "../db";
-import { NewItem, items } from "../db/schema";
+
+import { db } from "../../db";
+import { items, NewItem } from "../../db/schema";
 
 const insertItems = async () => {
   const files = fs
@@ -23,6 +24,7 @@ const insertItems = async () => {
           shortname: itemData.shortname,
           Name: itemData.Name,
           Category: itemData.Category,
+          imagePath: itemData.shortname,
         })
         .execute();
     } catch (error) {
@@ -32,5 +34,3 @@ const insertItems = async () => {
 
   console.log("Data insertion complete.");
 };
-
-insertItems().catch(console.error);

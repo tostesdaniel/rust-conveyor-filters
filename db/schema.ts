@@ -68,3 +68,11 @@ export const itemsToCollectionsRelations = relations(
 
 export type ItemToCollection = typeof itemsToCollections.$inferSelect;
 export type NewItemToCollection = typeof itemsToCollections.$inferInsert;
+
+export const categories = pgTable("categories", {
+  id: integer("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+});
+
+export type Category = typeof categories.$inferSelect;
+export type NewCategory = typeof categories.$inferInsert;

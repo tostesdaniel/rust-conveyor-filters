@@ -45,6 +45,7 @@
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
+    "@tanstack/eslint-plugin-query": "^5.35.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

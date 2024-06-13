@@ -32,7 +32,7 @@ export const SITE_NAV_ITEMS: Navigation[] = [
 
 export function Header() {
   return (
-    <header className='sticky top-0 border-b border-border/40 bg-background'>
+    <header className='sticky top-0 z-50 border-b border-border/40 bg-background'>
       <div className='mx-auto flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8'>
         <div className='mr-6 shrink-0'>
           <Link href='/' className='flex items-center space-x-2'>

@@ -26,6 +26,7 @@ export const itemsRelations = relations(items, ({ many }) => ({
 export const filters = pgTable("filters", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
+  description: varchar("description", { length: 256 }),
   authorId: varchar("author_id", { length: 256 }).notNull(),
   imagePath: varchar("image_path", { length: 256 }).notNull(),
 });

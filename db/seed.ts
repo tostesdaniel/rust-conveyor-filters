@@ -5,13 +5,13 @@ import { eq, or } from "drizzle-orm";
 import { GameItem } from "@/types/gameitem";
 
 import { db } from ".";
-import { categories, filters, items, itemsToFilters, NewItem } from "./schema";
+import { categories, filterItems, filters, items } from "./schema";
 
 async function seed() {
   try {
     await insertCategories();
     await insertItems();
-    await insertItemsToFilters();
+    await insertFilterItems();
     console.log("Seeding complete");
   } catch (error) {
     console.error("Error during seeding:", error);
@@ -92,7 +92,7 @@ const insertFilters = async () => {
   }
 };
 
-const insertItemsToFilters = async () => {
+const insertFilterItems = async () => {
   try {
     const [filter1, filter2] = await insertFilters();
 
@@ -123,7 +123,7 @@ const insertItemsToFilters = async () => {
       { itemId: t2Items[1].id, filterId: filter2.id },
     ];
 
-    await db.insert(itemsToFilters).values(itemsToFiltersData);
+    await db.insert(filterItems).values(itemsToFiltersData);
     console.log("Items to filters insertion complete.");
   } catch (error) {
     console.error("Error inserting items to filters:", error);

@@ -20,7 +20,7 @@ export type Item = typeof items.$inferSelect;
 export type NewItem = typeof items.$inferInsert;
 
 export const itemsRelations = relations(items, ({ many }) => ({
-  itemsToFilters: many(itemsToFilters),
+  filterItems: many(filterItems),
 }));
 
 export const filters = pgTable("filters", {
@@ -37,9 +37,12 @@ export const filtersRelations = relations(filters, ({ many }) => ({
 
 export type Filter = typeof filters.$inferSelect;
 export type NewFilter = typeof filters.$inferInsert;
+export const filtersRelations = relations(filters, ({ many }) => ({
+  filterItems: many(filterItems),
+}));
 
-export const itemsToFilters = pgTable(
-  "items_to_filters",
+export const filterItems = pgTable(
+  "filter_items",
   {
     itemId: integer("item_id")
       .notNull()
@@ -53,19 +56,19 @@ export const itemsToFilters = pgTable(
   }),
 );
 
-export const itemsToFiltersRelations = relations(itemsToFilters, ({ one }) => ({
-  filters: one(filters, {
-    fields: [itemsToFilters.filterId],
+export type FilterItem = typeof filterItems.$inferSelect;
+export type NewFilterItem = typeof filterItems.$inferInsert;
+
+export const filterItemRelations = relations(filterItems, ({ one }) => ({
+  filterId: one(filters, {
+    fields: [filterItems.filterId],
     references: [filters.id],
   }),
-  items: one(items, {
-    fields: [itemsToFilters.itemId],
+  itemId: one(items, {
+    fields: [filterItems.itemId],
     references: [items.id],
   }),
 }));
-
-export type ItemToFilter = typeof itemsToFilters.$inferSelect;
-export type NewItemToFilter = typeof itemsToFilters.$inferInsert;
 
 export const categories = pgTable("categories", {
   id: integer("id").primaryKey(),

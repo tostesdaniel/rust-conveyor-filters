@@ -126,7 +126,7 @@ const insertFilterItems = async () => {
         ),
       );
 
-    const itemsToFiltersData = [
+    const filterItemsData = [
       {
         itemId: t1Items[0].id,
         filterId: filter1.id,
@@ -157,7 +157,7 @@ const insertFilterItems = async () => {
       },
     ];
 
-    await db.insert(filterItems).values(itemsToFiltersData);
+    await db.insert(filterItems).values(filterItemsData);
     console.log("Items to filters insertion complete.");
   } catch (error) {
     console.error("Error inserting items to filters:", error);

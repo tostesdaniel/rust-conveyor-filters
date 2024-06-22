@@ -1,17 +1,44 @@
-import AWS from "aws-sdk";
+import {
+  GetObjectCommand,
+  ListObjectsV2Command,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import { fromEnv } from "@aws-sdk/credential-providers";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const client = new S3Client({
   region: process.env.AWS_REGION,
+  credentials: fromEnv(),
 });
 
-export async function getSignedUrl(key: string) {
-  const s3 = new AWS.S3();
-  const url = await s3.getSignedUrlPromise("getObject", {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: key,
-    Expires: 60 * 5,
+export async function getPresignedUrl(key: string) {
+  try {
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME!,
+      Key: key,
+    });
+
+    return getSignedUrl(client, command, { expiresIn: 60 * 60 * 24 * 7 }); // 7 days
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+export async function getAllObjects() {
+  const command = new ListObjectsV2Command({
+    Bucket: process.env.AWS_BUCKET_NAME!,
   });
-  return url;
+
+  try {
+    const { Contents } = await client.send(command);
+    if (Contents) {
+      const signedUrls = await Promise.all(
+        Contents.map((content) => getPresignedUrl(content.Key!)),
+      );
+      return signedUrls;
+    }
+  } catch (error) {
+    throw Error;
+  }
 }

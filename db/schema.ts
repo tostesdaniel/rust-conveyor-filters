@@ -9,10 +9,10 @@ import {
 
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
-  itemid: integer("itemid").notNull(),
+  itemId: integer("itemid").notNull(),
   shortname: varchar("shortname", { length: 256 }).notNull(),
-  Name: varchar("name", { length: 256 }).notNull(),
-  Category: varchar("category", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }).notNull(),
+  category: varchar("category", { length: 256 }).notNull(),
   imagePath: varchar("image_path", { length: 256 }).notNull(),
 });
 

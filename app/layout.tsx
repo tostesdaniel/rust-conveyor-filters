@@ -39,11 +39,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className='flex h-full flex-col'>
+              <div className='flex min-h-screen flex-col'>
               <Header />
-              <main className='max-w-screen-2xl flex-1 px-4 sm:px-6 lg:px-8'>
-                {children}
-              </main>
+                <main className='flex flex-1 flex-col'>{children}</main>
               <Footer />
               <Toaster />
             </div>

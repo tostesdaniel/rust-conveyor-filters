@@ -2,6 +2,8 @@ import * as fs from "fs";
 import path from "path";
 import { eq, or } from "drizzle-orm";
 
+import { GameItem } from "@/types/gameitem";
+
 import { db } from ".";
 import { categories, filters, items, itemsToFilters, NewItem } from "./schema";
 
@@ -23,20 +25,20 @@ const insertItems = async () => {
       .readdirSync(path.join(__dirname, "../assets/items"))
       .filter((file) => file.endsWith(".json"));
 
-    const itemsData: NewItem[] = files.map((file) => {
+    const itemsData: GameItem[] = files.map((file) => {
       const data = fs.readFileSync(
         path.join(__dirname, "../assets/items", file),
         "utf-8",
       );
-      return JSON.parse(data) as NewItem;
+      return JSON.parse(data) as GameItem;
     });
 
     const insertPromises = itemsData.map((itemData) =>
       db.insert(items).values({
-        itemid: itemData.itemid,
+        itemId: itemData.itemid,
         shortname: itemData.shortname,
-        Name: itemData.Name,
-        Category: itemData.Category,
+        name: itemData.Name,
+        category: itemData.Category,
         imagePath: itemData.shortname,
       }),
     );

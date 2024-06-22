@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
             inter.variable,
           )}
         >
+          <QueryProvider>
           <ThemeProvider
             attribute='class'
             defaultTheme='system'
@@ -46,6 +48,7 @@ export default function RootLayout({
               <Toaster />
             </div>
           </ThemeProvider>
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>

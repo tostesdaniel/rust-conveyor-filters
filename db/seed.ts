@@ -127,10 +127,34 @@ const insertFilterItems = async () => {
       );
 
     const itemsToFiltersData = [
-      { itemId: t1Items[0].id, filterId: filter1.id },
-      { itemId: t1Items[1].id, filterId: filter1.id },
-      { itemId: t2Items[0].id, filterId: filter2.id },
-      { itemId: t2Items[1].id, filterId: filter2.id },
+      {
+        itemId: t1Items[0].id,
+        filterId: filter1.id,
+        max: 0,
+        buffer: 0,
+        min: 0,
+      },
+      {
+        itemId: t1Items[1].id,
+        filterId: filter1.id,
+        max: 0,
+        buffer: 0,
+        min: 0,
+      },
+      {
+        itemId: t2Items[0].id,
+        filterId: filter2.id,
+        max: 0,
+        buffer: 0,
+        min: 0,
+      },
+      {
+        itemId: t2Items[1].id,
+        filterId: filter2.id,
+        max: 0,
+        buffer: 0,
+        min: 0,
+      },
     ];
 
     await db.insert(filterItems).values(itemsToFiltersData);

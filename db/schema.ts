@@ -2,8 +2,8 @@ import { relations } from "drizzle-orm";
 import {
   integer,
   pgTable,
-  primaryKey,
   serial,
+  uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -31,12 +31,9 @@ export const filters = pgTable("filters", {
   imagePath: varchar("image_path", { length: 256 }).notNull(),
 });
 
-export const filtersRelations = relations(filters, ({ many }) => ({
-  itemsToFilters: many(itemsToFilters),
-}));
-
 export type Filter = typeof filters.$inferSelect;
 export type NewFilter = typeof filters.$inferInsert;
+
 export const filtersRelations = relations(filters, ({ many }) => ({
   filterItems: many(filterItems),
 }));
@@ -44,15 +41,19 @@ export const filtersRelations = relations(filters, ({ many }) => ({
 export const filterItems = pgTable(
   "filter_items",
   {
-    itemId: integer("item_id")
-      .notNull()
-      .references(() => items.id),
+    id: serial("id").primaryKey(),
     filterId: integer("filter_id")
       .notNull()
       .references(() => filters.id),
+    itemId: integer("item_id")
+      .notNull()
+      .references(() => items.id),
+    max: integer("max").notNull(),
+    buffer: integer("buffer").notNull(),
+    min: integer("min").notNull(),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.itemId, t.filterId] }),
+    uniqueIndex: uniqueIndex("unique_idx").on(t.itemId, t.filterId),
   }),
 );
 

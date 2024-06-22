@@ -80,8 +80,18 @@ const insertFilters = async () => {
     const result = await db
       .insert(filters)
       .values([
-        { name: "T1 Weapons", authorId: "1", imagePath: "pistol.revolver" },
-        { name: "T2 Weapons", authorId: "1", imagePath: "smg.thompson" },
+        {
+          name: "T1 Weapons",
+          description: "Filter for T1 weapons",
+          authorId: "1",
+          imagePath: "pistol.revolver",
+        },
+        {
+          name: "T2 Weapons",
+          description: "Filter for T2 weapons",
+          authorId: "1",
+          imagePath: "smg.thompson",
+        },
       ])
       .returning({ id: filters.id });
     console.log("Filters insertion complete.");

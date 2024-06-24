@@ -2,11 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ClerkLoaded,
+  ClerkLoading,
   SignedIn,
   SignedOut,
   SignInButton,
   UserButton,
 } from "@clerk/nextjs";
+import { Loader2 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -60,6 +62,9 @@ export function Header() {
           </nav>
           <ModeToggle />
           <div className='ml-2 flex items-center'>
+            <ClerkLoading>
+              <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
+            </ClerkLoading>
             <ClerkLoaded>
               <SignedOut>
                 <Button

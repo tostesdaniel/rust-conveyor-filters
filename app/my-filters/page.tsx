@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { FolderPlusIcon, PlusIcon } from "lucide-react";
 
-import { getFiltersById } from "@/lib/queries";
+import { getFiltersWithItems } from "@/lib/queries";
 import { HeadingWithAction } from "@/components/ui/heading-with-action";
 import { Typography } from "@/components/ui/typography";
 import { EmptyState } from "@/components/empty-state";
@@ -15,7 +15,7 @@ export default async function MyFilters() {
     redirect("/sign-in");
   }
 
-  const filters = await getFiltersById(userId);
+  const filters = await getFiltersWithItems("1");
 
   return (
     <>

@@ -61,11 +61,11 @@ export type FilterItem = typeof filterItems.$inferSelect;
 export type NewFilterItem = typeof filterItems.$inferInsert;
 
 export const filterItemRelations = relations(filterItems, ({ one }) => ({
-  filterId: one(filters, {
+  filter: one(filters, {
     fields: [filterItems.filterId],
     references: [filters.id],
   }),
-  itemId: one(items, {
+  item: one(items, {
     fields: [filterItems.itemId],
     references: [items.id],
   }),

@@ -13,3 +13,10 @@ export async function getFiltersById(
     },
   });
 }
+
+export async function getFiltersWithItems(userId: string) {
+  return await db.query.filters.findMany({
+    where: (filters) => eq(filters.authorId, userId),
+    with: { filterItems: { with: { item: true } } },
+  });
+}

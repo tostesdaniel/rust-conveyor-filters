@@ -23,3 +23,13 @@ type Condition = {
   max: number;
   repairable: boolean;
 };
+
+export type GameConveyorFilterItem = {
+  TargetCategory: null;
+  MaxAmountInOutput: number;
+  BufferAmount: number;
+  MinAmountInInput: number;
+  IsBlueprint: boolean;
+  BufferTransferRemaining: number;
+  TargetItemName: string;
+};

@@ -48,9 +48,9 @@ export const filterItems = pgTable(
     itemId: integer("item_id")
       .notNull()
       .references(() => items.id),
-    max: integer("max").notNull(),
-    buffer: integer("buffer").notNull(),
-    min: integer("min").notNull(),
+    max: integer("max").notNull().default(0),
+    buffer: integer("buffer").notNull().default(0),
+    min: integer("min").notNull().default(0),
   },
   (t) => ({
     uniqueIndex: uniqueIndex("unique_idx").on(t.itemId, t.filterId),

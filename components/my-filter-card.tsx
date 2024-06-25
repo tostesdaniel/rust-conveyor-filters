@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { EllipsisVertical } from "lucide-react";
 
-import { FilterWithItemIds } from "@/types/filter";
+import { FilterWithItemsAndInfo } from "@/types/filter";
 
 import { Button } from "./ui/button";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./ui/dropdown-menu";
 
 interface MyFilterCardProps {
-  filter: FilterWithItemIds;
+  filter: FilterWithItemsAndInfo;
 }
 
 export async function MyFilterCard({ filter }: MyFilterCardProps) {

@@ -1,8 +1,8 @@
-import { FilterWithItemIds } from "@/types/filter";
+import { FilterWithItemsAndInfo } from "@/types/filter";
 
 import { MyFilterCard as FilterCard } from "./my-filter-card";
 
-export function MyFilters({ filters }: { filters: FilterWithItemIds[] }) {
+export function MyFilters({ filters }: { filters: FilterWithItemsAndInfo[] }) {
   return (
     <ul
       role='list'

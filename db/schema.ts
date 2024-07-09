@@ -46,10 +46,10 @@ export const filterItems = pgTable(
     id: serial("id").primaryKey(),
     filterId: integer("filter_id")
       .notNull()
-      .references(() => filters.id),
+      .references(() => filters.id, { onDelete: "cascade" }),
     itemId: integer("item_id")
       .notNull()
-      .references(() => items.id),
+      .references(() => items.id, { onDelete: "cascade" }),
     max: integer("max").notNull().default(0),
     buffer: integer("buffer").notNull().default(0),
     min: integer("min").notNull().default(0),

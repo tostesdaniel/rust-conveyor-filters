@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Edit, EllipsisVertical } from "lucide-react";
 
 import { FilterWithItemsAndInfo } from "@/types/filter";
-
+import { ExportConveyorFilter } from "./export-conveyor-filter";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -59,7 +59,10 @@ export async function MyFilterCard({ filter }: MyFilterCardProps) {
                       Edit
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Export</DropdownMenuItem>
+                  <ExportConveyorFilter
+                    type='dropdown'
+                    filter={filter.filterItems}
+                  />
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Delete</DropdownMenuItem>

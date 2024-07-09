@@ -1,9 +1,21 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit, EllipsisVertical } from "lucide-react";
+import { Edit, EllipsisVertical, Trash2 } from "lucide-react";
 
 import { FilterWithItemsAndInfo } from "@/types/filter";
+import { DeleteFilterForm } from "@/app/my-filters/components/forms/delete-filter-form";
+
 import { ExportConveyorFilter } from "./export-conveyor-filter";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -18,7 +30,9 @@ interface MyFilterCardProps {
   filter: FilterWithItemsAndInfo;
 }
 
-export async function MyFilterCard({ filter }: MyFilterCardProps) {
+export function MyFilterCard({ filter }: MyFilterCardProps) {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   return (
     <li className='col-span-1 flex rounded-md shadow-sm'>
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5 text-sm font-medium text-card-foreground'>
@@ -40,9 +54,22 @@ export async function MyFilterCard({ filter }: MyFilterCardProps) {
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
         <div className='pr-2'>
-          <DropdownMenu>
+          <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete filter</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete this filter? This action
+                  cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <DeleteFilterForm cardId={filter.id} setOpen={setIsDeleteOpen} />
+            </AlertDialogContent>
+          </AlertDialog>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
+                type='button'
                 variant='ghost'
                 size='icon'
                 className='h-8 w-8 shrink-0 rounded-full'
@@ -53,19 +80,25 @@ export async function MyFilterCard({ filter }: MyFilterCardProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <Link href={`/my-filters/${filter.id}/edit`}>
-                      <Edit className='mr-2 h-4 w-4' />
-                      Edit
-                    </Link>
-                  </DropdownMenuItem>
-                  <ExportConveyorFilter
-                    type='dropdown'
-                    filter={filter.filterItems}
-                  />
+                <DropdownMenuItem asChild>
+                  <Link href={`/my-filters/${filter.id}/edit`}>
+                    <Edit className='mr-2 h-4 w-4' />
+                    Edit
+                  </Link>
+                </DropdownMenuItem>
+                <ExportConveyorFilter
+                  type='dropdown'
+                  filter={filter.filterItems}
+                />
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => setIsDeleteOpen(true)}
+                className='text-destructive'
+              >
+                <Trash2 className='mr-2 h-4 w-4' />
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

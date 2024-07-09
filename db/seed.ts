@@ -1,14 +1,15 @@
 import * as fs from "fs";
 import path from "path";
-import { eq, or } from "drizzle-orm";
+import { eq, or, sql } from "drizzle-orm";
 
-import { GameItem } from "@/types/gameitem";
+import { GameItem } from "@/types/gameItem";
 
 import { db } from ".";
 import { categories, filterItems, filters, items } from "./schema";
 
 async function seed() {
   try {
+    await clearDatabase();
     await insertCategories();
     await insertItems();
     await insertFilterItems();
@@ -18,6 +19,25 @@ async function seed() {
     process.exit(1);
   }
 }
+
+const clearDatabase = async () => {
+  try {
+    await db.delete(filterItems).execute();
+    await db.delete(filters).execute();
+    await db.delete(items).execute();
+    await db.delete(categories).execute();
+
+    // Reset sequences
+    await db.execute(
+      sql`ALTER SEQUENCE public.filter_items_id_seq RESTART WITH 1`,
+    );
+    await db.execute(sql`ALTER SEQUENCE public.filters_id_seq RESTART WITH 1`);
+    await db.execute(sql`ALTER SEQUENCE public.items_id_seq RESTART WITH 1`);
+    console.log("Database cleared and sequences reset.");
+  } catch (error) {
+    console.error("Error clearing database:", error);
+  }
+};
 
 const insertItems = async () => {
   try {

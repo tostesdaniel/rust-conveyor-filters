@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgTable,
   serial,
@@ -29,6 +30,7 @@ export const filters = pgTable("filters", {
   description: varchar("description", { length: 256 }),
   authorId: varchar("author_id", { length: 256 }).notNull(),
   imagePath: varchar("image_path", { length: 256 }).notNull(),
+  isPublic: boolean("is_public").notNull().default(false),
 });
 
 export type Filter = typeof filters.$inferSelect;

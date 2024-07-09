@@ -1,5 +1,6 @@
 "use client";
 
+import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
 import { FilterItemWithItemInfo } from "@/types/filter";
@@ -36,10 +37,12 @@ export function ExportConveyorFilter({
       onClick={() => handleCopy(exportConveyorFilter(filter))}
       size='sm'
     >
+      <Copy className='mr-2 h-4 w-4' />
       Export
     </Button>
   ) : (
     <DropdownMenuItem onSelect={handleCopy(exportConveyorFilter(filter))}>
+      <Copy className='mr-2 h-4 w-4' />
       Export
     </DropdownMenuItem>
   );

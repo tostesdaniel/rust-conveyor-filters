@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { EllipsisVertical } from "lucide-react";
+import { Edit, EllipsisVertical } from "lucide-react";
 
 import { FilterWithItemsAndInfo } from "@/types/filter";
 
@@ -53,8 +53,13 @@ export async function MyFilterCard({ filter }: MyFilterCardProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Export</DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/my-filters/${filter.id}/edit`}>
+                      <Edit className='mr-2 h-4 w-4' />
+                      Edit
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Export</DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Delete</DropdownMenuItem>

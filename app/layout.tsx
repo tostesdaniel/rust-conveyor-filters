@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang='en'>
+      <html lang='en' suppressHydrationWarning>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -33,19 +33,19 @@ export default function RootLayout({
           )}
         >
           <QueryProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
               <div className='flex min-h-screen flex-col'>
-              <Header />
+                <Header />
                 <main className='flex flex-1 flex-col'>{children}</main>
-              <Footer />
-              <Toaster />
-            </div>
-          </ThemeProvider>
+                <Footer />
+                <Toaster />
+              </div>
+            </ThemeProvider>
           </QueryProvider>
         </body>
       </html>

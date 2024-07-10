@@ -27,6 +27,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.40.1",
     "aws-sdk": "^2.1632.0",
     "class-variance-authority": "^0.7.0",

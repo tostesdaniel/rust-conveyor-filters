@@ -1,7 +1,7 @@
-import { FilterItemWithItemInfo, FilterWithItemsAndInfo } from "@/types/filter";
-import { GameConveyorFilterItem } from "@/types/gameitem";
+import { type ConveyorFilterItem } from "@/types/filter";
+import { GameConveyorFilterItem } from "@/types/gameItem";
 
-export function exportConveyorFilter(filter: FilterItemWithItemInfo[]) {
+export function exportConveyorFilter(filter: ConveyorFilterItem[]) {
   const conveyorFilter: GameConveyorFilterItem[] = filter.map((filterItem) => ({
     TargetCategory: null,
     MaxAmountInOutput: filterItem.max,

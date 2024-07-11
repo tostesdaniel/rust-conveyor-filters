@@ -6,7 +6,7 @@ import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
-import { NewConveyorItem } from "@/types/item";
+import { type ItemWithFields, type NewConveyorItem } from "@/types/item";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Item } from "@/db/schema";
@@ -24,8 +24,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { type ItemWithFields } from "./conveyor-item-grid";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;
@@ -88,6 +86,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
   const insertItem = React.useCallback(
     (item: Item) => {
+      console.log("🚀 ~ item:", item);
       const items: ItemWithFields[] = getValues("items");
 
       const newItem = {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Edit, EllipsisVertical, Trash2 } from "lucide-react";
 
-import { FilterWithItemsAndInfo } from "@/types/filter";
+import { type ConveyorFilter } from "@/types/filter";
 import { DeleteFilterForm } from "@/app/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
@@ -27,10 +27,11 @@ import {
 } from "./ui/dropdown-menu";
 
 interface MyFilterCardProps {
-  filter: FilterWithItemsAndInfo;
+  filter: ConveyorFilter;
 }
 
 export function MyFilterCard({ filter }: MyFilterCardProps) {
+  console.log("🚀 ~ filter:", filter);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   return (

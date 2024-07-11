@@ -31,17 +31,15 @@ export function ExportConveyorFilter({
       });
   };
 
+  const exportText = exportConveyorFilter(filter);
+
   return type === "button" ? (
-    <Button
-      type='button'
-      onClick={() => handleCopy(exportConveyorFilter(filter))}
-      size='sm'
-    >
+    <Button type='button' onClick={handleCopy(exportText)} size='sm'>
       <Copy className='mr-2 h-4 w-4' />
       Export
     </Button>
   ) : (
-    <DropdownMenuItem onSelect={handleCopy(exportConveyorFilter(filter))}>
+    <DropdownMenuItem onSelect={handleCopy(exportText)}>
       <Copy className='mr-2 h-4 w-4' />
       Export
     </DropdownMenuItem>

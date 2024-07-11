@@ -48,8 +48,8 @@ export function FilterSettingsInput({
         <FormLabel className='inline-flex w-16 flex-none items-center rounded-l-md border border-r-0 border-input px-3 text-muted-foreground'>
           {label}
         </FormLabel>
-        <FormControl>
-          <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
+        <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
+          <FormControl>
             <Input
               type='text'
               id={id}
@@ -57,8 +57,8 @@ export function FilterSettingsInput({
               className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
               {...field}
             />
-          </FilterSettingsTooltip>
-        </FormControl>
+          </FormControl>
+        </FilterSettingsTooltip>
         <div className='flex flex-col justify-center'>
           <Button
             type='button'

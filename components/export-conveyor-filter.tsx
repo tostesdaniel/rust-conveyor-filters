@@ -3,7 +3,7 @@
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
-import { FilterItemWithItemInfo } from "@/types/filter";
+import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { exportConveyorFilter } from "@/lib/export-conveyor-filter";
 
@@ -12,7 +12,7 @@ import { DropdownMenuItem } from "./ui/dropdown-menu";
 
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown";
-  filter: FilterItemWithItemInfo[];
+  filter: ConveyorFilterItem[];
 }
 
 export function ExportConveyorFilter({

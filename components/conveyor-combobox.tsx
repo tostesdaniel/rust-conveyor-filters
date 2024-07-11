@@ -86,7 +86,6 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
   const insertItem = React.useCallback(
     (item: Item) => {
-      console.log("🚀 ~ item:", item);
       const items: ItemWithFields[] = getValues("items");
 
       const newItem = {

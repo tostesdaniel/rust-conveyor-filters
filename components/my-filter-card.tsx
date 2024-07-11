@@ -31,7 +31,6 @@ interface MyFilterCardProps {
 }
 
 export function MyFilterCard({ filter }: MyFilterCardProps) {
-  console.log("🚀 ~ filter:", filter);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   return (

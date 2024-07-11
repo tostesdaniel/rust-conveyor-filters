@@ -1,8 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Rust Conveyor Filters
+
+This project is a web application for generating, editing, and sharing Rust conveyor filters. It is built with Next.js and TypeScript, and leverages various libraries and tools to provide a seamless user experience.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- Node.js
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/tostesdaniel/rust-conveyor-filters.git
+   cd rust-conveyor-filters
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+### Running the Development Server
+
+Start the development server:
 
 ```bash
 npm run dev
@@ -16,21 +48,55 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The project is organized as follows:
 
-## Learn More
+- `components/`: Contains all the React components used in the application.
+- `app/`: Contains the Next.js pages and layout components.
+- `assets/`: In-game items data and images. Necessary for seeding database.
+- `config/`: Configuration files for the project.
+- `db/`: Database schema and seed files.
+- `public/`: Static assets like images and icons.
+- `styles/`: Global styles and Tailwind CSS configuration.
+- `types/`: TypeScript type definitions.
+- `utils/`: Utility functions and helpers.
 
-To learn more about Next.js, take a look at the following resources:
+## Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Create a `.env.local` file in the root of your project and add the necessary environment variables:
 
-## Deploy on Vercel
+```env
+DATABASE_URL=your_database_url
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Tailwind CSS
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Tailwind CSS is used for styling. Configuration can be found in `tailwind.config.ts`.
+
+### ESLint and Prettier
+
+The project uses ESLint and Prettier for code linting and formatting. Configuration files are `.eslintrc.json` and `.prettierrc`.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+## Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Lucide Icons](https://lucide.dev/)
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## Contact
+
+For any inquiries, please contact at tostes.dev@gmail.com.

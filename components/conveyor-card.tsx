@@ -41,7 +41,7 @@ export function ConveyorCard() {
       <CardFooter className='justify-end gap-x-4 py-3'>
         <FormField
           control={control}
-          name='public'
+          name='isPublic'
           render={({ field }) => (
             <CheckboxWithDescription
               label='I want to make this filter public'

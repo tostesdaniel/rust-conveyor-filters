@@ -8,6 +8,7 @@ export interface ItemWithFields extends Omit<Item, "id"> {
 }
 
 export type NewConveyorItem = {
+  id: number;
   itemId: number;
   name: string;
   imagePath: string;

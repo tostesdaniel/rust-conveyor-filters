@@ -89,6 +89,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
       const items: ItemWithFields[] = getValues("items");
 
       const newItem = {
+        id: item.id,
         itemId: item.itemId,
         name: item.name,
         imagePath: item.imagePath,

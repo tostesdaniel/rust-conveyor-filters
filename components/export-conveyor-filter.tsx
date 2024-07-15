@@ -13,11 +13,13 @@ import { DropdownMenuItem } from "./ui/dropdown-menu";
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown";
   filter: ConveyorFilterItem[];
+  className?: string;
 }
 
 export function ExportConveyorFilter({
   type,
   filter,
+  className,
 }: ExportConveyorFilterProps) {
   const [_copiedText, copy] = useCopyToClipboard();
 
@@ -34,12 +36,17 @@ export function ExportConveyorFilter({
   const exportText = exportConveyorFilter(filter);
 
   return type === "button" ? (
-    <Button type='button' onClick={handleCopy(exportText)} size='sm'>
+    <Button
+      type='button'
+      onClick={handleCopy(exportText)}
+      size='sm'
+      className={className}
+    >
       <Copy className='mr-2 h-4 w-4' />
       Export
     </Button>
   ) : (
-    <DropdownMenuItem onSelect={handleCopy(exportText)}>
+    <DropdownMenuItem onSelect={handleCopy(exportText)} className={className}>
       <Copy className='mr-2 h-4 w-4' />
       Export
     </DropdownMenuItem>

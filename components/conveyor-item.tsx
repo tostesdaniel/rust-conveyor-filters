@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { XIcon } from "lucide-react";
 import { Control } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
 import { FilterSettingsFieldDescription } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
 
 import { FilterSettingsInput } from "./filter-settings-input";
 import { FormDescription, FormField } from "./ui/form";
@@ -11,9 +13,15 @@ interface ConveyorItemProps {
   item: ItemWithFields;
   index: number;
   control: Control<any>;
+  onRemove: (index: number) => void;
 }
 
-export function ConveyorItem({ item, index, control }: ConveyorItemProps) {
+export function ConveyorItem({
+  item,
+  index,
+  control,
+  onRemove,
+}: ConveyorItemProps) {
   return (
     <li key={`${item.id}`}>
       <div className='relative h-40 w-auto'>
@@ -23,6 +31,16 @@ export function ConveyorItem({ item, index, control }: ConveyorItemProps) {
           fill
           className='object-contain'
         />
+        <div className='absolute inset-y-0 right-0'>
+          <Button
+            variant='destructive'
+            size='icon'
+            className='mt-2 h-5 w-5'
+            onClick={() => onRemove(index)}
+          >
+            <XIcon className='h-4 w-4' />
+          </Button>
+        </div>
       </div>
       <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
         {item.name}

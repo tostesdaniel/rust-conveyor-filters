@@ -6,9 +6,10 @@ import { ConveyorItem } from "./conveyor-item";
 
 interface ConveyorItemGridProps {
   items: ItemWithFields[];
+  onRemove: (index: number) => void;
 }
 
-export function ConveyorItemGrid({ items }: ConveyorItemGridProps) {
+export function ConveyorItemGrid({ items, onRemove }: ConveyorItemGridProps) {
   const { control } = useFormContext();
 
   if (!items.length) {
@@ -32,6 +33,7 @@ export function ConveyorItemGrid({ items }: ConveyorItemGridProps) {
           item={item}
           index={index}
           control={control}
+          onRemove={onRemove}
         />
       ))}
     </ul>

@@ -35,6 +35,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "date-fns": "^3.6.0",
     "drizzle-orm": "^0.30.10",
     "embla-carousel-autoplay": "^8.1.6",
     "embla-carousel-react": "^8.1.6",

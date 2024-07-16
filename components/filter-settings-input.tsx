@@ -43,6 +43,14 @@ export function FilterSettingsInput({
     setValue(`items.${index}.${property}`, newValue);
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const numericValue = isNaN(Number(inputValue)) ? 0 : Number(inputValue);
+
+    setValue(`items.${index}.${property}`, numericValue);
+  };
+
+
   return (
     <FormItem>
       <div className='mt-2 flex rounded-md'>
@@ -57,6 +65,7 @@ export function FilterSettingsInput({
               placeholder='0'
               className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
               {...field}
+              onChange={handleInputChange}
             />
           </FormControl>
         </FilterSettingsTooltip>

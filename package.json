@@ -36,6 +36,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "drizzle-orm": "^0.30.10",
+    "embla-carousel-react": "^8.1.6",
     "eslint-config-prettier": "^9.1.0",
     "lucide-react": "^0.378.0",
     "next": "14.2.3",

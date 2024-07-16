@@ -1,9 +1,10 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   integer,
   pgTable,
   serial,
+  timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -24,14 +25,26 @@ export const itemsRelations = relations(items, ({ many }) => ({
   filterItems: many(filterItems),
 }));
 
-export const filters = pgTable("filters", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  description: varchar("description", { length: 256 }),
-  authorId: varchar("author_id", { length: 256 }).notNull(),
-  imagePath: varchar("image_path", { length: 256 }).notNull(),
-  isPublic: boolean("is_public").notNull().default(false),
-});
+export const filters = pgTable(
+  "filters",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    description: varchar("description", { length: 256 }),
+    authorId: varchar("author_id", { length: 256 }).notNull(),
+    imagePath: varchar("image_path", { length: 256 }).notNull(),
+    isPublic: boolean("is_public").notNull().default(false),
+    createdAt: timestamp("created_at")
+      .notNull()
+      .default(sql`now()`),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .default(sql`now()`),
+  },
+  (t) => ({
+    uniqueIndex: uniqueIndex("filters_id_idx").on(t.id),
+  }),
+);
 
 export type Filter = typeof filters.$inferSelect;
 export type NewFilter = typeof filters.$inferInsert;

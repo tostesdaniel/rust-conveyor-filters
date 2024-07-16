@@ -50,6 +50,9 @@ export function FilterSettingsInput({
     setValue(`items.${index}.${property}`, numericValue);
   };
 
+  const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.target.select();
+  };
 
   return (
     <FormItem>
@@ -63,8 +66,9 @@ export function FilterSettingsInput({
               type='text'
               id={id}
               placeholder='0'
-              className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
+              className='rounded-none border-r-0 text-end selection:bg-transparent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
               {...field}
+              onFocus={handleInputFocus}
               onChange={handleInputChange}
             />
           </FormControl>

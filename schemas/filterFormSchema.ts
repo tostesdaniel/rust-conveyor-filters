@@ -25,6 +25,9 @@ export const createFilterSchema = z.object({
         min: z.coerce.number().min(0, "Min must be at least 0"),
       }),
     )
+    .refine((data) => data.length <= 30, {
+      message: "You cannot have more than 30 items",
+    })
     .refine((data) => data.length > 0, {
       message: "You must have at least 1 item",
     })

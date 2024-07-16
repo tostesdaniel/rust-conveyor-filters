@@ -107,6 +107,10 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
         return toast.error("Item already exists in conveyor");
       }
 
+      if (items.length >= 30) {
+        return toast.error("You cannot have more than 30 items");
+      }
+
       onInsertItem(newItem);
     },
     [getValues, onInsertItem],

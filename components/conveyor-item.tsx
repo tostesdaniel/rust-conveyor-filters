@@ -24,7 +24,9 @@ export function ConveyorItem({ item, index, control }: ConveyorItemProps) {
           className='object-contain'
         />
       </div>
-      <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'></p>
+      <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
+        {item.name}
+      </p>
       <FormField
         control={control}
         name={`items.${index}.max`}

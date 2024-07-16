@@ -35,9 +35,10 @@ export function FilterSettingsInput({
     action: "increment" | "decrement",
     property: "max" | "buffer" | "min",
   ) => {
-    const currentValue = getValues(`items.${index}.${property}`);
+    const currentValue = parseInt(getValues(`items.${index}.${property}`), 10);
+    const validValue = isNaN(currentValue) ? 0 : currentValue;
     const change = action === "increment" ? 1 : -1;
-    const newValue = Math.max(0, currentValue + change);
+    const newValue = Math.max(0, validValue + change);
 
     setValue(`items.${index}.${property}`, newValue);
   };

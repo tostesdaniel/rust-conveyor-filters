@@ -1,10 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-
+import { useServerActionQuery } from "@/hooks/server-action-hooks";
 import { getFiltersWithItems } from "@/lib/queries";
 
 export function useGetUserFilters(userId: string) {
-  return useQuery({
+  return useServerActionQuery(getFiltersWithItems, {
+    input: { userId },
     queryKey: ["user-filters", userId],
-    queryFn: () => getFiltersWithItems(userId),
   });
 }

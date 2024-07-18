@@ -8,14 +8,22 @@ import { z } from "zod";
 import { createServerAction } from "zsa";
 
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
+import { authenticatedAction } from "@/lib/safe-action";
 import { filters } from "@/db/schema";
 
-export async function getFiltersWithItems(userId: string) {
+export const getFiltersWithItems = authenticatedAction
+  .createServerAction()
+  .input(
+    z.object({
+      userId: z.string(),
+    }),
+  )
+  .handler(async ({ input }) => {
   return await db.query.filters.findMany({
-    where: (filters) => eq(filters.authorId, userId),
+      where: (filters) => eq(filters.authorId, input.userId),
     with: { filterItems: { with: { item: true } } },
   });
-}
+  });
 
 export const getAllPublicFilters = createServerAction()
   .input(

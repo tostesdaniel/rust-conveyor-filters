@@ -23,6 +23,8 @@ export const createFilterSchema = z.object({
         max: z.coerce.number().min(0, "Max must be at least 0"),
         buffer: z.coerce.number().min(0, "Buffer must be at least 0"),
         min: z.coerce.number().min(0, "Min must be at least 0"),
+        createdAt: z.date().optional(),
+        updatedAt: z.date().optional(),
       }),
     )
     .refine((data) => data.length <= 30, {

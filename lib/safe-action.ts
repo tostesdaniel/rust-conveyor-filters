@@ -7,4 +7,6 @@ export const authenticatedAction = createServerActionProcedure().handler(() => {
   if (!userId) {
     throw new Error("Unauthorized");
   }
+
+  return { userId };
 });

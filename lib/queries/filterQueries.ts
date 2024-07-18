@@ -8,7 +8,7 @@ import { z } from "zod";
 import { createServerAction } from "zsa";
 
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
-import { authenticatedAction } from "@/lib/safe-action";
+import { authenticatedAction, ownsFilterProcedure } from "@/lib/safe-action";
 import { filters } from "@/db/schema";
 
 export const getFiltersWithItems = authenticatedAction
@@ -19,10 +19,26 @@ export const getFiltersWithItems = authenticatedAction
     }),
   )
   .handler(async ({ input }) => {
-  return await db.query.filters.findMany({
+    return await db.query.filters.findMany({
       where: (filters) => eq(filters.authorId, input.userId),
-    with: { filterItems: { with: { item: true } } },
+      with: { filterItems: { with: { item: true } } },
+    });
   });
+
+export const getUserFilterById = ownsFilterProcedure
+  .createServerAction()
+  .input(z.object({ filterId: z.number() }))
+  .handler(async ({ input }) => {
+    const result = await db.query.filters.findFirst({
+      where: eq(filters.id, input.filterId),
+      with: {
+        filterItems: {
+          with: { item: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
+    });
+    return result;
   });
 
 export const getAllPublicFilters = createServerAction()

@@ -19,7 +19,7 @@ export default async function MyFiltersPage() {
 
   await queryClient.prefetchQuery({
     queryKey: ["user-filters", userId],
-    queryFn: () => getFiltersWithItems(userId),
+    queryFn: () => getFiltersWithItems({ userId }).then(([data]) => data),
   });
 
   return (

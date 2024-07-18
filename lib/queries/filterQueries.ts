@@ -74,3 +74,9 @@ export const getAllPublicFilters = createServerAction()
           : null,
     };
   });
+
+export async function checkUserOwnsFilter(filterId: number, userId: string) {
+  return db.query.filters.findFirst({
+    where: and(eq(filters.id, filterId), eq(filters.authorId, userId)),
+  });
+}

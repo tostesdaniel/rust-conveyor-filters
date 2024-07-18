@@ -40,7 +40,7 @@ export function FilterSettingsInput({
     const change = action === "increment" ? 1 : -1;
     const newValue = Math.max(0, validValue + change);
 
-    setValue(`items.${index}.${property}`, newValue);
+    setValue(`items.${index}.${property}`, newValue, { shouldDirty: true });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

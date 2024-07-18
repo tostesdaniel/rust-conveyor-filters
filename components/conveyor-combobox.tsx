@@ -82,7 +82,7 @@ interface ItemListProps {
 
 const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   const { data: items } = useGetItems();
-  const { getValues } = useFormContext();
+  const { getValues, trigger } = useFormContext();
 
   const insertItem = React.useCallback(
     (item: Item) => {
@@ -112,8 +112,9 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
       }
 
       onInsertItem(newItem);
+      trigger("items");
     },
-    [getValues, onInsertItem],
+    [getValues, onInsertItem, trigger],
   );
 
   if (items?.success) {

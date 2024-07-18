@@ -47,7 +47,7 @@ export function FilterSettingsInput({
     const inputValue = event.target.value;
     const numericValue = isNaN(Number(inputValue)) ? 0 : Number(inputValue);
 
-    setValue(`items.${index}.${property}`, numericValue);
+    setValue(`items.${index}.${property}`, numericValue, { shouldDirty: true });
   };
 
   const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { XIcon } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
 import { FilterSettingsFieldDescription } from "@/lib/constants";
@@ -22,6 +22,13 @@ export function ConveyorItem({
   control,
   onRemove,
 }: ConveyorItemProps) {
+  const { trigger } = useFormContext();
+
+  function handleRemove() {
+    onRemove(index);
+    trigger("items");
+  }
+
   return (
     <li key={`${item.id}`}>
       <div className='relative h-40 w-auto'>
@@ -36,7 +43,7 @@ export function ConveyorItem({
             variant='destructive'
             size='icon'
             className='mt-2 h-5 w-5'
-            onClick={() => onRemove(index)}
+            onClick={handleRemove}
           >
             <XIcon className='h-4 w-4' />
           </Button>

@@ -20,11 +20,16 @@ export const createFilterSchema = z.object({
         name: z.string(),
         imagePath: z.string(),
         shortname: z.string(),
-        max: z.number().int().min(0, "Max must be at least 0"),
-        buffer: z.number().int().min(0, "Buffer must be at least 0"),
-        min: z.number().int().min(0, "Min must be at least 0"),
+        max: z.coerce.number().min(0, "Max must be at least 0"),
+        buffer: z.coerce.number().min(0, "Buffer must be at least 0"),
+        min: z.coerce.number().min(0, "Min must be at least 0"),
+        createdAt: z.date().optional(),
+        updatedAt: z.date().optional(),
       }),
     )
+    .refine((data) => data.length <= 30, {
+      message: "You cannot have more than 30 items",
+    })
     .refine((data) => data.length > 0, {
       message: "You must have at least 1 item",
     })

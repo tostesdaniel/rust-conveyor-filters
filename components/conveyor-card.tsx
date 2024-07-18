@@ -20,7 +20,7 @@ import { FormField } from "./ui/form";
 
 export function ConveyorCard() {
   const { control, watch } = useFormContext();
-  const { fields, append } = useFieldArray({ control, name: "items" });
+  const { fields, append, remove } = useFieldArray({ control, name: "items" });
   const filter: ItemWithFields[] = watch("items");
 
   return (
@@ -36,7 +36,10 @@ export function ConveyorCard() {
         </p>
       </CardHeader>
       <CardContent className='min-h-40 py-3'>
-        <ConveyorItemGrid items={fields as ItemWithFields[]} />
+        <ConveyorItemGrid
+          items={fields as ItemWithFields[]}
+          onRemove={remove}
+        />
       </CardContent>
       <CardFooter className='justify-end gap-x-4 py-3'>
         <FormField

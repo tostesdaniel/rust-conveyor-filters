@@ -35,11 +35,23 @@ export function FilterSettingsInput({
     action: "increment" | "decrement",
     property: "max" | "buffer" | "min",
   ) => {
-    const currentValue = getValues(`items.${index}.${property}`);
+    const currentValue = parseInt(getValues(`items.${index}.${property}`), 10);
+    const validValue = isNaN(currentValue) ? 0 : currentValue;
     const change = action === "increment" ? 1 : -1;
-    const newValue = Math.max(0, currentValue + change);
+    const newValue = Math.max(0, validValue + change);
 
-    setValue(`items.${index}.${property}`, newValue);
+    setValue(`items.${index}.${property}`, newValue, { shouldDirty: true });
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const numericValue = isNaN(Number(inputValue)) ? 0 : Number(inputValue);
+
+    setValue(`items.${index}.${property}`, numericValue, { shouldDirty: true });
+  };
+
+  const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.target.select();
   };
 
   return (
@@ -54,8 +66,10 @@ export function FilterSettingsInput({
               type='text'
               id={id}
               placeholder='0'
-              className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
+              className='rounded-none border-r-0 text-end selection:bg-transparent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-offset-0'
               {...field}
+              onFocus={handleInputFocus}
+              onChange={handleInputChange}
             />
           </FormControl>
         </FilterSettingsTooltip>

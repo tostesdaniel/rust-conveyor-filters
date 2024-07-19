@@ -82,7 +82,14 @@ export function FilterItemsCarousel({
       filterItems.length,
     );
     const currentStartIndex = Math.max(currentEndIndex - itemsPerPage + 1, 1);
-    return `Items ${currentStartIndex} - ${currentEndIndex} of ${filterItems.length} total`;
+    return (
+      <>
+        Showing <strong>{currentStartIndex}-</strong>
+        <strong>{currentEndIndex}</strong>
+        {" of "}
+        <strong>{filterItems.length}</strong> items
+      </>
+    );
   }, [currentPage, filterItems.length, itemsPerPage]);
 
   return (

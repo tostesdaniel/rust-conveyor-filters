@@ -83,6 +83,14 @@ interface ItemListProps {
 const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   const { data: items } = useGetItems();
   const { getValues, trigger } = useFormContext();
+  const [search, setSearch] = React.useState("");
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (search === "") {
+      inputRef.current?.focus();
+    }
+  }, [search]);
 
   const insertItem = React.useCallback(
     (item: Item) => {
@@ -113,6 +121,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
       onInsertItem(newItem);
       trigger("items");
+      setSearch("");
     },
     [getValues, onInsertItem, trigger],
   );
@@ -120,7 +129,12 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   if (items?.success) {
     return (
       <Command>
-        <CommandInput placeholder='Filter items...' />
+        <CommandInput
+          ref={inputRef}
+          value={search}
+          onValueChange={setSearch}
+          placeholder='Filter items...'
+        />
         <CommandList>
           <CommandEmpty>No items found</CommandEmpty>
           {items ? (

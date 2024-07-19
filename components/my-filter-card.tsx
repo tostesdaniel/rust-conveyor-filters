@@ -81,7 +81,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link href={`/my-filters/${filter.id}/edit`}>
+                  <Link href={`/my-filters/edit/${filter.id}`}>
                     <Edit className='mr-2 h-4 w-4' />
                     Edit
                   </Link>

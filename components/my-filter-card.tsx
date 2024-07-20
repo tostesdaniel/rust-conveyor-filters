@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Edit, EllipsisVertical, Trash2 } from "lucide-react";
 
 import { type ConveyorFilter } from "@/types/filter";
-import { DeleteFilterForm } from "@/app/my-filters/components/forms/delete-filter-form";
+import { DeleteFilterForm } from "@/app/(app)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
 import {

@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 
 import { useServerActionInfiniteQuery } from "@/hooks/server-action-hooks";
 import { getAllPublicFilters } from "@/lib/queries";
-import FiltersLoading from "@/app/filters/loading";
+import FiltersLoading from "@/app/(app)/filters/loading";
 
 import { FilterCard } from "./filter-card/filter-card";
 import { FilterCardSkeleton } from "./filter-card/filter-card-skeleton";

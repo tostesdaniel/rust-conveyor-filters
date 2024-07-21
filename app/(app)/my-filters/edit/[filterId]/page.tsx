@@ -6,7 +6,7 @@ import {
 
 import { getItems } from "@/actions/itemActions";
 import { Typography } from "@/components/ui/typography";
-import { EditFilterForm } from "@/app/my-filters/edit/[filterId]/edit-filter-form";
+import { EditFilterForm } from "@/app/(app)/my-filters/edit/[filterId]/edit-filter-form";
 
 export default async function EditFilterPage({
   params,

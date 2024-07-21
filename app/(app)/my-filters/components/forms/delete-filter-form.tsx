@@ -8,13 +8,12 @@ import { toast } from "sonner";
 import z from "zod";
 
 import { deleteFilter } from "@/actions/filterActions";
-
 import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogFooter,
-} from "../../../../components/ui/alert-dialog";
-import { Form } from "../../../../components/ui/form";
+} from "@/components/ui/alert-dialog";
+import { Form } from "@/components/ui/form";
 
 type DeleteFilterFormProps = {
   cardId: number;

@@ -28,7 +28,7 @@ export function MyFilters({ userId }: { userId: string }) {
       {filters?.length ? (
         <ul
           role='list'
-          className='mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4'
+          className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
         >
           {filters?.map((filter) => (
             <FilterCard key={filter.id} filter={filter} />

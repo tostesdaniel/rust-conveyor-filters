@@ -8,10 +8,10 @@ import { z } from "zod";
 import { createServerAction } from "zsa";
 
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
-import { authenticatedAction, ownsFilterProcedure } from "@/lib/safe-action";
+import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
 import { filters } from "@/db/schema";
 
-export const getFiltersWithItems = authenticatedAction
+export const getFiltersWithItems = authenticatedProcedure
   .createServerAction()
   .input(
     z.object({

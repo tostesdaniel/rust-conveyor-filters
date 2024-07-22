@@ -2,12 +2,13 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
 import { deleteFilter } from "@/actions/filterActions";
+import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -33,15 +34,15 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: () => deleteFilter(cardId),
-    onSuccess: (res) => {
-      toast.success(res.message);
-      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
+  const mutation = useServerActionMutation(deleteFilter, {
+    onSuccess: () => {
+      toast.success("Filter deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["user-filters"],
+      });
       setOpen(false);
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Error deleting filter");
     },
   });
@@ -49,7 +50,7 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
   const { isPending } = mutation;
 
   const onSubmit = () => {
-    mutation.mutate();
+    mutation.mutate({ filterId: cardId });
   };
 
   return (

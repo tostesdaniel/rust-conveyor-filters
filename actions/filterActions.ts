@@ -184,14 +184,18 @@ export const updateFilter = ownsFilterProcedure
     }
   });
 
-export async function deleteFilter(id: number) {
-  try {
-    await db.delete(filters).where(eq(filters.id, id));
-
-    return {
-      message: "Filter deleted successfully",
-    };
-  } catch (error) {
-    throw new Error("Failed to delete filter");
-  }
-}
+export const deleteFilter = ownsFilterProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      filterId: z.number(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const { filterId } = input;
+    try {
+      await db.delete(filters).where(eq(filters.id, filterId));
+    } catch (error) {
+      throw new Error("Failed to delete filter");
+    }
+  });

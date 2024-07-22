@@ -1,21 +1,17 @@
-import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { createServerActionProcedure } from "zsa";
 
-import { checkUserOwnsFilter } from "@/lib/queries";
+import { getAuthenticatedUser } from "@/lib/auth";
+import { checkUserOwnsFilter } from "@/lib/filters";
 
-export const authenticatedAction = createServerActionProcedure().handler(() => {
-  const { userId } = auth();
-
-  if (!userId) {
-    throw new Error("Unauthorized");
-  }
-
-  return { userId };
-});
+export const authenticatedProcedure = createServerActionProcedure().handler(
+  async () => {
+    return await getAuthenticatedUser();
+  },
+);
 
 export const ownsFilterProcedure = createServerActionProcedure(
-  authenticatedAction,
+  authenticatedProcedure,
 )
   .input(
     z.object({

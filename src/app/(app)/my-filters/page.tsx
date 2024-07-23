@@ -6,6 +6,7 @@ import {
 
 import { getFiltersWithItems } from "@/lib/queries";
 import { MyFilters } from "@/components/my-filters";
+import { MyFiltersHeading } from "@/components/my-filters/my-filters-heading";
 
 export default async function MyFiltersPage() {
   const queryClient = new QueryClient();
@@ -21,7 +22,8 @@ export default async function MyFiltersPage() {
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
-      <MyFilters />
+        <MyFiltersHeading />
+        <MyFilters />
       </HydrationBoundary>
     </>
   );

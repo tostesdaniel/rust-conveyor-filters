@@ -9,8 +9,8 @@ import { EmptyState } from "@/components/empty-state";
 
 import { MyFilterCard as FilterCard } from "./my-filter-card";
 
-export function MyFilters({ userId }: { userId: string }) {
-  const { data: filters } = useGetUserFilters(userId);
+export function MyFilters() {
+  const { data: filters } = useGetUserFilters();
 
   return (
     <>

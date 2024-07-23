@@ -1,9 +1,9 @@
 import { useServerActionQuery } from "@/hooks/server-action-hooks";
 import { getFiltersWithItems } from "@/lib/queries";
 
-export function useGetUserFilters(userId: string) {
+export function useGetUserFilters() {
   return useServerActionQuery(getFiltersWithItems, {
-    input: { userId },
-    queryKey: ["user-filters", userId],
+    queryKey: ["user-filters"],
+    input: undefined,
   });
 }

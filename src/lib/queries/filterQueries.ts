@@ -13,14 +13,9 @@ import { filters } from "@/db/schema";
 
 export const getFiltersWithItems = authenticatedProcedure
   .createServerAction()
-  .input(
-    z.object({
-      userId: z.string(),
-    }),
-  )
-  .handler(async ({ input }) => {
+  .handler(async ({ ctx }) => {
     return await db.query.filters.findMany({
-      where: (filters) => eq(filters.authorId, input.userId),
+      where: (filters) => eq(filters.authorId, ctx.userId),
       with: { filterItems: { with: { item: true } } },
     });
   });

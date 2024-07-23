@@ -12,7 +12,7 @@ export default async function MyFiltersPage() {
 
   return (
     <>
-      <MyFilters userId={userId} />
+      <MyFilters />
     </>
   );
 }

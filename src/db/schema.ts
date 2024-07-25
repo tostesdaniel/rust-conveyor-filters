@@ -2,6 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  pgEnum,
   pgTable,
   serial,
   timestamp,
@@ -99,3 +100,24 @@ export const categories = pgTable("categories", {
 
 export type Category = typeof categories.$inferSelect;
 export type NewCategory = typeof categories.$inferInsert;
+
+export const feedbackTypeEnum = pgEnum("feedback_type_enum", [
+  "bug",
+  "feature",
+  "general",
+]);
+export const ratingEnum = pgEnum("rating_enum", ["1", "2", "3", "4", "5"]);
+
+export const feedback = pgTable("feedback", {
+  id: serial("id").primaryKey(),
+  authorId: varchar("author_id", { length: 255 }).notNull(),
+  feedbackType: feedbackTypeEnum("feedback_type").notNull(),
+  feedback: varchar("feedback", { length: 255 }).notNull(),
+  rating: ratingEnum("rating").notNull(),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+});
+
+export type Feedback = typeof feedback.$inferSelect;
+export type NewFeedback = typeof feedback.$inferInsert;

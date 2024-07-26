@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -63,6 +64,9 @@ const formSchema = z.object({
 });
 
 export function FeedbackForm() {
+  const { isLoaded, isSignedIn } = useUser();
+  const isLoggedIn = isLoaded && isSignedIn;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -98,7 +102,7 @@ export function FeedbackForm() {
               <FormLabel>What&apos;s this about?</FormLabel>
               <Select onValueChange={field.onChange} value={field.value || ""}>
                 <FormControl>
-                  <SelectTrigger autoFocus>
+                  <SelectTrigger autoFocus disabled={!isLoggedIn}>
                     <SelectValue placeholder='Choose a topic...' />
                   </SelectTrigger>
                 </FormControl>
@@ -134,6 +138,7 @@ export function FeedbackForm() {
                   rows={6}
                   className='resize-none'
                   {...field}
+                  disabled={!isLoggedIn}
                 />
               </FormControl>
               <FormDescription>
@@ -154,6 +159,7 @@ export function FeedbackForm() {
                   onValueChange={field.onChange}
                   value={field.value || ""}
                   className='flex flex-col space-y-1'
+                  disabled={!isLoggedIn}
                 >
                   {ratingOptions.map((option) => (
                     <FormItem
@@ -178,7 +184,9 @@ export function FeedbackForm() {
           {isPending ? (
             <LoadingButton>Submitting</LoadingButton>
           ) : (
-            <Button type='submit'>Submit</Button>
+            <Button type='submit' disabled={!isLoggedIn}>
+              Submit
+            </Button>
           )}
         </div>
         {process.env.NODE_ENV === "development" && (

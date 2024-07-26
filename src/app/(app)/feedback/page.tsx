@@ -2,11 +2,13 @@ import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { Typography } from "@/components/ui/typography";
+import { SignInToast } from "@/components/feedback/feeback-toast";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
 
 export default function FeedbackPage() {
   return (
     <div className='relative'>
+      <SignInToast />
       <div className='lg:absolute lg:inset-0 lg:left-1/2'>
         <Image
           src='/image.png'

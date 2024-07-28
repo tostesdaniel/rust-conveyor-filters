@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   dehydrate,
   HydrationBoundary,
@@ -7,6 +8,11 @@ import {
 import { getFiltersWithItems } from "@/lib/queries";
 import { MyFilters } from "@/components/my-filters";
 import { MyFiltersHeading } from "@/components/my-filters/my-filters-heading";
+
+export const metadata: Metadata = {
+  title: "My Filters",
+  description: "View and manage your conveyor filters.",
+};
 
 export default async function MyFiltersPage() {
   const queryClient = new QueryClient();

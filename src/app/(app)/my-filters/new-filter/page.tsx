@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import {
   dehydrate,
   HydrationBoundary,
@@ -8,6 +9,11 @@ import { getItems } from "@/actions/itemActions";
 import { Typography } from "@/components/ui/typography";
 
 import NewFilterForm from "./new-filter-form";
+
+export const metadata: Metadata = {
+  title: "Create New Filter",
+  description: "Create new conveyor filter.",
+};
 
 export default async function NewFilterPage() {
   const queryClient = new QueryClient();

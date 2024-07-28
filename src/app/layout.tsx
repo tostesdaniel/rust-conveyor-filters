@@ -13,11 +13,52 @@ import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
 
+import { siteConfig } from "@/config/site";
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Rust Conveyor Filters",
+  title: {
+    template: `%s - ${siteConfig.name}`,
+    default: siteConfig.name,
+  },
   description: "Generate Rust conveyor filters with ease",
+  metadataBase: new URL(siteConfig.url),
+  keywords: [
+    "Rust",
+    "Conveyor",
+    "Industrial Conveyor",
+    "Conveyor Filters",
+    "Automation",
+  ],
+  authors: {
+    name: "Daniel Tostes",
+    url: "https://github.com/tostesdaniel",
+  },
+  creator: "Daniel Tostes",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({

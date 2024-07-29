@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -25,8 +26,24 @@ export function Footer() {
           </Link>
         </div>
         <div className='mt-8 md:order-1 md:mt-0'>
-          <p className='text-center text-xs leading-5'>
-            &copy; 2024 {siteConfig.name}. All rights reserved.
+          <p className='flex items-center justify-center gap-x-1 text-center text-xs leading-5'>
+            Made with{" "}
+            <HeartIcon
+              aria-label='love'
+              className='inline h-3 w-3'
+              fill='red'
+              strokeWidth={0}
+            />
+            by
+            <a
+              href={siteConfig.links.gitHub}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='GitHub profile of tostesdaniel'
+              className='underline-offset-4 hover:underline'
+            >
+              <strong>tostesdaniel</strong>
+            </a>
           </p>
         </div>
       </div>

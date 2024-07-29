@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";

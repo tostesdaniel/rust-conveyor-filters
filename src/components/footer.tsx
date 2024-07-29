@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -12,7 +11,12 @@ export function Footer() {
     <footer>
       <div className='mx-auto max-w-screen-2xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8'>
         <div className='flex justify-center space-x-6 md:order-2'>
-          <Link href={siteConfig.links.gitHub} target='_blank' rel='noreferrer'>
+          <a
+            href={siteConfig.links.repo}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='GitHub repository of rust-conveyor-filters'
+          >
             <div
               className={cn(
                 buttonVariants({ variant: "ghost" }),
@@ -23,7 +27,7 @@ export function Footer() {
               <Icons.gitHub className='h-5 w-5' />
               <span className='sr-only'>GitHub</span>
             </div>
-          </Link>
+          </a>
         </div>
         <div className='mt-8 md:order-1 md:mt-0'>
           <p className='flex items-center justify-center gap-x-1 text-center text-xs leading-5'>

@@ -5,7 +5,7 @@ export const siteConfig = {
   description:
     "Generate Rust conveyor filters with ease. Create, edit, and share your filters with others.",
   links: {
-    gitHub: "https://github.com/tostesdaniel/rust-conveyor-filters",
+    gitHub: "https://github.com/tostesdaniel",
     linkedIn: "https://www.linkedin.com/in/danieltostes/",
   },
 };

@@ -69,7 +69,9 @@ export default function NewFilterForm() {
           name='name'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Name
+              </FormLabel>
               <FormControl>
                 <Input placeholder='Primitive weapons' {...field} />
               </FormControl>
@@ -106,7 +108,9 @@ export default function NewFilterForm() {
           name='imagePath'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Cover Image</FormLabel>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Cover Image
+              </FormLabel>
               {items?.success && items.data && (
                 <FilterImageCombobox field={field} items={items.data} />
               )}
@@ -122,7 +126,9 @@ export default function NewFilterForm() {
           name='items'
           render={() => (
             <FormItem>
-              <FormLabel>Items</FormLabel>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Items
+              </FormLabel>
               <FormDescription>
                 Compose your conveyor by selecting items from the list.
               </FormDescription>

@@ -63,6 +63,7 @@ export const getAllPublicFilters = createServerAction()
             orderBy: ({ createdAt, id }) => [id, createdAt],
           },
         },
+        orderBy: filters.id,
       });
     };
 

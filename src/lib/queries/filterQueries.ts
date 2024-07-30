@@ -16,7 +16,12 @@ export const getFiltersWithItems = authenticatedProcedure
   .handler(async ({ ctx }) => {
     return await db.query.filters.findMany({
       where: (filters) => eq(filters.authorId, ctx.userId),
-      with: { filterItems: { with: { item: true } } },
+      with: {
+        filterItems: {
+          with: { item: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
     });
   });
 
@@ -53,7 +58,10 @@ export const getAllPublicFilters = createServerAction()
         where: whereClause,
         limit,
         with: {
-          filterItems: { with: { item: true } },
+          filterItems: {
+            with: { item: true },
+            orderBy: ({ createdAt, id }) => [id, createdAt],
+          },
         },
       });
     };

@@ -99,7 +99,9 @@ export function FeedbackForm() {
           name='feedbackType'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What&apos;s this about?</FormLabel>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                What&apos;s this about?
+              </FormLabel>
               <Select onValueChange={field.onChange} value={field.value || ""}>
                 <FormControl>
                   <SelectTrigger autoFocus disabled={!isLoggedIn}>
@@ -125,7 +127,7 @@ export function FeedbackForm() {
           render={({ field }) => (
             <FormItem>
               <div className='flex items-center justify-between'>
-                <FormLabel className='leading-[17px]'>
+                <FormLabel className='leading-[17px] after:ml-0.5 after:text-destructive after:content-["*"]'>
                   Share your thoughts
                 </FormLabel>
                 <p className='text-sm tabular-nums leading-[17px] text-gray-500'>
@@ -153,7 +155,9 @@ export function FeedbackForm() {
           name='rating'
           render={({ field }) => (
             <FormItem className='space-y-3'>
-              <FormLabel>Rate your experience</FormLabel>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Rate your experience
+              </FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}

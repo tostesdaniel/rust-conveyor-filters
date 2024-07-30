@@ -46,7 +46,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
       <div className='flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-card-foreground/70'>
         <div className='flex-1 px-4 py-2 text-sm'>
           <Link
-            href={filter.id.toString()}
+            href={`/my-filters/edit/${filter.id}`}
             className='font-medium text-foreground/85 transition-colors hover:text-foreground'
           >
             {filter.name}

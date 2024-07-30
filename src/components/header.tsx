@@ -25,7 +25,6 @@ export type Navigation = {
 };
 
 export const SITE_NAV_ITEMS: Navigation[] = [
-  { name: "Home", href: "/" },
   { name: "Filters", href: "/filters" },
   { name: "My Filters", href: "/my-filters" },
   { name: "Feedback", href: "/feedback" },

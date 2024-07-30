@@ -1,10 +1,9 @@
 import { formatDistanceToNowStrict } from "date-fns";
-import { EyeIcon } from "lucide-react";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
-import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import { CardDescription, CardFooter } from "@/components/ui/card";
 import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
+import ViewFilter from "@/components/filters/view-filter";
 
 export function FilterCardFooter({
   filter,
@@ -22,14 +21,7 @@ export function FilterCardFooter({
         </CardDescription>
       </div>
       <div className='flex w-full items-center justify-center space-x-4 min-[475px]:block min-[475px]:w-auto'>
-        <ButtonWithIcon
-          type='button'
-          variant='secondary'
-          size='sm'
-          icon={EyeIcon}
-          title='Visualize'
-          className='w-full min-[475px]:w-auto'
-        />
+        <ViewFilter filter={filter} />
         <ExportConveyorFilter
           type='button'
           filter={filter.filterItems}

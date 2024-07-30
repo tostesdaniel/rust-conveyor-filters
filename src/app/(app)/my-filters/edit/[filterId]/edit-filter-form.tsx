@@ -166,10 +166,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input
-                  placeholder='This filter is designed to have medications'
-                  {...field}
-                />
+                <Input placeholder="Can't leave your base unarmed" {...field} />
               </FormControl>
               <FormDescription>
                 Enter a description for your filter. This will help others know

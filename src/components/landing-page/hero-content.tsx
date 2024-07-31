@@ -11,14 +11,14 @@ export function HeroContent() {
         <Typography variant='h1' className='font-extrabold sm:text-5xl'>
           Streamline Your Rust Base Automation with Ease
         </Typography>
-        <Typography variant='p' className='text-lg text-muted-foreground'>
+        <p className='mt-6 text-lg text-muted-foreground'>
           Tired of spending hours setting up conveyor filters every wipe? Our
           application lets you create, edit, and share custom conveyor setups
           effortlessly. Browse a public directory, save your favorite filters,
           and export configurations directly into Rust for a seamless and
           efficient loot sorting experience. Revolutionize your gameplay and
           reclaim your time!
-        </Typography>
+        </p>
         <div className='mt-10 flex items-center gap-x-6'>
           <Button type='button' asChild>
             <Link href='/sign-up'>Get Started Now</Link>

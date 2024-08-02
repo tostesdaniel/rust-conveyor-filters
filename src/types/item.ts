@@ -7,12 +7,21 @@ export interface ItemWithFields extends Omit<Item, "id"> {
   min: number;
 }
 
-export type NewConveyorItem = {
-  id: number;
-  itemId: number;
-  name: string;
-  imagePath: string;
-  max: number;
-  buffer: number;
-  min: number;
-};
+export type NewConveyorItem =
+  | {
+      itemId: number;
+      name: string;
+      shortname: string;
+      category: string;
+      imagePath: string;
+      max: number;
+      buffer: number;
+      min: number;
+    }
+  | {
+      categoryId: number;
+      name: string;
+      max: number;
+      buffer: number;
+      min: number;
+    };

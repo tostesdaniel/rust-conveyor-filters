@@ -6,6 +6,8 @@ import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
+import type { ConveyorFilterItem } from "@/types/filter";
+import { type NewConveyorItem } from "@/types/item";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -97,24 +99,35 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   }, [search]);
 
   const insertItem = React.useCallback(
-    (item: Item) => {
-      const items: ItemWithFields[] = getValues("items");
+    (filterItem: Item | Category) => {
+      const items: ConveyorFilterItem[] = getValues("items");
+      let newItem: NewConveyorItem;
+      if ("itemId" in filterItem) {
+        newItem = {
+          itemId: filterItem.id,
+          name: filterItem.name,
+          shortname: filterItem.shortname,
+          category: filterItem.category,
+          imagePath: filterItem.imagePath,
+          max: 0,
+          buffer: 0,
+          min: 0,
+        };
+      } else {
+        newItem = {
+          categoryId: filterItem.id,
+          name: filterItem.name,
+          max: 0,
+          buffer: 0,
+          min: 0,
+        };
+      }
 
-      const newItem = {
-        id: item.id,
-        itemId: item.itemId,
-        name: item.name,
-        imagePath: item.imagePath,
-        shortname: item.shortname,
-        max: 0,
-        buffer: 0,
-        min: 0,
-      };
-
-      const itemAlreadyExists = items.some(
-        (item) => item.itemId === newItem.itemId,
-      );
-
+      const itemAlreadyExists = items.some((existingItem) => {
+        return "itemId" in newItem
+          ? existingItem.itemId === newItem.itemId
+          : existingItem.categoryId === newItem.categoryId;
+      });
       if (itemAlreadyExists) {
         return toast.error("Item already exists in conveyor");
       }
@@ -175,23 +188,23 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                   </div>
                 </CommandItem>
                 {categorizedItems[category.name].map((item) => (
-              <CommandItem
-                key={item.id}
-                className='flex items-center gap-x-2'
-                onSelect={() => insertItem(item)}
-              >
-                <div className='relative h-6 w-6'>
-                  <Image
-                    src={`/items/${item.imagePath}.png`}
-                    alt={item.name}
-                    height={24}
-                    width={24}
-                    loading='lazy'
-                    className='rounded-sm object-contain'
-                  />
-                </div>
-                {item.name}
-              </CommandItem>
+                  <CommandItem
+                    key={item.id}
+                    className='flex items-center gap-x-2'
+                    onSelect={() => insertItem(item)}
+                  >
+                    <div className='relative h-6 w-6'>
+                      <Image
+                        src={`/items/${item.imagePath}.png`}
+                        alt={item.name}
+                        height={24}
+                        width={24}
+                        loading='lazy'
+                        className='rounded-sm object-contain'
+                      />
+                    </div>
+                    {item.name}
+                  </CommandItem>
                 ))}
               </CommandGroup>
             );

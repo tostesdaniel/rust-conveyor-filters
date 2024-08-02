@@ -63,12 +63,12 @@ export async function createFilter(formData: FormData) {
           };
         } else {
           return {
-        filterId: insertedFilter.id,
+            filterId: insertedFilter.id,
             itemId: null,
             categoryId: item.categoryId,
-        max: item.max,
-        buffer: item.buffer,
-        min: item.min,
+            max: item.max,
+            buffer: item.buffer,
+            min: item.min,
           };
         }
       },
@@ -97,30 +97,44 @@ export const updateFilter = ownsFilterProcedure
       filterId: z.number(),
       removedItems: z
         .array(
-          z.object({
-            id: z.number(),
-            itemId: z.number(),
-            name: z.string(),
-            imagePath: z.string(),
-            shortname: z.string(),
-            max: z.number(),
-            buffer: z.number(),
-            min: z.number(),
-          }),
+          z.union([
+            z.object({
+              itemId: z.number(),
+              name: z.string(),
+              imagePath: z.string(),
+              max: z.number(),
+              buffer: z.number(),
+              min: z.number(),
+            }),
+            z.object({
+              categoryId: z.number(),
+              name: z.string(),
+              max: z.number(),
+              buffer: z.number(),
+              min: z.number(),
+            }),
+          ]),
         )
         .optional(),
       addedItems: z
         .array(
-          z.object({
-            id: z.number(),
-            itemId: z.number(),
-            name: z.string(),
-            imagePath: z.string(),
-            shortname: z.string(),
-            max: z.number(),
-            buffer: z.number(),
-            min: z.number(),
-          }),
+          z.union([
+            z.object({
+              itemId: z.number(),
+              name: z.string(),
+              imagePath: z.string(),
+              max: z.number(),
+              buffer: z.number(),
+              min: z.number(),
+            }),
+            z.object({
+              categoryId: z.number(),
+              name: z.string(),
+              max: z.number(),
+              buffer: z.number(),
+              min: z.number(),
+            }),
+          ]),
         )
         .optional(),
     }),
@@ -143,24 +157,29 @@ export const updateFilter = ownsFilterProcedure
 
       if (data.items) {
         const filterItemsData = data.items.map(
-          (item: (typeof data.items)[0]) => ({
-            filterId: filterId,
-            itemId: item.id,
-            max: item.max,
-            buffer: item.buffer,
-            min: item.min,
-            createdAt: item.createdAt,
-          }),
+          (item: (typeof data.items)[0]) => {
+            return {
+              filterId: filterId,
+              itemId: "itemId" in item ? item.itemId : null,
+              categoryId: "categoryId" in item ? item.categoryId : null,
+              max: item.max,
+              buffer: item.buffer,
+              min: item.min,
+            };
+          },
         );
 
         for (const item of filterItemsData) {
+          const isCategory = item.categoryId !== null;
           await db
             .update(filterItems)
             .set(item)
             .where(
               and(
                 eq(filterItems.filterId, item.filterId),
-                eq(filterItems.itemId, item.itemId),
+                isCategory
+                  ? eq(filterItems.categoryId, item.categoryId!)
+                  : eq(filterItems.itemId, item.itemId!),
               ),
             );
         }
@@ -168,14 +187,25 @@ export const updateFilter = ownsFilterProcedure
 
       if (removedItems && removedItems.length > 0) {
         for (const item of removedItems) {
-          await db
-            .delete(filterItems)
-            .where(
-              and(
-                eq(filterItems.filterId, filterId),
-                eq(filterItems.itemId, item.id),
-              ),
-            );
+          if ("itemId" in item) {
+            await db
+              .delete(filterItems)
+              .where(
+                and(
+                  eq(filterItems.filterId, filterId),
+                  eq(filterItems.itemId, item.itemId),
+                ),
+              );
+          } else {
+            await db
+              .delete(filterItems)
+              .where(
+                and(
+                  eq(filterItems.filterId, filterId),
+                  eq(filterItems.categoryId, item.categoryId),
+                ),
+              );
+          }
         }
       }
 
@@ -183,7 +213,8 @@ export const updateFilter = ownsFilterProcedure
         const addedItemsData = addedItems.map(
           (item: (typeof addedItems)[0]) => ({
             filterId: filterId,
-            itemId: item.id,
+            itemId: "itemId" in item ? item.itemId : null,
+            categoryId: "categoryId" in item ? item.categoryId : null,
             max: item.max,
             buffer: item.buffer,
             min: item.min,

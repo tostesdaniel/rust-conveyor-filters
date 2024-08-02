@@ -6,8 +6,7 @@ export function normalizeFilterData(
 ): ConveyorFilterItem[] {
   return filter.map((item) => ({
     ...item,
-    item: {
-      shortname: item.shortname,
-    },
+    item: "itemId" in item ? { shortname: item.shortname } : null,
+    categoryId: "categoryId" in item ? item.categoryId : null,
   })) as unknown as ConveyorFilterItem[];
 }

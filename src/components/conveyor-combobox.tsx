@@ -6,14 +6,16 @@ import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
-import { type ItemWithFields, type NewConveyorItem } from "@/types/item";
+import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Item } from "@/db/schema";
+import { categoryMapping } from "@/lib/categoryMapping";
+import { Item, type Category } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
+  CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
@@ -24,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getCategoryIcon } from "@/components/category-icons";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;
@@ -82,6 +85,7 @@ interface ItemListProps {
 
 const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   const { data: items } = useGetItems();
+  const { data: categories, isSuccess: categoriesSuccess } = useGetCategories();
   const { getValues, trigger } = useFormContext();
   const [search, setSearch] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -126,7 +130,19 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
     [getValues, onInsertItem, trigger],
   );
 
-  if (items?.success) {
+  if (items?.data && categoriesSuccess) {
+    const categorizedItems = items.data.reduce(
+      (acc, item) => {
+        const category = categoryMapping[item.category];
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(item);
+        return acc;
+      },
+      {} as Record<string, Item[]>,
+    );
+
     return (
       <Command>
         <CommandInput
@@ -137,8 +153,28 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
         />
         <CommandList>
           <CommandEmpty>No items found</CommandEmpty>
-          {items ? (
-            items.data?.map((item) => (
+          {categories.map((category) => {
+            const categoryName = Object.keys(categoryMapping).find(
+              (key) => categoryMapping[key] === category.name,
+            );
+            if (!categoryName) return null;
+            const CategoryIcon = getCategoryIcon(categoryName);
+
+            return (
+              <CommandGroup key={category.id} heading={categoryName}>
+                <CommandItem
+                  onSelect={() => insertItem(category)}
+                  className='mb-1'
+                >
+                  <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide'>
+                    <CategoryIcon className='h-6 w-6 rounded-sm border border-foreground object-contain p-px' />
+                    <p className='flex-1'>{category.name}</p>
+                    <span className='text-end text-xs text-muted-foreground'>
+                      CATEGORY
+                    </span>
+                  </div>
+                </CommandItem>
+                {categorizedItems[category.name].map((item) => (
               <CommandItem
                 key={item.id}
                 className='flex items-center gap-x-2'
@@ -156,10 +192,10 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                 </div>
                 {item.name}
               </CommandItem>
-            ))
-          ) : (
-            <p>Loading...</p>
-          )}
+                ))}
+              </CommandGroup>
+            );
+          })}
         </CommandList>
       </Command>
     );

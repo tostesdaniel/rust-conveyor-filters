@@ -18,7 +18,7 @@ export const getFiltersWithItems = authenticatedProcedure
       where: (filters) => eq(filters.authorId, ctx.userId),
       with: {
         filterItems: {
-          with: { item: true },
+          with: { item: true, category: true },
           orderBy: ({ createdAt, id }) => [id, createdAt],
         },
       },
@@ -33,7 +33,7 @@ export const getUserFilterById = ownsFilterProcedure
       where: eq(filters.id, input.filterId),
       with: {
         filterItems: {
-          with: { item: true },
+          with: { item: true, category: true },
           orderBy: ({ createdAt, id }) => [id, createdAt],
         },
       },
@@ -59,7 +59,7 @@ export const getAllPublicFilters = createServerAction()
         limit,
         with: {
           filterItems: {
-            with: { item: true },
+            with: { item: true, category: true },
             orderBy: ({ createdAt, id }) => [id, createdAt],
           },
         },

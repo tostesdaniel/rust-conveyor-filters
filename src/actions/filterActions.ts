@@ -51,13 +51,27 @@ export async function createFilter(formData: FormData) {
       .returning();
 
     const filterItemsData = newFilter.items.map(
-      (item: (typeof newFilter.items)[0]) => ({
+      (item: (typeof newFilter.items)[0]) => {
+        if ("itemId" in item) {
+          return {
+            filterId: insertedFilter.id,
+            itemId: item.itemId,
+            categoryId: null,
+            max: item.max,
+            buffer: item.buffer,
+            min: item.min,
+          };
+        } else {
+          return {
         filterId: insertedFilter.id,
-        itemId: item.id,
+            itemId: null,
+            categoryId: item.categoryId,
         max: item.max,
         buffer: item.buffer,
         min: item.min,
-      }),
+          };
+        }
+      },
     );
 
     await db.insert(filterItems).values(filterItemsData);

@@ -7,6 +7,7 @@ import type {
   ConveyorFilterWithAuthor,
 } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { categoryMapping } from "@/lib/categoryMapping";
 import { Button } from "@/components/ui/button";
 import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import { Card } from "@/components/ui/card";
@@ -35,6 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getCategoryIcon } from "@/components/category-icons";
 
 interface ViewFilterProps {
   filter: ConveyorFilterWithAuthor;
@@ -123,25 +125,37 @@ export default function ViewFilter({ filter }: ViewFilterProps) {
 }
 
 const FilterItem = ({ filterItem }: { filterItem: ConveyorFilterItem }) => {
-  const { item } = filterItem;
+  const { item, category } = filterItem;
+  const categoryKey = Object.keys(categoryMapping).find(
+    (key) => categoryMapping[key] === category?.name,
+  );
+  const CategoryIcon = getCategoryIcon(categoryKey!);
   return (
     <li className='snap-start'>
       <Card className='aspect-square w-20'>
-        <Image
-          src={`/items/${item.imagePath}.png`}
-          alt={item.name}
-          width={80}
-          height={80}
-          className='pointer-events-none object-contain p-1'
-        />
+        {category ? (
+          <CategoryIcon className='h-full w-full object-cover py-2' />
+        ) : item ? (
+          <Image
+            src={`/items/${item.imagePath}.png`}
+            alt={item.name}
+            width={80}
+            height={80}
+            className='pointer-events-none object-contain p-1'
+          />
+        ) : null}
       </Card>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <p className='mt-2 truncate text-sm font-medium'>{item.name}</p>
+            <p className='mt-2 truncate text-sm font-medium'>
+              {item?.name || category?.name}
+            </p>
           </TooltipTrigger>
           <TooltipContent>
-            <p className='text-sm font-medium'>{item.name}</p>
+            <p className='text-sm font-medium'>
+              {item?.name || category?.name}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

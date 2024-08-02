@@ -25,7 +25,7 @@ type Condition = {
 };
 
 export type GameConveyorFilterItem = {
-  TargetCategory: null;
+  TargetCategory: number | null;
   MaxAmountInOutput: number;
   BufferAmount: number;
   MinAmountInInput: number;

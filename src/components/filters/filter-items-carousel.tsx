@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 
 import type { ConveyorFilterItem } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { categoryMapping } from "@/lib/categoryMapping";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -15,6 +16,7 @@ import {
   type CarouselApi,
   type CarouselOptions,
 } from "@/components/ui/carousel";
+import { getCategoryIcon } from "@/components/category-icons";
 
 export function FilterItemsCarousel({
   filterItems,
@@ -104,22 +106,38 @@ export function FilterItemsCarousel({
       >
         <CarouselContent>
           {filterItems.map((filterItem) => {
-            const { item } = filterItem;
+            const { item, category } = filterItem;
+            const isCategory = !item;
+            const key = item?.id || category?.id;
+            const categoryKey = Object.keys(categoryMapping).find(
+              (key) => categoryMapping[key] === category?.name,
+            );
+            const CategoryIcon = getCategoryIcon(categoryKey!);
+
             return (
               <CarouselItem
-                key={item.id}
+                key={key}
                 className='basis-1/3 min-[360px]:basis-1/4 min-[440px]:basis-1/5 min-[550px]:basis-1/6'
               >
                 <Card className='p-1'>
-                  <CardContent className='relative aspect-square items-center justify-center'>
-                    <Image
-                      src={`/items/${item.imagePath}.png`}
-                      alt={item.name}
-                      fill
-                      sizes='80px'
-                      style={{ objectFit: "cover" }}
-                      quality={90}
-                    />
+                  <CardContent className='relative aspect-square items-center justify-center p-0'>
+                    {isCategory ? (
+                      <>
+                        <CategoryIcon className='h-14 w-full object-cover py-1' />
+                        <p className='text-center text-xs font-bold'>
+                          {category?.name}
+                        </p>
+                      </>
+                    ) : (
+                      <Image
+                        src={`/items/${item.imagePath}.png`}
+                        alt={item.name}
+                        fill
+                        sizes='80px'
+                        style={{ objectFit: "cover" }}
+                        quality={90}
+                      />
+                    )}
                   </CardContent>
                 </Card>
               </CarouselItem>

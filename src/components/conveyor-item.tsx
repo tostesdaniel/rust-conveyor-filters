@@ -3,8 +3,10 @@ import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
+import { categoryMapping } from "@/lib/categoryMapping";
 import { FilterSettingsFieldDescription } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import { getCategoryIcon } from "@/components/category-icons";
 
 import { FilterSettingsInput } from "./filter-settings-input";
 import { FormDescription, FormField } from "./ui/form";
@@ -29,15 +31,25 @@ export function ConveyorItem({
     trigger("items");
   }
 
+  const categoryKey = Object.keys(categoryMapping).find(
+    (key) => categoryMapping[key] === item.name,
+  );
+  const isCategory = !item.itemId;
+  const CategoryIcon = getCategoryIcon(categoryKey!);
+
   return (
     <li key={`${item.id}`}>
       <div className='relative h-40 w-auto'>
-        <Image
-          src={`/items/${item.imagePath}.png`}
-          alt={item.name}
-          fill
-          className='object-contain'
-        />
+        {isCategory ? (
+          <CategoryIcon className='h-full w-full object-contain' />
+        ) : (
+          <Image
+            src={`/items/${item.imagePath}.png`}
+            alt={item.name}
+            fill
+            className='object-contain'
+          />
+        )}
         <div className='absolute inset-y-0 right-0'>
           <Button
             variant='destructive'

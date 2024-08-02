@@ -1,4 +1,4 @@
-import { Filter, FilterItem, Item } from "@/db/schema";
+import { Filter, FilterItem, Item, type Category } from "@/db/schema";
 
 export interface ConveyorFilterWithAuthor extends ConveyorFilter {
   author: string | null;
@@ -9,5 +9,6 @@ export interface ConveyorFilter extends Filter {
 }
 
 export interface ConveyorFilterItem extends FilterItem {
-  item: Item;
+  item: Item | null;
+  category: Category | null;
 }

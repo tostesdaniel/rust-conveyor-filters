@@ -14,18 +14,23 @@ export const createFilterSchema = z.object({
   isPublic: z.boolean().default(false).optional(),
   items: z
     .array(
-      z.object({
-        id: z.coerce.number(),
-        itemId: z.coerce.number(),
-        name: z.string(),
-        imagePath: z.string(),
-        shortname: z.string(),
-        max: z.coerce.number().min(0, "Max must be at least 0"),
-        buffer: z.coerce.number().min(0, "Buffer must be at least 0"),
-        min: z.coerce.number().min(0, "Min must be at least 0"),
-        createdAt: z.date().optional(),
-        updatedAt: z.date().optional(),
-      }),
+      z.union([
+        z.object({
+          itemId: z.number(),
+          name: z.string(),
+          imagePath: z.string(),
+          max: z.number().min(0),
+          buffer: z.number().min(0),
+          min: z.number().min(0),
+        }),
+        z.object({
+          name: z.string(),
+          categoryId: z.number(),
+          max: z.number().min(0),
+          buffer: z.number().min(0),
+          min: z.number().min(0),
+        }),
+      ]),
     )
     .refine((data) => data.length <= 30, {
       message: "You cannot have more than 30 items",
@@ -35,7 +40,9 @@ export const createFilterSchema = z.object({
     })
     .refine(
       (data) => {
-        const ids = data.map((item) => item.itemId);
+        const ids = data.map((item) =>
+          "itemId" in item ? item.itemId : item.categoryId,
+        );
         return new Set(ids).size === ids.length;
       },
       {

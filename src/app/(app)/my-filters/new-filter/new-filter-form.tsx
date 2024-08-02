@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { createFilter } from "@/actions/filterActions";
+import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +31,7 @@ const DevTool = dynamic(
 
 export default function NewFilterForm() {
   const { data: items } = useGetItems();
+  const { data: _categories } = useGetCategories();
 
   const form = useForm<z.infer<typeof createFilterSchema>>({
     resolver: zodResolver(createFilterSchema),

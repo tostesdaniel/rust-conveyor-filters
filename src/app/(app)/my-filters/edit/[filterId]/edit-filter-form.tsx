@@ -64,18 +64,28 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   React.useEffect(() => {
     if (data) {
       const initialItemsData = data.filterItems.map((filterItem) => {
-        const { item } = filterItem;
-        return {
-          id: filterItem.itemId,
-          itemId: item.itemId,
-          name: item.name,
-          imagePath: item.imagePath,
-          shortname: item.shortname,
-          max: filterItem.max,
-          buffer: filterItem.buffer,
-          min: filterItem.min,
-          createdAt: filterItem.createdAt,
-        };
+        if (filterItem.item) {
+          const { item } = filterItem;
+          return {
+            name: item.name,
+            shortname: item.shortname,
+            imagePath: item.imagePath,
+            itemId: item.id,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+            createdAt: filterItem.createdAt,
+          };
+        } else if (filterItem.category) {
+          return {
+            name: filterItem.category.name,
+            categoryId: filterItem.category.id,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+            createdAt: filterItem.createdAt,
+          };
+        }
       });
       setInitialItems(initialItemsData);
       form.reset({
@@ -108,13 +118,33 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   };
 
   const getRemovedItems = (initialItems: any[], currentItems: any[]) => {
-    const currentItemIds = currentItems.map((item) => item.id);
-    return initialItems.filter((item) => !currentItemIds.includes(item.id));
+    return initialItems.filter((initialItem) => {
+      if ("itemId" in initialItem) {
+        return !currentItems.some(
+          (currentItem) => currentItem.itemId === initialItem.itemId,
+        );
+      } else if ("categoryId" in initialItem) {
+        return !currentItems.some(
+          (currentItem) => currentItem.categoryId === initialItem.categoryId,
+        );
+      }
+      return false;
+    });
   };
 
   const getAddedItems = (initialItems: any[], currentItems: any[]) => {
-    const initialItemIds = initialItems.map((item) => item.id);
-    return currentItems.filter((item) => !initialItemIds.includes(item.id));
+    return currentItems.filter((currentItem) => {
+      if ("itemId" in currentItem) {
+        return !initialItems.some(
+          (initialItem) => initialItem.itemId === currentItem.itemId,
+        );
+      } else if ("categoryId" in currentItem) {
+        return !initialItems.some(
+          (initialItem) => initialItem.categoryId === currentItem.categoryId,
+        );
+      }
+      return false;
+    });
   };
 
   async function onSubmit(data: z.infer<typeof createFilterSchema>) {

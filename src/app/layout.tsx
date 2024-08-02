@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -85,6 +86,7 @@ export default function RootLayout({
               <div className='flex min-h-screen flex-col'>{children}</div>
               <Toaster />
             </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryProvider>
           <Analytics />
           <SpeedInsights />

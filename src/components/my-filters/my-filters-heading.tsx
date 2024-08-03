@@ -9,9 +9,8 @@ import { Typography } from "@/components/ui/typography";
 export function MyFiltersHeading() {
   const { data: filters } = useGetUserFilters();
 
-  if (!filters) {
-    <Typography variant='h1'>My Filters</Typography>;
-    return;
+  if (!filters?.length) {
+    return <Typography variant='h1'>My Filters</Typography>;
   }
 
   return (

@@ -13,10 +13,10 @@ import {
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
   itemId: integer("itemid").notNull(),
-  shortname: varchar("shortname", { length: 256 }).notNull(),
-  name: varchar("name", { length: 256 }).notNull(),
-  category: varchar("category", { length: 256 }).notNull(),
-  imagePath: varchar("image_path", { length: 256 }).notNull(),
+  shortname: varchar("shortname", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: varchar("category", { length: 255 }).notNull(),
+  imagePath: varchar("image_path", { length: 255 }).notNull(),
 });
 
 export type Item = typeof items.$inferSelect;
@@ -30,10 +30,10 @@ export const filters = pgTable(
   "filters",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    description: varchar("description", { length: 256 }),
-    authorId: varchar("author_id", { length: 256 }).notNull(),
-    imagePath: varchar("image_path", { length: 256 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: varchar("description", { length: 255 }),
+    authorId: varchar("author_id", { length: 255 }).notNull(),
+    imagePath: varchar("image_path", { length: 255 }).notNull(),
     isPublic: boolean("is_public").notNull().default(false),
     createdAt: timestamp("created_at")
       .notNull()
@@ -94,7 +94,7 @@ export const filterItemRelations = relations(filterItems, ({ one }) => ({
     fields: [filterItems.itemId],
     references: [items.id],
   }),
-category: one(categories, {
+  category: one(categories, {
     fields: [filterItems.categoryId],
     references: [categories.id],
   }),
@@ -102,7 +102,7 @@ category: one(categories, {
 
 export const categories = pgTable("categories", {
   id: integer("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
 });
 
 export type Category = typeof categories.$inferSelect;

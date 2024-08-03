@@ -143,7 +143,8 @@ export const updateFilter = ownsFilterProcedure
     const { data, filterId, removedItems, addedItems } = input;
     const updateData: Partial<typeof data> = {};
     if (data.name) updateData.name = data.name;
-    if (data.description) updateData.description = data.description;
+    if (data.description !== undefined)
+      updateData.description = data.description;
     if (data.imagePath) updateData.imagePath = data.imagePath;
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
 

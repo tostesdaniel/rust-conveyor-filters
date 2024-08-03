@@ -8,7 +8,8 @@ export const createFilterSchema = z.object({
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters long" })
-    .max(256),
+    .max(256)
+    .or(z.literal("")),
   authorId: z.string().optional(), // set by the server when creating a new filter
   imagePath: z.string().min(1, { message: "You must select an image" }),
   isPublic: z.boolean().default(false).optional(),

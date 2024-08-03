@@ -10,7 +10,7 @@ import { MyFilterCard as FilterCard } from "./my-filter-card";
 export function MyFilters() {
   const { data: filters } = useGetUserFilters();
 
-  if (!filters) {
+  if (!filters?.length) {
     return (
       <EmptyState
         Icon={FolderPlusIcon}

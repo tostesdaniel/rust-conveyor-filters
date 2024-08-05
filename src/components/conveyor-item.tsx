@@ -52,6 +52,7 @@ export function ConveyorItem({
         )}
         <div className='absolute inset-y-0 right-0'>
           <Button
+            type='button'
             variant='destructive'
             size='icon'
             className='mt-2 h-5 w-5'

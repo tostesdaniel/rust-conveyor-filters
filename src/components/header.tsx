@@ -46,11 +46,7 @@ export function Header() {
         <DesktopNav />
         <div className='flex flex-1 items-center justify-end'>
           <nav className='flex items-center'>
-            <Link
-              href={siteConfig.links.gitHub}
-              target='_blank'
-              rel='noreferrer'
-            >
+            <Link href={siteConfig.links.repo} target='_blank' rel='noreferrer'>
               <div
                 className={cn(buttonVariants({ variant: "ghost" }), "w-9 px-0")}
               >

@@ -4,6 +4,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, useFormState, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -50,9 +51,12 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const { dirtyFields } = useFormState({ control: form.control });
   const [initialItems, setInitialItems] = React.useState<any[]>([]);
 
+  const queryClient = useQueryClient();
+
   const mutation = useServerActionMutation(updateFilter, {
     onSuccess: () => {
       toast.success("Filter updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
       refetch();
     },
     onError: () => {

@@ -3,11 +3,13 @@
 import dynamic from "next/dynamic";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 import { createFilter } from "@/actions/filterActions";
+import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { Button } from "@/components/ui/button";
@@ -44,23 +46,22 @@ export default function NewFilterForm() {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const queryClient = useQueryClient();
 
-  async function onSubmit(data: z.infer<typeof createFilterSchema>) {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("imagePath", data.imagePath);
-    formData.append("items", JSON.stringify(data.items));
-    formData.append("isPublic", String(data.isPublic));
+  const mutation = useServerActionMutation(createFilter, {
+    onSuccess: () => {
+      toast.success("Filter created successfully");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
+    },
+  });
 
-    await createFilter(formData).then((res) => {
-      if (res.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
-    });
+  function onSubmit(data: z.infer<typeof createFilterSchema>) {
+    mutation.mutate(data);
   }
 
   return (
@@ -136,8 +137,8 @@ export default function NewFilterForm() {
             </FormItem>
           )}
         />
-        <Button type='submit' disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Create Filter"}
+        <Button type='submit' disabled={mutation.isPending}>
+          {mutation.isPending ? "Submitting..." : "Create Filter"}
         </Button>
       </form>
       {process.env.NODE_ENV === "development" && (

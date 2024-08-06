@@ -1,93 +1,67 @@
 "use server";
 
 import { createFilterSchema } from "@/schemas/filterFormSchema";
-import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { ownsFilterProcedure } from "@/lib/safe-action";
+import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
 import { filterItems, filters } from "@/db/schema";
 
 import { db } from "../db";
 
-export async function createFilter(formData: FormData) {
-  const { userId } = auth();
+export const createFilter = authenticatedProcedure
+  .createServerAction()
+  .input(createFilterSchema)
+  .handler(async ({ ctx, input }) => {
+    const parsed = createFilterSchema.safeParse(input);
 
-  if (!userId) {
-    return {
-      success: false,
-      message: "Unauthorized",
-    };
-  }
+    if (!parsed.success) {
+      throw "Invalid form data";
+    }
 
-  const parsed = createFilterSchema.safeParse({
-    name: formData.get("name"),
-    description: formData.get("description"),
-    imagePath: formData.get("imagePath"),
-    items: JSON.parse(formData.get("items") as string),
-    isPublic: formData.get("isPublic") === "true" ? true : false,
-    authorId: userId,
+    const newFilter = parsed.data;
+    try {
+      const [insertedFilter] = await db
+        .insert(filters)
+        .values({
+          name: newFilter.name,
+          description: newFilter.description,
+          authorId: ctx.userId,
+          imagePath: newFilter.imagePath,
+          isPublic: newFilter.isPublic,
+        })
+        .returning();
+
+      const filterItemsData = newFilter.items.map(
+        (item: (typeof newFilter.items)[0]) => {
+          if ("itemId" in item) {
+            return {
+              filterId: insertedFilter.id,
+              itemId: item.itemId,
+              categoryId: null,
+              max: item.max,
+              buffer: item.buffer,
+              min: item.min,
+            };
+          } else {
+            return {
+              filterId: insertedFilter.id,
+              itemId: null,
+              categoryId: item.categoryId,
+              max: item.max,
+              buffer: item.buffer,
+              min: item.min,
+            };
+          }
+        },
+      );
+
+      await db.insert(filterItems).values(filterItemsData);
+    } catch (error) {
+      console.error("Error creating filter:", error);
+      throw "Failed to create filter";
+    }
   });
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      message: "Invalid form data",
-    };
-  }
-
-  const newFilter = parsed.data;
-
-  try {
-    const [insertedFilter] = await db
-      .insert(filters)
-      .values({
-        name: newFilter.name,
-        description: newFilter.description,
-        authorId: newFilter.authorId as string,
-        imagePath: newFilter.imagePath,
-        isPublic: newFilter.isPublic,
-      })
-      .returning();
-
-    const filterItemsData = newFilter.items.map(
-      (item: (typeof newFilter.items)[0]) => {
-        if ("itemId" in item) {
-          return {
-            filterId: insertedFilter.id,
-            itemId: item.itemId,
-            categoryId: null,
-            max: item.max,
-            buffer: item.buffer,
-            min: item.min,
-          };
-        } else {
-          return {
-            filterId: insertedFilter.id,
-            itemId: null,
-            categoryId: item.categoryId,
-            max: item.max,
-            buffer: item.buffer,
-            min: item.min,
-          };
-        }
-      },
-    );
-
-    await db.insert(filterItems).values(filterItemsData);
-
-    return {
-      success: true,
-      message: "Filter created successfully",
-    };
-  } catch (error) {
-    console.error("Error creating filter:", error);
-    return {
-      success: false,
-      message: "Failed to create filter",
-    };
-  }
-}
 
 export const updateFilter = ownsFilterProcedure
   .createServerAction()

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -34,6 +35,7 @@ const DevTool = dynamic(
 );
 
 export function EditFilterForm({ filterId }: { filterId: number }) {
+  const router = useRouter();
   const { data: items } = useGetItems();
   const { data, isError, error, isLoading, refetch } =
     useGetUserFilter(filterId);
@@ -58,6 +60,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       toast.success("Filter updated successfully");
       queryClient.invalidateQueries({ queryKey: ["user-filters"] });
       refetch();
+      router.push("/my-filters");
     },
     onError: () => {
       toast.error("Failed to update filter");

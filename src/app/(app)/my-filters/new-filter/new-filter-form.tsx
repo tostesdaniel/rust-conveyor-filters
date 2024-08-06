@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -32,6 +33,7 @@ const DevTool = dynamic(
 );
 
 export default function NewFilterForm() {
+  const router = useRouter();
   const { data: items } = useGetItems();
   const { data: _categories } = useGetCategories();
 
@@ -51,6 +53,7 @@ export default function NewFilterForm() {
   const mutation = useServerActionMutation(createFilter, {
     onSuccess: () => {
       toast.success("Filter created successfully");
+      router.push("/my-filters");
     },
     onError: (err) => {
       toast.error(err.message);

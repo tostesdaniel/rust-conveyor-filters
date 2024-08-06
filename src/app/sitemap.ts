@@ -1,10 +1,14 @@
 import type { MetadataRoute } from "next";
 
+import { siteConfig } from "@/config/site";
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = `${siteConfig.url}`;
+  const lastModified = new Date().toISOString();
   return [
-    { url: "/", lastModified: new Date().toISOString() },
-    { url: "/filters", lastModified: new Date().toISOString() },
-    { url: "/feedback", lastModified: new Date().toISOString() },
-    { url: "/about", lastModified: new Date().toISOString() },
+    { url: baseUrl, lastModified },
+    { url: `${baseUrl}/filters`, lastModified },
+    { url: `${baseUrl}/feedback`, lastModified },
+    { url: `${baseUrl}/about`, lastModified },
   ];
 }

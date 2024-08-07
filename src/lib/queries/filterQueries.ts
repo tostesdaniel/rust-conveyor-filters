@@ -75,7 +75,7 @@ export const getAllPublicFilters = createServerAction()
 
     const filterWithAuthor: ConveyorFilterWithAuthor[] = await Promise.all(
       publicFilters.map(async (filter) => {
-        const user = await clerkClient.users.getUser(filter.authorId);
+        const user = await clerkClient().users.getUser(filter.authorId);
         const discordAccount = user.externalAccounts.find(
           (account) => account.provider === "oauth_discord",
         );

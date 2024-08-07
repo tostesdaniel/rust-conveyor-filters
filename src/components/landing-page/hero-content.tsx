@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,9 +21,16 @@ export function HeroContent() {
           reclaim your time!
         </p>
         <div className='mt-10 flex items-center gap-x-6'>
-          <Button type='button' asChild>
-            <Link href='/sign-up'>Get Started Now</Link>
-          </Button>
+          <SignedIn>
+            <Button type='button' asChild>
+              <Link href='/my-filters'>Go to My Filters</Link>
+            </Button>
+          </SignedIn>
+          <SignedOut>
+            <Button type='button' asChild>
+              <SignUpButton>Get Started Now</SignUpButton>
+            </Button>
+          </SignedOut>
           <Button type='button' variant='link'>
             <Link href='/filters'>Browse Filters</Link>
             <ArrowRight className='ml-2 h-4 w-4' />

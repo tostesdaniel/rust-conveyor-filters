@@ -17,7 +17,7 @@
     "@aws-sdk/credential-providers": "^3.596.0",
     "@aws-sdk/s3-request-presigner": "^3.596.0",
     "@clerk/elements": "^0.4.2",
-    "@clerk/nextjs": "^5.0.8",
+    "@clerk/nextjs": "^5.2.14",
     "@hookform/resolvers": "^3.4.2",
     "@neondatabase/serverless": "^0.9.3",
     "@radix-ui/react-accordion": "^1.2.0",

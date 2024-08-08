@@ -1,16 +1,36 @@
+import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 import { Icons } from "./ui/icons";
+
+const navigation = [
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms of Service", href: "/terms-of-service" },
+  { name: "Contact", href: "/contact" },
+  { name: "Donate", href: "/donate" },
+];
 
 export function Footer() {
   return (
     <footer>
-      <div className='mx-auto max-w-screen-2xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8'>
-        <div className='flex justify-center space-x-6 md:order-2'>
+      <div className='mx-auto max-w-screen-2xl overflow-hidden px-6 py-12 md:flex md:items-center md:justify-between md:gap-x-6 lg:px-8'>
+        <nav
+          aria-label='Footer'
+          className='columns-2 sm:flex sm:justify-center sm:space-x-2 md:order-2 lg:space-x-12'
+        >
+          {navigation.map((item) => (
+            <div key={item.name}>
+              <Button asChild variant='link'>
+                <Link href={item.href}>{item.name}</Link>
+              </Button>
+            </div>
+          ))}
+        </nav>
+        <div className='mt-4 flex justify-center space-x-6 md:order-3 md:mt-0'>
           <a
             href={siteConfig.links.repo}
             target='_blank'

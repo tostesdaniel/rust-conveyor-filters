@@ -9,6 +9,11 @@ export const siteConfig = {
     repo: "https://github.com/tostesdaniel/rust-conveyor-filters",
     linkedIn: "https://www.linkedin.com/in/danieltostes/",
   },
+  donate: {
+    buyMeACoffee: "https://buymeacoffee.com/danieltostes",
+    paypal: "https://www.paypal.com/donate/?hosted_button_id=XQNLCXQGUQDM8",
+    kofi: "https://ko-fi.com/danieltostes",
+  },
 };
 
 export type siteConfig = typeof siteConfig;

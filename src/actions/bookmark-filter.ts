@@ -44,3 +44,15 @@ export const getBookmarkedStatus = authenticatedProcedure
     return { bookmarked: bookmarked ? true : false };
   });
 
+export const getBookmarkedFilters = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    return await db.query.bookmarks.findMany({
+      where: eq(bookmarks.authorId, ctx.userId),
+      with: {
+        filter: {
+          with: { filterItems: { with: { item: true, category: true } } },
+        },
+      },
+    });
+  });

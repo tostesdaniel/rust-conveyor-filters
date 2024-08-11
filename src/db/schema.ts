@@ -128,3 +128,18 @@ export const feedback = pgTable("feedback", {
 
 export type Feedback = typeof feedback.$inferSelect;
 export type NewFeedback = typeof feedback.$inferInsert;
+
+export const bookmarks = pgTable("bookmarks", {
+  id: serial("id").primaryKey(),
+  authorId: varchar("author_id", { length: 255 }).notNull(),
+  filterId: integer("filter_id")
+    .notNull()
+    .references(() => filters.id, { onDelete: "cascade" }),
+});
+
+export const bookmarkRelations = relations(bookmarks, ({ one }) => ({
+  filter: one(filters, {
+    fields: [bookmarks.filterId],
+    references: [filters.id],
+  }),
+}));

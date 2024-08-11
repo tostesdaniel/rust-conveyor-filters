@@ -29,3 +29,18 @@ export const bookmarkFilter = authenticatedProcedure
       return { bookmarked: true };
     }
   });
+
+export const getBookmarkedStatus = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      filterId: z.number(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const bookmarked = await db.query.bookmarks.findFirst({
+      where: eq(bookmarks.filterId, input.filterId),
+    });
+    return { bookmarked: bookmarked ? true : false };
+  });
+

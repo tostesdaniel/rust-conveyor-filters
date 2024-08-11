@@ -1,0 +1,36 @@
+"use client";
+
+import { BookmarkPlusIcon, GlobeIcon } from "lucide-react";
+
+import { useGetBookmarkedFilters } from "@/hooks/use-get-bookmarked-filters";
+import { EmptyState } from "@/components/empty-state";
+
+import { BookmarkedFilterCard } from "../my-filters/bookmarked-filter-card";
+
+export function SavedFilters() {
+  const { data: bookmarkedFilters } = useGetBookmarkedFilters();
+
+  if (!bookmarkedFilters?.length) {
+    return (
+      <EmptyState
+        Icon={BookmarkPlusIcon}
+        title='No bookmarked filters'
+        description='You have not bookmarked any filters yet.'
+        label='Browse Filters'
+        ButtonIcon={GlobeIcon}
+        redirectUrl='/filters'
+      />
+    );
+  }
+
+  return (
+    <ul
+      role='list'
+      className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
+    >
+      {bookmarkedFilters.map(({ filter }) => (
+        <BookmarkedFilterCard key={filter.id} filter={filter} />
+      ))}
+    </ul>
+  );
+}

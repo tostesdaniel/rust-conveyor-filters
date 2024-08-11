@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
@@ -19,7 +19,14 @@ export const bookmarkFilter = authenticatedProcedure
       where: eq(bookmarks.filterId, input.filterId),
     });
     if (existingBookmark) {
-      await db.delete(bookmarks).where(eq(bookmarks.id, existingBookmark.id));
+      await db
+        .delete(bookmarks)
+        .where(
+          and(
+            eq(bookmarks.id, existingBookmark.id),
+            eq(bookmarks.authorId, ctx.userId),
+          ),
+        );
       return { bookmarked: false };
     } else {
       await db.insert(bookmarks).values({
@@ -37,9 +44,12 @@ export const getBookmarkedStatus = authenticatedProcedure
       filterId: z.number(),
     }),
   )
-  .handler(async ({ input }) => {
+  .handler(async ({ ctx, input }) => {
     const bookmarked = await db.query.bookmarks.findFirst({
-      where: eq(bookmarks.filterId, input.filterId),
+      where: and(
+        eq(bookmarks.filterId, input.filterId),
+        eq(bookmarks.authorId, ctx.userId),
+      ),
     });
     return { bookmarked: bookmarked ? true : false };
   });

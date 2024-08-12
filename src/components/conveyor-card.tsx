@@ -1,13 +1,13 @@
-import { BoxIcon, Upload } from "lucide-react";
+import { BoxIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { ItemWithFields } from "@/types/item";
 import { normalizeFilterData } from "@/lib/normalizeFilterData";
+import { ImportButton } from "@/components/import-button";
 
 import { ConveyorCombobox } from "./conveyor-combobox";
 import { ConveyorItemGrid } from "./conveyor-item-grid";
 import { ExportConveyorFilter } from "./export-conveyor-filter";
-import { ButtonWithIcon } from "./ui/button-with-icon";
 import {
   Card,
   CardContent,
@@ -20,7 +20,10 @@ import { FormField } from "./ui/form";
 
 export function ConveyorCard() {
   const { control, watch } = useFormContext();
-  const { fields, append, remove } = useFieldArray({ control, name: "items" });
+  const { fields, append, remove, replace } = useFieldArray({
+    control,
+    name: "items",
+  });
   const filter: ItemWithFields[] = watch("items");
 
   return (
@@ -53,13 +56,7 @@ export function ConveyorCard() {
             />
           )}
         />
-        <ButtonWithIcon
-          type='button'
-          icon={Upload}
-          variant='secondary'
-          size='sm'
-          title='Import'
-        />
+        <ImportButton onImport={replace} />
         <ExportConveyorFilter
           type='button'
           filter={normalizeFilterData(filter)}

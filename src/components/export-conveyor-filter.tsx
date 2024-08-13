@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { useLogEvent } from "@/hooks/use-log-event";
 import { exportConveyorFilter } from "@/lib/export-conveyor-filter";
 
 import { Button } from "./ui/button";
@@ -13,20 +14,32 @@ import { DropdownMenuItem } from "./ui/dropdown-menu";
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown";
   filter: ConveyorFilterItem[];
+  filterId?: number;
+  log?: boolean;
   className?: string;
 }
 
 export function ExportConveyorFilter({
   type,
   filter,
+  filterId,
+  log = false,
   className,
 }: ExportConveyorFilterProps) {
   const [_copiedText, copy] = useCopyToClipboard();
+  const { logEvent } = useLogEvent();
+
+  if (log && !filterId) {
+    throw new Error("Filter ID is required to log events");
+  }
 
   const handleCopy = (text: string) => () => {
     copy(text)
-      .then(() => {
+      .then(async () => {
         toast.success("Exported to clipboard");
+        if (log && filterId) {
+          await logEvent("filter", "export", filterId.toString());
+        }
       })
       .catch((error) => {
         toast.error(`Failed to export: ${error.message}`);

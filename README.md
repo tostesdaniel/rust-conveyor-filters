@@ -2,6 +2,8 @@
 
 This project is a web application for generating, editing, and sharing Rust conveyor filters. It is built with Next.js and TypeScript, and leverages various libraries and tools to provide a seamless user experience.
 
+![Rust Conveyor Filters](public/og.jpg)
+
 ## Getting Started
 
 ### Prerequisites

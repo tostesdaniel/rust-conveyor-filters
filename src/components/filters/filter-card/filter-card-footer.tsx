@@ -21,10 +21,12 @@ export function FilterCardFooter({
         </CardDescription>
       </div>
       <div className='flex w-full items-center justify-center space-x-4 min-[475px]:block min-[475px]:w-auto'>
-        <ViewFilter filter={filter} />
+        <ViewFilter filter={filter} log />
         <ExportConveyorFilter
           type='button'
           filter={filter.filterItems}
+          filterId={filter.id}
+          log
           className='w-full min-[475px]:w-auto'
         />
       </div>

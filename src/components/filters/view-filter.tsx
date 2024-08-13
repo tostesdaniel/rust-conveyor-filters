@@ -6,6 +6,7 @@ import type {
   ConveyorFilterItem,
   ConveyorFilterWithAuthor,
 } from "@/types/filter";
+import { useLogEvent } from "@/hooks/use-log-event";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
 import { Button } from "@/components/ui/button";
@@ -40,14 +41,24 @@ import { getCategoryIcon } from "@/components/category-icons";
 
 interface ViewFilterProps {
   filter: ConveyorFilterWithAuthor;
+  log?: boolean;
 }
-export default function ViewFilter({ filter }: ViewFilterProps) {
+
+export default function ViewFilter({ filter, log = false }: ViewFilterProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { logEvent } = useLogEvent();
+
+  const handleOpenChange = () => {
+    if (log) {
+      logEvent("filter", "view", filter.id.toString());
+    }
+    setOpen(!open);
+  };
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <ButtonWithIcon
             type='button'
@@ -81,7 +92,7 @@ export default function ViewFilter({ filter }: ViewFilterProps) {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
         <ButtonWithIcon
           type='button'

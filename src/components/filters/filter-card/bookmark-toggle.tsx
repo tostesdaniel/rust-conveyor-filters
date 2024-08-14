@@ -52,6 +52,7 @@ export function BookmarkToggle({
       }
     },
     onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookmarked", filterId] });
       queryClient.invalidateQueries({ queryKey: ["bookmarked-filters"] });
     },
   });

@@ -20,9 +20,7 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
       </div>
       <div className='flex flex-1 items-center justify-between rounded-r-md border-2 border-l-0 border-card-foreground/70'>
         <div className='flex-1 px-4 py-2 text-sm'>
-          <p className='font-medium text-foreground/85 transition-colors hover:text-foreground'>
-            {filter.name}
-          </p>
+          <p className='font-medium'>{filter.name}</p>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
         <div className='pr-2'>

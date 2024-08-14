@@ -23,7 +23,7 @@ export const bookmarkFilter = authenticatedProcedure
         .delete(bookmarks)
         .where(
           and(
-            eq(bookmarks.id, existingBookmark.id),
+            eq(bookmarks.filterId, existingBookmark.filterId),
             eq(bookmarks.authorId, ctx.userId),
           ),
         );

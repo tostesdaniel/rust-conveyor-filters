@@ -40,7 +40,7 @@ import {
 import { getCategoryIcon } from "@/components/category-icons";
 
 interface ViewFilterProps {
-  filter: ConveyorFilterWithAuthor;
+  filter: ConveyorFilter;
   log?: boolean;
 }
 

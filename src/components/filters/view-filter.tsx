@@ -2,10 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { EyeIcon } from "lucide-react";
 
-import type {
-  ConveyorFilterItem,
-  ConveyorFilterWithAuthor,
-} from "@/types/filter";
+import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
 import { useLogEvent } from "@/hooks/use-log-event";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
@@ -40,11 +37,16 @@ import {
 import { getCategoryIcon } from "@/components/category-icons";
 
 interface ViewFilterProps {
-  filter: ConveyorFilterWithAuthor;
+  filter: ConveyorFilter;
   log?: boolean;
+  variant?: "button" | "icon";
 }
 
-export default function ViewFilter({ filter, log = false }: ViewFilterProps) {
+export default function ViewFilter({
+  filter,
+  log = false,
+  variant = "button",
+}: ViewFilterProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { logEvent } = useLogEvent();
@@ -56,18 +58,34 @@ export default function ViewFilter({ filter, log = false }: ViewFilterProps) {
     setOpen(!open);
   };
 
+  const TriggerButton = ({ ...props }) => {
+    return variant === "button" ? (
+      <ButtonWithIcon
+        type='button'
+        variant='secondary'
+        size='sm'
+        icon={EyeIcon}
+        title='Visualize'
+        className='w-full min-[475px]:w-auto'
+        {...props}
+      />
+    ) : (
+      <Button
+        variant='ghost'
+        size='icon'
+        className='h-4 w-4 hover:bg-transparent hover:text-muted-foreground'
+        {...props}
+      >
+        <EyeIcon className='h-4 w-4' />
+      </Button>
+    );
+  };
+
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <ButtonWithIcon
-            type='button'
-            variant='secondary'
-            size='sm'
-            icon={EyeIcon}
-            title='Visualize'
-            className='w-full min-[475px]:w-auto'
-          />
+          <TriggerButton />
         </DialogTrigger>
         <DialogContent className='max-w-2xl'>
           <DialogHeader>
@@ -94,14 +112,7 @@ export default function ViewFilter({ filter, log = false }: ViewFilterProps) {
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
-        <ButtonWithIcon
-          type='button'
-          variant='secondary'
-          size='sm'
-          icon={EyeIcon}
-          title='Visualize'
-          className='w-full min-[475px]:w-auto'
-        />
+        <TriggerButton />
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='text-left'>

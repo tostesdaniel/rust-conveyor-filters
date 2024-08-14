@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { kv } from "@vercel/kv";
 import { LinkedinIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -8,7 +9,9 @@ import { Typography } from "@/components/ui/typography";
 
 const { links } = siteConfig;
 
-export function AboutHero() {
+export async function AboutHero() {
+  const gameHours = await kv.get<number>("gameHours");
+
   return (
     <div className='py-16 lg:py-24'>
       <div className='mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8'>
@@ -24,9 +27,9 @@ export function AboutHero() {
             <strong>ohTostt</strong> in the gaming world. I&apos;m a passionate{" "}
             <strong>software developer</strong> with a love for games, specially{" "}
             <strong>Rust</strong>, which I&apos;ve accumulated{" "}
-            <strong>5,300 hours</strong>. Whether I&apos;m working on a new
-            feature, fixing a bug, or just playing around with something new,
-            I&apos;m always looking for the next challenge.
+            <strong>{gameHours ?? "many"} hours</strong>. Whether I&apos;m
+            working on a new feature, fixing a bug, or just playing around with
+            something new, I&apos;m always looking for the next challenge.
           </Typography>
           <div className='mt-10 flex items-center gap-x-6'>
             <Button asChild variant='outline'>

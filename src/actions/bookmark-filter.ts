@@ -16,7 +16,10 @@ export const bookmarkFilter = authenticatedProcedure
   )
   .handler(async ({ ctx, input }) => {
     const existingBookmark = await db.query.bookmarks.findFirst({
-      where: eq(bookmarks.filterId, input.filterId),
+      where: and(
+        eq(bookmarks.filterId, input.filterId),
+        eq(bookmarks.authorId, ctx.userId),
+      ),
     });
     if (existingBookmark) {
       await db

@@ -4,14 +4,9 @@
   "description": "Generate Rust conveyor filters with ease. Create, edit, and share your filters with others.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fff",
-  "theme_color": "#fff",
+  "background_color": "#36454f",
+  "theme_color": "#36454f",
   "icons": [
-    {
-      "src": "/icons/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
     {
       "src": "/icons/android-chrome-192x192.png",
       "sizes": "192x192",

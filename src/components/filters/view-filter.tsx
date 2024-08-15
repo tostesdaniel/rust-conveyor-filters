@@ -27,6 +27,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
@@ -39,7 +40,7 @@ import { getCategoryIcon } from "@/components/category-icons";
 interface ViewFilterProps {
   filter: ConveyorFilter;
   log?: boolean;
-  variant?: "button" | "icon";
+  variant?: "button" | "dropdown" | "icon";
 }
 
 export default function ViewFilter({
@@ -69,6 +70,16 @@ export default function ViewFilter({
         className='w-full min-[475px]:w-auto'
         {...props}
       />
+    ) : variant === "dropdown" ? (
+      <DropdownMenuItem
+        onSelect={(e) => {
+          e.preventDefault();
+        }}
+        {...props}
+      >
+        <EyeIcon className='mr-2 h-4 w-4' />
+        Visualize
+      </DropdownMenuItem>
     ) : (
       <Button
         variant='ghost'

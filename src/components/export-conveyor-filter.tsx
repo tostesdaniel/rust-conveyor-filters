@@ -7,12 +7,13 @@ import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useLogEvent } from "@/hooks/use-log-event";
 import { exportConveyorFilter } from "@/lib/export-conveyor-filter";
+import { cn } from "@/lib/utils";
 
 import { Button } from "./ui/button";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 
 interface ExportConveyorFilterProps {
-  type: "button" | "dropdown";
+  type: "button" | "dropdown" | "icon";
   filter: ConveyorFilterItem[];
   filterId?: number;
   log?: boolean;
@@ -58,10 +59,23 @@ export function ExportConveyorFilter({
       <Copy className='mr-2 h-4 w-4' />
       Export
     </Button>
-  ) : (
+  ) : type === "dropdown" ? (
     <DropdownMenuItem onSelect={handleCopy(exportText)} className={className}>
       <Copy className='mr-2 h-4 w-4' />
       Export
     </DropdownMenuItem>
+  ) : (
+    <Button
+      type='button'
+      onClick={handleCopy(exportText)}
+      variant='ghost'
+      size='icon'
+      className={cn(
+        "h-4 w-4 hover:bg-transparent hover:text-muted-foreground",
+        className,
+      )}
+    >
+      <Copy className='h-4 w-4' />
+    </Button>
   );
 }

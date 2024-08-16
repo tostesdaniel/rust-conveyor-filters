@@ -9,7 +9,10 @@ import { Icons } from "./ui/icons";
 
 const navigation = [
   { name: "Privacy Policy", href: "/privacy-policy" },
-  { name: "Terms of Service", href: "/terms-of-service" },
+  {
+    name: "Steam Guide",
+    href: "https://steamcommunity.com/sharedfiles/filedetails/?id=3308184949",
+  },
   { name: "Contact", href: "/contact" },
   { name: "Donate", href: "/donate" },
 ];
@@ -25,7 +28,13 @@ export function Footer() {
           {navigation.map((item) => (
             <div key={item.name}>
               <Button asChild variant='link'>
-                <Link href={item.href}>{item.name}</Link>
+                {item.href.startsWith("https://") ? (
+                  <a href={item.href} target='_blank' rel='noopener noreferrer'>
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link href={item.href}>{item.name}</Link>
+                )}
               </Button>
             </div>
           ))}

@@ -12,6 +12,7 @@ import { Loader2 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { RepoStarsButton } from "@/components/repo-stars-button";
 
 import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
@@ -45,6 +46,7 @@ export function Header() {
         </div>
         <DesktopNav />
         <div className='flex flex-1 items-center justify-end'>
+          <RepoStarsButton className='hidden min-[800px]:inline-flex' />
           <nav className='flex items-center'>
             <Link href={siteConfig.links.repo} target='_blank' rel='noreferrer'>
               <div

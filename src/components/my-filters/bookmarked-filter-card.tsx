@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { ConveyorFilter } from "@/types/filter";
+import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
 import { BookmarkToggle } from "@/components/filters/filter-card/bookmark-toggle";
 import ViewFilter from "@/components/filters/view-filter";
 
@@ -24,8 +25,9 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
           <p className='font-medium'>{filter.name}</p>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
-        <div className='pr-2'>
+        <div className='space-x-2 pr-2'>
           <ViewFilter filter={filter} variant='icon' />
+          <ExportConveyorFilter type='icon' filter={filter.filterItems} />
           <BookmarkToggle filterId={filter.id} initialBookmarked={true} />
         </div>
       </div>

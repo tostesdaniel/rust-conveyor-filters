@@ -3,6 +3,10 @@
     {
       "path": "/api/game-hours",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/repo-stars",
+      "schedule": "0 6 * * *"
     }
   ]
 }

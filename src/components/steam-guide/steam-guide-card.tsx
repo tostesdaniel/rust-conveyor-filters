@@ -3,7 +3,7 @@ import { ArrowRightIcon, BookHeartIcon, EyeIcon, StarIcon } from "lucide-react";
 import millify from "millify";
 
 import type { SteamGuideResponse } from "@/types/steam";
-import { siteConfig } from "@/config/site";
+import { getApiUrl } from "@/lib/api";
 import { steamConfig } from "@/lib/constants";
 import { parseDescription } from "@/lib/parseSteamGuide";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import { Typography } from "@/components/ui/typography";
 
 export async function SteamGuideCard() {
   const { guide, user }: SteamGuideResponse = await fetch(
+    getApiUrl("steam-guide"),
     {
       next: { revalidate: 3600 },
     },

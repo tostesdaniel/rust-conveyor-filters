@@ -9,7 +9,7 @@ import { Icons } from "./ui/icons";
 
 const navigation = [
   { name: "Privacy Policy", href: "/privacy-policy" },
-  { name: "Terms of Service", href: "/terms-of-service" },
+  { name: "Steam Guide", href: "/steam-guide" },
   { name: "Contact", href: "/contact" },
   { name: "Donate", href: "/donate" },
 ];
@@ -23,10 +23,18 @@ export function Footer() {
           className='columns-2 sm:flex sm:justify-center sm:space-x-2 md:order-2 lg:space-x-12'
         >
           {navigation.map((item) => (
-            <div key={item.name}>
-              <Button asChild variant='link'>
-                <Link href={item.href}>{item.name}</Link>
-              </Button>
+            <div key={item.name} className='grid-cols-2'>
+              {item.href.startsWith("https://") ? (
+                <Button asChild variant='link'>
+                  <a href={item.href} target='_blank' rel='noopener noreferrer'>
+                    {item.name}
+                  </a>
+                </Button>
+              ) : (
+                <Button asChild variant='link'>
+                  <Link href={item.href}>{item.name}</Link>
+                </Button>
+              )}
             </div>
           ))}
         </nav>

@@ -9,6 +9,7 @@ const nextConfig = {
         protocol: "https",
         hostname: `${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com`,
       },
+      { protocol: "https", hostname: "steamuserimages-a.akamaihd.net" },
     ],
   },
 };

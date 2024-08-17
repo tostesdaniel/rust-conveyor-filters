@@ -20,9 +20,7 @@ import { Typography } from "@/components/ui/typography";
 export async function SteamGuideCard() {
   const { guide, user }: SteamGuideResponse = await fetch(
     `http://localhost:3000/api/steam-guide`,
-    {
-      cache: "no-store",
-    },
+    { cache: "force-cache", next: { revalidate: 3600 } },
   ).then((res) => res.json());
 
   return (

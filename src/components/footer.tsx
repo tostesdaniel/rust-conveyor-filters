@@ -39,6 +39,23 @@ export function Footer() {
           ))}
         </nav>
         <div className='mt-4 flex justify-center space-x-6 md:order-3 md:mt-0'>
+<a
+            href={siteConfig.links.discord}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label={`Discord Community of ${siteConfig.name}`}
+          >
+            <div
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "w-9 px-0",
+                "transition-colors hover:bg-transparent hover:text-foreground/85",
+              )}
+            >
+              <Icons.discord className='h-5 w-5' />
+              <span className='sr-only'>Discord Server</span>
+            </div>
+          </a>
           <a
             href={siteConfig.links.repo}
             target='_blank'

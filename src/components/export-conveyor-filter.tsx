@@ -37,7 +37,9 @@ export function ExportConveyorFilter({
   const handleCopy = (text: string) => () => {
     copy(text)
       .then(async () => {
-        toast.success("Exported to clipboard");
+        toast.success("Exported to clipboard", {
+          description: "Paste it while holding SHIFT key to import in game",
+        });
         if (log && filterId) {
           await logEvent("filter", "export", filterId.toString());
         }

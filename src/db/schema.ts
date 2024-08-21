@@ -149,6 +149,7 @@ export const bookmarkRelations = relations(bookmarks, ({ one }) => ({
     fields: [bookmarks.filterId],
     references: [filters.id],
   }),
+}));
 
 export const userCategories = pgTable("user_categories", {
   id: serial("id").primaryKey(),

@@ -63,3 +63,20 @@ export const renameCategory = authenticatedProcedure
       );
   });
 
+export const deleteCategory = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      categoryId: z.number(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    await db
+      .delete(userCategories)
+      .where(
+        and(
+          eq(userCategories.id, input.categoryId),
+          eq(userCategories.userId, ctx.userId),
+        ),
+      );
+  });

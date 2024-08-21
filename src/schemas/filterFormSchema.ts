@@ -12,6 +12,7 @@ export const createFilterSchema = z.object({
     .or(z.literal("")),
   authorId: z.string().optional(), // set by the server when creating a new filter
   imagePath: z.string().min(1, { message: "You must select an image" }),
+  categoryId: z.number().nullable().default(null),
   isPublic: z.boolean().default(false).optional(),
   items: z
     .array(

@@ -34,3 +34,12 @@ export const createCategory = authenticatedProcedure
     return newCategory;
   });
 
+export const getUserCategories = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const categoryNames = await db.query.userCategories.findMany({
+      where: eq(userCategories.userId, ctx.userId),
+    });
+    return categoryNames;
+  });
+

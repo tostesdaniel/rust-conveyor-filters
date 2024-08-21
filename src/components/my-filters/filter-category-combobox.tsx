@@ -93,17 +93,19 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
               ))}
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup>
-              <CreateCategoryDialog>
-                <Button
-                  size='sm'
-                  className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
-                >
-                  <PlusIcon className='mr-2 h-4 w-4' />
-                  Create Category
-                </Button>
-              </CreateCategoryDialog>
-            </CommandGroup>
+            {categories?.length !== 0 && (
+              <CommandGroup>
+                <CreateCategoryDialog>
+                  <Button
+                    size='sm'
+                    className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
+                  >
+                    <PlusIcon className='mr-2 h-4 w-4' />
+                    Create Category
+                  </Button>
+                </CreateCategoryDialog>
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>

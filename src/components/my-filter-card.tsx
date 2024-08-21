@@ -3,10 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit, EllipsisVertical, Trash2 } from "lucide-react";
+import { Edit, EllipsisVertical, ListPlusIcon, Trash2 } from "lucide-react";
 
 import { type ConveyorFilter } from "@/types/filter";
+import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import ViewFilter from "@/components/filters/view-filter";
+import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
+import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
 import { DeleteFilterForm } from "@/app/(app)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
@@ -23,7 +26,11 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
@@ -33,6 +40,7 @@ interface MyFilterCardProps {
 
 export function MyFilterCard({ filter }: MyFilterCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const { data: categories } = useGetUserCategories();
 
   return (
     <li className='col-span-1 flex min-w-[300px] rounded-md shadow-sm'>
@@ -88,6 +96,28 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                   </Link>
                 </DropdownMenuItem>
                 <ViewFilter filter={filter} variant='dropdown' />
+                <DropdownMenuSeparator />
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger
+                    disabled={categories?.length === 0}
+                    className='data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+                  >
+                    <ListPlusIcon className='mr-2 h-4 w-4' />
+                    Assign to category
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      {categories?.map((category) => (
+                        <CategoryDropdownCheckbox
+                          key={category.id}
+                          category={category}
+                          filter={filter}
+                        />
+                      ))}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+                <ClearFilterCategory filter={filter} />
                 <DropdownMenuSeparator />
                 <ExportConveyorFilter
                   type='dropdown'

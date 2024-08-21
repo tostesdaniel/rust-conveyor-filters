@@ -3,7 +3,7 @@
 import { db } from "@/db";
 import { withCursorPagination } from "@/db/pagination";
 import { clerkClient } from "@clerk/nextjs/server";
-import { and, eq, gt } from "drizzle-orm";
+import { and, eq, gt, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction } from "zsa";
 
@@ -94,3 +94,25 @@ export const getAllPublicFilters = createServerAction()
           : null,
     };
   });
+export const getUserFiltersByCategory = authenticatedProcedure
+  .createServerAction()
+  .input(z.object({ categoryId: z.number().nullable() }))
+  .handler(async ({ ctx, input }) => {
+    const whereClause =
+      input.categoryId !== null
+        ? and(
+            eq(filters.categoryId, input.categoryId),
+            eq(filters.authorId, ctx.userId),
+          )
+        : and(isNull(filters.categoryId), eq(filters.authorId, ctx.userId));
+    return await db.query.filters.findMany({
+      where: whereClause,
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
+    });
+  });
+

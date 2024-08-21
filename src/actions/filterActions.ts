@@ -28,6 +28,7 @@ export const createFilter = authenticatedProcedure
           description: newFilter.description,
           authorId: ctx.userId,
           imagePath: newFilter.imagePath,
+          categoryId: newFilter.categoryId,
           isPublic: newFilter.isPublic,
         })
         .returning();
@@ -120,6 +121,7 @@ export const updateFilter = ownsFilterProcedure
     if (data.description !== undefined)
       updateData.description = data.description;
     if (data.imagePath) updateData.imagePath = data.imagePath;
+    if (data.categoryId) updateData.categoryId = data.categoryId;
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
     updateData.updatedAt = new Date();
 

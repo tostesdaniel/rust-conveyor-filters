@@ -110,7 +110,7 @@ export function ImportButton({ onImport }: ImportButtonProps) {
         if (open) setError(null);
       }}
     >
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <ButtonWithIcon
           type='button'
           icon={Upload}

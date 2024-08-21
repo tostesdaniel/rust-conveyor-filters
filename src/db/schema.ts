@@ -35,6 +35,9 @@ export const filters = pgTable(
     authorId: varchar("author_id", { length: 255 }).notNull(),
     imagePath: varchar("image_path", { length: 255 }).notNull(),
     isPublic: boolean("is_public").notNull().default(false),
+    categoryId: integer("category_id").references(() => userCategories.id, {
+      onDelete: "set null",
+    }),
     createdAt: timestamp("created_at")
       .notNull()
       .default(sql`now()`),
@@ -50,8 +53,12 @@ export const filters = pgTable(
 export type Filter = typeof filters.$inferSelect;
 export type NewFilter = typeof filters.$inferInsert;
 
-export const filtersRelations = relations(filters, ({ many }) => ({
+export const filtersRelations = relations(filters, ({ many, one }) => ({
   filterItems: many(filterItems),
+  userCategory: one(userCategories, {
+    fields: [filters.categoryId],
+    references: [userCategories.id],
+  }),
 }));
 
 export const filterItems = pgTable(
@@ -143,3 +150,19 @@ export const bookmarkRelations = relations(bookmarks, ({ one }) => ({
     references: [filters.id],
   }),
 }));
+
+export const userCategories = pgTable("user_categories", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+});
+
+export type UserCategory = typeof userCategories.$inferSelect;
+export type NewUserCategory = typeof userCategories.$inferInsert;
+
+export const userCategoriesRelations = relations(
+  userCategories,
+  ({ many }) => ({
+    filters: many(filters),
+  }),
+);

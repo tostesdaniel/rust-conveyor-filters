@@ -121,6 +121,7 @@ export const updateFilter = ownsFilterProcedure
     if (data.description !== undefined)
       updateData.description = data.description;
     if (data.imagePath) updateData.imagePath = data.imagePath;
+    if (data.categoryId) updateData.categoryId = data.categoryId;
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
     updateData.updatedAt = new Date();
 

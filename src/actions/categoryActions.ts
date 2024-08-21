@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import * as z from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { userCategories } from "@/db/schema";
+import { filters, userCategories } from "@/db/schema";
 
 export const createCategory = authenticatedProcedure
   .createServerAction()
@@ -41,6 +41,25 @@ export const getUserCategories = authenticatedProcedure
       where: eq(userCategories.userId, ctx.userId),
     });
     return categoryNames;
+  });
+
+export const getCategoriesWithOwnFilters = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const categories = await db.query.userCategories.findMany({
+      where: eq(userCategories.userId, ctx.userId),
+      with: {
+        filters: {
+          with: {
+            filterItems: {
+              with: { category: true, item: true },
+            },
+          },
+          where: eq(filters.authorId, ctx.userId),
+        },
+      },
+    });
+    return categories;
   });
 
 export const renameCategory = authenticatedProcedure

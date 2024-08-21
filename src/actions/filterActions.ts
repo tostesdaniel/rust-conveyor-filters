@@ -28,6 +28,7 @@ export const createFilter = authenticatedProcedure
           description: newFilter.description,
           authorId: ctx.userId,
           imagePath: newFilter.imagePath,
+          categoryId: newFilter.categoryId,
           isPublic: newFilter.isPublic,
         })
         .returning();

@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/conveyor-card";
 import { FilterImageCombobox } from "@/components/filter-image-combobox";
+import { FilterCategoryCombobox } from "@/components/my-filters/filter-category-combobox";
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),
@@ -42,6 +43,7 @@ export default function NewFilterForm() {
     defaultValues: {
       name: "",
       imagePath: "",
+      categoryId: null,
       description: "",
       items: [],
       isPublic: false,
@@ -106,24 +108,41 @@ export default function NewFilterForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name='imagePath'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
-                Cover Image
-              </FormLabel>
-              {items?.success && items.data && (
-                <FilterImageCombobox field={field} items={items.data} />
-              )}
-              <FormDescription>
-                Select an in-game item to represent your filter.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className='sm:flex sm:space-x-6'>
+          <FormField
+            control={form.control}
+            name='imagePath'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                  Cover Image
+                </FormLabel>
+                {items?.success && items.data && (
+                  <FilterImageCombobox field={field} items={items.data} />
+                )}
+                <FormDescription>
+                  Select an in-game item to represent your filter.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='categoryId'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Category</FormLabel>
+                <FilterCategoryCombobox field={field} />
+                <FormDescription>
+                  Create or select a category for you to organize your filter
+                  into. This can be changed later.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name='items'

@@ -62,6 +62,39 @@ export const getCategoriesWithOwnFilters = authenticatedProcedure
     return categories;
   });
 
+export const manageFilterCategory = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      categoryId: z.number(),
+      filterId: z.number(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    const existingAssignedCategory = await db.query.filters.findFirst({
+      where: and(
+        eq(filters.id, input.filterId),
+        eq(filters.categoryId, input.categoryId),
+        eq(filters.authorId, ctx.userId),
+      ),
+    });
+    if (existingAssignedCategory) {
+      await db
+        .update(filters)
+        .set({ categoryId: null })
+        .where(
+          and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
+        );
+    } else {
+      await db
+        .update(filters)
+        .set({ categoryId: input.categoryId })
+        .where(
+          and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
+        );
+    }
+  });
+
 export const clearFilterCategory = authenticatedProcedure
   .createServerAction()
   .input(

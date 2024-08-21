@@ -7,7 +7,7 @@ import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
 import { type Category, type Item } from "@/db/schema";
-import { ButtonWithIcon } from "@/components/ui/button-with-icon";
+import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -111,13 +111,10 @@ export function ImportButton({ onImport }: ImportButtonProps) {
       }}
     >
       <PopoverTrigger asChild>
-        <ButtonWithIcon
-          type='button'
-          icon={Upload}
-          variant='secondary'
-          size='sm'
-          title='Import'
-        />
+        <Button type='button' variant='secondary' size='sm'>
+          <Upload className='mr-2 h-4 w-4' />
+          Import
+        </Button>
       </PopoverTrigger>
       <PopoverContent>
         <div className='grid gap-4'>

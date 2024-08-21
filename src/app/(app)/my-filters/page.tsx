@@ -6,7 +6,11 @@ import {
 } from "@tanstack/react-query";
 
 import { getBookmarkedFilters } from "@/actions/bookmark-filter";
-import { getFiltersWithItems } from "@/lib/queries";
+import {
+  getCategoriesWithOwnFilters,
+  getUserCategories,
+} from "@/actions/categoryActions";
+import { getUserFiltersByCategory } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/filters/saved-filters";
 import { MyFilters } from "@/components/my-filters";
@@ -20,20 +24,36 @@ export const metadata: Metadata = {
 export default async function MyFiltersPage() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["user-filters"],
-    queryFn: async () => {
-      const [data] = await getFiltersWithItems();
-      return data;
-    },
-  });
-  await queryClient.prefetchQuery({
-    queryKey: ["bookmarked-filters"],
-    queryFn: async () => {
-      const [data] = await getBookmarkedFilters();
-      return data;
-    },
-  });
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ["bookmarked-filters"],
+      queryFn: async () => {
+        const [data] = await getBookmarkedFilters();
+        return data;
+      },
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["user-filters-by-category", null],
+      queryFn: async () => {
+        const [data] = await getUserFiltersByCategory({ categoryId: null });
+        return data;
+      },
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["categories-with-own-filters"],
+      queryFn: async () => {
+        const [data] = await getCategoriesWithOwnFilters();
+        return data;
+      },
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["user-categories"],
+      queryFn: async () => {
+        const [data] = await getUserCategories();
+        return data;
+      },
+    }),
+  ]);
 
   return (
     <>

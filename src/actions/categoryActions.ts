@@ -43,3 +43,23 @@ export const getUserCategories = authenticatedProcedure
     return categoryNames;
   });
 
+export const renameCategory = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      categoryId: z.number(),
+      name: z.string().min(1).max(255),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    await db
+      .update(userCategories)
+      .set({ name: input.name })
+      .where(
+        and(
+          eq(userCategories.id, input.categoryId),
+          eq(userCategories.userId, ctx.userId),
+        ),
+      );
+  });
+

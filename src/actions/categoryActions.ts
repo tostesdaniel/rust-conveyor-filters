@@ -62,6 +62,22 @@ export const getCategoriesWithOwnFilters = authenticatedProcedure
     return categories;
   });
 
+export const clearFilterCategory = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      filterId: z.number(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    await db
+      .update(filters)
+      .set({ categoryId: null })
+      .where(
+        and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
+      );
+  });
+
 export const renameCategory = authenticatedProcedure
   .createServerAction()
   .input(

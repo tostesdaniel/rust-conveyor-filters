@@ -61,7 +61,10 @@ export default function NewFilterForm() {
       toast.error(err.message);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
+      queryClient.invalidateQueries({
+        queryKey: ["categories-with-own-filters"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
     },
   });
 

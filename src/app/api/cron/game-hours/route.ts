@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { kv } from "@vercel/kv";
 
 import { steamConfig } from "@/lib/constants";
@@ -7,7 +7,13 @@ const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = steamConfig.STEAM_ID;
 const RUST_APP_ID = 252490;
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const authHeader = req.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`;
 
   try {

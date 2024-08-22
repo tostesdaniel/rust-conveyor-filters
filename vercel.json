@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/game-hours",
+      "path": "/api/cron/game-hours",
       "schedule": "0 6 * * *"
     },
     {

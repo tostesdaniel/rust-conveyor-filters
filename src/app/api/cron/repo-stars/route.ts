@@ -14,12 +14,19 @@ export async function GET(req: NextRequest) {
       status: 401,
     });
   }
+  const noCacheFetch = (url: string, options: RequestInit) => {
+    return fetch(url, {
+      ...options,
+      cache: "no-store",
+    });
+  };
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
   const { data } = await octokit.rest.repos.get({
     owner: GITHUB_REPO_OWNER,
     repo: GITHUB_REPO_NAME,
+    request: { fetch: noCacheFetch },
   });
 
   await kv.set("repo-stars", data.stargazers_count);

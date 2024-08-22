@@ -38,8 +38,9 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
     onSuccess: () => {
       toast.success("Filter deleted successfully");
       queryClient.invalidateQueries({
-        queryKey: ["user-filters"],
+        queryKey: ["categories-with-own-filters"],
       });
+      queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
       setOpen(false);
     },
     onError: () => {

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     request: { fetch: noCacheFetch },
   });
 
-  await kv.set("repo-stars", 6);
+  await kv.set("repo-stars", data.stargazers_count);
 
   return Response.json({ success: true });
 }

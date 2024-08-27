@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { db } from "@/db";
+import { pooledDb as db } from "@/db/pooled-connection";
 import { migrateAuthorIdsFlag } from "@/flags";
 import { createClerkClient, type WebhookEvent } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";

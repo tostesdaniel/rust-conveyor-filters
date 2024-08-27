@@ -1,4 +1,3 @@
-import { match } from "assert";
 import { headers } from "next/headers";
 import { db } from "@/db";
 import { migrateAuthorIdsFlag } from "@/flags";
@@ -6,7 +5,7 @@ import { createClerkClient, type WebhookEvent } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { Webhook } from "svix";
 
-import { filters } from "@/db/schema";
+import { bookmarks, filters, userCategories } from "@/db/schema";
 
 const devClerkClient = createClerkClient({
   secretKey: process.env.CLERK_DEV_SECRET_KEY,
@@ -62,12 +61,26 @@ export async function POST(req: Request) {
         (user) => user.emailAddresses[0].emailAddress === newUserEmail,
       );
       if (userFound) {
-        await db
-          .update(filters)
-          .set({
-            authorId: id,
-          })
-          .where(eq(filters.authorId, userFound.id));
+        await db.transaction(async (tx) => {
+          await tx
+            .update(filters)
+            .set({
+              authorId: id,
+            })
+            .where(eq(filters.authorId, userFound.id));
+
+          await tx
+            .update(userCategories)
+            .set({ userId: id })
+            .where(eq(userCategories.userId, userFound.id));
+
+          await tx
+            .update(bookmarks)
+            .set({
+              authorId: id,
+            })
+            .where(eq(bookmarks.authorId, userFound.id));
+        });
       }
     } catch (err) {
       console.error("Error processing user:", err);

@@ -65,6 +65,7 @@ export default function NewFilterForm() {
         queryKey: ["categories-with-own-filters"],
       });
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
+      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
     },
   });
 

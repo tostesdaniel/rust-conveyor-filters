@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { MigrateAuthorIdsBanner } from "@/components/migrate-author-ids-banner";
+
 export const metadata: Metadata = {
   robots: {
     index: false,
@@ -13,8 +15,11 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className='grid w-full flex-1 items-center px-4 sm:justify-center'>
-      {children}
-    </div>
+    <>
+      <MigrateAuthorIdsBanner />
+      <div className='grid w-full flex-1 items-center px-4 sm:justify-center'>
+        {children}
+      </div>
+    </>
   );
 }

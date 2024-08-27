@@ -41,6 +41,7 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
         queryKey: ["categories-with-own-filters"],
       });
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
+      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
       setOpen(false);
     },
     onError: () => {

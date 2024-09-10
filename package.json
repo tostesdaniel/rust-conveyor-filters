@@ -56,7 +56,7 @@
     "eslint-config-prettier": "^9.1.0",
     "lucide-react": "^0.439.0",
     "millify": "^6.1.0",
-    "next": "14.2.7",
+    "next": "14.2.9",
     "next-themes": "^0.3.0",
     "octokit": "^4.0.2",
     "react": "^18",

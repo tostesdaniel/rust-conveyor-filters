@@ -29,6 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getCategoryIcon } from "@/components/category-icons";
+import { ClearInputButton } from "@/components/my-filters/new-filter/clear-input-button";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;
@@ -138,7 +139,6 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
       onInsertItem(newItem);
       trigger("items");
-      setSearch("");
     },
     [getValues, onInsertItem, trigger],
   );
@@ -158,12 +158,16 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
     return (
       <Command>
-        <CommandInput
-          ref={inputRef}
-          value={search}
-          onValueChange={setSearch}
-          placeholder='Filter items...'
-        />
+        <div className='relative'>
+          <CommandInput
+            ref={inputRef}
+            value={search}
+            onValueChange={setSearch}
+            placeholder='Filter items...'
+            className='pr-6'
+          />
+          {search && <ClearInputButton setSearch={setSearch} />}
+        </div>
         <CommandList>
           <CommandEmpty>No items found</CommandEmpty>
           {categories.map((category) => {

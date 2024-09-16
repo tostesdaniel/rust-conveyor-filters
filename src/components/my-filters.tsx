@@ -33,14 +33,20 @@ export function MyFilters() {
     <>
       <section className='py-6'>
         <CategoryHeading title='No category' withAction />
-        <ul
-          role='list'
-          className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
-        >
-          {uncategorizedFilters?.map((filter) => (
-            <FilterCard key={filter.id} filter={filter} />
-          ))}
-        </ul>
+        {uncategorizedFilters?.length ? (
+          <ul
+            role='list'
+            className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
+          >
+            {uncategorizedFilters.map((filter) => (
+              <FilterCard key={filter.id} filter={filter} />
+            ))}
+          </ul>
+        ) : (
+          <p className='mt-4 text-sm text-muted-foreground'>
+            No filters in this category.
+          </p>
+        )}
       </section>
       {categoriesWithOwnFilters?.map((category) => {
         const { filters } = category;
@@ -51,14 +57,20 @@ export function MyFilters() {
               withAction={false}
               categoryId={category.id}
             />
-            <ul
-              role='list'
-              className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
-            >
-              {filters.map((filter) => (
-                <FilterCard key={filter.id} filter={filter} />
-              ))}
-            </ul>
+            {filters.length ? (
+              <ul
+                role='list'
+                className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
+              >
+                {filters.map((filter) => (
+                  <FilterCard key={filter.id} filter={filter} />
+                ))}
+              </ul>
+            ) : (
+              <p className='mt-4 text-sm text-muted-foreground'>
+                No filters in this category.
+              </p>
+            )}
           </section>
         );
       })}

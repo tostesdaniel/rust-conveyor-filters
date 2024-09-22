@@ -74,8 +74,8 @@ export function Footer() {
             </div>
           </a>
         </div>
-        <div className='mt-8 min-[800px]:order-1 min-[800px]:mt-0'>
-          <p className='flex items-center justify-center gap-x-1 text-center text-xs leading-5'>
+        <div className='mt-8 flex flex-col items-center min-[800px]:order-1 min-[800px]:mt-0 min-[800px]:items-start'>
+          <p className='mt-2 flex items-center justify-center gap-x-1 text-center text-xs leading-5'>
             Made with{" "}
             <HeartIcon
               aria-label='love'
@@ -95,6 +95,12 @@ export function Footer() {
             </a>
           </p>
         </div>
+      </div>
+      <div className='border-t border-border/40'>
+        <p className='mx-auto max-w-screen-2xl px-6 py-4 text-center text-xs leading-5 text-muted-foreground lg:px-8'>
+          This app is not affiliated with, endorsed, sponsored, or specifically
+          approved by Facepunch Studios. It is an unofficial fan-made tool.
+        </p>
       </div>
     </footer>
   );

@@ -1,12 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/game-hours",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/repo-stars",
-      "schedule": "0 6 * * *"
+      "path": "/api/cron/update-stats",
+      "schedule": "0 0 * * *"
     }
   ]
 }

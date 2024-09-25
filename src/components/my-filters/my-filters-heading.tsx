@@ -2,14 +2,16 @@
 
 import { PlusIcon } from "lucide-react";
 
+import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserFilters } from "@/hooks/use-get-user-filters";
 import { HeadingWithAction } from "@/components/ui/heading-with-action";
 import { Typography } from "@/components/ui/typography";
 
 export function MyFiltersHeading() {
   const { data: filters } = useGetUserFilters();
+  const { data: categories } = useGetUserCategories();
 
-  if (!filters?.length) {
+  if (!filters?.length && !categories?.length) {
     return <Typography variant='h1'>My Filters</Typography>;
   }
 

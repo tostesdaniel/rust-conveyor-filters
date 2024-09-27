@@ -68,7 +68,7 @@
     "svix": "^1.30.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.1",
+    "vaul": "^1.0.0",
     "zod": "^3.23.8",
     "zsa": "^0.6.0",
     "zsa-react-query": "^0.2.1",

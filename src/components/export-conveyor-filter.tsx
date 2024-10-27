@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { useLogEvent } from "@/hooks/use-log-event";
+import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { exportConveyorFilter } from "@/lib/export-conveyor-filter";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +28,7 @@ export function ExportConveyorFilter({
   className,
 }: ExportConveyorFilterProps) {
   const [_copiedText, copy] = useCopyToClipboard();
-  const { logEvent } = useLogEvent();
+  const { logEvent } = useLogFilterEvent();
 
   if (log && !filterId) {
     throw new Error("Filter ID is required to log events");
@@ -41,7 +41,7 @@ export function ExportConveyorFilter({
           description: "Paste it while holding SHIFT key to import in game",
         });
         if (log && filterId) {
-          await logEvent("filter", "export", filterId.toString());
+          await logEvent("export", filterId);
         }
       })
       .catch((error) => {

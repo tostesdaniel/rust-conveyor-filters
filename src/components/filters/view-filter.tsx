@@ -3,7 +3,7 @@ import Image from "next/image";
 import { EyeIcon } from "lucide-react";
 
 import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
-import { useLogEvent } from "@/hooks/use-log-event";
+import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
 import { Button } from "@/components/ui/button";
@@ -50,11 +50,11 @@ export default function ViewFilter({
 }: ViewFilterProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const { logEvent } = useLogEvent();
+  const { logEvent } = useLogFilterEvent();
 
   const handleOpenChange = () => {
     if (log) {
-      logEvent("filter", "view", filter.id.toString());
+      logEvent("view", filter.id);
     }
     setOpen(!open);
   };

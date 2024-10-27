@@ -110,6 +110,26 @@ export const filterItemRelations = relations(filterItems, ({ one }) => ({
   }),
 }));
 
+export const filterEventEnum = pgEnum("filter_event_enum", ["view", "export"]);
+
+export const filterEvents = pgTable("filter_events", {
+  id: serial("id").primaryKey(),
+  filterId: integer("filter_id")
+    .notNull()
+    .references(() => filters.id, {
+      onDelete: "cascade",
+    }),
+  eventType: filterEventEnum("event_type").notNull(),
+  userId: varchar("user_id", { length: 255 }),
+  ip: varchar("ip", { length: 255 }),
+  timestamp: timestamp("created_at")
+    .notNull()
+    .default(sql`now()`),
+});
+
+export type FilterEvent = typeof filterEvents.$inferSelect;
+export type NewFilterEvent = typeof filterEvents.$inferInsert;
+
 export const categories = pgTable("categories", {
   id: integer("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),

@@ -38,9 +38,9 @@ export const filters = pgTable(
     categoryId: integer("category_id").references(() => userCategories.id, {
       onDelete: "set null",
     }),
-    viewCount: integer("viewCount").default(0),
-    exportCount: integer("exportCount").default(0),
-    popularityScore: integer("popularityScore").default(0),
+    viewCount: integer("view_count").default(0),
+    exportCount: integer("export_count").default(0),
+    popularityScore: integer("popularity_score").default(0),
     createdAt: timestamp("created_at")
       .notNull()
       .default(sql`now()`),

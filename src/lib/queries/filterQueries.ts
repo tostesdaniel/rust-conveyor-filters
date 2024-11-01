@@ -1,9 +1,8 @@
 "use server";
 
 import { db } from "@/db";
-import { withCursorPagination } from "@/db/pagination";
 import { clerkClient } from "@clerk/nextjs/server";
-import { and, eq, gt, isNull } from "drizzle-orm";
+import { and, desc, eq, gt, isNull, lt, or } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction } from "zsa";
 
@@ -41,66 +40,222 @@ export const getUserFilterById = ownsFilterProcedure
     return result;
   });
 
-export const getAllPublicFilters = createServerAction()
+export const getPopularFilters = createServerAction()
   .input(
     z.object({
-      cursor: z.number().nullable().default(null),
-      limit: z.number().optional().default(6),
+      cursor: z
+        .object({
+          id: z.number(),
+          popularityScore: z.number(),
+        })
+        .optional(),
+      pageSize: z.number().default(6),
     }),
   )
-  .handler(async ({ input: { cursor, limit } }) => {
-    const query = async (): Promise<ConveyorFilter[]> => {
-      const whereClause = cursor
-        ? and(eq(filters.isPublic, true), gt(filters.id, cursor))
-        : eq(filters.isPublic, true);
+  .handler(async ({ input }) => {
+    const { cursor, pageSize } = input;
 
-      return await db.query.filters.findMany({
-        where: whereClause,
-        limit,
-        with: {
-          filterItems: {
-            with: { item: true, category: true },
-            orderBy: ({ createdAt, id }) => [id, createdAt],
-          },
+    const result = await db.query.filters.findMany({
+      where: cursor
+        ? or(
+            lt(filters.popularityScore, cursor.popularityScore),
+            and(
+              eq(filters.popularityScore, cursor.popularityScore),
+              gt(filters.id, cursor.id),
+            ),
+          )
+        : undefined,
+      limit: pageSize,
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
         },
-        orderBy: filters.id,
-      });
-    };
+      },
+      orderBy: [desc(filters.popularityScore), filters.id],
+    });
 
-    const publicFilters: ConveyorFilter[] = await withCursorPagination(
-      query,
-      cursor,
-      limit,
-    );
+    const enrichedFilters = await enrichWithAuthor(result);
 
-    const filterWithAuthor: ConveyorFilterWithAuthor[] = await Promise.all(
-      publicFilters.map(async (filter) => {
-        try {
-          const user = await clerkClient().users.getUser(filter.authorId);
-          const discordAccount = user.externalAccounts.find(
-            (account) => account.provider === "oauth_discord",
-          );
-          return {
-            ...filter,
-            author: discordAccount ? discordAccount.username : user.username,
-          };
-        } catch (error) {
-          return {
-            ...filter,
-            author: null,
-          };
-        }
-      }),
-    );
+    const lastItem = result[result.length - 1];
+    const nextCursor = lastItem
+      ? { id: lastItem.id, popularityScore: lastItem.popularityScore }
+      : undefined;
 
     return {
-      data: filterWithAuthor,
-      nextCursor:
-        publicFilters.length === limit
-          ? publicFilters[publicFilters.length - 1].id
-          : null,
+      data: enrichedFilters,
+      nextCursor,
     };
   });
+
+export const getNewFilters = createServerAction()
+  .input(
+    z.object({
+      cursor: z
+        .object({
+          id: z.number(),
+          createdAt: z.date(),
+        })
+        .optional(),
+      pageSize: z.number().default(6),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const { cursor, pageSize } = input;
+
+    const result = await db.query.filters.findMany({
+      where: cursor
+        ? or(
+            lt(filters.createdAt, cursor.createdAt),
+            and(
+              eq(filters.createdAt, cursor.createdAt),
+              gt(filters.id, cursor.id),
+            ),
+          )
+        : undefined,
+      limit: pageSize,
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
+      orderBy: [desc(filters.createdAt), filters.id],
+    });
+
+    const enrichedFilters = await enrichWithAuthor(result);
+
+    const lastItem = result[result.length - 1];
+    const nextCursor = lastItem
+      ? { id: lastItem.id, createdAt: lastItem.createdAt }
+      : undefined;
+
+    return {
+      data: enrichedFilters,
+      nextCursor,
+    };
+  });
+
+export const getUpdatedFilters = createServerAction()
+  .input(
+    z.object({
+      cursor: z
+        .object({
+          id: z.number(),
+          updatedAt: z.date(),
+        })
+        .optional(),
+      pageSize: z.number().default(6),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const { cursor, pageSize } = input;
+
+    const result = await db.query.filters.findMany({
+      where: cursor
+        ? or(
+            lt(filters.updatedAt, cursor.updatedAt),
+            and(
+              eq(filters.updatedAt, cursor.updatedAt),
+              gt(filters.id, cursor.id),
+            ),
+          )
+        : undefined,
+      limit: pageSize,
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
+      orderBy: [desc(filters.updatedAt), filters.id],
+    });
+
+    const enrichedFilters = await enrichWithAuthor(result);
+
+    const lastItem = result[result.length - 1];
+    const nextCursor = lastItem
+      ? { id: lastItem.id, updatedAt: lastItem.updatedAt }
+      : undefined;
+
+    return {
+      data: enrichedFilters,
+      nextCursor,
+    };
+  });
+
+export const getMostUsedFilters = createServerAction()
+  .input(
+    z.object({
+      cursor: z
+        .object({
+          id: z.number(),
+          exportCount: z.number(),
+        })
+        .optional(),
+      pageSize: z.number().default(6),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const { cursor, pageSize } = input;
+
+    const result = await db.query.filters.findMany({
+      where: cursor
+        ? or(
+            lt(filters.exportCount, cursor.exportCount),
+            and(
+              eq(filters.exportCount, cursor.exportCount),
+              gt(filters.id, cursor.id),
+            ),
+          )
+        : undefined,
+      limit: pageSize,
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
+        },
+      },
+      orderBy: [desc(filters.exportCount), filters.id],
+    });
+
+    const enrichedFilters = await enrichWithAuthor(result);
+
+    const lastItem = result[result.length - 1];
+    const nextCursor = lastItem
+      ? { id: lastItem.id, exportCount: lastItem.exportCount }
+      : undefined;
+
+    return {
+      data: enrichedFilters,
+      nextCursor,
+    };
+  });
+
+async function enrichWithAuthor(
+  filters: ConveyorFilter[],
+): Promise<ConveyorFilterWithAuthor[]> {
+  return Promise.all(
+    filters.map(async (filter) => {
+      try {
+        const user = await clerkClient.users.getUser(filter.authorId);
+        const discordAccount = user.externalAccounts.find(
+          (account) => account.provider === "oauth_discord",
+        );
+        return {
+          ...filter,
+          author: discordAccount ? discordAccount.username : user.username,
+        };
+      } catch (error) {
+        return {
+          ...filter,
+          author: null,
+        };
+      }
+    }),
+  );
+}
+
 export const getUserFiltersByCategory = authenticatedProcedure
   .createServerAction()
   .input(z.object({ categoryId: z.number().nullable() }))

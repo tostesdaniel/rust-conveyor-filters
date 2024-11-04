@@ -16,7 +16,7 @@
     "@aws-sdk/client-s3": "^3.596.0",
     "@aws-sdk/credential-providers": "^3.596.0",
     "@aws-sdk/s3-request-presigner": "^3.596.0",
-    "@clerk/elements": "^0.14.3",
+    "@clerk/elements": "^0.18.3",
     "@clerk/nextjs": "^5.2.14",
     "@hookform/resolvers": "^3.4.2",
     "@mdx-js/loader": "^3.0.1",

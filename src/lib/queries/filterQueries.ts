@@ -238,7 +238,8 @@ async function enrichWithAuthor(
   return Promise.all(
     filters.map(async (filter) => {
       try {
-        const user = await clerkClient.users.getUser(filter.authorId);
+        const client = await clerkClient();
+        const user = await client.users.getUser(filter.authorId);
         const discordAccount = user.externalAccounts.find(
           (account) => account.provider === "oauth_discord",
         );

@@ -7,7 +7,7 @@ import { asc } from "drizzle-orm";
 import { items } from "@/db/schema";
 
 export async function getItems() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return {

@@ -57,14 +57,17 @@ export const getPopularFilters = createServerAction()
 
     const result = await db.query.filters.findMany({
       where: cursor
-        ? or(
-            lt(filters.popularityScore, cursor.popularityScore),
-            and(
-              eq(filters.popularityScore, cursor.popularityScore),
-              gt(filters.id, cursor.id),
+        ? and(
+            eq(filters.isPublic, true),
+            or(
+              lt(filters.popularityScore, cursor.popularityScore),
+              and(
+                eq(filters.popularityScore, cursor.popularityScore),
+                gt(filters.id, cursor.id),
+              ),
             ),
           )
-        : undefined,
+        : eq(filters.isPublic, true),
       limit: pageSize,
       with: {
         filterItems: {
@@ -105,14 +108,17 @@ export const getNewFilters = createServerAction()
 
     const result = await db.query.filters.findMany({
       where: cursor
-        ? or(
-            lt(filters.createdAt, cursor.createdAt),
-            and(
-              eq(filters.createdAt, cursor.createdAt),
-              gt(filters.id, cursor.id),
+        ? and(
+            eq(filters.isPublic, true),
+            or(
+              lt(filters.createdAt, cursor.createdAt),
+              and(
+                eq(filters.createdAt, cursor.createdAt),
+                gt(filters.id, cursor.id),
+              ),
             ),
           )
-        : undefined,
+        : eq(filters.isPublic, true),
       limit: pageSize,
       with: {
         filterItems: {
@@ -153,14 +159,17 @@ export const getUpdatedFilters = createServerAction()
 
     const result = await db.query.filters.findMany({
       where: cursor
-        ? or(
-            lt(filters.updatedAt, cursor.updatedAt),
-            and(
-              eq(filters.updatedAt, cursor.updatedAt),
-              gt(filters.id, cursor.id),
+        ? and(
+            eq(filters.isPublic, true),
+            or(
+              lt(filters.updatedAt, cursor.updatedAt),
+              and(
+                eq(filters.updatedAt, cursor.updatedAt),
+                gt(filters.id, cursor.id),
+              ),
             ),
           )
-        : undefined,
+        : eq(filters.isPublic, true),
       limit: pageSize,
       with: {
         filterItems: {
@@ -201,14 +210,17 @@ export const getMostUsedFilters = createServerAction()
 
     const result = await db.query.filters.findMany({
       where: cursor
-        ? or(
-            lt(filters.exportCount, cursor.exportCount),
-            and(
-              eq(filters.exportCount, cursor.exportCount),
-              gt(filters.id, cursor.id),
+        ? and(
+            eq(filters.isPublic, true),
+            or(
+              lt(filters.exportCount, cursor.exportCount),
+              and(
+                eq(filters.exportCount, cursor.exportCount),
+                gt(filters.id, cursor.id),
+              ),
             ),
           )
-        : undefined,
+        : eq(filters.isPublic, true),
       limit: pageSize,
       with: {
         filterItems: {

@@ -6,6 +6,7 @@ import { and, desc, eq, gt, isNull, lt, or } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction } from "zsa";
 
+import { BadgeType, UserBadge } from "@/types/badges";
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
 import { filters } from "@/db/schema";
@@ -255,14 +256,26 @@ async function enrichWithAuthor(
         const discordAccount = user.externalAccounts.find(
           (account) => account.provider === "oauth_discord",
         );
+
+        const badges: BadgeType[] = [];
+        const verifiedType = user.publicMetadata.verifiedType as BadgeType;
+        if (verifiedType) {
+          badges.push(verifiedType);
+        }
+        if (user.publicMetadata.isDonator) {
+          badges.push(BadgeType.DONATOR);
+        }
+
         return {
           ...filter,
           author: discordAccount ? discordAccount.username : user.username,
+          badges,
         };
       } catch (error) {
         return {
           ...filter,
           author: null,
+          badges: [],
         };
       }
     }),

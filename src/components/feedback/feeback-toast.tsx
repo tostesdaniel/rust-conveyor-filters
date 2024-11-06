@@ -26,7 +26,6 @@ export function SignInToast() {
             onClick: () => router.push("/sign-in"),
           },
           position: "top-center",
-          important: true,
         });
       });
     }

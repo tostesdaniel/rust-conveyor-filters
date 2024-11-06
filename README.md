@@ -1,6 +1,6 @@
 # Rust Conveyor Filters
 
-![Discord](https://img.shields.io/discord/1272807564693995520?style=flat&logo=discord&logoColor=5865F2&label=Discord&labelColor=FFFFFF&color=000000&link=https%3A%2F%2Fdiscord.gg%2FDGzAHXvU93)
+[![Discord](https://img.shields.io/discord/1272807564693995520?style=flat&logo=discord&logoColor=5865F2&label=Discord&labelColor=FFFFFF&color=000000)](https://discord.gg/DGzAHXvU93)
 
 This project is a web application for generating, editing, and sharing Rust conveyor filters. It is built with Next.js and TypeScript, and leverages various libraries and tools to provide a seamless user experience.
 

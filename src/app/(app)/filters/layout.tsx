@@ -1,11 +1,16 @@
-type MyFiltersLayoutProps = {
-  children: React.ReactNode;
-};
+import { BannerWrapper } from "@/app/(app)/filters/banner-wrapper";
 
-export default function MyFiltersLayout({ children }: MyFiltersLayoutProps) {
+export default function FiltersLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className='container px-4 py-6 sm:px-6 lg:px-8 lg:py-8'>
-      {children}
-    </div>
+    <>
+      <BannerWrapper />
+      <div className='container px-4 py-6 sm:px-6 lg:px-8 lg:py-8'>
+        {children}
+      </div>
+    </>
   );
 }

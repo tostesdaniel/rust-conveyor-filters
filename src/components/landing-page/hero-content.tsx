@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography";
+import { DonateCTA } from "@/components/donate/donate-cta";
 
 export function HeroContent() {
   return (
@@ -35,6 +36,9 @@ export function HeroContent() {
             <Link href='/filters'>Browse Filters</Link>
             <ArrowRight className='ml-2 h-4 w-4' />
           </Button>
+        </div>
+        <div className='mt-8'>
+          <DonateCTA />
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  numeric,
   pgEnum,
   pgTable,
   serial,
@@ -206,3 +207,38 @@ export const userCategoriesRelations = relations(
     filters: many(filters),
   }),
 );
+
+export const donationPlatformEnum = pgEnum("donation_platform_enum", [
+  "paypal",
+  "kofi",
+  "buyMeACoffee",
+]);
+
+export const donationTypeEnum = pgEnum("donation_type_enum", [
+  "Donation",
+  "Subscription",
+]);
+
+export const donations = pgTable(
+  "donations",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 255 }),
+    email: varchar("email", { length: 255 }),
+    platform: donationPlatformEnum("platform").notNull(),
+    amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+    currency: varchar("currency", { length: 3 }).notNull(),
+    type: donationTypeEnum("type").notNull(),
+    transactionId: varchar("transaction_id", { length: 255 })
+      .unique()
+      .notNull(),
+    createdAt: timestamp("timestamp").defaultNow().notNull(),
+  },
+  (t) => [
+    index("donations_user_idx").on(t.userId),
+    index("donations_email_idx").on(t.email),
+  ],
+);
+
+export type Donation = typeof donations.$inferSelect;
+export type NewDonation = typeof donations.$inferInsert;

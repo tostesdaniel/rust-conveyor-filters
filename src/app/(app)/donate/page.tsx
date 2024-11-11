@@ -28,6 +28,7 @@ export default function DonatePage() {
         >
           <DonateButton
             href={buyMeACoffee}
+            platform='buyMeACoffee'
             className='bg-[#FFDD00] transition-colors hover:bg-[#FFDD00]/90'
             icon={<Icons.buymeacoffee className='h-5 w-5' />}
           >
@@ -35,6 +36,7 @@ export default function DonatePage() {
           </DonateButton>
           <DonateButton
             href={paypal}
+            platform='paypal'
             className='bg-[#003087] text-white transition-colors hover:bg-[#003087]/90'
             icon={<Icons.paypal />}
           >
@@ -42,6 +44,7 @@ export default function DonatePage() {
           </DonateButton>
           <DonateButton
             href={kofi}
+            platform='kofi'
             className='bg-[#FF5E5B] text-white transition-colors hover:bg-[#FF5E5B]/90'
             icon={<Icons.kofi className='fill-white stroke-black stroke-1' />}
           >

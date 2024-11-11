@@ -31,7 +31,13 @@ export function Footer() {
                   </a>
                 </Button>
               ) : (
-                <Button asChild variant='link'>
+                <Button
+                  asChild
+                  variant='link'
+                  className={cn(
+                    item.href === "/contact" && "pointer-events-none",
+                  )}
+                >
                   <Link href={item.href}>{item.name}</Link>
                 </Button>
               )}

@@ -209,7 +209,6 @@ export const userCategoriesRelations = relations(
 );
 
 export const donationPlatformEnum = pgEnum("donation_platform_enum", [
-  "paypal",
   "kofi",
   "buyMeACoffee",
 ]);

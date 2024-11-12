@@ -11,11 +11,10 @@ interface DonateButtonProps extends ButtonProps {
   icon?: React.ReactNode;
   children: React.ReactNode;
   href: string;
-  platform: "paypal" | "kofi" | "buyMeACoffee";
+  platform: "kofi" | "buyMeACoffee";
 }
 
 const platformNames = {
-  paypal: "PayPal",
   kofi: "Ko-fi",
   buyMeACoffee: "Buy Me A Coffee",
 } as const;

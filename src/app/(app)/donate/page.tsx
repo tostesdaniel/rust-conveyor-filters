@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "Support the development of the app",
 };
 
-const { buyMeACoffee, paypal, kofi } = siteConfig.donate;
+const { buyMeACoffee, kofi } = siteConfig.donate;
 
 export default function DonatePage() {
   return (
@@ -49,14 +49,6 @@ export default function DonatePage() {
               icon={<Icons.buymeacoffee className='h-5 w-5' />}
             >
               Buy me a coffee
-            </DonateButton>
-            <DonateButton
-              href={paypal}
-              platform='paypal'
-              className='bg-[#003087] text-white transition-colors hover:bg-[#003087]/90'
-              icon={<Icons.paypal />}
-            >
-              Support me on PayPal
             </DonateButton>
             <DonateButton
               href={kofi}

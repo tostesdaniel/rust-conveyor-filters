@@ -10,7 +10,7 @@ export function FilterCardHeader({
   filter: ConveyorFilterWithAuthor;
 }) {
   return (
-    <CardHeader>
+    <CardHeader className='flex-1'>
       <div className='flex items-center justify-between'>
         <CardTitle>{filter.name}</CardTitle>
         <BookmarkToggle filterId={filter.id} />

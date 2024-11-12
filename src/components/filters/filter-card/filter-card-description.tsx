@@ -1,3 +1,5 @@
+import { InfoIcon } from "lucide-react";
+
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { CardDescription } from "@/components/ui/card";
 
@@ -13,6 +15,15 @@ export function FilterCardDescription({
 }: {
   filter: ConveyorFilterWithAuthor;
 }) {
+  if (!filter.description) {
+    return (
+      <CardDescription className='flex items-center gap-2 italic text-muted-foreground/75'>
+        <InfoIcon aria-hidden='true' className='h-4 w-4' />
+        No description provided
+      </CardDescription>
+    );
+  }
+
   const isDescriptionLong = filter.description
     ? filter.description.length > 60
     : false;

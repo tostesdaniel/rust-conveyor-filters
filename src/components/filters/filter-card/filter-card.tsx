@@ -6,7 +6,7 @@ import { FilterCardHeader } from "@/components/filters/filter-card/filter-card-h
 
 export function FilterCard({ filter }: { filter: ConveyorFilterWithAuthor }) {
   return (
-    <Card className='max-w-screen-sm'>
+    <Card className='flex h-full max-w-screen-sm flex-col'>
       <FilterCardHeader filter={filter} />
       <FilterCardContent filter={filter} />
       <FilterCardFooter filter={filter} />

@@ -7,8 +7,8 @@ import {
 
 import { getBookmarkedFilters } from "@/actions/bookmark-filter";
 import {
-  getCategoriesWithOwnFilters,
   getUserCategories,
+  getUserCategoryHierarchy,
 } from "@/actions/categoryActions";
 import { getUserFiltersByCategory } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,16 +40,16 @@ export default async function MyFiltersPage() {
       },
     }),
     queryClient.prefetchQuery({
-      queryKey: ["categories-with-own-filters"],
+      queryKey: ["user-categories"],
       queryFn: async () => {
-        const [data] = await getCategoriesWithOwnFilters();
+        const [data] = await getUserCategories();
         return data;
       },
     }),
     queryClient.prefetchQuery({
-      queryKey: ["user-categories"],
+      queryKey: ["user-category-hierarchy"],
       queryFn: async () => {
-        const [data] = await getUserCategories();
+        const [data] = await getUserCategoryHierarchy();
         return data;
       },
     }),

@@ -17,11 +17,15 @@ import {
 import { DeleteCategoryDialog } from "@/components/my-filters/categories/dialogs/delete-category-dialog";
 import { RenameCategoryDialog } from "@/components/my-filters/categories/dialogs/rename-category-dialog";
 
+interface CategoryHeadingDropdownProps {
+  categoryId: number;
+  isSubCategory?: boolean;
+}
+
 export function CategoryHeadingDropdown({
   categoryId,
-}: {
-  categoryId: number;
-}) {
+  isSubCategory = false,
+}: CategoryHeadingDropdownProps) {
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -40,7 +44,9 @@ export function CategoryHeadingDropdown({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>Manage Category</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              Manage {isSubCategory ? "Subcategory" : "Category"}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DialogTrigger asChild>
               <DropdownMenuItem
@@ -50,11 +56,12 @@ export function CategoryHeadingDropdown({
                 }}
               >
                 <PencilIcon className='mr-2 h-4 w-4' />
-                <span>Rename Category</span>
+                <span>Rename {isSubCategory ? "Subcategory" : "Category"}</span>
               </DropdownMenuItem>
             </DialogTrigger>
             <RenameCategoryDialog
               categoryId={categoryId}
+              isSubCategory={isSubCategory}
               setOpen={setIsRenameDialogOpen}
             />
             <AlertDialogTrigger asChild>
@@ -65,10 +72,13 @@ export function CategoryHeadingDropdown({
                 }}
               >
                 <TrashIcon className='mr-2 h-4 w-4' />
-                <span>Delete Category</span>
+                <span>Delete {isSubCategory ? "Subcategory" : "Category"}</span>
               </DropdownMenuItem>
             </AlertDialogTrigger>
-            <DeleteCategoryDialog categoryId={categoryId} />
+            <DeleteCategoryDialog
+              categoryId={categoryId}
+              isSubCategory={isSubCategory}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </Dialog>

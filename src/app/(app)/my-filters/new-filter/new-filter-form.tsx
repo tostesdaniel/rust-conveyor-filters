@@ -43,7 +43,10 @@ export default function NewFilterForm() {
     defaultValues: {
       name: "",
       imagePath: "",
-      categoryId: null,
+      category: {
+        categoryId: null,
+        subCategoryId: null,
+      },
       description: "",
       items: [],
       isPublic: false,
@@ -62,10 +65,9 @@ export default function NewFilterForm() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["categories-with-own-filters"],
+        queryKey: ["user-filters-by-category", null],
       });
-      queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
-      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
+      queryClient.invalidateQueries({ queryKey: ["user-category-hierarchy"] });
     },
   });
 
@@ -133,7 +135,7 @@ export default function NewFilterForm() {
           />
           <FormField
             control={form.control}
-            name='categoryId'
+            name='category'
             render={({ field }) => (
               <FormItem className='flex flex-col'>
                 <FormLabel>Category</FormLabel>

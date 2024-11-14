@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import z from "zod";
+import { z } from "zod";
 
 import { deleteFilter } from "@/actions/filterActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
@@ -37,9 +37,6 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
   const mutation = useServerActionMutation(deleteFilter, {
     onSuccess: () => {
       toast.success("Filter deleted successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["categories-with-own-filters"],
-      });
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
       queryClient.invalidateQueries({ queryKey: ["user-filters"] });
       setOpen(false);

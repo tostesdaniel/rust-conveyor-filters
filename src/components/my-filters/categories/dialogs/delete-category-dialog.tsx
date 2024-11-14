@@ -15,23 +15,38 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export function DeleteCategoryDialog({ categoryId }: { categoryId: number }) {
+interface DeleteCategoryDialogProps {
+  categoryId: number;
+  isSubCategory?: boolean;
+}
+
+export function DeleteCategoryDialog({
+  categoryId,
+  isSubCategory = false,
+}: DeleteCategoryDialogProps) {
   const queryClient = useQueryClient();
   const { mutate: deleteCategoryMutate } = useServerActionMutation(
     deleteCategory,
     {
       onSuccess: () => {
-        toast.success("Category deleted successfully");
-        queryClient.invalidateQueries({ queryKey: ["user-categories"] });
+        toast.success(
+          isSubCategory
+            ? "Subcategory deleted successfully"
+            : "Category deleted successfully",
+        );
         queryClient.invalidateQueries({
-          queryKey: ["categories-with-own-filters"],
+          queryKey: ["user-filters-by-category", null],
         });
         queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category"],
+          queryKey: ["user-category-hierarchy"],
         });
       },
       onError: () => {
-        toast.error("Failed to delete category");
+        toast.error(
+          isSubCategory
+            ? "Failed to delete subcategory"
+            : "Failed to delete category",
+        );
       },
     },
   );
@@ -39,17 +54,20 @@ export function DeleteCategoryDialog({ categoryId }: { categoryId: number }) {
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Delete Category</AlertDialogTitle>
+        <AlertDialogTitle>
+          Delete {isSubCategory ? "Subcategory" : "Category"}
+        </AlertDialogTitle>
         <AlertDialogDescription>
-          Are you sure you want to delete this category? This action can&apos;t
-          be undone.
+          Are you sure you want to delete this{" "}
+          {isSubCategory ? "subcategory" : "category"}? All filters in this{" "}
+          {isSubCategory ? "subcategory" : "category"} will be uncategorized.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
         <AlertDialogAction
           onClick={() => {
-            deleteCategoryMutate({ categoryId });
+            deleteCategoryMutate({ categoryId, isSubCategory });
           }}
         >
           Delete

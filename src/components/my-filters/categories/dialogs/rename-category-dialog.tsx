@@ -7,19 +7,27 @@ import { RenameCategoryForm } from "@/components/my-filters/categories/forms/ren
 
 export interface RenameCategoryDialogProps {
   categoryId: number;
+  isSubCategory?: boolean;
   setOpen: (open: boolean) => void;
 }
 
 export function RenameCategoryDialog({
   categoryId,
+  isSubCategory = false,
   setOpen,
 }: RenameCategoryDialogProps) {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Rename Category</DialogTitle>
+        <DialogTitle>
+          Rename {isSubCategory ? "Subcategory" : "Category"}
+        </DialogTitle>
       </DialogHeader>
-      <RenameCategoryForm categoryId={categoryId} setOpen={setOpen} />
+      <RenameCategoryForm
+        categoryId={categoryId}
+        isSubCategory={isSubCategory}
+        setOpen={setOpen}
+      />
     </DialogContent>
   );
 }

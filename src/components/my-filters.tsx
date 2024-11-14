@@ -2,7 +2,8 @@
 
 import { FolderPlusIcon, PlusIcon } from "lucide-react";
 
-import { useGetCategoriesWithOwnFilters } from "@/hooks/use-get-categories-with-items";
+import type { ConveyorFilter } from "@/types/filter";
+import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
 import { EmptyState } from "@/components/empty-state";
 import { CategoryHeading } from "@/components/my-filters/categories/category-heading";
@@ -11,10 +12,8 @@ import { MyFilterCard as FilterCard } from "./my-filter-card";
 
 export function MyFilters() {
   const { data: uncategorizedFilters } = useGetUserFiltersByCategory(null);
-  const { data: categoriesWithOwnFilters } = useGetCategoriesWithOwnFilters();
-
-  const hasFilters =
-    uncategorizedFilters?.length || categoriesWithOwnFilters?.length;
+  const { data: categories } = useGetUserCategoryHierarchy();
+  const hasFilters = uncategorizedFilters?.length || categories?.length;
 
   if (!hasFilters) {
     return (
@@ -31,49 +30,75 @@ export function MyFilters() {
 
   return (
     <>
+      {/* Uncategorized Filters */}
       <section className='py-6'>
         <CategoryHeading title='No category' withAction />
         {uncategorizedFilters?.length ? (
-          <ul
-            role='list'
-            className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
-          >
-            {uncategorizedFilters.map((filter) => (
-              <FilterCard key={filter.id} filter={filter} />
-            ))}
-          </ul>
+          <FilterGrid filters={uncategorizedFilters} />
         ) : (
-          <p className='mt-4 text-sm text-muted-foreground'>
-            No filters in this category.
-          </p>
+          <EmptyCategory />
         )}
       </section>
-      {categoriesWithOwnFilters?.map((category) => {
-        const { filters } = category;
+
+      {/* Category tree */}
+      {categories?.map((category) => {
         return (
           <section key={category.id} className='py-6'>
+            {/* Root Category | No category */}
             <CategoryHeading
               title={category.name}
-              withAction={false}
               categoryId={category.id}
+              canCreateSubcategory
             />
-            {filters.length ? (
-              <ul
-                role='list'
-                className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
-              >
-                {filters.map((filter) => (
-                  <FilterCard key={filter.id} filter={filter} />
-                ))}
-              </ul>
+            {category.filters.length ? (
+              <FilterGrid filters={category.filters} />
             ) : (
-              <p className='mt-4 text-sm text-muted-foreground'>
-                No filters in this category.
-              </p>
+              <EmptyCategory />
             )}
+
+            {/* Subcategories */}
+            {category.subCategories.map((subCategory) => (
+              <div
+                key={subCategory.id}
+                className='ml-6 border-l border-border py-6 pl-6'
+              >
+                <CategoryHeading
+                  title={subCategory.name}
+                  withAction={false}
+                  categoryId={subCategory.id}
+                  isSubCategory
+                />
+                {subCategory.filters.length ? (
+                  <FilterGrid filters={subCategory.filters} />
+                ) : (
+                  <EmptyCategory />
+                )}
+              </div>
+            ))}
           </section>
         );
       })}
     </>
+  );
+}
+
+function FilterGrid({ filters }: { filters: ConveyorFilter[] }) {
+  return (
+    <ul
+      role='list'
+      className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'
+    >
+      {filters.map((filter) => (
+        <FilterCard key={filter.id} filter={filter} />
+      ))}
+    </ul>
+  );
+}
+
+function EmptyCategory() {
+  return (
+    <p className='mt-4 text-sm text-muted-foreground'>
+      No filters in this category.
+    </p>
   );
 }

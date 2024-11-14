@@ -47,7 +47,10 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       name: "",
       description: "",
       imagePath: "",
-      categoryId: null,
+      category: {
+        categoryId: null,
+        subCategoryId: null,
+      },
       isPublic: false,
       items: [],
     },
@@ -61,9 +64,6 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     onSuccess: () => {
       toast.success("Filter updated successfully");
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
-      queryClient.invalidateQueries({
-        queryKey: ["categories-with-own-filters"],
-      });
       refetch();
       router.push("/my-filters");
     },
@@ -104,7 +104,10 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         name: data.name,
         description: data.description ?? "",
         imagePath: data.imagePath,
-        categoryId: data.categoryId,
+        category: {
+          categoryId: data.categoryId,
+          subCategoryId: data.subCategoryId,
+        },
         isPublic: data.isPublic,
         items: initialItemsData,
       });
@@ -240,7 +243,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
           />
           <FormField
             control={form.control}
-            name='categoryId'
+            name='category'
             render={({ field }) => (
               <FormItem className='flex flex-col'>
                 <FormLabel>Category</FormLabel>

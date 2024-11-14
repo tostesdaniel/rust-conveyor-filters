@@ -40,6 +40,10 @@ export const filters = pgTable(
     categoryId: integer("category_id").references(() => userCategories.id, {
       onDelete: "set null",
     }),
+    subCategoryId: integer("sub_category_id").references(
+      () => subCategories.id,
+      { onDelete: "set null" },
+    ),
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
@@ -79,6 +83,10 @@ export const filtersRelations = relations(filters, ({ many, one }) => ({
   userCategory: one(userCategories, {
     fields: [filters.categoryId],
     references: [userCategories.id],
+  }),
+  subCategory: one(subCategories, {
+    fields: [filters.subCategoryId],
+    references: [subCategories.id],
   }),
 }));
 
@@ -198,12 +206,35 @@ export const userCategories = pgTable("user_categories", {
   userId: varchar("user_id", { length: 255 }).notNull(),
 });
 
+export const subCategories = pgTable("user_sub_categories", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  parentId: integer("parent_id")
+    .notNull()
+    .references(() => userCategories.id, { onDelete: "cascade" }),
+});
+
 export type UserCategory = typeof userCategories.$inferSelect;
 export type NewUserCategory = typeof userCategories.$inferInsert;
+export type SubCategory = typeof subCategories.$inferSelect;
+export type NewSubCategory = typeof subCategories.$inferInsert;
 
 export const userCategoriesRelations = relations(
   userCategories,
   ({ many }) => ({
+    filters: many(filters),
+    subCategories: many(subCategories),
+  }),
+);
+
+export const subCategoriesRelations = relations(
+  subCategories,
+  ({ one, many }) => ({
+    parent: one(userCategories, {
+      fields: [subCategories.parentId],
+      references: [userCategories.id],
+    }),
     filters: many(filters),
   }),
 );

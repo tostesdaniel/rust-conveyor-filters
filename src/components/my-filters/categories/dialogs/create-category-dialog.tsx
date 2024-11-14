@@ -11,11 +11,15 @@ import {
 } from "@/components/ui/dialog";
 import { CreateCategoryForm } from "@/components/my-filters/categories/forms/create-category-form";
 
+interface CreateCategoryDialogProps {
+  children: React.ReactNode;
+  parentId: number | null;
+}
+
 export function CreateCategoryDialog({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  parentId,
+}: CreateCategoryDialogProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,9 +27,11 @@ export function CreateCategoryDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Category</DialogTitle>
+          <DialogTitle>
+            {parentId ? "Add Subcategory" : "Create Category"}
+          </DialogTitle>
         </DialogHeader>
-        <CreateCategoryForm setOpen={setOpen} />
+        <CreateCategoryForm setOpen={setOpen} parentId={parentId} />
       </DialogContent>
     </Dialog>
   );

@@ -3,7 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit, EllipsisVertical, ListPlusIcon, Trash2 } from "lucide-react";
+import {
+  CornerDownRight,
+  Edit,
+  EllipsisVertical,
+  ListPlusIcon,
+  Trash2,
+} from "lucide-react";
 
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
@@ -108,16 +114,48 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
                       {categories?.map((category) => (
-                        <CategoryDropdownCheckbox
-                          key={category.id}
-                          category={category}
-                          filter={filter}
-                        />
+                        <DropdownMenuGroup key={category.id}>
+                          {/*  Main Categories */}
+                          <CategoryDropdownCheckbox
+                            key={category.id}
+                            category={category}
+                            filter={filter}
+                          />
+
+                          {/* Subcategories Submenu */}
+                          {category.subCategories.length > 0 && (
+                            <DropdownMenuSub defaultOpen>
+                              <DropdownMenuSubTrigger className='pl-8'>
+                                <CornerDownRight className='mr-2 h-4 w-4' />
+                                <span>Subcategories</span>
+                              </DropdownMenuSubTrigger>
+                              <DropdownMenuSubContent>
+                                {category.subCategories.map((subCategory) => (
+                                  <CategoryDropdownCheckbox
+                                    key={subCategory.id}
+                                    category={subCategory}
+                                    filter={filter}
+                                    isSubCategory
+                                  />
+                                ))}
+                              </DropdownMenuSubContent>
+                            </DropdownMenuSub>
+                          )}
+                          {category !== categories[categories.length - 1] && (
+                            <DropdownMenuSeparator />
+                          )}
+                        </DropdownMenuGroup>
                       ))}
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
-                <ClearFilterCategory filter={filter} />
+
+                {/* Clear Category */}
+                <ClearFilterCategory
+                  filter={filter}
+                  isSubCategory={!!filter.subCategoryId}
+                />
+
                 <DropdownMenuSeparator />
                 <ExportConveyorFilter
                   type='dropdown'

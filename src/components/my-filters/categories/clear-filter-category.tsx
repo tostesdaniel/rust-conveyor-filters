@@ -9,7 +9,15 @@ import { clearFilterCategory } from "@/actions/categoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-export function ClearFilterCategory({ filter }: { filter: ConveyorFilter }) {
+interface ClearFilterCategoryProps {
+  filter: ConveyorFilter;
+  isSubCategory?: boolean;
+}
+
+export function ClearFilterCategory({
+  filter,
+  isSubCategory = false,
+}: ClearFilterCategoryProps) {
   const queryClient = useQueryClient();
   const { mutate: clearCategory } = useServerActionMutation(
     clearFilterCategory,
@@ -17,10 +25,10 @@ export function ClearFilterCategory({ filter }: { filter: ConveyorFilter }) {
       onSuccess: () => {
         toast.success("Filter category cleared");
         queryClient.invalidateQueries({
-          queryKey: ["categories-with-own-filters"],
+          queryKey: ["user-filters-by-category", null],
         });
         queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category", null],
+          queryKey: ["user-category-hierarchy"],
         });
       },
       onError: () => {
@@ -28,18 +36,20 @@ export function ClearFilterCategory({ filter }: { filter: ConveyorFilter }) {
       },
     },
   );
+
   const handleClearCategory = () => {
-    clearCategory({ filterId: filter.id });
+    clearCategory({ filterId: filter.id, isSubCategory });
   };
+  const isDisabled = isSubCategory ? !filter.subCategoryId : !filter.categoryId;
 
   return (
     <DropdownMenuItem
       className='flex items-center'
       onSelect={handleClearCategory}
-      disabled={!filter.categoryId}
+      disabled={isDisabled}
     >
       <ListXIcon className='mr-2 h-4 w-4' />
-      Clear category
+      Clear {isSubCategory ? "subcategory" : "category"}
     </DropdownMenuItem>
   );
 }

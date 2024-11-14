@@ -9,6 +9,7 @@ import { z } from "zod";
 import { renameCategory } from "@/actions/categoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
+import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,20 +31,28 @@ const formSchema = z.object({
 
 interface RenameCategoryFormProps {
   categoryId: number;
+  isSubCategory?: boolean;
   setOpen: (open: boolean) => void;
 }
 
 export function RenameCategoryForm({
   categoryId,
+  isSubCategory = false,
   setOpen,
 }: RenameCategoryFormProps) {
-  const category = useGetUserCategories().data?.find(
-    (category) => category.id === categoryId,
-  );
+  const { data: categories } = useGetUserCategories();
+  const { data: categoryHierarchy } = useGetUserCategoryHierarchy();
+
+  const existingName = isSubCategory
+    ? categoryHierarchy
+        ?.flatMap((category) => category.subCategories)
+        .find((sub) => sub.id === categoryId)?.name
+    : categories?.find((category) => category.id === categoryId)?.name;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: category?.name,
+      name: existingName ?? "",
     },
   });
 
@@ -53,9 +62,8 @@ export function RenameCategoryForm({
     useServerActionMutation(renameCategory, {
       onSuccess: () => {
         toast.success("Category renamed successfully");
-        queryClient.invalidateQueries({ queryKey: ["user-categories"] });
         queryClient.invalidateQueries({
-          queryKey: ["categories-with-own-filters"],
+          queryKey: ["user-category-hierarchy"],
         });
       },
       onError: () => {
@@ -64,7 +72,11 @@ export function RenameCategoryForm({
     });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    await renameCategoryMutation({ categoryId, name: data.name });
+    await renameCategoryMutation({
+      categoryId,
+      name: data.name,
+      isSubCategory,
+    });
     setOpen(false);
   }
 

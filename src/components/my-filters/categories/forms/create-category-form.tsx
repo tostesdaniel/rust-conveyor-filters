@@ -27,11 +27,15 @@ const formSchema = z.object({
     .max(255, { message: "Category name must be at most 255 characters long" }),
 });
 
+interface CreateCategoryFormProps {
+  setOpen: (open: boolean) => void;
+  parentId: number | null;
+}
+
 export function CreateCategoryForm({
   setOpen,
-}: {
-  setOpen: (open: boolean) => void;
-}) {
+  parentId,
+}: CreateCategoryFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,11 +49,17 @@ export function CreateCategoryForm({
     createCategoryAction,
     {
       onSuccess: () => {
-        toast.success("Category created successfully");
+        toast.success(
+          parentId
+            ? "Subcategory created successfully"
+            : "Category created successfully",
+        );
         setOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["user-categories"] });
         queryClient.invalidateQueries({
-          queryKey: ["categories-with-own-filters"],
+          queryKey: ["user-categories"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["user-category-hierarchy"],
         });
       },
       onError: (error) => {
@@ -59,7 +69,7 @@ export function CreateCategoryForm({
   );
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    createCategory({ name: data.name });
+    createCategory({ name: data.name, parentId });
   }
 
   return (
@@ -81,7 +91,7 @@ export function CreateCategoryForm({
                 <Input placeholder='Clothing' {...field} />
               </FormControl>
               <FormDescription>
-                This is the name of the category.
+                This is the name of the {parentId ? "subcategory" : "category"}.
               </FormDescription>
               <FormMessage />
             </FormItem>

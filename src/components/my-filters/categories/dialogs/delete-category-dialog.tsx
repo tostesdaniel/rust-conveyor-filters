@@ -38,6 +38,9 @@ export function DeleteCategoryDialog({
           queryKey: ["user-filters-by-category", null],
         });
         queryClient.invalidateQueries({
+          queryKey: ["user-categories"],
+        });
+        queryClient.invalidateQueries({
           queryKey: ["user-category-hierarchy"],
         });
       },

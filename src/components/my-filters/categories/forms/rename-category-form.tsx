@@ -65,6 +65,9 @@ export function RenameCategoryForm({
         queryClient.invalidateQueries({
           queryKey: ["user-category-hierarchy"],
         });
+        queryClient.invalidateQueries({
+          queryKey: ["user-categories"],
+        });
       },
       onError: () => {
         toast.error("Failed to rename category");

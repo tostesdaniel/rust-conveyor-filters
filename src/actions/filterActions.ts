@@ -28,7 +28,8 @@ export const createFilter = authenticatedProcedure
           description: newFilter.description,
           authorId: ctx.userId,
           imagePath: newFilter.imagePath,
-          categoryId: newFilter.categoryId,
+          categoryId: newFilter.category.categoryId,
+          subCategoryId: newFilter.category.subCategoryId,
           isPublic: newFilter.isPublic,
         })
         .returning();
@@ -116,12 +117,23 @@ export const updateFilter = ownsFilterProcedure
   )
   .handler(async ({ input }) => {
     const { data, filterId, removedItems, addedItems } = input;
-    const updateData: Partial<typeof data> & { updatedAt?: Date } = {};
+    const updateData: Partial<{
+      name: string;
+      description: string | undefined;
+      imagePath: string;
+      categoryId: number | null;
+      subCategoryId: number | null;
+      isPublic: boolean | undefined;
+      updatedAt: Date;
+    }> = {};
     if (data.name) updateData.name = data.name;
     if (data.description !== undefined)
       updateData.description = data.description;
     if (data.imagePath) updateData.imagePath = data.imagePath;
-    if (data.categoryId) updateData.categoryId = data.categoryId;
+    if (data.category) {
+      updateData.categoryId = data.category.categoryId;
+      updateData.subCategoryId = data.category.subCategoryId;
+    }
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
     updateData.updatedAt = new Date();
 

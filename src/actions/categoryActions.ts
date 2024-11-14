@@ -1,65 +1,104 @@
 "use server";
 
 import { db } from "@/db";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import * as z from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { filters, userCategories } from "@/db/schema";
+import { filters, subCategories, userCategories } from "@/db/schema";
 
 export const createCategory = authenticatedProcedure
   .createServerAction()
   .input(
     z.object({
       name: z.string().min(1).max(255),
+      parentId: z.number().nullable(),
     }),
   )
   .handler(async ({ ctx, input }) => {
-    const existingCategory = await db.query.userCategories.findFirst({
-      where: and(
-        eq(userCategories.name, input.name),
-        eq(userCategories.userId, ctx.userId),
-      ),
-    });
+    const existingCategory = input.parentId
+      ? await db.query.subCategories.findFirst({
+          where: and(
+            eq(subCategories.name, input.name),
+            eq(subCategories.parentId, input.parentId),
+            eq(subCategories.userId, ctx.userId),
+          ),
+        })
+      : await db.query.userCategories.findFirst({
+          where: and(
+            eq(userCategories.name, input.name),
+            eq(userCategories.userId, ctx.userId),
+          ),
+        });
+
     if (existingCategory) {
-      throw new Error("Category already exists");
+      throw "Category with this name already exists at this level";
     }
-    const newCategory = await db
+
+    if (input.parentId) {
+      const parentCategory = await db.query.userCategories.findFirst({
+        where: eq(userCategories.id, input.parentId),
+      });
+
+      if (!parentCategory) {
+        throw "Parent category not found";
+      }
+
+      return await db
+        .insert(subCategories)
+        .values({
+          name: input.name,
+          parentId: input.parentId,
+          userId: ctx.userId,
+        })
+        .returning();
+    }
+
+    return await db
       .insert(userCategories)
       .values({
         name: input.name,
         userId: ctx.userId,
       })
       .returning();
-    return newCategory;
   });
 
-export const getUserCategories = authenticatedProcedure
+export const getUserCategoryHierarchy = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
-    const categoryNames = await db.query.userCategories.findMany({
-      where: eq(userCategories.userId, ctx.userId),
-    });
-    return categoryNames;
-  });
-
-export const getCategoriesWithOwnFilters = authenticatedProcedure
-  .createServerAction()
-  .handler(async ({ ctx }) => {
-    const categories = await db.query.userCategories.findMany({
+    return await db.query.userCategories.findMany({
       where: eq(userCategories.userId, ctx.userId),
       with: {
         filters: {
+          where: isNull(filters.subCategoryId),
           with: {
             filterItems: {
               with: { category: true, item: true },
             },
           },
-          where: eq(filters.authorId, ctx.userId),
+        },
+        subCategories: {
+          with: {
+            filters: {
+              with: {
+                filterItems: {
+                  with: { category: true, item: true },
+                },
+              },
+            },
+          },
         },
       },
     });
-    return categories;
+  });
+
+export const getUserCategories = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    return await db.query.userCategories.findMany({
+      where: eq(userCategories.userId, ctx.userId),
+      with: { subCategories: true },
+    });
   });
 
 export const manageFilterCategory = authenticatedProcedure
@@ -68,27 +107,47 @@ export const manageFilterCategory = authenticatedProcedure
     z.object({
       categoryId: z.number(),
       filterId: z.number(),
+      isSubCategory: z.boolean(),
     }),
   )
   .handler(async ({ ctx, input }) => {
-    const existingAssignedCategory = await db.query.filters.findFirst({
+    const { isSubCategory } = input;
+    const existingFilter = await db.query.filters.findFirst({
       where: and(
         eq(filters.id, input.filterId),
-        eq(filters.categoryId, input.categoryId),
         eq(filters.authorId, ctx.userId),
       ),
     });
-    if (existingAssignedCategory) {
+
+    if (!existingFilter) {
+      throw "Filter not found";
+    }
+
+    if (isSubCategory) {
+      const subCategory = await db.query.subCategories.findFirst({
+        where: and(
+          eq(subCategories.id, input.categoryId),
+          eq(subCategories.userId, ctx.userId),
+        ),
+      });
+
+      if (!subCategory) {
+        throw "Subcategory not found";
+      }
+
       await db
         .update(filters)
-        .set({ categoryId: null })
+        .set({
+          categoryId: subCategory.parentId,
+          subCategoryId: input.categoryId,
+        })
         .where(
           and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
         );
     } else {
       await db
         .update(filters)
-        .set({ categoryId: input.categoryId })
+        .set({ categoryId: input.categoryId, subCategoryId: null })
         .where(
           and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
         );
@@ -100,12 +159,13 @@ export const clearFilterCategory = authenticatedProcedure
   .input(
     z.object({
       filterId: z.number(),
+      isSubCategory: z.boolean(),
     }),
   )
   .handler(async ({ ctx, input }) => {
     await db
       .update(filters)
-      .set({ categoryId: null })
+      .set(input.isSubCategory ? { subCategoryId: null } : { categoryId: null })
       .where(
         and(eq(filters.id, input.filterId), eq(filters.authorId, ctx.userId)),
       );
@@ -117,18 +177,31 @@ export const renameCategory = authenticatedProcedure
     z.object({
       categoryId: z.number(),
       name: z.string().min(1).max(255),
+      isSubCategory: z.boolean(),
     }),
   )
   .handler(async ({ ctx, input }) => {
-    await db
-      .update(userCategories)
-      .set({ name: input.name })
-      .where(
-        and(
-          eq(userCategories.id, input.categoryId),
-          eq(userCategories.userId, ctx.userId),
-        ),
-      );
+    if (input.isSubCategory) {
+      await db
+        .update(subCategories)
+        .set({ name: input.name })
+        .where(
+          and(
+            eq(subCategories.id, input.categoryId),
+            eq(subCategories.userId, ctx.userId),
+          ),
+        );
+    } else {
+      await db
+        .update(userCategories)
+        .set({ name: input.name })
+        .where(
+          and(
+            eq(userCategories.id, input.categoryId),
+            eq(userCategories.userId, ctx.userId),
+          ),
+        );
+    }
   });
 
 export const deleteCategory = authenticatedProcedure
@@ -136,15 +209,27 @@ export const deleteCategory = authenticatedProcedure
   .input(
     z.object({
       categoryId: z.number(),
+      isSubCategory: z.boolean(),
     }),
   )
   .handler(async ({ ctx, input }) => {
-    await db
-      .delete(userCategories)
-      .where(
-        and(
-          eq(userCategories.id, input.categoryId),
-          eq(userCategories.userId, ctx.userId),
-        ),
-      );
+    if (input.isSubCategory) {
+      await db
+        .delete(subCategories)
+        .where(
+          and(
+            eq(subCategories.id, input.categoryId),
+            eq(subCategories.userId, ctx.userId),
+          ),
+        );
+    } else {
+      await db
+        .delete(userCategories)
+        .where(
+          and(
+            eq(userCategories.id, input.categoryId),
+            eq(userCategories.userId, ctx.userId),
+          ),
+        );
+    }
   });

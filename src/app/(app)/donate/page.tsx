@@ -40,7 +40,7 @@ export default function DonatePage() {
 
           <ul
             role='list'
-            className='mt-10 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-3'
+            className='mt-10 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'
           >
             <DonateButton
               href={buyMeACoffee}

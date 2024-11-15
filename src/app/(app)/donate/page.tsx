@@ -45,7 +45,7 @@ export default function DonatePage() {
             <DonateButton
               href={buyMeACoffee}
               platform='buyMeACoffee'
-              className='bg-[#FFDD00] transition-colors hover:bg-[#FFDD00]/90'
+              className='bg-[#FFDD00] font-semibold text-[#0D0C22] transition-colors hover:bg-[#FFDD00]/90'
               icon={<Icons.buymeacoffee className='h-5 w-5' />}
             >
               Buy me a coffee
@@ -53,8 +53,8 @@ export default function DonatePage() {
             <DonateButton
               href={kofi}
               platform='kofi'
-              className='bg-[#FF5E5B] text-white transition-colors hover:bg-[#FF5E5B]/90'
-              icon={<Icons.kofi className='fill-white stroke-black stroke-1' />}
+              className='border-spacing-96 bg-[#72A5F2] font-semibold text-[#202020] shadow-[1px_1px_0px_rgba(0,0,0,0.2)] transition-colors hover:bg-[#72A5F2]/90'
+              icon={<Icons.kofi className='animate-kofi-wiggle h-5 w-5' />}
             >
               Support me on Ko-fi
             </DonateButton>

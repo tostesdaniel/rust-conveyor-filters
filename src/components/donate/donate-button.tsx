@@ -74,7 +74,7 @@ export function DonateButton({
     <>
       <Button asChild {...props}>
         <a href={href} onClick={handleClick}>
-          {icon && <span className='mr-2 h-5 w-5'>{icon}</span>}
+          {icon && <span className='[&_svg]:size-5'>{icon}</span>}
           {children}
         </a>
       </Button>

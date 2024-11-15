@@ -66,10 +66,11 @@ export default function ViewFilter({
         variant='secondary'
         size='sm'
         icon={EyeIcon}
-        title='Visualize'
         className='w-full min-[475px]:w-auto'
         {...props}
-      />
+      >
+        Visualize
+      </ButtonWithIcon>
     ) : variant === "dropdown" ? (
       <DropdownMenuItem
         onSelect={(e) => {

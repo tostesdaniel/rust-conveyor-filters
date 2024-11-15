@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import { Handshake, Trophy } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import { Icons } from "@/components/ui/icons";
 import { Separator } from "@/components/ui/separator";
 import { Typography } from "@/components/ui/typography";
@@ -36,7 +38,6 @@ export default function DonatePage() {
           </div>
 
           <DonateBadgeShowcase />
-          <Separator className='mt-10' />
 
           <ul
             role='list'
@@ -54,10 +55,39 @@ export default function DonatePage() {
               href={kofi}
               platform='kofi'
               className='border-spacing-96 bg-[#72A5F2] font-semibold text-[#202020] shadow-[1px_1px_0px_rgba(0,0,0,0.2)] transition-colors hover:bg-[#72A5F2]/90'
-              icon={<Icons.kofi className='animate-kofi-wiggle h-5 w-5' />}
+              icon={<Icons.kofi className='h-5 w-5 animate-kofi-wiggle' />}
             >
               Support me on Ko-fi
             </DonateButton>
+          </ul>
+
+          <Separator className='mt-10' />
+          <Typography variant='h2' className='text-xl font-semibold'>
+            Other ways to support the creator
+          </Typography>
+
+          <ul
+            role='list'
+            className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'
+          >
+            <ButtonWithIcon icon={Handshake}>
+              <a
+                href={siteConfig.donate.steamTradeOffer}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Send a trade offer
+              </a>
+            </ButtonWithIcon>
+            <ButtonWithIcon icon={Trophy}>
+              <a
+                href={siteConfig.donate.steamAwardsPost}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Give a Steam Award
+              </a>
+            </ButtonWithIcon>
           </ul>
         </div>
         <div

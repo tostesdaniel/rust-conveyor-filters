@@ -30,8 +30,10 @@ export default function DonatePage() {
 
           <div className='mt-6 max-w-2xl'>
             <Typography variant='p' className='text-lg leading-8'>
-              Your support helps keep this project alive and growing! By
-              donating, you:
+              Your support helps keep this project alive and growing!
+            </Typography>
+            <Typography variant='mutedText' className='text-lg leading-8'>
+              Here&apos;s how your contribution will be used:
             </Typography>
 
             <DonateFeature />

@@ -99,7 +99,9 @@ export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
               Cancel
             </Button>
           </DialogClose>
-          <ButtonWithIcon type='button' icon={HeartHandshake} title='Donate' />
+          <ButtonWithIcon type='button' icon={HeartHandshake}>
+            Donate
+          </ButtonWithIcon>
         </DialogFooter>
       </DialogContent>
     </Dialog>

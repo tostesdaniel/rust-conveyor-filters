@@ -37,10 +37,7 @@ export function DonateFeature() {
             </div>
             {feature.name}
           </dt>
-          <dd className='mt-1 text-base/7'>
-            Help maintain reliable hosting and ensure the app stays fast and
-            responsive
-          </dd>
+          <dd className='mt-1 text-base/7'>{feature.description}</dd>
         </div>
       ))}
     </dl>

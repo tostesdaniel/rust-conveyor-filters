@@ -18,14 +18,10 @@ export function ButtonWithIcon({
 }: Props) {
   return (
     <Button
-      className={cn(
-        "gap-x-2",
-        iconPosition === "right" && "flex-row-reverse",
-        className,
-      )}
+      className={cn(iconPosition === "right" && "flex-row-reverse", className)}
       {...props}
     >
-      <Icon className='h-4 w-4' />
+      <Icon />
       {children}
     </Button>
   );

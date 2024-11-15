@@ -6,13 +6,12 @@ import { Button, ButtonProps } from "./button";
 
 interface Props extends ButtonProps {
   icon: LucideIcon;
-  title: string;
   iconPosition?: "left" | "right";
 }
 
 export function ButtonWithIcon({
+  children,
   icon: Icon,
-  title,
   iconPosition = "left",
   className,
   ...props
@@ -27,7 +26,7 @@ export function ButtonWithIcon({
       {...props}
     >
       <Icon className='h-4 w-4' />
-      {title}
+      {children}
     </Button>
   );
 }

@@ -6,34 +6,38 @@ This project is a web application for generating, editing, and sharing Rust conv
 
 ![Rust Conveyor Filters](public/og.jpg)
 
-## Getting Started
+## ✨ Features
+
+- 🎮 Visual filter builder that mirrors the in-game experience
+- 💾 Import your existing filters directly from the game
+- 📤 Export configurations with one click
+- 🌐 Browse and learn from other players' setups
+- 📱 Full mobile support for planning on the go
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-Ensure you have the following installed on your machine:
-
+You'll need:
 - Node.js
-- npm, yarn, pnpm, or bun
+- Package manager (npm, yarn, pnpm, or bun)
 
 ### Installation
 
-1. Clone the repository:
-
+1. Clone and enter the project:
    ```bash
    git clone https://github.com/tostesdaniel/rust-conveyor-filters.git
    cd rust-conveyor-filters
    ```
 
-2. Install dependencies:
-
+2. Install the dependencies:
    ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   # or
-   bun install
+   npm install   # or yarn/pnpm/bun install
+   ```
+
+3. Fire it up:
+   ```bash
+   npm run dev   # or yarn/pnpm/bun dev
    ```
 
 ### Running the Development Server
@@ -50,57 +54,86 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000)
 
-## Project Structure
+## 🏗️ Project Structure
 
 The project is organized as follows:
 
-- `components/`: Contains all the React components used in the application.
-- `app/`: Contains the Next.js pages and layout components.
-- `assets/`: In-game items data and images. Necessary for seeding database.
-- `config/`: Configuration files for the project.
-- `db/`: Database schema and seed files.
-- `public/`: Static assets like images and icons.
-- `styles/`: Global styles and Tailwind CSS configuration.
-- `types/`: TypeScript type definitions.
-- `utils/`: Utility functions and helpers.
+```
+rust-conveyor-filters/
+├── src/
+│   ├── app/                   # Next.js app router pages and layouts
+│   │   ├── (app)/             # Main application pages
+│   │   ├── (auth)/            # Authentication pages
+│   │   ├── (legal)/           # Terms and privacy pages
+│   │   └── (resources)/       # Public resources
+│   ├── components/            # Reusable React components
+│   │   ├── about/             # About page components
+│   │   ├── donate/            # Donation related components
+│   │   ├── feedback/          # Feedback related components
+│   │   ├── filters/           # Public filters components
+│   │   ├── landing-page/      # Home page components
+│   │   ├── my-filters/        # User filters components
+│   │   ├── steam-guide/       # Steam guide components
+│   │   └── ui/                # Shadcn UI components
+│   ├── config/                # App metadata & config
+│   ├── db/                    # Database schema
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utility functions and constants
+│   │   ├── donation/          # Donation webhook validation
+│   │   ├── queries/           # Database queries
+│   │   └── stats/             # Cron jobs
+│   ├── providers/             # React context providers
+│   ├── schems/                # Form schema definitions
+│   └── types/                 # TypeScript type definitions
+├── public/                    # Static assets
+│   ├── icons/                 # App icons
+│   └── images/                # Static images
+└── assets/                    # Game data and images
+```
 
-## Configuration
+## ⚙️ Configuration
 
-### Environment Variables
-
-Create a `.env.local` file in the root of your project and add the necessary environment variables:
-
+### Environment Setup
+Create a `.env.local` file in root directory:
 ```env
 DATABASE_URL=your_database_url
 ```
 
-### Tailwind CSS
+### Styling & Code Quality
+- Styling: Tailwind CSS (`tailwind.config.ts`)
+- Linting: ESLint (`.eslintrc.json`)
+- Formatting: Prettier (`.prettierrc`)
 
-Tailwind CSS is used for styling. Configuration can be found in `tailwind.config.ts`.
+## 🛠️ Built With
 
-### ESLint and Prettier
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=flat&logo=react-hook-form&logoColor=white)
 
-The project uses ESLint and Prettier for code linting and formatting. Configuration files are `.eslintrc.json` and `.prettierrc`.
+## 🤝 Contributing
 
-## License
+Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
+- 🐛 Report bugs
+- 💡 Suggest new features
+- 🔧 Submit pull requests
+
+## 📝 License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
 
-## Acknowledgements
+## 📬 Get in Touch
 
-- [Next.js](https://nextjs.org/)
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [React Hook Form](https://react-hook-form.com/)
-- [Lucide Icons](https://lucide.dev/)
+Have questions? Join our [Discord community](https://discord.gg/DGzAHXvU93) or email me at tostes.dev@gmail.com.
 
-## Contributing
+---
 
-Contributions are welcome! Please open an issue or submit a pull request.
+<div align="center">
 
-## Contact
+**Made with ❤️ for the Rust community**
 
-For any inquiries, please contact at tostes.dev@gmail.com.
+[Join Discord](https://discord.gg/DGzAHXvU93) • [Report Bug](https://github.com/tostesdaniel/rust-conveyor-filters/issues) • [Request Feature](https://github.com/tostesdaniel/rust-conveyor-filters/issues)
+
+</div>

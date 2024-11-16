@@ -48,7 +48,7 @@ export function ClearFilterCategory({
       onSelect={handleClearCategory}
       disabled={isDisabled}
     >
-      <ListXIcon className='mr-2 h-4 w-4' />
+      <ListXIcon />
       Clear {isSubCategory ? "subcategory" : "category"}
     </DropdownMenuItem>
   );

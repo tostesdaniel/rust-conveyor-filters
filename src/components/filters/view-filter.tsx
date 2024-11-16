@@ -78,7 +78,7 @@ export default function ViewFilter({
         }}
         {...props}
       >
-        <EyeIcon className='mr-2 h-4 w-4' />
+        <EyeIcon />
         Visualize
       </DropdownMenuItem>
     ) : (

@@ -55,7 +55,7 @@ export function CategoryHeadingDropdown({
                   setIsRenameDialogOpen(true);
                 }}
               >
-                <PencilIcon className='mr-2 h-4 w-4' />
+                <PencilIcon />
                 <span>Rename {isSubCategory ? "Subcategory" : "Category"}</span>
               </DropdownMenuItem>
             </DialogTrigger>
@@ -71,7 +71,7 @@ export function CategoryHeadingDropdown({
                   setIsDeleteDialogOpen(true);
                 }}
               >
-                <TrashIcon className='mr-2 h-4 w-4' />
+                <TrashIcon />
                 <span>Delete {isSubCategory ? "Subcategory" : "Category"}</span>
               </DropdownMenuItem>
             </AlertDialogTrigger>

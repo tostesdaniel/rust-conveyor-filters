@@ -107,7 +107,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
                     <div className='flex items-center'>
                       <CheckIcon
                         className={cn(
-                          "mr-2 h-4 w-4",
+                          "mr-2",
                           category.id === field.value.categoryId &&
                             !field.value.subCategoryId
                             ? "opacity-100"

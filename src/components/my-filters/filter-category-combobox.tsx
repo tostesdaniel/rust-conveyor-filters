@@ -186,13 +186,12 @@ const SubcategoryItem = ({
   >
     <CheckIcon
       className={cn(
-        "mr-2 h-4 w-4",
         subCategory.id === field.value.subCategoryId
           ? "opacity-100"
           : "opacity-0",
       )}
     />
-    <CornerDownRight className='mr-2 h-4 w-4 text-muted-foreground' />
+    <CornerDownRight className='text-muted-foreground' />
     {subCategory.name}
   </CommandItem>
 );

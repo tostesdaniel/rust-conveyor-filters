@@ -97,7 +97,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link href={`/my-filters/edit/${filter.id}`}>
-                    <Edit className='mr-2 h-4 w-4' />
+                    <Edit />
                     Edit
                   </Link>
                 </DropdownMenuItem>
@@ -108,7 +108,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                     disabled={categories?.length === 0}
                     className='data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
                   >
-                    <ListPlusIcon className='mr-2 h-4 w-4' />
+                    <ListPlusIcon />
                     Assign to category
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
@@ -126,7 +126,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                           {category.subCategories.length > 0 && (
                             <DropdownMenuSub defaultOpen>
                               <DropdownMenuSubTrigger className='pl-8'>
-                                <CornerDownRight className='mr-2 h-4 w-4' />
+                                <CornerDownRight />
                                 <span>Subcategories</span>
                               </DropdownMenuSubTrigger>
                               <DropdownMenuSubContent>
@@ -167,7 +167,7 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                 onSelect={() => setIsDeleteOpen(true)}
                 className='text-destructive'
               >
-                <Trash2 className='mr-2 h-4 w-4' />
+                <Trash2 />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>

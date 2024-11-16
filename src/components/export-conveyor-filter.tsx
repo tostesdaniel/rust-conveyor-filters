@@ -58,12 +58,12 @@ export function ExportConveyorFilter({
       size='sm'
       className={className}
     >
-      <Copy className='mr-2 h-4 w-4' />
+      <Copy />
       Export
     </Button>
   ) : type === "dropdown" ? (
     <DropdownMenuItem onSelect={handleCopy(exportText)} className={className}>
-      <Copy className='mr-2 h-4 w-4' />
+      <Copy />
       Export
     </DropdownMenuItem>
   ) : (
@@ -77,7 +77,7 @@ export function ExportConveyorFilter({
         className,
       )}
     >
-      <Copy className='h-4 w-4' />
+      <Copy />
     </Button>
   );
 }

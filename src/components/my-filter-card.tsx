@@ -68,7 +68,9 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
           </Link>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
-        <div className='pr-2'>
+        <div className='space-x-2 pr-2'>
+          <ExportConveyorFilter type='icon' filter={filter.filterItems} />
+
           <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>

@@ -28,7 +28,7 @@ export function CategoryHeading({
         <div className='mt-3 sm:ml-4 sm:mt-0'>
           <CreateCategoryDialog parentId={null}>
             <Button type='button' variant='ghost' size='sm'>
-              <PlusIcon className='mr-2 h-4 w-4' />
+              <PlusIcon />
               Create Category
             </Button>
           </CreateCategoryDialog>
@@ -39,7 +39,7 @@ export function CategoryHeading({
           {canCreateSubcategory && !isSubCategory && (
             <CreateCategoryDialog parentId={categoryId}>
               <Button type='button' variant='ghost' size='sm'>
-                <PlusIcon className='mr-2 h-4 w-4' />
+                <PlusIcon />
                 Add Subcategory
               </Button>
             </CreateCategoryDialog>

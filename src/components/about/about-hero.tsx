@@ -38,12 +38,12 @@ export async function AboutHero() {
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <LinkedinIcon className='mr-2 h-4 w-4' /> Connect with me
+                <LinkedinIcon /> Connect with me
               </a>
             </Button>
             <Button asChild variant='outline'>
               <a href={links.gitHub} target='_blank' rel='noopener noreferrer'>
-                <Icons.gitHub className='mr-2 h-4 w-4' /> Follow me
+                <Icons.gitHub /> Follow me
               </a>
             </Button>
           </div>

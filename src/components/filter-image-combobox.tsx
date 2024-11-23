@@ -69,7 +69,7 @@ const FilterImageCombobox = React.memo(
                   {field.value
                     ? items.find((item) => item.imagePath === field.value)?.name
                     : "Select item"}
-                  <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                  <ChevronsUpDown className='opacity-50' />
                 </Button>
               </FormControl>
             </PopoverTrigger>
@@ -103,7 +103,7 @@ const FilterImageCombobox = React.memo(
               {field.value
                 ? items.find((item) => item.imagePath === field.value)?.name
                 : "Select item"}
-              <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+              <ChevronsUpDown className='opacity-50' />
             </Button>
           </DrawerTrigger>
         </div>

@@ -65,7 +65,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
             )}
           >
             {getSelectedName() ?? "Select a category"}
-            <ChevronsUpDownIcon className='shrink-0 opacity-50' />
+            <ChevronsUpDownIcon className='opacity-50' />
           </Button>
         </FormControl>
       </PopoverTrigger>

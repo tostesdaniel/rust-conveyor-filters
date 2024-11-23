@@ -65,7 +65,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
             )}
           >
             {getSelectedName() ?? "Select a category"}
-            <ChevronsUpDownIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+            <ChevronsUpDownIcon className='shrink-0 opacity-50' />
           </Button>
         </FormControl>
       </PopoverTrigger>
@@ -82,7 +82,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
                     className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
                     size='sm'
                   >
-                    <PlusIcon className='mr-2 h-4 w-4' />
+                    <PlusIcon />
                     Create Category
                   </Button>
                 </CreateCategoryDialog>
@@ -154,7 +154,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
                     size='sm'
                     className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
                   >
-                    <PlusIcon className='mr-2 h-4 w-4' />
+                    <PlusIcon />
                     Create Category
                   </Button>
                 </CreateCategoryDialog>

@@ -112,7 +112,7 @@ export function ImportButton({ onImport }: ImportButtonProps) {
     >
       <PopoverTrigger asChild>
         <Button type='button' variant='secondary' size='sm'>
-          <Upload className='mr-2 h-4 w-4' />
+          <Upload />
           Import
         </Button>
       </PopoverTrigger>

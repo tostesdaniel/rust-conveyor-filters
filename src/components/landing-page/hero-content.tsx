@@ -34,7 +34,7 @@ export function HeroContent() {
           </SignedOut>
           <Button type='button' variant='link'>
             <Link href='/filters'>Browse Filters</Link>
-            <ArrowRight className='ml-2 h-4 w-4' />
+            <ArrowRight />
           </Button>
         </div>
         <div className='mt-8'>

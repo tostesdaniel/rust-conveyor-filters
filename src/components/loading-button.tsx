@@ -5,7 +5,7 @@ import { Button, type ButtonProps } from "@/components/ui/button";
 export function LoadingButton({ children, ...props }: ButtonProps) {
   return (
     <Button disabled {...props}>
-      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+      <Loader2 className='animate-spin' />
       {children}
     </Button>
   );

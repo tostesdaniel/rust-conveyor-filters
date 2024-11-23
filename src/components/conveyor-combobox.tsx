@@ -49,10 +49,10 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
         className='w-[300px] justify-between text-muted-foreground'
       >
         <div className='mr-2 flex items-center gap-x-2'>
-          <Plus className='h-4 w-4 shrink-0 text-muted-foreground' />
+          <Plus className='text-muted-foreground' />
           Insert item
         </div>
-        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+        <ChevronsUpDown className='opacity-50' />
       </Button>
     ),
     [open],

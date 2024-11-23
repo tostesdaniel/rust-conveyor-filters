@@ -22,7 +22,7 @@ export function DonateCTA() {
       </div>
       <Button asChild variant='outline' size='sm'>
         <Link href='/donate'>
-          <Heart className='mr-2 h-4 w-4' />
+          <Heart />
           Donate
         </Link>
       </Button>

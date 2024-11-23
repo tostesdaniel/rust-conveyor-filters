@@ -33,12 +33,7 @@ export function HeadingWithAction({
       <div className='mt-4 flex md:ml-4 md:mt-0'>
         <Button type='button' size='sm' asChild>
           <Link href={redirectUrl}>
-            {ActionIcon && (
-              <ActionIcon
-                className='-ml-0.5 mr-1.5 h-5 w-5'
-                aria-hidden='true'
-              />
-            )}
+            {ActionIcon && <ActionIcon aria-hidden='true' />}
             {buttonLabel}
           </Link>
         </Button>

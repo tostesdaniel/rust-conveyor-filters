@@ -157,7 +157,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
     );
 
     return (
-      <Command>
+      <Command shouldFilter={false}>
         <div className='relative'>
           <CommandInput
             ref={inputRef}
@@ -177,21 +177,50 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
             if (!categoryName) return null;
             const CategoryIcon = getCategoryIcon(categoryName);
 
+            const searchLower = search.toLowerCase();
+            const isCategoryMatch = Object.entries(categoryMapping).some(
+              ([key, value]) => {
+                return (
+                  (key.toLowerCase().includes(searchLower) ||
+                    value.toLowerCase().includes(searchLower)) &&
+                  value === category.name
+                );
+              },
+            );
+
+            const hasMatchingItems =
+              !isCategoryMatch &&
+              categorizedItems[category.name].some((item) =>
+                item.name.toLowerCase().includes(searchLower),
+              );
+
+            const showCategory = !search || isCategoryMatch || hasMatchingItems;
+
+            if (!showCategory) return null;
+
             return (
               <CommandGroup key={category.id} heading={categoryName}>
-                <CommandItem
-                  onSelect={() => insertItem(category)}
-                  className='mb-1'
-                >
-                  <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide [&_svg]:size-6'>
-                    <CategoryIcon className='rounded-sm border border-foreground object-contain p-px' />
-                    <p className='flex-1'>{category.name}</p>
-                    <span className='text-end text-xs text-muted-foreground'>
-                      CATEGORY
-                    </span>
-                  </div>
-                </CommandItem>
-                {categorizedItems[category.name].map((item) => (
+                {isCategoryMatch && (
+                  <CommandItem
+                    onSelect={() => insertItem(category)}
+                    className='mb-1'
+                  >
+                    <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide [&_svg]:size-6'>
+                      <CategoryIcon className='rounded-sm border border-foreground object-contain p-px' />
+                      <p className='flex-1'>{category.name}</p>
+                      <span className='text-end text-xs text-muted-foreground'>
+                        CATEGORY
+                      </span>
+                    </div>
+                  </CommandItem>
+                )}
+
+                {(isCategoryMatch
+                  ? categorizedItems[category.name]
+                  : categorizedItems[category.name].filter((item) =>
+                      item.name.toLowerCase().includes(searchLower),
+                    )
+                ).map((item) => (
                   <CommandItem
                     key={item.id}
                     className='flex items-center gap-x-2'

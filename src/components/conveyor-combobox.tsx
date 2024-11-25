@@ -46,7 +46,7 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
         variant='outline'
         role='combobox'
         aria-expanded={open}
-        className='w-[300px] justify-between text-muted-foreground'
+        className='w-full justify-between text-muted-foreground sm:w-[300px]'
       >
         <div className='mr-2 flex items-center gap-x-2'>
           <Plus className='text-muted-foreground' />

@@ -44,9 +44,11 @@ export default async function EditFilterPage({
   });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <>
       <Typography variant='h1'>Edit Filter</Typography>
-      <EditFilterForm filterId={Number(params.filterId)} />
-    </HydrationBoundary>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <EditFilterForm filterId={Number(params.filterId)} />
+      </HydrationBoundary>
+    </>
   );
 }

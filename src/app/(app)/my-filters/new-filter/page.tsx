@@ -24,9 +24,11 @@ export default async function NewFilterPage() {
   });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <>
       <Typography variant='h1'>New Filter</Typography>
-      <NewFilterForm />
-    </HydrationBoundary>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <NewFilterForm />
+      </HydrationBoundary>
+    </>
   );
 }

@@ -114,7 +114,7 @@ export default function NewFilterForm() {
             </FormItem>
           )}
         />
-        <div className='sm:flex sm:space-x-6'>
+        <div className='space-y-6 sm:flex sm:space-x-6 sm:space-y-0'>
           <FormField
             control={form.control}
             name='imagePath'

@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
+import { useState } from "react";
 import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
-import { type Category, type Item } from "@/db/schema";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,8 +15,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { type Category, type Item } from "@/db/schema";
 
-interface ImportButtonProps {
+interface ImportButtonProps extends ButtonProps {
   onImport: UseFieldArrayReplace<FieldValues, "items">;
 }
 
@@ -33,7 +33,7 @@ const GameConveyorFilterItemSchema = z.array(
   }),
 );
 
-export function ImportButton({ onImport }: ImportButtonProps) {
+export function ImportButton({ onImport, ...props }: ImportButtonProps) {
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -111,7 +111,7 @@ export function ImportButton({ onImport }: ImportButtonProps) {
       }}
     >
       <PopoverTrigger asChild>
-        <Button type='button' variant='secondary' size='sm'>
+        <Button type='button' variant='secondary' size='sm' {...props}>
           <Upload />
           Import
         </Button>

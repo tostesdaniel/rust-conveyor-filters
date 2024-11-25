@@ -9,7 +9,7 @@ export function FilterImage({ imagePath }: FilterImageProps) {
 
   if (!imagePath) {
     return (
-      <div className='flex h-10 w-10 items-center justify-center rounded-md border border-dashed border-input' />
+      <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-dashed border-input' />
     );
   }
 

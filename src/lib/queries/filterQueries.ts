@@ -41,6 +41,37 @@ export const getUserFilterById = ownsFilterProcedure
     return result;
   });
 
+export const getPublicFilter = createServerAction()
+  .input(
+    z
+      .object({
+        filterId: z.number(),
+      })
+      .optional(),
+  )
+  .handler(async ({ input }) => {
+    if (!input?.filterId) {
+      throw "Filter ID is required";
+    }
+
+    const { filterId } = input;
+
+    const filter = await db.query.filters.findFirst({
+      where: and(eq(filters.id, filterId), eq(filters.isPublic, true)),
+      with: {
+        filterItems: {
+          with: { item: true, category: true },
+        },
+      },
+    });
+
+    if (!filter) {
+      throw "Filter not found or is private";
+    }
+
+    return enrichWithAuthor([filter]);
+  });
+
 export const getPopularFilters = createServerAction()
   .input(
     z.object({

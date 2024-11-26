@@ -8,7 +8,16 @@ export function ShareButton({ filterId }: { filterId: number }) {
   const { user } = useUser();
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/filters?share=${filterId}&by=${user?.username}`;
+    const searchParams = new URLSearchParams({
+      share: filterId.toString(),
+    });
+
+    if (user?.username) {
+      searchParams.set("by", user.username);
+    }
+
+    const url = `${window.location.origin}/filters?${searchParams.toString()}`;
+
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Share link copied to clipboard");

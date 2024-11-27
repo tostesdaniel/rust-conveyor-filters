@@ -45,19 +45,33 @@ export function Header() {
           </Link>
         </div>
         <DesktopNav />
-        <div className='flex flex-1 items-center justify-end'>
+        <div className='flex flex-1 items-center justify-end gap-2'>
           <RepoStarsButton className='hidden min-[800px]:inline-flex' />
-          <nav className='flex items-center'>
-            <Link href={siteConfig.links.repo} target='_blank' rel='noreferrer'>
-              <div
-                className={cn(buttonVariants({ variant: "ghost" }), "w-9 px-0")}
-              >
-                <Icons.gitHub className='h-4 w-4' />
-                <span className='sr-only'>GitHub</span>
-              </div>
-            </Link>
-          </nav>
-          <ModeToggle />
+          <div className='flex items-center gap-0.5'>
+            <nav className='flex items-center gap-0.5'>
+              <Button variant='ghost' size='icon' className='size-9'>
+                <a
+                  href={siteConfig.links.gitHub}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <Icons.gitHub />
+                  <span className='sr-only'>GitHub</span>
+                </a>
+              </Button>
+              <Button variant='ghost' size='icon' className='size-9'>
+                <a
+                  href={siteConfig.links.discord}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <Icons.discord />
+                  <span className='sr-only'>Discord</span>
+                </a>
+              </Button>
+            </nav>
+            <ModeToggle />
+          </div>
           <div className='ml-2 flex items-center'>
             <ClerkLoading>
               <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />

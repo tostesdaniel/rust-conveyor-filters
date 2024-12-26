@@ -51,7 +51,7 @@ export function Header() {
             <nav className='flex items-center gap-0.5'>
               <Button variant='ghost' size='icon' className='size-9'>
                 <a
-                  href={siteConfig.links.gitHub}
+                  href={siteConfig.links.repo}
                   target='_blank'
                   rel='noopener noreferrer'
                 >

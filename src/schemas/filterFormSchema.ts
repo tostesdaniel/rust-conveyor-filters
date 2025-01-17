@@ -45,10 +45,36 @@ export const createFilterSchema = z.object({
     })
     .refine(
       (data) => {
-        const ids = data.map((item) =>
-          "itemId" in item ? item.itemId : item.categoryId,
-        );
-        return new Set(ids).size === ids.length;
+        type ItemEntry = {
+          itemId: number;
+          name: string;
+          imagePath: string;
+          max: number;
+          buffer: number;
+          min: number;
+        };
+
+        type CategoryEntry = {
+          name: string;
+          categoryId: number;
+          max: number;
+          buffer: number;
+          min: number;
+        };
+
+        const itemIds = data
+          .filter((item): item is ItemEntry => "itemId" in item)
+          .map((item) => item.itemId);
+
+        const categoryIds = data
+          .filter((item): item is CategoryEntry => "categoryId" in item)
+          .map((item) => item.categoryId);
+
+        const hasUniqueItemIds = new Set(itemIds).size === itemIds.length;
+        const hasUniqueCategoryIds =
+          new Set(categoryIds).size === categoryIds.length;
+
+        return hasUniqueItemIds && hasUniqueCategoryIds;
       },
       {
         message: "No duplicate items allowed",

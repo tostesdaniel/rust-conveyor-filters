@@ -44,6 +44,7 @@ export const filters = pgTable(
       () => subCategories.id,
       { onDelete: "set null" },
     ),
+    order: integer("order").default(0),
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),

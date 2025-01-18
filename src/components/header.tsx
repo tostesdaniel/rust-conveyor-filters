@@ -84,7 +84,10 @@ export function Header() {
                   className='hidden min-[800px]:block'
                   asChild
                 >
-                  <SignInButton />
+                  <SignInButton
+                    fallbackRedirectUrl='/my-filters'
+                    signUpFallbackRedirectUrl='/my-filters'
+                  />
                 </Button>
               </SignedOut>
               <SignedIn>

@@ -76,6 +76,7 @@ export const getUserCategoryHierarchy = authenticatedProcedure
               with: { category: true, item: true },
             },
           },
+          orderBy: filters.order,
         },
         subCategories: {
           with: {
@@ -85,6 +86,7 @@ export const getUserCategoryHierarchy = authenticatedProcedure
                   with: { category: true, item: true },
                 },
               },
+              orderBy: filters.order,
             },
           },
         },

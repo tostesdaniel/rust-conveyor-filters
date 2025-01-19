@@ -332,5 +332,6 @@ export const getUserFiltersByCategory = authenticatedProcedure
           orderBy: ({ createdAt, id }) => [id, createdAt],
         },
       },
+      orderBy: filters.order,
     });
   });

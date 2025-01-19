@@ -39,6 +39,7 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
       toast.success("Filter deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
       queryClient.invalidateQueries({ queryKey: ["user-filters"] });
+      queryClient.invalidateQueries({ queryKey: ["user-category-hierarchy"] });
       setOpen(false);
     },
     onError: () => {

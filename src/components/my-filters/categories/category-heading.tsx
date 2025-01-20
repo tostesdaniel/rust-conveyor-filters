@@ -4,6 +4,7 @@ import { PlusIcon } from "lucide-react";
 
 import type { ConveyorFilter } from "@/types/filter";
 import { useFilterSort } from "@/hooks/use-filter-sort";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CategoryHeadingDropdown } from "@/components/my-filters/categories/category-heading-dropdown";
 import { CreateCategoryDialog } from "@/components/my-filters/categories/dialogs/create-category-dialog";
@@ -49,7 +50,12 @@ export function CategoryHeading({
             </Button>
           </CreateCategoryDialog>
           {showSortButton && (
-            <SortFilterButton value={sortType} onValueChange={setSortType} />
+            <div className='relative'>
+              <SortFilterButton value={sortType} onValueChange={setSortType} />
+              <Badge className='absolute -right-5 -top-5 rotate-6 scale-90 bg-[#99ff33] px-1.5 py-0 hover:bg-[#99ff33]/80'>
+                New
+              </Badge>
+            </div>
           )}
         </div>
       )}

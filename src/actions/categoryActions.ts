@@ -290,35 +290,92 @@ export const clearFilterCategory = authenticatedProcedure
               .where(eq(filters.id, filter.id)),
           );
 
-        const maxOrderAtDestination = await tx.query.filters.findFirst({
-          where: and(
-            eq(filters.authorId, ctx.userId),
-            input.isSubCategory
-              ? eq(filters.categoryId, currentFilter.categoryId!)
-              : isNull(filters.subCategoryId),
-          ),
-          orderBy: desc(filters.order),
-        });
+        //   const maxOrderAtDestination = await tx.query.filters.findFirst({
+        //     where: and(
+        //       eq(filters.authorId, ctx.userId),
+        //       input.isSubCategory
+        //         ? eq(filters.categoryId, currentFilter.categoryId!)
+        //         : isNull(filters.subCategoryId),
+        //     ),
+        //     orderBy: desc(filters.order),
+        //   });
 
-        const newOrder = maxOrderAtDestination
-          ? maxOrderAtDestination.order + 1
-          : 0;
+        //   const newOrder = maxOrderAtDestination
+        //     ? maxOrderAtDestination.order + 1
+        //     : 0;
 
-        await tx
-          .update(filters)
-          .set({
-            ...(input.isSubCategory
-              ? { subCategoryId: null }
-              : { categoryId: null }),
-            order: newOrder,
-            updatedAt: sql`now()`,
-          })
-          .where(
-            and(
-              eq(filters.id, input.filterId),
+        //   await tx
+        //     .update(filters)
+        //     .set({
+        //       ...(input.isSubCategory
+        //         ? { subCategoryId: null }
+        //         : { categoryId: null }),
+        //       order: newOrder,
+        //       updatedAt: sql`now()`,
+        //     })
+        //     .where(
+        //       and(
+        //         eq(filters.id, input.filterId),
+        //         eq(filters.authorId, ctx.userId),
+        //       ),
+        //     );
+
+        //   await Promise.all(sourceUpdatePromises);
+        // });
+        if (input.isSubCategory && currentFilter.categoryId) {
+          const parentFilters = await tx.query.filters.findMany({
+            where: and(
               eq(filters.authorId, ctx.userId),
+              eq(filters.categoryId, currentFilter.categoryId),
+              isNull(filters.subCategoryId),
             ),
-          );
+            orderBy: filters.order,
+          });
+
+          // Always set order to next available in parent category
+          const newOrder = parentFilters.length;
+
+          await tx
+            .update(filters)
+            .set({
+              subCategoryId: null,
+              order: newOrder,
+              updatedAt: sql`now()`,
+            })
+            .where(
+              and(
+                eq(filters.id, input.filterId),
+                eq(filters.authorId, ctx.userId),
+              ),
+            );
+        } else {
+          // For root category clearing
+          const uncategorizedFilters = await tx.query.filters.findMany({
+            where: and(
+              eq(filters.authorId, ctx.userId),
+              isNull(filters.categoryId),
+              isNull(filters.subCategoryId),
+            ),
+            orderBy: filters.order,
+          });
+
+          const newOrder = uncategorizedFilters.length;
+
+          await tx
+            .update(filters)
+            .set({
+              categoryId: null,
+              subCategoryId: null,
+              order: newOrder,
+              updatedAt: sql`now()`,
+            })
+            .where(
+              and(
+                eq(filters.id, input.filterId),
+                eq(filters.authorId, ctx.userId),
+              ),
+            );
+        }
 
         await Promise.all(sourceUpdatePromises);
       });

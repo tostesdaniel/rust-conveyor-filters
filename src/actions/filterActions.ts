@@ -1,7 +1,8 @@
 "use server";
 
+import { pooledDb } from "@/db/pooled-connection";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
@@ -230,7 +231,38 @@ export const deleteFilter = ownsFilterProcedure
   .handler(async ({ input }) => {
     const { filterId } = input;
     try {
-      await db.delete(filters).where(eq(filters.id, filterId));
+      await pooledDb.transaction(async (tx) => {
+        const [deletedFilter] = await tx
+          .delete(filters)
+          .where(eq(filters.id, filterId))
+          .returning();
+
+        if (!deletedFilter) {
+          throw new Error("Filter not found");
+        }
+
+        const remainingFilters = await tx.query.filters.findMany({
+          where: and(
+            eq(filters.authorId, deletedFilter.authorId),
+            deletedFilter.categoryId
+              ? eq(filters.categoryId, deletedFilter.categoryId)
+              : isNull(filters.categoryId),
+            deletedFilter.subCategoryId
+              ? eq(filters.subCategoryId, deletedFilter.subCategoryId)
+              : isNull(filters.subCategoryId),
+          ),
+          columns: {
+            id: true,
+          },
+          orderBy: filters.order,
+        });
+
+        const updatePromises = remainingFilters.map(({ id }, index) =>
+          tx.update(filters).set({ order: index }).where(eq(filters.id, id)),
+        );
+
+        await Promise.all(updatePromises);
+      });
     } catch (error) {
       throw new Error("Failed to delete filter");
     }

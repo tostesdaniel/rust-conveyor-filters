@@ -2,7 +2,7 @@
 
 import { pooledDb } from "@/db/pooled-connection";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
@@ -265,5 +265,52 @@ export const deleteFilter = ownsFilterProcedure
       });
     } catch (error) {
       throw new Error("Failed to delete filter");
+    }
+  });
+
+export const updateFilterOrder = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      filters: z.array(
+        z.object({
+          filterId: z.number(),
+          order: z.number(),
+        }),
+      ),
+      categoryId: z.number().nullable(),
+      subCategoryId: z.number().nullable(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    const { filters: filterUpdates, categoryId, subCategoryId } = input;
+
+    try {
+      await pooledDb.transaction(async (tx) => {
+        const updatePromises = filterUpdates.map(({ filterId, order }) =>
+          tx
+            .update(filters)
+            .set({
+              order,
+              updatedAt: sql`now()`,
+            })
+            .where(
+              and(
+                eq(filters.id, filterId),
+                eq(filters.authorId, ctx.userId),
+                categoryId
+                  ? eq(filters.categoryId, categoryId)
+                  : isNull(filters.categoryId),
+                subCategoryId
+                  ? eq(filters.subCategoryId, subCategoryId)
+                  : isNull(filters.subCategoryId),
+              ),
+            ),
+        );
+
+        await Promise.all(updatePromises);
+      });
+    } catch (error) {
+      throw new Error("Failed to update filter order");
     }
   });

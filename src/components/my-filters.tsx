@@ -32,7 +32,11 @@ export function MyFilters() {
     <>
       {/* Uncategorized Filters */}
       <section className='py-6'>
-        <CategoryHeading title='No category' withAction />
+        <CategoryHeading
+          title='No category'
+          withAction
+          filters={uncategorizedFilters ?? []}
+        />
         {uncategorizedFilters?.length ? (
           <FilterGrid filters={uncategorizedFilters} />
         ) : (
@@ -49,6 +53,7 @@ export function MyFilters() {
               title={category.name}
               categoryId={category.id}
               canCreateSubcategory
+              filters={category.filters}
             />
             {category.filters.length ? (
               <FilterGrid filters={category.filters} />
@@ -67,6 +72,7 @@ export function MyFilters() {
                   withAction={false}
                   categoryId={subCategory.id}
                   isSubCategory
+                  filters={subCategory.filters}
                 />
                 {subCategory.filters.length ? (
                   <FilterGrid filters={subCategory.filters} />

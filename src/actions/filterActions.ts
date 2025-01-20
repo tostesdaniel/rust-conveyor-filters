@@ -2,7 +2,7 @@
 
 import { pooledDb } from "@/db/pooled-connection";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
@@ -20,6 +20,21 @@ export const createFilter = authenticatedProcedure
       throw "Invalid form data";
     }
 
+    const { category } = parsed.data;
+    const maxOrder = await db.query.filters.findFirst({
+      where: and(
+        eq(filters.authorId, ctx.userId),
+        category.categoryId
+          ? eq(filters.categoryId, category.categoryId)
+          : isNull(filters.categoryId),
+        category.subCategoryId
+          ? eq(filters.subCategoryId, category.subCategoryId)
+          : isNull(filters.subCategoryId),
+      ),
+      columns: { order: true },
+      orderBy: desc(filters.order),
+    });
+
     const newFilter = parsed.data;
     try {
       const [insertedFilter] = await db
@@ -32,6 +47,7 @@ export const createFilter = authenticatedProcedure
           categoryId: newFilter.category.categoryId,
           subCategoryId: newFilter.category.subCategoryId,
           isPublic: newFilter.isPublic,
+          order: maxOrder ? maxOrder.order + 1 : 0,
         })
         .returning();
 

@@ -72,8 +72,7 @@
     "vaul": "^1.0.0",
     "zod": "^3.23.8",
     "zsa": "^0.6.0",
-    "zsa-react-query": "^0.2.1",
-    "zustand": "^4.5.2"
+    "zsa-react-query": "^0.2.1"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",

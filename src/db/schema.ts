@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
+  char,
   index,
   integer,
   numeric,
@@ -273,3 +274,43 @@ export const donations = pgTable(
 
 export type Donation = typeof donations.$inferSelect;
 export type NewDonation = typeof donations.$inferInsert;
+
+export const shareTokens = pgTable("share_token", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  token: char("token", { length: 21 }).notNull(),
+  revoked: boolean("revoked").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const shareTokenRelations = relations(shareTokens, ({ many }) => ({
+  sharedFilters: many(sharedFilters),
+}));
+
+export type ShareToken = typeof shareTokens.$inferSelect;
+export type NewShareToken = typeof shareTokens.$inferInsert;
+
+export const sharedFilters = pgTable("shared_filters", {
+  id: serial("id").primaryKey(),
+  filterId: integer("filter_id").references(() => filters.id, {
+    onDelete: "cascade",
+  }),
+  shareTokenId: integer("share_token_id").references(() => shareTokens.id, {
+    onDelete: "cascade",
+  }),
+  senderId: varchar("sender_id", { length: 255 }).notNull(),
+});
+
+export const sharedFiltersRelations = relations(sharedFilters, ({ one }) => ({
+  filter: one(filters, {
+    fields: [sharedFilters.filterId],
+    references: [filters.id],
+  }),
+  shareToken: one(shareTokens, {
+    fields: [sharedFilters.shareTokenId],
+    references: [shareTokens.id],
+  }),
+}));
+
+export type SharedFilter = typeof sharedFilters.$inferSelect;
+export type NewSharedFilter = typeof sharedFilters.$inferInsert;

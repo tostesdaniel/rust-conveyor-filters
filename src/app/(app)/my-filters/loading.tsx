@@ -32,6 +32,9 @@ export default function MyFiltersLoading() {
           <TabsTrigger disabled value='saved-filters'>
             Saved Filters
           </TabsTrigger>
+          <TabsTrigger disabled value='shared-filters'>
+            Shared With You
+          </TabsTrigger>
         </TabsList>
 
         {/* Uncategorized Filters Section */}

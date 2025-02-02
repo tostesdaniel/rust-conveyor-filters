@@ -10,11 +10,13 @@ import {
   getUserCategories,
   getUserCategoryHierarchy,
 } from "@/actions/categoryActions";
+import { getShareToken } from "@/actions/shareTokens";
 import { getUserFiltersByCategory } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/filters/saved-filters";
 import { MyFilters } from "@/components/my-filters";
 import { MyFiltersHeading } from "@/components/my-filters/my-filters-heading";
+import { SharedFilters } from "@/components/my-filters/shared-filters/shared-filters";
 
 export const metadata: Metadata = {
   title: "My Filters",
@@ -53,6 +55,13 @@ export default async function MyFiltersPage() {
         return data;
       },
     }),
+    queryClient.prefetchQuery({
+      queryKey: ["share-token"],
+      queryFn: async () => {
+        const [data] = await getShareToken();
+        return data;
+      },
+    }),
   ]);
 
   return (
@@ -63,12 +72,16 @@ export default async function MyFiltersPage() {
           <TabsList>
             <TabsTrigger value='your-filters'>Your Filters</TabsTrigger>
             <TabsTrigger value='saved-filters'>Saved Filters</TabsTrigger>
+            <TabsTrigger value='shared-filters'>Shared With You</TabsTrigger>
           </TabsList>
           <TabsContent value='your-filters'>
             <MyFilters />
           </TabsContent>
           <TabsContent value='saved-filters'>
             <SavedFilters />
+          </TabsContent>
+          <TabsContent value='shared-filters'>
+            <SharedFilters />
           </TabsContent>
         </Tabs>
       </HydrationBoundary>

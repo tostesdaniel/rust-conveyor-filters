@@ -8,6 +8,7 @@ import {
   Edit,
   EllipsisVertical,
   ListPlusIcon,
+  Trash,
   Trash2,
 } from "lucide-react";
 
@@ -20,6 +21,7 @@ import { ClearFilterCategory } from "@/components/my-filters/categories/clear-fi
 import { DeleteFilterForm } from "@/app/(app)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
+import { DeleteSharedFilterDialog } from "./my-filters/shared-filters/delete-shared-filter-dialog";
 import { PrivateShareDropdownItem } from "./my-filters/shared-filters/private-share-dropdown-item";
 import { ShareWithUserDialog } from "./my-filters/shared-filters/share-with-user-dialog";
 import {
@@ -54,6 +56,8 @@ export function MyFilterCard({
 }: MyFilterCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [isRemoveSharedFilterDialogOpen, setIsRemoveSharedFilterDialogOpen] =
+    useState(false);
   const { data: categories } = useGetUserCategories();
 
   return (
@@ -76,13 +80,46 @@ export function MyFilterCard({
           </Link>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
-        <div className={cn("space-x-2 pr-2", isFilterShared && "pr-4")}>
+        <div className='flex items-center space-x-2 pr-2'>
+          <div className='flex items-center space-x-4'>
+            {isFilterShared && <ViewFilter filter={filter} variant='icon' />}
+            <ExportConveyorFilter type='icon' filter={filter.filterItems} />
+          </div>
+
           {isFilterShared && (
-            <span className='pr-2'>
-              <ViewFilter filter={filter} variant='icon' />
-            </span>
+            <div>
+              <DeleteSharedFilterDialog
+                filterId={filter.id}
+                open={isRemoveSharedFilterDialogOpen}
+                onOpenChange={setIsRemoveSharedFilterDialogOpen}
+              />
+
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    size='icon'
+                    className='h-8 w-8 shrink-0 rounded-full'
+                  >
+                    <span className='sr-only'>Open options</span>
+                    <EllipsisVertical className='h-5 w-5' aria-hidden='true' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onSelect={() => setIsRemoveSharedFilterDialogOpen(true)}
+                      className='text-destructive'
+                    >
+                      <Trash />
+                      Remove
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           )}
-          <ExportConveyorFilter type='icon' filter={filter.filterItems} />
 
           {!isFilterShared && (
             <>

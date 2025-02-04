@@ -63,7 +63,7 @@ export function DeleteSharedFilterDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            By removing this filter, you won't be able to access it anymore
+            By removing this filter, you won&apos;t be able to access it anymore
             unless it is shared with you again.
           </AlertDialogDescription>
         </AlertDialogHeader>

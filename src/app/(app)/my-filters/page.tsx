@@ -10,13 +10,14 @@ import {
   getUserCategories,
   getUserCategoryHierarchy,
 } from "@/actions/categoryActions";
+import { getSharedFilters } from "@/actions/sharedFilters";
 import { getShareToken } from "@/actions/shareTokens";
 import { getUserFiltersByCategory } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/filters/saved-filters";
 import { MyFilters } from "@/components/my-filters";
 import { MyFiltersHeading } from "@/components/my-filters/my-filters-heading";
-import { SharedFilters } from "@/components/my-filters/shared-filters/shared-filters";
+import { SharedFiltersTab } from "@/components/my-filters/shared-filters/shared-filters-tab";
 
 export const metadata: Metadata = {
   title: "My Filters",
@@ -62,6 +63,13 @@ export default async function MyFiltersPage() {
         return data;
       },
     }),
+    queryClient.prefetchQuery({
+      queryKey: ["shared-filters"],
+      queryFn: async () => {
+        const [data] = await getSharedFilters();
+        return data;
+      },
+    }),
   ]);
 
   return (
@@ -81,7 +89,7 @@ export default async function MyFiltersPage() {
             <SavedFilters />
           </TabsContent>
           <TabsContent value='shared-filters'>
-            <SharedFilters />
+            <SharedFiltersTab />
           </TabsContent>
         </Tabs>
       </HydrationBoundary>

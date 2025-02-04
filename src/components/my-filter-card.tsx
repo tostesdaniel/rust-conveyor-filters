@@ -13,6 +13,7 @@ import {
 
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
+import { cn } from "@/lib/utils";
 import ViewFilter from "@/components/filters/view-filter";
 import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
@@ -44,9 +45,13 @@ import {
 
 interface MyFilterCardProps {
   filter: ConveyorFilter;
+  isFilterShared?: boolean;
 }
 
-export function MyFilterCard({ filter }: MyFilterCardProps) {
+export function MyFilterCard({
+  filter,
+  isFilterShared = false,
+}: MyFilterCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const { data: categories } = useGetUserCategories();
@@ -71,123 +76,138 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
           </Link>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
-        <div className='space-x-2 pr-2'>
+        <div className={cn("space-x-2 pr-2", isFilterShared && "pr-4")}>
+          {isFilterShared && (
+            <span className='pr-2'>
+              <ViewFilter filter={filter} variant='icon' />
+            </span>
+          )}
           <ExportConveyorFilter type='icon' filter={filter.filterItems} />
 
-          <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Delete filter</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to delete this filter? This action
-                  cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <DeleteFilterForm cardId={filter.id} setOpen={setIsDeleteOpen} />
-            </AlertDialogContent>
-          </AlertDialog>
-          <ShareWithUserDialog
-            filterId={filter.id}
-            open={isShareDialogOpen}
-            onOpenChange={setIsShareDialogOpen}
-            setIsDialogOpen={setIsShareDialogOpen}
-          />
+          {!isFilterShared && (
+            <>
+              <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete filter</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to delete this filter? This action
+                      cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <DeleteFilterForm
+                    cardId={filter.id}
+                    setOpen={setIsDeleteOpen}
+                  />
+                </AlertDialogContent>
+              </AlertDialog>
+              <ShareWithUserDialog
+                filterId={filter.id}
+                open={isShareDialogOpen}
+                onOpenChange={setIsShareDialogOpen}
+                setIsDialogOpen={setIsShareDialogOpen}
+              />
 
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type='button'
-                variant='ghost'
-                size='icon'
-                className='h-8 w-8 shrink-0 rounded-full'
-              >
-                <span className='sr-only'>Open options</span>
-                <EllipsisVertical className='h-5 w-5' aria-hidden='true' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <Link href={`/my-filters/edit/${filter.id}`}>
-                    <Edit />
-                    Edit
-                  </Link>
-                </DropdownMenuItem>
-                <ViewFilter filter={filter} variant='dropdown' />
-                <DropdownMenuSeparator />
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger
-                    disabled={categories?.length === 0}
-                    className='data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    size='icon'
+                    className='h-8 w-8 shrink-0 rounded-full'
                   >
-                    <ListPlusIcon />
-                    Assign to category
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      {categories?.map((category) => (
-                        <DropdownMenuGroup key={category.id}>
-                          {/*  Main Categories */}
-                          <CategoryDropdownCheckbox
-                            key={category.id}
-                            category={category}
-                            filter={filter}
-                          />
+                    <span className='sr-only'>Open options</span>
+                    <EllipsisVertical className='h-5 w-5' aria-hidden='true' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem asChild>
+                      <Link href={`/my-filters/edit/${filter.id}`}>
+                        <Edit />
+                        Edit
+                      </Link>
+                    </DropdownMenuItem>
+                    <ViewFilter filter={filter} variant='dropdown' />
+                    <DropdownMenuSeparator />
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger
+                        disabled={categories?.length === 0}
+                        className='data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+                      >
+                        <ListPlusIcon />
+                        Assign to category
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          {categories?.map((category) => (
+                            <DropdownMenuGroup key={category.id}>
+                              {/*  Main Categories */}
+                              <CategoryDropdownCheckbox
+                                key={category.id}
+                                category={category}
+                                filter={filter}
+                              />
 
-                          {/* Subcategories Submenu */}
-                          {category.subCategories.length > 0 && (
-                            <DropdownMenuSub defaultOpen>
-                              <DropdownMenuSubTrigger className='pl-8'>
-                                <CornerDownRight />
-                                <span>Subcategories</span>
-                              </DropdownMenuSubTrigger>
-                              <DropdownMenuSubContent>
-                                {category.subCategories.map((subCategory) => (
-                                  <CategoryDropdownCheckbox
-                                    key={subCategory.id}
-                                    category={subCategory}
-                                    filter={filter}
-                                    isSubCategory
-                                  />
-                                ))}
-                              </DropdownMenuSubContent>
-                            </DropdownMenuSub>
-                          )}
-                          {category !== categories[categories.length - 1] && (
-                            <DropdownMenuSeparator />
-                          )}
-                        </DropdownMenuGroup>
-                      ))}
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
+                              {/* Subcategories Submenu */}
+                              {category.subCategories.length > 0 && (
+                                <DropdownMenuSub defaultOpen>
+                                  <DropdownMenuSubTrigger className='pl-8'>
+                                    <CornerDownRight />
+                                    <span>Subcategories</span>
+                                  </DropdownMenuSubTrigger>
+                                  <DropdownMenuSubContent>
+                                    {category.subCategories.map(
+                                      (subCategory) => (
+                                        <CategoryDropdownCheckbox
+                                          key={subCategory.id}
+                                          category={subCategory}
+                                          filter={filter}
+                                          isSubCategory
+                                        />
+                                      ),
+                                    )}
+                                  </DropdownMenuSubContent>
+                                </DropdownMenuSub>
+                              )}
+                              {category !==
+                                categories[categories.length - 1] && (
+                                <DropdownMenuSeparator />
+                              )}
+                            </DropdownMenuGroup>
+                          ))}
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
 
-                {/* Clear Category */}
-                <ClearFilterCategory
-                  filter={filter}
-                  isSubCategory={!!filter.subCategoryId}
-                />
+                    {/* Clear Category */}
+                    <ClearFilterCategory
+                      filter={filter}
+                      isSubCategory={!!filter.subCategoryId}
+                    />
 
-                <DropdownMenuSeparator />
-                <PrivateShareDropdownItem
-                  filterId={filter.id}
-                  setIsDialogOpen={setIsShareDialogOpen}
-                />
-                <ExportConveyorFilter
-                  type='dropdown'
-                  filter={filter.filterItems}
-                />
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={() => setIsDeleteOpen(true)}
-                className='text-destructive'
-              >
-                <Trash2 />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                    <DropdownMenuSeparator />
+                    <PrivateShareDropdownItem
+                      filterId={filter.id}
+                      setIsDialogOpen={setIsShareDialogOpen}
+                    />
+                    <ExportConveyorFilter
+                      type='dropdown'
+                      filter={filter.filterItems}
+                    />
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() => setIsDeleteOpen(true)}
+                    className='text-destructive'
+                  >
+                    <Trash2 />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </div>
       </div>
     </li>

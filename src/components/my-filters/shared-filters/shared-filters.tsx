@@ -29,18 +29,27 @@ export function SharedFilters() {
           </span>
         </h2>
 
-        <section
-          key={`${senderUsername}'s-uncategorized-filters`}
-          className='my-6'
-        >
-          <CategoryHeading title='No category' filters={uncategorizedFilters} />
-          <FilterGrid filters={uncategorizedFilters} />
-        </section>
+        {uncategorizedFilters.length > 0 && (
+          <section
+            key={`${senderUsername}'s-uncategorized-filters`}
+            className='my-6'
+          >
+            <CategoryHeading
+              title='No category'
+              filters={uncategorizedFilters}
+            />
+            <FilterGrid filters={uncategorizedFilters} />
+          </section>
+        )}
 
         {categories.map(({ id, name, filters, subCategories }) => (
           <section key={`${senderUsername}'s-category-${id}`} className='my-6'>
             <CategoryHeading title={name} filters={filters} />
-            <FilterGrid filters={filters} />
+            {filters.length > 0 ? (
+              <FilterGrid filters={filters} />
+            ) : (
+              <EmptyCategory />
+            )}
 
             {subCategories.map(({ id, name, filters }) => (
               <div
@@ -68,5 +77,13 @@ function FilterGrid({ filters }: { filters: ConveyorFilter[] }) {
         <FilterCard key={filter.id} filter={filter} isFilterShared />
       ))}
     </ul>
+  );
+}
+
+function EmptyCategory() {
+  return (
+    <p className='mb-6 mt-4 text-sm text-muted-foreground'>
+      No filters in this category.
+    </p>
   );
 }

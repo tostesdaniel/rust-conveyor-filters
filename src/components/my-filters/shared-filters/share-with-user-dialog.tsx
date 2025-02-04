@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import { z } from "zod";
-import { ZSAError } from "zsa";
 
 import { shareFilter } from "@/actions/sharedFilters";
 import { validateToken } from "@/actions/shareTokens";
@@ -116,13 +115,21 @@ export function ShareWithUserDialog({
             });
             handleInvalidToken();
             break;
+          case "CONFLICT":
+            toast.warning("Filter already shared with this user", {
+              description: error.message,
+            });
+            break;
           case "INTERNAL_SERVER_ERROR":
             toast.error("Server error", {
               description: error.message,
             });
             break;
           default:
-            toast.error("Failed to share filter");
+            toast.error("Something went wrong", {
+              description:
+                "Please try again. If the error persists, please contact support on Discord.",
+            });
         }
       },
     });
@@ -158,16 +165,7 @@ export function ShareWithUserDialog({
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    try {
-      await shareFilterMutationAsync(data);
-    } catch (error) {
-      if (!(error instanceof ZSAError)) {
-        toast.error("Something went wrong", {
-          description:
-            "Please try again.\nIf the error persists, please contact support on Discord.",
-        });
-      }
-    }
+    await shareFilterMutationAsync(data);
   };
 
   return (

@@ -180,7 +180,7 @@ export default function SignUpPage() {
                           <div className='flex justify-center text-center'>
                             <Clerk.Input
                               type='otp'
-                              className='flex justify-center has-[:disabled]:opacity-50'
+                              className='flex justify-center has-disabled:opacity-50'
                               autoSubmit
                               render={({ value, status }) => {
                                 return (

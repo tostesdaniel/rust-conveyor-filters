@@ -211,7 +211,7 @@ export function ShareWithUserDialog({
                       </FormControl>
                     </PopoverTrigger>
 
-                    <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
+                    <PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
                       <Command>
                         <CommandInput
                           placeholder='Enter token...'

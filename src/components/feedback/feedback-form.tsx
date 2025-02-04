@@ -184,7 +184,7 @@ export function FeedbackForm() {
             </FormItem>
           )}
         />
-        <div className='!mt-10 flex justify-end border-t border-muted pt-8'>
+        <div className='mt-10! flex justify-end border-t border-muted pt-8'>
           {isPending ? (
             <LoadingButton>Submitting</LoadingButton>
           ) : (

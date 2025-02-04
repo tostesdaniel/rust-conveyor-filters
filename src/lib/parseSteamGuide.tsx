@@ -54,7 +54,7 @@ export function parseDescription(description: string): React.ReactNode {
       elements.push(<br key={index} className='leading-3' />);
     } else {
       elements.push(
-        <Typography key={index} variant='p' className='!mt-0'>
+        <Typography key={index} variant='p' className='mt-0!'>
           {line}
         </Typography>,
       );

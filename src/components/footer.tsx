@@ -17,7 +17,7 @@ const navigation = [
 export function Footer() {
   return (
     <footer>
-      <div className='mx-auto max-w-screen-2xl overflow-hidden px-6 py-12 min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between min-[800px]:gap-x-6 lg:px-8'>
+      <div className='mx-auto max-w-(--breakpoint-2xl) overflow-hidden px-6 py-12 min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between min-[800px]:gap-x-6 lg:px-8'>
         <nav
           aria-label='Footer'
           className='columns-2 sm:flex sm:justify-center sm:space-x-2 min-[800px]:order-2 lg:space-x-12'
@@ -103,7 +103,7 @@ export function Footer() {
         </div>
       </div>
       <div className='border-t border-border/40'>
-        <p className='mx-auto max-w-screen-2xl px-6 py-4 text-center text-xs leading-5 text-muted-foreground lg:px-8'>
+        <p className='mx-auto max-w-(--breakpoint-2xl) px-6 py-4 text-center text-xs leading-5 text-muted-foreground lg:px-8'>
           This app is not affiliated with, endorsed, sponsored, or specifically
           approved by Facepunch Studios. It is an unofficial fan-made tool.
         </p>

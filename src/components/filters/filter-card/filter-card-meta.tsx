@@ -17,7 +17,7 @@ export function FilterCardMeta({
     <div
       className={cn(
         "flex items-center space-x-2",
-        isDescriptionLong && "!mt-0.5",
+        isDescriptionLong && "mt-0.5!",
       )}
     >
       <CardDescription>{filter.filterItems.length} items</CardDescription>

@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { pooledDb } from "@/db/pooled-connection";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { createServerAction } from "zsa";
+import { createServerAction, ZSAError } from "zsa";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
 import { generateShareToken } from "@/lib/share-token";
@@ -121,15 +121,22 @@ export const validateToken = createServerAction()
       });
 
       if (!token) {
-        throw new Error("Invalid share token");
+        throw new ZSAError("NOT_FOUND", "Token invalid or does not exist");
       }
 
       if (token.revoked) {
-        throw new Error("Share token revoked");
+        throw new ZSAError("FORBIDDEN", "Token has been revoked");
       }
 
       return { valid: true };
     } catch (error) {
-      throw new Error("Failed to validate share token");
+      if (error instanceof ZSAError) {
+        throw error;
+      }
+
+      throw new ZSAError(
+        "INTERNAL_SERVER_ERROR",
+        "Please try again or request support on Discord.",
+      );
     }
   });

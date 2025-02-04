@@ -26,6 +26,7 @@ export const shareFilter = ownsFilterProcedure
         const filter = await tx.query.filters.findFirst({
           where: eq(filters.id, filterId),
         });
+
         if (!filter) {
           throw new ZSAError("NOT_FOUND", "Filter not found");
         }
@@ -39,15 +40,27 @@ export const shareFilter = ownsFilterProcedure
             token: true,
           },
         });
-        if (input.token === ownToken?.token!) {
+
+        if (!ownToken) {
+          throw new ZSAError(
+            "NOT_FOUND",
+            "Could not find your own share token. Please generate a new one",
+          );
+        }
+
+        if (input.token === ownToken.token) {
           throw new ZSAError(
             "FORBIDDEN",
             "You cannot share a filter with yourself",
           );
         }
         const existingSharedFilter = await tx.query.sharedFilters.findFirst({
-          where: eq(sharedFilters.filterId, filterId),
+          where: and(
+            eq(sharedFilters.filterId, filterId),
+            eq(sharedFilters.senderId, ctx.ownsFilter.authorId),
+          ),
         });
+
         if (existingSharedFilter) {
           throw new ZSAError(
             "CONFLICT",
@@ -64,6 +77,7 @@ export const shareFilter = ownsFilterProcedure
             id: true,
           },
         });
+
         if (!shareToken) {
           throw new ZSAError("NOT_FOUND", "Invalid share token");
         }

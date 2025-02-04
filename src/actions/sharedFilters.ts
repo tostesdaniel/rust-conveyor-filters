@@ -228,3 +228,39 @@ export const getSharedFilters = authenticatedProcedure
 
     return Object.values(structuredData);
   });
+
+export const deleteSharedFilter = authenticatedProcedure
+  .createServerAction()
+  .input(z.object({ filterId: z.number() }))
+  .handler(async ({ ctx, input }) => {
+    const { filterId } = input;
+
+    const ownShareToken = await db.query.shareTokens.findFirst({
+      where: and(
+        eq(shareTokens.revoked, false),
+        eq(shareTokens.userId, ctx.userId),
+      ),
+    });
+
+    if (!ownShareToken) {
+      throw new ZSAError("NOT_FOUND", "Generate a new share token");
+    }
+
+    try {
+      await db
+        .delete(sharedFilters)
+        .where(
+          and(
+            eq(sharedFilters.filterId, filterId),
+            eq(sharedFilters.shareTokenId, ownShareToken.id),
+          ),
+        );
+    } catch (error) {
+      if (error instanceof ZSAError) throw error;
+
+      throw new ZSAError(
+        "INTERNAL_SERVER_ERROR",
+        "Failed to delete shared filter",
+      );
+    }
+  });

@@ -19,6 +19,8 @@ import { ClearFilterCategory } from "@/components/my-filters/categories/clear-fi
 import { DeleteFilterForm } from "@/app/(app)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
+import { PrivateShareDropdownItem } from "./my-filters/shared-filters/private-share-dropdown-item";
+import { ShareWithUserDialog } from "./my-filters/shared-filters/share-with-user-dialog";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -46,6 +48,7 @@ interface MyFilterCardProps {
 
 export function MyFilterCard({ filter }: MyFilterCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const { data: categories } = useGetUserCategories();
 
   return (
@@ -83,6 +86,13 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
               <DeleteFilterForm cardId={filter.id} setOpen={setIsDeleteOpen} />
             </AlertDialogContent>
           </AlertDialog>
+          <ShareWithUserDialog
+            filterId={filter.id}
+            open={isShareDialogOpen}
+            onOpenChange={setIsShareDialogOpen}
+            setIsDialogOpen={setIsShareDialogOpen}
+          />
+
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
@@ -159,6 +169,10 @@ export function MyFilterCard({ filter }: MyFilterCardProps) {
                 />
 
                 <DropdownMenuSeparator />
+                <PrivateShareDropdownItem
+                  filterId={filter.id}
+                  setIsDialogOpen={setIsShareDialogOpen}
+                />
                 <ExportConveyorFilter
                   type='dropdown'
                   filter={filter.filterItems}

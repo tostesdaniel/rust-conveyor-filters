@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Copy, Loader } from "lucide-react";
+import { Copy, Eye, EyeOff, Loader } from "lucide-react";
 import { toast } from "sonner";
 
 import { revokeShareToken } from "@/actions/shareTokens";
@@ -16,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function ShareTokenDisplay() {
   const queryClient = useQueryClient();
+  const [isVisible, setIsVisible] = useState(false);
   const [_, copy] = useCopyToClipboard();
   const { data: shareToken, isLoading } = useGetShareToken();
   const { mutate: revokeTokenMutation, isPending } = useServerActionMutation(
@@ -26,6 +28,7 @@ export function ShareTokenDisplay() {
         queryClient.invalidateQueries({
           queryKey: ["share-token"],
         });
+        setIsVisible(true);
       },
       onError: () => {
         toast.error("Failed to generate new token");
@@ -69,15 +72,29 @@ export function ShareTokenDisplay() {
         <Input
           id='share-token'
           type='text'
-          value={shareToken.token}
+          placeholder={isVisible ? shareToken.token : "*********************"}
+          value=''
           readOnly
           aria-describedby='share-token-description'
           className={cn(
-            "transition-[padding,opacity] duration-300 ease-in-out",
+            "placeholder:text-foreground placeholder:opacity-100",
+            "transition-[padding-left,opacity] duration-300 ease-in-out",
             isPending && "pl-8 opacity-50",
             "bg-muted pr-10",
+            !isVisible && "-pt-0.5 pb-0.5 font-bold tracking-wide",
           )}
         />
+
+        <Button
+          type='button'
+          variant='secondary'
+          onClick={() => setIsVisible(!isVisible)}
+          className='absolute right-[52px] top-1 size-8 bg-muted hover:bg-background/50'
+          aria-label={isVisible ? "Hide token" : "Show token"}
+        >
+          {isVisible ? <EyeOff /> : <Eye />}
+        </Button>
+
         {isPending && (
           <Loader className='absolute left-3 top-3 size-4 animate-spin' />
         )}

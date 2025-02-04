@@ -16,6 +16,44 @@ function CategoryHeadingSkeleton({ withAction = false }) {
   );
 }
 
+export function FiltersTreeSkeleton() {
+  return (
+    <>
+      {/* Uncategorized Filters Section */}
+      <section className='py-8'>
+        <CategoryHeadingSkeleton withAction />
+        <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+          {[...Array(2)].map((_, i) => (
+            <FilterCardSkeleton key={`uncategorized-${i}`} />
+          ))}
+        </div>
+      </section>
+
+      {/* Categories Sections */}
+      {[...Array(2)].map((_, categoryIndex) => (
+        <section key={`category-${categoryIndex}`} className='py-6'>
+          <CategoryHeadingSkeleton />
+          <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+            {[...Array(2)].map((_, i) => (
+              <FilterCardSkeleton key={`category-${categoryIndex}-${i}`} />
+            ))}
+          </div>
+
+          {/* Subcategory */}
+          <div className='ml-6 border-l border-border py-6 pl-6'>
+            <CategoryHeadingSkeleton />
+            <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+              {[...Array(2)].map((_, i) => (
+                <FilterCardSkeleton key={`subcategory-${categoryIndex}-${i}`} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+    </>
+  );
+}
+
 export default function MyFiltersLoading() {
   return (
     <>
@@ -37,39 +75,7 @@ export default function MyFiltersLoading() {
           </TabsTrigger>
         </TabsList>
 
-        {/* Uncategorized Filters Section */}
-        <section className='py-8'>
-          <CategoryHeadingSkeleton withAction />
-          <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
-            {[...Array(2)].map((_, i) => (
-              <FilterCardSkeleton key={`uncategorized-${i}`} />
-            ))}
-          </div>
-        </section>
-
-        {/* Categories Sections */}
-        {[...Array(2)].map((_, categoryIndex) => (
-          <section key={`category-${categoryIndex}`} className='py-6'>
-            <CategoryHeadingSkeleton />
-            <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
-              {[...Array(2)].map((_, i) => (
-                <FilterCardSkeleton key={`category-${categoryIndex}-${i}`} />
-              ))}
-            </div>
-
-            {/* Subcategory */}
-            <div className='ml-6 border-l border-border py-6 pl-6'>
-              <CategoryHeadingSkeleton />
-              <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
-                {[...Array(2)].map((_, i) => (
-                  <FilterCardSkeleton
-                    key={`subcategory-${categoryIndex}-${i}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        ))}
+        <FiltersTreeSkeleton />
       </Tabs>
     </>
   );

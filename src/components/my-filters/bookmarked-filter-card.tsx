@@ -11,7 +11,7 @@ interface BookmarkedFilterCardProps {
 
 export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
   return (
-    <li className='col-span-1 flex min-w-[300px] rounded-md shadow-sm'>
+    <li className='col-span-1 flex min-w-[300px] rounded-md shadow-xs'>
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5 text-sm font-medium text-card-foreground'>
         <Image
           src={`/items/${filter.imagePath}.png`}

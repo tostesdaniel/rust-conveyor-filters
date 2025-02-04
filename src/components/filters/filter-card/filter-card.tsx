@@ -13,7 +13,7 @@ export function FilterCard({
   className?: string;
 }) {
   return (
-    <Card className={cn("flex h-full max-w-screen-sm flex-col", className)}>
+    <Card className={cn("flex h-full max-w-(--breakpoint-sm) flex-col", className)}>
       <FilterCardHeader filter={filter} />
       <FilterCardContent filter={filter} />
       <FilterCardFooter filter={filter} />

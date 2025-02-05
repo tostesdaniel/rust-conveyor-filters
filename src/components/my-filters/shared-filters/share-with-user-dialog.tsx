@@ -3,16 +3,24 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Check, ChevronsUpDown, Clock, KeyRound } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  Clock,
+  KeyRound,
+  TriangleAlert,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import { z } from "zod";
 
-import { shareFilter } from "@/actions/sharedFilters";
+import { shareFilter, shareFilterCategory } from "@/actions/sharedFilters";
 import { validateToken } from "@/actions/shareTokens";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
+import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "../../ui/button";
 import {
@@ -33,8 +41,10 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "../../ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
@@ -45,7 +55,7 @@ type RecentToken = {
 };
 
 const formSchema = z.object({
-  filterId: z.coerce.number(),
+  includeSubcategories: z.boolean().default(false).optional(),
   token: z
     .string()
     .nonempty("Token is required.")
@@ -53,7 +63,9 @@ const formSchema = z.object({
 });
 
 interface ShareWithUserDialogProps {
-  filterId: number;
+  filterId?: number;
+  categoryId?: number | null;
+  subCategoryId?: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   setIsDialogOpen: (open: boolean) => void;
@@ -61,6 +73,8 @@ interface ShareWithUserDialogProps {
 
 export function ShareWithUserDialog({
   filterId,
+  categoryId,
+  subCategoryId,
   open,
   onOpenChange,
   setIsDialogOpen,
@@ -70,13 +84,14 @@ export function ShareWithUserDialog({
     "recent-share-tokens",
     [],
   );
+  const { data: userCategoryHierarchy = [] } = useGetUserCategoryHierarchy();
 
   interface ShareMutationContext {
     isTokenValid: boolean;
   }
 
   const { mutateAsync: shareFilterMutationAsync, isPending } =
-    useServerActionMutation(shareFilter, {
+    useServerActionMutation(filterId ? shareFilter : shareFilterCategory, {
       onMutate: async (variables) => {
         const [data, error] = await validateToken({ token: variables.token });
 
@@ -138,7 +153,6 @@ export function ShareWithUserDialog({
     resolver: zodResolver(formSchema),
     defaultValues: {
       token: "",
-      filterId,
     },
   });
 
@@ -148,10 +162,9 @@ export function ShareWithUserDialog({
 
       form.reset({
         token: mostRecentToken,
-        filterId,
       });
     }
-  }, [filterId, form, open, recentTokens]);
+  }, [categoryId, filterId, form, open, recentTokens, subCategoryId]);
 
   const handleShareSuccess = (token: string) => {
     setRecentTokens((prev) => {
@@ -165,21 +178,95 @@ export function ShareWithUserDialog({
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    await shareFilterMutationAsync(data);
+    await shareFilterMutationAsync({
+      token: data.token,
+      filterId,
+      categoryId: categoryId ?? null,
+      subCategoryId,
+      includeSubcategories: data.includeSubcategories ?? false,
+    });
   };
+
+  const getShareText = () => {
+    const getBaseDescription = (s: string, plural: boolean = false) =>
+      `Share ${plural ? "these" : "this"} ${s} with a user by entering their token.`;
+    if (filterId)
+      return {
+        title: "Share Filter",
+        description: getBaseDescription("filter"),
+      };
+    if (subCategoryId)
+      return {
+        title: "Share Subcategory",
+        description: getBaseDescription("subcategory"),
+      };
+    if (categoryId)
+      return {
+        title: "Share Category",
+        description: getBaseDescription("category"),
+      };
+    return {
+      title: "Share Filters",
+      description: getBaseDescription("filters", true),
+    };
+  };
+
+  const showIncludeSubcategories = Boolean(
+    categoryId &&
+      userCategoryHierarchy?.find((e) => e.id === categoryId)?.subCategories
+        .length,
+  );
+  const disableIncludeSubcategoriesCheckbox = userCategoryHierarchy
+    ?.find((e) => e.id === categoryId)
+    ?.subCategories.every((sc) => sc.filters.length === 0);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-[475px]'>
         <DialogHeader>
-          <DialogTitle>Share Filter with User</DialogTitle>
-          <DialogDescription>
-            Share the filter with a user by entering their token.
-          </DialogDescription>
+          <DialogTitle>{getShareText().title}</DialogTitle>
+          <DialogDescription>{getShareText().description}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            {showIncludeSubcategories && (
+              <FormField
+                control={form.control}
+                name='includeSubcategories'
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      "flex items-start space-y-0 space-x-3 rounded-md border p-4",
+                      disableIncludeSubcategoriesCheckbox && "opacity-50",
+                    )}
+                  >
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={disableIncludeSubcategoriesCheckbox}
+                      />
+                    </FormControl>
+                    <div className='space-y-1 leading-none'>
+                      <FormLabel>Include Subcategories</FormLabel>
+                      <FormDescription>
+                        If checked, all subcategories of this category will be
+                        shared with the user.
+                      </FormDescription>
+                      {disableIncludeSubcategoriesCheckbox && (
+                        <div className='text-destructive mt-2 -ml-7 flex items-center gap-x-2 brightness-150 saturate-150'>
+                          <TriangleAlert className='h-4 w-4' />
+                          <p className='text-sm font-medium'>
+                            Add filters to subcategories to enable this option.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name='token'
@@ -193,7 +280,7 @@ export function ShareWithUserDialog({
                           role='combobox'
                           aria-expanded={openCombobox}
                           className={cn(
-                            "w-full justify-between",
+                            "w-[425px] justify-between",
                             !field.value && "text-muted-foreground",
                           )}
                           disabled={isPending}
@@ -211,7 +298,7 @@ export function ShareWithUserDialog({
                       </FormControl>
                     </PopoverTrigger>
 
-                    <PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
+                    <PopoverContent className='w-[425px] p-0'>
                       <Command>
                         <CommandInput
                           placeholder='Enter token...'
@@ -235,10 +322,10 @@ export function ShareWithUserDialog({
                                 >
                                   <div className='flex w-full items-center justify-between'>
                                     <div className='flex items-center'>
-                                      <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
+                                      <Clock className='text-muted-foreground mr-2 h-4 w-4' />
                                       <span>{item.token}</span>
                                     </div>
-                                    <span className='text-sm text-muted-foreground'>
+                                    <span className='text-muted-foreground text-sm'>
                                       {format(
                                         new Date(item.lastUsed),
                                         "MMM d, yyyy",
@@ -261,8 +348,8 @@ export function ShareWithUserDialog({
                           <CommandGroup heading='Recent Tokens'>
                             <CommandItem disabled className='opacity-50'>
                               <div className='flex items-center gap-x-2'>
-                                <Clock className='h-4 w-4 text-muted-foreground' />
-                                <span className='text-sm text-muted-foreground'>
+                                <Clock className='text-muted-foreground h-4 w-4' />
+                                <span className='text-muted-foreground text-sm'>
                                   Your recently used tokens will be saved here
                                 </span>
                               </div>

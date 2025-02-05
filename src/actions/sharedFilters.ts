@@ -3,7 +3,7 @@
 import { db } from "@/db";
 import { pooledDb } from "@/db/pooled-connection";
 import { clerkClient } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 import { ZSAError } from "zsa";
 
@@ -92,6 +92,117 @@ export const shareFilter = ownsFilterProcedure
       if (error instanceof ZSAError) throw error;
 
       throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to share filter");
+    }
+  });
+
+export const shareFilterCategory = authenticatedProcedure
+  .createServerAction()
+  .input(
+    z.object({
+      categoryId: z.number().nullable(),
+      subCategoryId: z.number().optional(),
+      includeSubcategories: z.boolean(),
+      token: z.string(),
+    }),
+  )
+  .handler(async ({ ctx, input }) => {
+    const { categoryId, subCategoryId, includeSubcategories, token } = input;
+
+    if (categoryId && subCategoryId) {
+      throw new ZSAError(
+        "INPUT_PARSE_ERROR",
+        "Cannot specify both category and subCategory",
+      );
+    }
+
+    if (subCategoryId && includeSubcategories) {
+      throw new ZSAError(
+        "INPUT_PARSE_ERROR",
+        "Cannot specify both subCategory and includeSubcategories",
+      );
+    }
+
+    try {
+      await pooledDb.transaction(async (tx) => {
+        const [filtersToShare, shareToken] = await Promise.all([
+          tx.query.filters.findMany({
+            where: and(
+              eq(filters.authorId, ctx.userId),
+              categoryId === null
+                ? isNull(filters.categoryId)
+                : subCategoryId
+                  ? eq(filters.subCategoryId, subCategoryId)
+                  : and(
+                      eq(filters.categoryId, categoryId),
+                      includeSubcategories
+                        ? or(
+                            isNotNull(filters.subCategoryId),
+                            eq(filters.categoryId, categoryId),
+                          )
+                        : isNull(filters.subCategoryId),
+                    ),
+            ),
+          }),
+          tx.query.shareTokens.findFirst({
+            where: and(
+              eq(shareTokens.revoked, false),
+              eq(shareTokens.token, token),
+            ),
+          }),
+        ]);
+
+        if (!shareToken) {
+          throw new ZSAError("NOT_FOUND", "Invalid share token");
+        }
+
+        if (filtersToShare.length === 0) {
+          throw new ZSAError("NOT_FOUND", "No filters found to share");
+        }
+
+        const existingSharedFilters = await tx.query.sharedFilters.findMany({
+          where: and(
+            inArray(
+              sharedFilters.filterId,
+              filtersToShare.map((f) => f.id),
+            ),
+            eq(sharedFilters.senderId, ctx.userId),
+          ),
+        });
+
+        const existingFilterIds = new Set(
+          existingSharedFilters.map((f) => f.filterId),
+        );
+        const filtersToInsert = filtersToShare.filter(
+          (f) => !existingFilterIds.has(f.id),
+        );
+
+        if (filtersToInsert.length === 0) {
+          throw new ZSAError(
+            "CONFLICT",
+            "All filters in this category are already shared with this user",
+          );
+        }
+
+        await tx.insert(sharedFilters).values(
+          filtersToInsert.map((f) => ({
+            senderId: ctx.userId,
+            filterId: f.id,
+            shareTokenId: shareToken.id,
+          })),
+        );
+
+        const result = {
+          totalFilters: filtersToShare.length,
+          sharedCount: filtersToInsert.length,
+          alreadySharedCount: existingFilterIds.size,
+        };
+
+        return result;
+      });
+    } catch (error) {
+      if (error instanceof ZSAError) throw error;
+
+      throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to share filters");
     }
   });
 

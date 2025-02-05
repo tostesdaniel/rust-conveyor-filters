@@ -10,6 +10,7 @@ import { CategoryHeadingDropdown } from "@/components/my-filters/categories/cate
 import { CreateCategoryDialog } from "@/components/my-filters/categories/dialogs/create-category-dialog";
 
 import { SortFilterButton } from "../sort-filter-button";
+import { UncategorizedHeadingDropdown } from "./uncategorized-heading-dropdown";
 
 interface CategoryHeadingProps {
   title: string;
@@ -39,10 +40,10 @@ export function CategoryHeading({
   const showSortButton = filters.length > 1;
 
   return (
-    <div className='border-b border-border pb-5 sm:flex sm:items-center sm:justify-between'>
-      <h2 className='text-base font-semibold leading-6'>{title}</h2>
+    <div className='border-border border-b pb-5 sm:flex sm:items-center sm:justify-between'>
+      <h2 className='text-base leading-6 font-semibold'>{title}</h2>
       {withAction && (
-        <div className='mt-3 flex items-center gap-x-2 sm:ml-4 sm:mt-0'>
+        <div className='mt-3 flex items-center gap-x-2 sm:mt-0 sm:ml-4'>
           <CreateCategoryDialog parentId={null}>
             <Button type='button' variant='ghost' size='sm'>
               <PlusIcon />
@@ -52,11 +53,12 @@ export function CategoryHeading({
           {showSortButton && (
             <div className='relative'>
               <SortFilterButton value={sortType} onValueChange={setSortType} />
-              <Badge className='absolute -right-5 -top-5 rotate-6 scale-90 bg-[#99ff33] px-1.5 py-0 hover:bg-[#99ff33]/80'>
+              <Badge className='absolute -top-5 -right-5 scale-90 rotate-6 bg-[#99ff33] px-1.5 py-0 hover:bg-[#99ff33]/80'>
                 New
               </Badge>
             </div>
           )}
+          <UncategorizedHeadingDropdown categoryId={null} />
         </div>
       )}
       {!withAction && categoryId && (

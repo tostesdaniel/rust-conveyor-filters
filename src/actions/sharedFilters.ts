@@ -60,20 +60,6 @@ export const shareFilter = ownsFilterProcedure
               "You cannot share a filter with yourself. Please use a different share token.",
           });
         }
-        const existingSharedFilter = await tx.query.sharedFilters.findFirst({
-          where: and(
-            eq(sharedFilters.filterId, filterId),
-            eq(sharedFilters.senderId, ctx.ownsFilter.authorId),
-          ),
-        });
-
-        if (existingSharedFilter) {
-          throw new ZSAError("CONFLICT", {
-            name: "Filter Already Shared",
-            message:
-              "This filter is already shared with the user associated with this token.",
-          });
-        }
 
         const shareToken = await tx.query.shareTokens.findFirst({
           where: and(
@@ -90,6 +76,22 @@ export const shareFilter = ownsFilterProcedure
             name: "Invalid Share Token",
             message:
               "The share token you provided is invalid or has been revoked. Please check the token and try again.",
+          });
+        }
+
+        const existingSharedFilter = await tx.query.sharedFilters.findFirst({
+          where: and(
+            eq(sharedFilters.filterId, filterId),
+            eq(sharedFilters.senderId, ctx.ownsFilter.authorId),
+            eq(sharedFilters.shareTokenId, shareToken.id),
+          ),
+        });
+
+        if (existingSharedFilter) {
+          throw new ZSAError("CONFLICT", {
+            name: "Filter Already Shared",
+            message:
+              "This filter is already shared with the user associated with this token.",
           });
         }
 

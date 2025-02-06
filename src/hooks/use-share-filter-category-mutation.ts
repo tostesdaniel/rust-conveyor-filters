@@ -35,7 +35,6 @@ export function useShareFilterCategoryMutation({
     },
     onError: (error, variables) => {
       const errorData = JSON.parse(error.data);
-      console.log("🚀 ~ errorData:", errorData);
       switch (error.code) {
         case "INPUT_PARSE_ERROR":
           toast.warning(errorData.name, {

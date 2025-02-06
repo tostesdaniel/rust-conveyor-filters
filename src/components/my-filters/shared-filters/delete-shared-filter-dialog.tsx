@@ -1,5 +1,6 @@
 "use client";
 
+import type { BaseSyntheticEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 
 interface DeleteSharedFilterDialogProps {
@@ -54,7 +63,9 @@ export function DeleteSharedFilterDialog({
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    await mutation.mutateAsync({ filterId: data.filterId });
+    try {
+      await mutation.mutateAsync({ filterId: data.filterId });
+    } catch (error) {}
   };
 
   return (
@@ -77,9 +88,9 @@ export function DeleteSharedFilterDialog({
               >
                 Cancel
               </Button>
-              <AlertDialogAction type='submit' disabled={mutation.isPending}>
+              <Button type='submit' disabled={mutation.isPending}>
                 {mutation.isPending ? " Removing..." : "Remove"}
-              </AlertDialogAction>
+              </Button>
             </AlertDialogFooter>
           </form>
         </Form>

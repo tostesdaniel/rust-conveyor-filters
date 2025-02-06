@@ -14,6 +14,7 @@ import {
   AlertDialogCancel,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 
 type DeleteFilterFormProps = {
@@ -49,8 +50,10 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
 
   const { isPending } = mutation;
 
-  const onSubmit = () => {
-    mutation.mutate({ filterId: cardId });
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await mutation.mutateAsync({ filterId: data.cardId });
+    } catch (error) {}
   };
 
   return (
@@ -63,9 +66,9 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
           >
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction type='submit' disabled={isPending}>
+          <Button type='submit' disabled={isPending}>
             {isPending ? "Deleting..." : "Delete"}
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </form>
     </Form>

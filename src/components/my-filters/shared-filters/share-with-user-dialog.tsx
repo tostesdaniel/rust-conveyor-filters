@@ -19,6 +19,7 @@ import { useShareFilterCategoryMutation } from "@/hooks/use-share-filter-categor
 import { useShareFilterMutation } from "@/hooks/use-share-filter-mutation";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Typography } from "@/components/ui/typography";
 
 import { Button } from "../../ui/button";
 import {
@@ -189,7 +190,14 @@ export function ShareWithUserDialog({
       <DialogContent className='sm:max-w-[475px]'>
         <DialogHeader>
           <DialogTitle>{getShareText().title}</DialogTitle>
-          <DialogDescription>{getShareText().description}</DialogDescription>
+          <DialogDescription className='space-y-2'>
+            <strong>To share:</strong> Ask your friend for their personal token
+            (found in their{" "}
+            <Typography variant='inlineCode' className='text-xs'>
+              &quot;Shared With You&quot;
+            </Typography>{" "}
+            tab) and enter it below.
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

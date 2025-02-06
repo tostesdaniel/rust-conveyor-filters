@@ -216,6 +216,7 @@ export const shareFilterCategory = authenticatedProcedure
               sharedFilters.filterId,
               filtersToShare.map((f) => f.id),
             ),
+            eq(sharedFilters.shareTokenId, shareToken.id),
             eq(sharedFilters.senderId, ctx.userId),
           ),
         });

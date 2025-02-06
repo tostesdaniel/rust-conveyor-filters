@@ -28,7 +28,11 @@ export const shareFilter = ownsFilterProcedure
         });
 
         if (!filter) {
-          throw new ZSAError("NOT_FOUND", "Filter not found");
+          throw new ZSAError("NOT_FOUND", {
+            name: "Filter Not Found",
+            message:
+              "The filter you're trying to share could not be found. It may have been deleted or moved.",
+          });
         }
 
         const ownToken = await tx.query.shareTokens.findFirst({
@@ -42,17 +46,19 @@ export const shareFilter = ownsFilterProcedure
         });
 
         if (!ownToken) {
-          throw new ZSAError(
-            "NOT_FOUND",
-            "Could not find your own share token. Please generate a new one",
-          );
+          throw new ZSAError("NOT_FOUND", {
+            name: "Missing Share Token",
+            message:
+              "You don't have an active share token. Please generate one,",
+          });
         }
 
         if (input.token === ownToken.token) {
-          throw new ZSAError(
-            "FORBIDDEN",
-            "You cannot share a filter with yourself",
-          );
+          throw new ZSAError("FORBIDDEN", {
+            name: "Invalid Share Target",
+            message:
+              "You cannot share a filter with yourself. Please use a different share token.",
+          });
         }
         const existingSharedFilter = await tx.query.sharedFilters.findFirst({
           where: and(
@@ -62,10 +68,11 @@ export const shareFilter = ownsFilterProcedure
         });
 
         if (existingSharedFilter) {
-          throw new ZSAError(
-            "CONFLICT",
-            "Filter already shared with this user",
-          );
+          throw new ZSAError("CONFLICT", {
+            name: "Filter Already Shared",
+            message:
+              "This filter is already shared with the user associated with this token.",
+          });
         }
 
         const shareToken = await tx.query.shareTokens.findFirst({
@@ -79,7 +86,11 @@ export const shareFilter = ownsFilterProcedure
         });
 
         if (!shareToken) {
-          throw new ZSAError("NOT_FOUND", "Invalid share token");
+          throw new ZSAError("NOT_FOUND", {
+            name: "Invalid Share Token",
+            message:
+              "The share token you provided is invalid or has been revoked. Please check the token and try again.",
+          });
         }
 
         await tx.insert(sharedFilters).values({
@@ -91,7 +102,11 @@ export const shareFilter = ownsFilterProcedure
     } catch (error) {
       if (error instanceof ZSAError) throw error;
 
-      throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to share filter");
+      throw new ZSAError("INTERNAL_SERVER_ERROR", {
+        name: "Something Went Wrong",
+        message:
+          "We encountered an unexpected error while sharing your filter. If the problem persists, please contact ohTostt on Discord.",
+      });
     }
   });
 
@@ -109,21 +124,49 @@ export const shareFilterCategory = authenticatedProcedure
     const { categoryId, subCategoryId, includeSubcategories, token } = input;
 
     if (categoryId && subCategoryId) {
-      throw new ZSAError(
-        "INPUT_PARSE_ERROR",
-        "Cannot specify both category and subCategory",
-      );
+      throw new ZSAError("INPUT_PARSE_ERROR", {
+        name: "Invalid Input",
+        message:
+          "Cannot specify both category and subcategory. If you got this error, please contact ohTostt on Discord.",
+      });
     }
 
     if (subCategoryId && includeSubcategories) {
-      throw new ZSAError(
-        "INPUT_PARSE_ERROR",
-        "Cannot specify both subCategory and includeSubcategories",
-      );
+      throw new ZSAError("INPUT_PARSE_ERROR", {
+        name: "Invalid Input",
+        message:
+          "Cannot specify both subcategory and includeSubcategories. If you got this error, please contact ohTostt on Discord.",
+      });
     }
 
     try {
-      await pooledDb.transaction(async (tx) => {
+      return await pooledDb.transaction(async (tx) => {
+        const ownToken = await tx.query.shareTokens.findFirst({
+          where: and(
+            eq(shareTokens.revoked, false),
+            eq(shareTokens.userId, ctx.userId),
+          ),
+          columns: {
+            token: true,
+          },
+        });
+
+        if (!ownToken) {
+          throw new ZSAError("NOT_FOUND", {
+            name: "Missing Share Token",
+            message:
+              "You don't have an active share token. Please generate one,",
+          });
+        }
+
+        if (input.token === ownToken.token) {
+          throw new ZSAError("FORBIDDEN", {
+            name: "Invalid Share Target",
+            message:
+              "You cannot share a filter with yourself. Please use a different share token.",
+          });
+        }
+
         const [filtersToShare, shareToken] = await Promise.all([
           tx.query.filters.findMany({
             where: and(
@@ -152,11 +195,17 @@ export const shareFilterCategory = authenticatedProcedure
         ]);
 
         if (!shareToken) {
-          throw new ZSAError("NOT_FOUND", "Invalid share token");
+          throw new ZSAError("NOT_FOUND", {
+            name: "Invalid Share Token",
+            message: "The provided share token is invalid or revoked.",
+          });
         }
 
         if (filtersToShare.length === 0) {
-          throw new ZSAError("NOT_FOUND", "No filters found to share");
+          throw new ZSAError("NOT_FOUND", {
+            name: "No Filters Found",
+            message: "No filters found in this category to share.",
+          });
         }
 
         const existingSharedFilters = await tx.query.sharedFilters.findMany({
@@ -177,10 +226,11 @@ export const shareFilterCategory = authenticatedProcedure
         );
 
         if (filtersToInsert.length === 0) {
-          throw new ZSAError(
-            "CONFLICT",
-            "All filters in this category are already shared with this user",
-          );
+          throw new ZSAError("CONFLICT", {
+            name: "All Filters Already Shared",
+            message:
+              "All filters in this category are already shared with this user.",
+          });
         }
 
         await tx.insert(sharedFilters).values(
@@ -202,7 +252,11 @@ export const shareFilterCategory = authenticatedProcedure
     } catch (error) {
       if (error instanceof ZSAError) throw error;
 
-      throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to share filters");
+      throw new ZSAError("INTERNAL_SERVER_ERROR", {
+        name: "Server Error",
+        message:
+          "Failed to share filters. Please try again later. If the problem persists, please contact ohTostt on Discord.",
+      });
     }
   });
 

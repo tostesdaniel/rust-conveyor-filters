@@ -11,14 +11,12 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import { z } from "zod";
 
-import { shareFilter, shareFilterCategory } from "@/actions/sharedFilters";
-import { validateToken } from "@/actions/shareTokens";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
+import { useShareFilterCategoryMutation } from "@/hooks/use-share-filter-category-mutation";
+import { useShareFilterMutation } from "@/hooks/use-share-filter-mutation";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -86,68 +84,35 @@ export function ShareWithUserDialog({
   );
   const { data: userCategoryHierarchy = [] } = useGetUserCategoryHierarchy();
 
-  interface ShareMutationContext {
-    isTokenValid: boolean;
-  }
-
-  const { mutateAsync: shareFilterMutationAsync, isPending } =
-    useServerActionMutation(filterId ? shareFilter : shareFilterCategory, {
-      onMutate: async (variables) => {
-        const [data, error] = await validateToken({ token: variables.token });
-
-        if (error || !data) {
-          throw error;
-        }
-
-        return { isTokenValid: data.valid };
-      },
-      onSuccess: (_, variables, context) => {
-        const mutationContext = context as ShareMutationContext;
-        if (mutationContext.isTokenValid) {
-          handleShareSuccess(variables.token);
-          toast.success("Filter shared successfully");
-        }
-      },
-
-      onError: (error, variables) => {
-        const handleInvalidToken = () => {
-          setRecentTokens((prev) => {
-            const filtered = prev.filter((t) => t.token !== variables.token);
-            return [...filtered].slice(0, 3);
-          });
-          form.setValue("token", "");
-        };
-        switch (error.code) {
-          case "NOT_FOUND":
-            toast.warning("Invalid token", {
-              description: error.message,
-            });
-            handleInvalidToken();
-            break;
-          case "FORBIDDEN":
-            toast.warning("Token revoked", {
-              description: error.message,
-            });
-            handleInvalidToken();
-            break;
-          case "CONFLICT":
-            toast.warning("Filter already shared with this user", {
-              description: error.message,
-            });
-            break;
-          case "INTERNAL_SERVER_ERROR":
-            toast.error("Server error", {
-              description: error.message,
-            });
-            break;
-          default:
-            toast.error("Something went wrong", {
-              description:
-                "Please try again. If the error persists, please contact support on Discord.",
-            });
-        }
-      },
+  const handleShareSuccess = (token: string) => {
+    setRecentTokens((prev) => {
+      const filtered = prev.filter((t) => t.token !== token);
+      return [{ token, lastUsed: new Date().toISOString() }, ...filtered].slice(
+        0,
+        3,
+      );
     });
+    setIsDialogOpen(false);
+  };
+
+  const handleInvalidToken = (token: string) => {
+    setRecentTokens((prev) => {
+      const filtered = prev.filter((t) => t.token !== token);
+      return [...filtered].slice(0, 3);
+    });
+    form.setValue("token", "");
+  };
+
+  const shareFilterMutation = useShareFilterMutation({
+    onShareSuccess: handleShareSuccess,
+    onTokenInvalid: handleInvalidToken,
+  });
+  const shareFilterCategoryMutation = useShareFilterCategoryMutation({
+    onShareSuccess: handleShareSuccess,
+    onTokenInvalid: handleInvalidToken,
+  });
+  const isPending =
+    shareFilterMutation.isPending || shareFilterCategoryMutation.isPending;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -166,25 +131,24 @@ export function ShareWithUserDialog({
     }
   }, [categoryId, filterId, form, open, recentTokens, subCategoryId]);
 
-  const handleShareSuccess = (token: string) => {
-    setRecentTokens((prev) => {
-      const filtered = prev.filter((t) => t.token !== token);
-      return [{ token, lastUsed: new Date().toISOString() }, ...filtered].slice(
-        0,
-        3,
-      );
-    });
-    setIsDialogOpen(false);
-  };
-
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    await shareFilterMutationAsync({
-      token: data.token,
-      filterId,
-      categoryId: categoryId ?? null,
-      subCategoryId,
-      includeSubcategories: data.includeSubcategories ?? false,
-    });
+    try {
+      if (filterId) {
+        await shareFilterMutation.mutateAsync({
+          token: data.token,
+          filterId,
+        });
+      } else {
+        await shareFilterCategoryMutation.mutateAsync({
+          token: data.token,
+          categoryId: categoryId ?? null,
+          subCategoryId,
+          includeSubcategories: data.includeSubcategories ?? false,
+        });
+      }
+    } catch (error) {
+      // Error is handled in the mutation hook
+    }
   };
 
   const getShareText = () => {

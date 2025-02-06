@@ -35,7 +35,7 @@ export function Footer() {
                   asChild
                   variant='link'
                   className={cn(
-                    item.href === "/contact" && "pointer-events-none",
+                    item.href === "/contact" && "pointer-events-none opacity-50",
                   )}
                 >
                   <Link href={item.href}>{item.name}</Link>

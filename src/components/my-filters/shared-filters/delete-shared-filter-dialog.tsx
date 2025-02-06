@@ -1,6 +1,5 @@
 "use client";
 
-import type { BaseSyntheticEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,6 @@ import { deleteSharedFilter } from "@/actions/sharedFilters";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -19,14 +17,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 
 interface DeleteSharedFilterDialogProps {

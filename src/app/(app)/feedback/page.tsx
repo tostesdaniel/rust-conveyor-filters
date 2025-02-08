@@ -11,7 +11,7 @@ export default function FeedbackPage() {
       <SignInToast />
       <div className='lg:absolute lg:inset-0 lg:left-1/2'>
         <Image
-          src='/image.png'
+          src='/image.webp'
           alt=''
           width={1282}
           height={917}
@@ -20,7 +20,7 @@ export default function FeedbackPage() {
           className='-mt-10 h-64 w-full rounded-bl-md object-cover sm:h-80 lg:h-full'
         />
       </div>
-      <div className='pb-24 pt-16 sm:pb-32 sm:pt-24 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-2 lg:pt-32'>
+      <div className='pt-16 pb-24 sm:pt-24 sm:pb-32 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-2 lg:pt-32'>
         <div className='px-6 lg:px-8'>
           <div className='mx-auto max-w-xl lg:mx-0 lg:max-w-lg'>
             <Typography variant='h1'>We Value Your Feedback</Typography>

@@ -49,7 +49,7 @@ export async function AboutHero() {
           </div>
         </div>
         <Image
-          src='/images/about-hero.jpg'
+          src='/images/about-hero.webp'
           alt='Rust game character'
           quality={100}
           width={768}

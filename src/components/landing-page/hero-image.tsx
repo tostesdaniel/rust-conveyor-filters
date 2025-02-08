@@ -24,8 +24,8 @@ export function HeroImage() {
           <div className='absolute -inset-px rounded-md bg-gradient-to-r from-[#4361ee] to-[#4cc9f0] blur transition-transform duration-500 ease-in-out group-hover:scale-[1.04]' />
 
           <ThemeImage
-            srcLight='/images/hero-light.jpg'
-            srcDark='/images/hero-dark.jpg'
+            srcLight='/images/hero-light.webp'
+            srcDark='/images/hero-dark.webp'
             alt='Conveyor filter creator interface'
             quality={100}
             width={1408}

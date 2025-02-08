@@ -7,14 +7,13 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
 
 import { siteConfig } from "@/config/site";
+import { OutboundLinkTracker } from "@/components/analytics/outbound-link-tracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -83,9 +82,16 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang='en' suppressHydrationWarning>
+        <head>
+          <script
+            defer
+            src='https://umami.rustconveyorfilters.com/script.js'
+            data-website-id='695aa61d-5756-4456-ae5b-ef75606debe5'
+          />
+        </head>
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "bg-background min-h-screen font-sans antialiased",
             inter.variable,
           )}
         >
@@ -103,6 +109,7 @@ export default function RootLayout({
           </QueryProvider>
           <Analytics />
           <SpeedInsights />
+          <OutboundLinkTracker />
         </body>
       </html>
     </ClerkProvider>

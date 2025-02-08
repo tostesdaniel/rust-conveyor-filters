@@ -12,6 +12,16 @@ const nextConfig = {
       { protocol: "https", hostname: "steamuserimages-a.akamaihd.net" },
     ],
   },
+  rewrites: async () => [
+    {
+      source: "/script.js",
+      destination: "https://umami.rustconveyorfilters.com/script.js",
+    },
+    {
+      source: "/api/send",
+      destination: "https://umami.rustconveyorfilters.com/api/send",
+    },
+  ],
 };
 
 const withMDX = createMDX();

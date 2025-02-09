@@ -20,7 +20,7 @@
     "^[./]"
   ],
   "importOrderSeparation": false,
-  "tailwindConfig": "./tailwind.config.ts",
+  "tailwindStylesheet": "./src/app/globals.css",
   "jsxSingleQuote": true,
   "tailwindFunctions": ["cva", "clsx"],
   "plugins": [

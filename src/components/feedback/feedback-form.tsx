@@ -130,7 +130,7 @@ export function FeedbackForm() {
                 <FormLabel className='leading-[17px] after:ml-0.5 after:text-destructive after:content-["*"]'>
                   Share your thoughts
                 </FormLabel>
-                <p className='text-sm tabular-nums leading-[17px] text-gray-500'>
+                <p className='text-sm leading-[17px] text-gray-500 tabular-nums'>
                   {feedbackLength}/255 characters
                 </p>
               </div>
@@ -167,13 +167,13 @@ export function FeedbackForm() {
                 >
                   {ratingOptions.map((option) => (
                     <FormItem
-                      className='flex items-center space-x-3 space-y-0'
+                      className='flex items-center space-y-0 space-x-3'
                       key={option.value}
                     >
                       <FormControl>
                         <RadioGroupItem value={option.value} />
                       </FormControl>
-                      <FormLabel className='font-normal leading-4'>
+                      <FormLabel className='leading-4 font-normal'>
                         {option.label}
                       </FormLabel>
                     </FormItem>

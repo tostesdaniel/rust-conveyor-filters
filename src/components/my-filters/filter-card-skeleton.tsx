@@ -6,7 +6,7 @@ export function FilterCardSkeleton() {
   return (
     <div className='col-span-1 flex min-w-[300px]'>
       <div>
-        <Skeleton className='flex h-16 w-16 items-center justify-center rounded-md rounded-br-none rounded-tr-none border-2 bg-transparent p-1.5'>
+        <Skeleton className='flex h-16 w-16 items-center justify-center rounded-md rounded-tr-none rounded-br-none border-2 bg-transparent p-1.5'>
           <Skeleton className='h-full w-full rounded-sm' />
         </Skeleton>
       </div>

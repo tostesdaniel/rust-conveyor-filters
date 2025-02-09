@@ -34,7 +34,7 @@ export function SharedFilterDialog({
           <DialogTitle className='text-foreground/90'>
             <span
               className={cn(
-                "animate-wave inline-block",
+                "inline-block animate-wave",
                 "motion-reduce:animate-none",
               )}
               aria-hidden='true'

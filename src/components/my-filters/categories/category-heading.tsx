@@ -40,7 +40,7 @@ export function CategoryHeading({
   const showSortButton = filters.length > 1;
 
   return (
-    <div className='border-border border-b pb-5 sm:flex sm:items-center sm:justify-between'>
+    <div className='border-b border-border pb-5 sm:flex sm:items-center sm:justify-between'>
       <h2 className='text-base leading-6 font-semibold'>{title}</h2>
       {withAction && (
         <div className='mt-3 flex items-center gap-x-2 sm:mt-0 sm:ml-4'>

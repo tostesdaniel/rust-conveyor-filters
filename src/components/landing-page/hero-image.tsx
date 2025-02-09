@@ -30,7 +30,7 @@ export function HeroImage() {
             quality={100}
             width={1408}
             height={1024}
-            className='ring-border/10 relative w-[70rem] rounded-md ring-1 shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-[1.02]'
+            className='relative w-[70rem] rounded-md ring-1 shadow-2xl ring-border/10 transition-transform duration-500 ease-in-out group-hover:scale-[1.02]'
           />
         </div>
       </div>

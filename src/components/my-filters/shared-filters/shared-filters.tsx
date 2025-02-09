@@ -46,16 +46,16 @@ export function SharedFilters() {
           <section
             className={cn(
               "my-6",
-              index % 2 !== 0 && "border-primary mt-12 border-t-2 pt-12",
+              index % 2 !== 0 && "mt-12 border-t-2 border-primary pt-12",
             )}
             key={`${senderUsername}-${index}`}
           >
-            <h2 className='text-primary mb-4 text-xl font-bold tracking-tight'>
+            <h2 className='mb-4 text-xl font-bold tracking-tight text-primary'>
               <span className='sr-only'>Filters shared by </span>
               <span aria-hidden='true' className='text-secondary-foreground/85'>
                 Shared by{" "}
               </span>
-              <span className='decoration-primary/30 underline decoration-2'>
+              <span className='underline decoration-primary/30 decoration-2'>
                 {senderUsername}
               </span>
             </h2>
@@ -88,7 +88,7 @@ export function SharedFilters() {
                 {subCategories.map(({ id, name, filters }) => (
                   <div
                     key={`${senderUsername}'s-subcategory-${id}`}
-                    className='border-border ml-6 border-l py-6 pl-6'
+                    className='ml-6 border-l border-border py-6 pl-6'
                   >
                     <CategoryHeading title={name} filters={filters} />
                     <FilterGrid filters={filters} />
@@ -118,7 +118,7 @@ function FilterGrid({ filters }: { filters: ConveyorFilter[] }) {
 
 function EmptyCategory() {
   return (
-    <p className='text-muted-foreground mt-4 mb-6 text-sm'>
+    <p className='mt-4 mb-6 text-sm text-muted-foreground'>
       No filters in this category.
     </p>
   );

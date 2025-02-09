@@ -18,7 +18,7 @@ const typographyVariants = cva("text-foreground", {
         "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
       lead: "text-xl text-muted-foreground",
       largeText: "text-lg font-semibold",
-      smallText: "text-sm font-medium leading-none",
+      smallText: "text-sm leading-none font-medium",
       mutedText: "text-sm text-muted-foreground",
     },
   },
@@ -58,7 +58,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, as, asChild, ...props }, ref) => {
     const Comp = asChild
       ? Slot
-      : as ?? (variant ? variantElementMap[variant] : undefined) ?? "div";
+      : (as ?? (variant ? variantElementMap[variant] : undefined) ?? "div");
     return (
       <Comp
         className={cn(typographyVariants({ variant, className }))}

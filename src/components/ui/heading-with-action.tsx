@@ -30,7 +30,7 @@ export function HeadingWithAction({
           {label}
         </Typography>
       </div>
-      <div className='mt-4 flex md:ml-4 md:mt-0'>
+      <div className='mt-4 flex md:mt-0 md:ml-4'>
         <Button type='button' size='sm' asChild>
           <Link href={redirectUrl}>
             {ActionIcon && <ActionIcon aria-hidden='true' />}

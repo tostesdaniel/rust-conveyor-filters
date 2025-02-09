@@ -28,7 +28,7 @@ export function ConveyorCard() {
 
   return (
     <Card className='divide-y'>
-      <CardHeader className='relative py-3 sm:flex-row sm:items-center sm:justify-between sm:space-x-6 sm:space-y-0'>
+      <CardHeader className='relative py-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
         <div className='flex items-center gap-x-2 pr-10'>
           <BoxIcon className='h-5 w-5 shrink-0 text-muted-foreground' />
           <CardTitle className='shrink-0 text-xl'>Conveyor Filter</CardTitle>
@@ -36,7 +36,7 @@ export function ConveyorCard() {
 
         <ConveyorCombobox onInsertItem={append} />
 
-        <p className='whitespace-nowrap font-semibold tabular-nums tracking-tight min-[400px]:absolute min-[400px]:right-6 min-[400px]:top-2 min-[400px]:m-0 sm:static'>
+        <p className='font-semibold tracking-tight whitespace-nowrap tabular-nums min-[400px]:absolute min-[400px]:top-2 min-[400px]:right-6 min-[400px]:m-0 sm:static'>
           {fields.length}/30 filters
         </p>
       </CardHeader>

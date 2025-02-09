@@ -196,19 +196,19 @@ const FilterItem = ({ filterItem }: { filterItem: ConveyorFilterItem }) => {
       <div className='mt-1 text-xs font-medium text-muted-foreground'>
         <div className='flex max-w-20 justify-between'>
           <span className='flex-1'>Max:</span>{" "}
-          <p className='font-semibold tabular-nums tracking-tighter text-primary'>
+          <p className='font-semibold tracking-tighter text-primary tabular-nums'>
             {filterItem.max === 0 ? "-" : filterItem.max}
           </p>
         </div>
         <div className='flex max-w-20 justify-between'>
           <span className='flex-1'>Buffer:</span>{" "}
-          <p className='font-semibold tabular-nums tracking-tighter text-primary'>
+          <p className='font-semibold tracking-tighter text-primary tabular-nums'>
             {filterItem.buffer === 0 ? "-" : filterItem.buffer}
           </p>
         </div>
         <div className='flex max-w-20 justify-between'>
           <span className='flex-1'>Min:</span>{" "}
-          <p className='font-semibold tabular-nums tracking-tighter text-primary'>
+          <p className='font-semibold tracking-tighter text-primary tabular-nums'>
             {filterItem.min === 0 ? "-" : filterItem.min}
           </p>
         </div>

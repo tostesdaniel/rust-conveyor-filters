@@ -20,7 +20,7 @@ export function Footer() {
       <div className='mx-auto max-w-(--breakpoint-2xl) overflow-hidden px-6 py-12 min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between min-[800px]:gap-x-6 lg:px-8'>
         <nav
           aria-label='Footer'
-          className='columns-2 sm:flex sm:justify-center sm:space-x-2 min-[800px]:order-2 lg:space-x-12'
+          className='columns-2 min-[800px]:order-2 sm:flex sm:justify-center sm:space-x-2 lg:space-x-12'
         >
           {navigation.map((item) => (
             <div key={item.name} className='grid-cols-2'>
@@ -35,7 +35,8 @@ export function Footer() {
                   asChild
                   variant='link'
                   className={cn(
-                    item.href === "/contact" && "pointer-events-none opacity-50",
+                    item.href === "/contact" &&
+                      "pointer-events-none opacity-50",
                   )}
                 >
                   <Link href={item.href}>{item.name}</Link>

@@ -40,7 +40,7 @@ export function FilterCardSkeleton() {
           <Skeleton className='h-4 w-36' />
           <Skeleton className='h-4 w-36' />
         </div>
-        <div className='min- [475px]:block flex w-full items-center justify-center  space-x-4 min-[475px]:w-auto'>
+        <div className='min- flex w-full items-center justify-center space-x-4 min-[475px]:w-auto [475px]:block'>
           <Skeleton className='h-9 w-full min-[475px]:w-24' />
           <Skeleton className='h-9 w-full min-[475px]:w-24' />
         </div>

@@ -1,11 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
-import { useState } from "react";
 import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
+import { type Category, type Item } from "@/db/schema";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { type Category, type Item } from "@/db/schema";
 
 interface ImportButtonProps extends ButtonProps {
   onImport: UseFieldArrayReplace<FieldValues, "items">;
@@ -119,7 +119,7 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
       <PopoverContent>
         <div className='grid gap-4'>
           <div className='space-y-2'>
-            <h4 className='font-medium leading-none'>
+            <h4 className='leading-none font-medium'>
               Import existing conveyor
             </h4>
             <p className='text-sm text-muted-foreground'>

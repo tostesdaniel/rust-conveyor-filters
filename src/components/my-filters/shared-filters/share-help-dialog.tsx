@@ -65,7 +65,7 @@ export function ShareHelpDialog({ className }: ShareHelpDialogProps) {
                     <span
                       aria-label='Menu button example'
                       role='presentation'
-                      className='text-secondary-foreground before:bg-accent relative inline-flex size-6 items-center justify-center px-1.5 -indent-px font-serif font-bold before:absolute before:inset-0 before:rounded-full'
+                      className='relative inline-flex size-6 items-center justify-center px-1.5 -indent-px font-serif font-bold text-secondary-foreground before:absolute before:inset-0 before:rounded-full before:bg-accent'
                     >
                       <EllipsisVerticalIcon
                         className='relative size-4'

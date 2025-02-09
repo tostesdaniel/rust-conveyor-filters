@@ -10,8 +10,8 @@ export function HeroContent() {
   return (
     <div className='mx-auto max-w-2xl shrink-0 lg:mx-0 lg:max-w-xl'>
       <div className='mt-8 sm:mt-12 lg:mt-16'>
-        <div className='border-border bg-background/80 hover:bg-background mb-8 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border px-7 py-2 shadow-md backdrop-blur transition-all'>
-          <p className='text-muted-foreground text-sm font-semibold'>
+        <div className='mb-8 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-border bg-background/80 px-7 py-2 shadow-md backdrop-blur transition-all hover:bg-background'>
+          <p className='text-sm font-semibold text-muted-foreground'>
             <span
               role='img'
               aria-label='Party Popper emoji'
@@ -32,7 +32,7 @@ export function HeroContent() {
           </span>{" "}
           with Ease
         </Typography>
-        <p className='text-muted-foreground mt-6 text-lg'>
+        <p className='mt-6 text-lg text-muted-foreground'>
           Tired of spending hours setting up conveyor filters every wipe? Our
           application lets you create, edit, and share custom conveyor setups
           effortlessly. Browse a public directory, save your favorite filters,

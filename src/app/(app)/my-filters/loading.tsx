@@ -8,7 +8,7 @@ function CategoryHeadingSkeleton({ withAction = false }) {
     <div className='border-b border-border pb-5 sm:flex sm:items-center sm:justify-between'>
       <Skeleton className='h-6 w-32' />
       {withAction && (
-        <div className='mt-3 sm:ml-4 sm:mt-0'>
+        <div className='mt-3 sm:mt-0 sm:ml-4'>
           <Skeleton className='h-9 w-32' />
         </div>
       )}
@@ -22,7 +22,7 @@ export function FiltersTreeSkeleton() {
       {/* Uncategorized Filters Section */}
       <section className='py-8'>
         <CategoryHeadingSkeleton withAction />
-        <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+        <div className='mt-6 grid grid-cols-1 gap-5 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'>
           {[...Array(2)].map((_, i) => (
             <FilterCardSkeleton key={`uncategorized-${i}`} />
           ))}
@@ -33,7 +33,7 @@ export function FiltersTreeSkeleton() {
       {[...Array(2)].map((_, categoryIndex) => (
         <section key={`category-${categoryIndex}`} className='py-6'>
           <CategoryHeadingSkeleton />
-          <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+          <div className='mt-6 grid grid-cols-1 gap-5 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'>
             {[...Array(2)].map((_, i) => (
               <FilterCardSkeleton key={`category-${categoryIndex}-${i}`} />
             ))}
@@ -42,7 +42,7 @@ export function FiltersTreeSkeleton() {
           {/* Subcategory */}
           <div className='ml-6 border-l border-border py-6 pl-6'>
             <CategoryHeadingSkeleton />
-            <div className='mt-6 grid grid-cols-1 gap-5 sm:gap-6 min-[680px]:grid-cols-2 lg:grid-cols-3'>
+            <div className='mt-6 grid grid-cols-1 gap-5 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'>
               {[...Array(2)].map((_, i) => (
                 <FilterCardSkeleton key={`subcategory-${categoryIndex}-${i}`} />
               ))}

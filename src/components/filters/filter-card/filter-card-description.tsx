@@ -17,7 +17,7 @@ export function FilterCardDescription({
 }) {
   if (!filter.description) {
     return (
-      <CardDescription className='flex items-center gap-2 italic text-muted-foreground/75'>
+      <CardDescription className='flex items-center gap-2 text-muted-foreground/75 italic'>
         <InfoIcon aria-hidden='true' className='h-4 w-4' />
         No description provided
       </CardDescription>
@@ -36,7 +36,7 @@ export function FilterCardDescription({
             value='description'
             className='border-none shadow-[0_1px_0_0_rgba(0,0,0,1)] shadow-muted'
           >
-            <AccordionTrigger className='overflow-hidden pb-1 pt-0 text-sm'>
+            <AccordionTrigger className='overflow-hidden pt-0 pb-1 text-sm'>
               Expand Description
             </AccordionTrigger>
             <AccordionContent className='pb-2'>

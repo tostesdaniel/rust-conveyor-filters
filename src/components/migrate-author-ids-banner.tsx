@@ -19,7 +19,7 @@ export async function MigrateAuthorIdsBanner() {
   if (!migrateAuthorIds) return null;
 
   return (
-    <Banner variant='warning' className='mb-10  '>
+    <Banner variant='warning' className='mb-10'>
       <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
         <BannerTitle>Filter Migration in Progress</BannerTitle>
         <BannerDescription>

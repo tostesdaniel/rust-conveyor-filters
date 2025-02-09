@@ -43,7 +43,7 @@ function ConveyorSkeleton({ className }: { className: { label: string } }) {
   return (
     <div className='space-y-2'>
       <Skeleton className={cn("h-[17px]", className.label)} />
-      <Skeleton className=' h-3.5 w-[370px]' />
+      <Skeleton className='h-3.5 w-[370px]' />
       <Skeleton className='h-[300px] w-full' />
     </div>
   );

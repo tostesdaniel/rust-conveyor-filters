@@ -73,7 +73,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
         <Command>
           <CommandInput placeholder='Search category...' />
           <CommandList>
-            <CommandEmpty className='pb-1 pt-3 text-center text-sm'>
+            <CommandEmpty className='pt-3 pb-1 text-center text-sm'>
               No categories found.
               <Separator className='my-3' />
               <div className='px-1'>

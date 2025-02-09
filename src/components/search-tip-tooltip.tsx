@@ -32,7 +32,7 @@ export function SearchTipTooltip() {
       <Button
         variant='ghost'
         size='icon'
-        className='absolute right-2 top-4 size-6 hover:bg-transparent'
+        className='absolute top-4 right-2 size-6 hover:bg-transparent'
         onClick={handleDismiss}
       >
         <X />

@@ -1,6 +1,7 @@
 import { HeroBackground } from "@/components/landing-page/hero-background";
 import { HeroContent } from "@/components/landing-page/hero-content";
 import { HeroImage } from "@/components/landing-page/hero-image";
+import { HeroStats } from "@/components/landing-page/hero-stats";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,8 @@ export default function HomePage() {
           <HeroImage />
         </div>
       </div>
+
+      <HeroStats />
     </>
   );
 }

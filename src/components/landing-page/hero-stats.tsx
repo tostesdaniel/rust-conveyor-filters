@@ -1,7 +1,6 @@
 import * as motion from "motion/react-client";
 
-import { getApiUrl } from "@/lib/api";
-import type { HeroStatsResponse } from "@/app/api/hero-stats/route";
+import { getHeroStats } from "@/lib/queries/stats";
 
 import {
   HeaderSectionContainer,
@@ -13,12 +12,7 @@ import {
 import { StatsGrid } from "./stats-grid";
 
 export async function HeroStats() {
-  const res = await fetch(getApiUrl("hero-stats"), {
-    next: {
-      revalidate: 3600,
-    },
-  });
-  const { stats }: HeroStatsResponse = await res.json();
+  const stats = await getHeroStats();
 
   return (
     <HeaderSectionContainer center>

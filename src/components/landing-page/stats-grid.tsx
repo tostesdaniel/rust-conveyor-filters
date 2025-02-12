@@ -1,21 +1,9 @@
-import { BoxesIcon, BoxIcon, Users2Icon } from "lucide-react";
 import * as motion from "motion/react-client";
 
+import { iconMap, type Stat } from "@/types/stats";
 import { cn } from "@/lib/utils";
 
 import { StatValueClient } from "./stat-value-client";
-
-const iconMap = {
-  users: Users2Icon,
-  box: BoxIcon,
-  boxes: BoxesIcon,
-} as const;
-
-interface Stat {
-  name: string;
-  value: number;
-  icon: keyof typeof iconMap;
-}
 
 interface StatsGridProps {
   stats: Stat[];

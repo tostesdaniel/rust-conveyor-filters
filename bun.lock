@@ -58,6 +58,7 @@
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.51.5",
         "react-intersection-observer": "^9.13.0",
+        "server-only": "^0.0.1",
         "sonner": "^1.7.0",
         "svix": "^1.30.0",
         "tailwind-merge": "^2.3.0",

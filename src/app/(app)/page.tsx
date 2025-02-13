@@ -1,3 +1,4 @@
+import { FeaturesShowcase } from "@/components/landing-page/features-showcase";
 import { HeroBackground } from "@/components/landing-page/hero-background";
 import { HeroContent } from "@/components/landing-page/hero-content";
 import { HeroImage } from "@/components/landing-page/hero-image";
@@ -15,6 +16,8 @@ export default function HomePage() {
       </div>
 
       <HeroStats />
+
+      <FeaturesShowcase />
     </>
   );
 }

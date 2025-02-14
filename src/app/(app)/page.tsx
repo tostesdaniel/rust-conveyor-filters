@@ -1,3 +1,4 @@
+import { CTA } from "@/components/landing-page/cta";
 import { FeaturesShowcase } from "@/components/landing-page/features-showcase";
 import { HeroBackground } from "@/components/landing-page/hero-background";
 import { HeroContent } from "@/components/landing-page/hero-content";
@@ -18,6 +19,8 @@ export default function HomePage() {
       <HeroStats />
 
       <FeaturesShowcase />
+
+      <CTA />
     </>
   );
 }

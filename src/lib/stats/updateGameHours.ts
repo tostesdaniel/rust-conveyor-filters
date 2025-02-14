@@ -1,6 +1,8 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
 import { steamConfig } from "@/lib/constants";
+
+const redis = Redis.fromEnv();
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = steamConfig.STEAM_ID;
@@ -16,7 +18,7 @@ export async function updateGameHours() {
       data.response.games.find((game: any) => game.appid === RUST_APP_ID)
         .playtime_forever / 60,
     );
-    await kv.set("gameHours", gameHours);
+    await redis.set("gameHours", gameHours);
     return gameHours;
   } catch (error) {
     console.error("Error updating game hours:", error);

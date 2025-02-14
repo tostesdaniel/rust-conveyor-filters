@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { Ratelimit } from "@upstash/ratelimit";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
 const rateLimit = new Ratelimit({
-  redis: kv,
+  redis: Redis.fromEnv(),
   limiter: Ratelimit.fixedWindow(1, "5m"),
 });
 

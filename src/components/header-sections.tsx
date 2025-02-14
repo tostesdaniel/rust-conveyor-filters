@@ -1,5 +1,3 @@
-import type { HTMLAttributes } from "react";
-
 import { cn } from "@/lib/utils";
 
 interface BaseProps {
@@ -10,7 +8,7 @@ export function HeaderSectionContainer({
   className,
   children,
   center = false,
-}: BaseProps & HTMLAttributes<HTMLElement>) {
+}: BaseProps & React.HTMLAttributes<HTMLElement>) {
   return (
     <section
       className={cn("py-24 sm:py-32", center && "px-6 lg:px-8", className)}
@@ -28,7 +26,7 @@ export function HeaderSectionContent({
   className,
   children,
   center = false,
-}: BaseProps & HTMLAttributes<HTMLDivElement>) {
+}: BaseProps & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
@@ -56,31 +54,35 @@ export function HeaderSectionEyebrow({
 export function HeaderSectionTitle({
   className,
   children,
-}: React.HtmlHTMLAttributes<HTMLHeadingElement>) {
+  as: Component = "h2",
+}: React.HtmlHTMLAttributes<HTMLHeadingElement> & { as?: React.ElementType }) {
   return (
-    <h2
+    <Component
       className={cn(
         "mt-2 text-5xl font-semibold tracking-tight sm:text-7xl",
         className,
       )}
     >
       {children}
-    </h2>
+    </Component>
   );
 }
 
 export function HeaderSectionDescription({
   className,
   children,
-}: React.HtmlHTMLAttributes<HTMLParagraphElement>) {
+  as: Component = "p",
+}: React.HtmlHTMLAttributes<HTMLParagraphElement> & {
+  as?: React.ElementType;
+}) {
   return (
-    <p
+    <Component
       className={cn(
         "mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8",
         className,
       )}
     >
       {children}
-    </p>
+    </Component>
   );
 }

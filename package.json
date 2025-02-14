@@ -55,7 +55,7 @@
     "drizzle-orm": "^0.38.4",
     "embla-carousel-autoplay": "8.1.6",
     "embla-carousel-react": "8.1.6",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.1",
     "lucide-react": "^0.473.0",
     "millify": "^6.1.0",
     "motion": "^12.4.1",

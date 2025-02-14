@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import { LinkedinIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Typography } from "@/components/ui/typography";
 
+const redis = Redis.fromEnv();
+
 const { links } = siteConfig;
 
 export async function AboutHero() {
-  const gameHours = await kv.get<number>("gameHours");
+  const gameHours = await redis.get<number>("gameHours");
 
   return (
     <div className='py-16 lg:py-24'>

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import { Loader2, StarIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -7,12 +7,14 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+const redis = Redis.fromEnv();
+
 interface RepoStarsButton {
   className?: string;
 }
 
 async function StargazersCount() {
-  const stars = await kv.get<number>("repo-stars");
+  const stars = await redis.get<number>("repo-stars");
   if (!stars) {
     return <>N/A</>;
   }

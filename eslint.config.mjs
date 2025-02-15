@@ -16,6 +16,21 @@ const eslintConfig = [
     "plugin:@tanstack/query/recommended",
     "prettier",
   ),
+  ...compat.config({
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "none",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  }),
 ];
 
 export default eslintConfig;

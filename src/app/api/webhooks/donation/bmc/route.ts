@@ -14,7 +14,7 @@ import { donations } from "@/db/schema";
 export async function POST(request: Request) {
   try {
     const rawBody = await request.text();
-    const signature = headers().get("x-signature-sha256");
+    const signature = (await headers()).get("x-signature-sha256");
 
     const isValid = await verifyBMCWebhook(rawBody, signature);
     if (!isValid) {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ipAddress } from "@vercel/functions";
 import { auth } from "@clerk/nextjs/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
@@ -11,7 +12,7 @@ const rateLimit = new Ratelimit({
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
   const { filterId, eventType } = await req.json();
-  const ip = req.headers.get("x-forwarded-for") || req.ip;
+  const ip = req.headers.get("x-forwarded-for") || ipAddress(req);
   const key = userId
     ? `${userId}:${filterId}:${eventType}`
     : `${ip}:${filterId}:${eventType}`;

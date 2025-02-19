@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentProps } from "react";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { DonateAlert } from "@/components/donate/donate-alert";
 
-interface DonateButtonProps extends ButtonProps {
+interface DonateButtonProps extends ComponentProps<typeof Button> {
   icon?: React.ReactNode;
   children: React.ReactNode;
   href: string;

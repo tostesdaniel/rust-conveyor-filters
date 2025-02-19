@@ -15,11 +15,13 @@ export function DonateEmailReminder() {
     <Alert>
       <AlertCircle className='h-4 w-4' />
       <AlertDescription>
-        Please use{" "}
-        <span className='rounded-md bg-muted px-1.5 py-0.5 font-mono font-medium'>
-          {email}
-        </span>{" "}
-        when making your donation to receive your badge automatically.
+        <p>
+          Please use{" "}
+          <span className='rounded-md bg-muted px-1.5 py-0.5 font-mono font-medium'>
+            {email}
+          </span>{" "}
+          when making your donation to receive your badge automatically.
+        </p>
       </AlertDescription>
     </Alert>
   );

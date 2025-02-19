@@ -1,6 +1,5 @@
 import "server-only";
 
-import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { db } from "@/db";
 import { clerkClient } from "@clerk/nextjs/server";

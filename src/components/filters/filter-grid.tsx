@@ -49,7 +49,7 @@ export function FilterGrid() {
       cursor: pageParam,
       pageSize: 6,
     }),
-    // @ts-ignore workaround for using compound cursor
+    // @ts-expect-error workaround for using compound cursor
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     placeholderData: keepPreviousData,
   });

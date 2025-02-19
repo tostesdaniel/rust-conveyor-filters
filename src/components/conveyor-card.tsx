@@ -1,7 +1,9 @@
+"use client";
+
 import { BoxIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { ItemWithFields } from "@/types/item";
+import { ItemWithFields, type NewConveyorItem } from "@/types/item";
 import { normalizeFilterData } from "@/lib/normalizeFilterData";
 import { ImportButton } from "@/components/import-button";
 
@@ -26,6 +28,10 @@ export function ConveyorCard() {
   });
   const filter: ItemWithFields[] = watch("items");
 
+  const handleAppend = (item: NewConveyorItem) => {
+    append(item, { shouldFocus: false });
+  };
+
   return (
     <Card className='divide-y'>
       <CardHeader className='relative py-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
@@ -34,7 +40,7 @@ export function ConveyorCard() {
           <CardTitle className='shrink-0 text-xl'>Conveyor Filter</CardTitle>
         </div>
 
-        <ConveyorCombobox onInsertItem={append} />
+        <ConveyorCombobox onInsertItem={handleAppend} />
 
         <p className='font-semibold tracking-tight whitespace-nowrap tabular-nums min-[400px]:absolute min-[400px]:top-2 min-[400px]:right-6 min-[400px]:m-0 sm:static'>
           {fields.length}/30 filters

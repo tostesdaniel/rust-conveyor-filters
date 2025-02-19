@@ -35,11 +35,7 @@ export default function SignInPage() {
                 <CardContent className='grid gap-y-4'>
                   <div className='grid grid-cols-2 gap-x-4'>
                     <Clerk.Connection name='discord' asChild>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        disabled={isGlobalLoading}
-                      >
+                      <Button variant='outline' disabled={isGlobalLoading}>
                         <Clerk.Loading scope='provider:discord'>
                           {(isLoading) =>
                             isLoading ? (
@@ -55,11 +51,7 @@ export default function SignInPage() {
                       </Button>
                     </Clerk.Connection>
                     <Clerk.Connection name='google' asChild>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        disabled={isGlobalLoading}
-                      >
+                      <Button variant='outline' disabled={isGlobalLoading}>
                         <Clerk.Loading scope='provider:google'>
                           {(isLoading) =>
                             isLoading ? (
@@ -104,7 +96,7 @@ export default function SignInPage() {
                       </Button>
                     </SignIn.Action>
 
-                    <Button variant='link' size='sm' asChild>
+                    <Button variant='link' asChild>
                       <Link href='/sign-up'>
                         Don&apos;t have an account? Sign up
                       </Link>
@@ -193,9 +185,7 @@ export default function SignInPage() {
                         </Button>
                       </SignIn.Action>
                       <SignIn.Action navigate='choose-strategy' asChild>
-                        <Button size='sm' variant='link'>
-                          Use another method
-                        </Button>
+                        <Button variant='link'>Use another method</Button>
                       </SignIn.Action>
                     </div>
                   </CardFooter>
@@ -263,7 +253,7 @@ export default function SignInPage() {
                             </p>
                           )}
                         >
-                          <Button variant='link' size='sm'>
+                          <Button variant='link'>
                             Didn&apos;t recieve a code? Resend
                           </Button>
                         </SignIn.Action>
@@ -287,9 +277,7 @@ export default function SignInPage() {
                         </Button>
                       </SignIn.Action>
                       <SignIn.Action navigate='choose-strategy' asChild>
-                        <Button size='sm' variant='link'>
-                          Use another method
-                        </Button>
+                        <Button variant='link'>Use another method</Button>
                       </SignIn.Action>
                     </div>
                   </CardFooter>

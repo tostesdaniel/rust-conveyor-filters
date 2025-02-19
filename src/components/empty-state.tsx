@@ -27,7 +27,7 @@ export function EmptyState({
       <h3 className='mt-2 text-sm font-semibold'>{title}</h3>
       <p className='mt-1 text-sm'>{description}</p>
       <div className='mt-6'>
-        <Button size='sm' asChild>
+        <Button asChild>
           <Link href={redirectUrl}>
             <ButtonIcon className='mr-1.5 -ml-0.5 h-5 w-5' aria-hidden='true' />
             {label}

@@ -78,10 +78,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
               <Separator className='my-3' />
               <div className='px-1'>
                 <CreateCategoryDialog parentId={null}>
-                  <Button
-                    className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
-                    size='sm'
-                  >
+                  <Button className='h-8 w-full justify-start rounded-sm px-2 py-1.5'>
                     <PlusIcon />
                     Create Category
                   </Button>
@@ -150,10 +147,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
             {categories?.length !== 0 && (
               <CommandGroup>
                 <CreateCategoryDialog parentId={null}>
-                  <Button
-                    size='sm'
-                    className='h-8 w-full justify-start rounded-sm px-2 py-1.5'
-                  >
+                  <Button className='h-8 w-full justify-start rounded-sm px-2 py-1.5'>
                     <PlusIcon />
                     Create Category
                   </Button>

@@ -64,7 +64,6 @@ export default function ViewFilter({
       <ButtonWithIcon
         type='button'
         variant='secondary'
-        size='sm'
         icon={EyeIcon}
         className='w-full min-[475px]:w-auto'
         {...props}
@@ -148,7 +147,7 @@ export default function ViewFilter({
         </ScrollArea>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button type='button' variant='secondary' size='sm'>
+            <Button type='button' variant='secondary'>
               Close
             </Button>
           </DrawerClose>

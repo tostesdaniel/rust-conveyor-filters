@@ -29,7 +29,7 @@ export async function MigrateAuthorIdsBanner() {
         </BannerDescription>
         <Dialog>
           <DialogTrigger asChild>
-            <Button type='button' size='sm' className='h-7 rounded-full py-1'>
+            <Button type='button' className='h-7 rounded-full py-1'>
               Learn More
             </Button>
           </DialogTrigger>

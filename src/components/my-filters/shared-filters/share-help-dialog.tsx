@@ -20,12 +20,7 @@ export function ShareHelpDialog({ className }: ShareHelpDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          type='button'
-          variant='ghost'
-          size='sm'
-          className={cn(className)}
-        >
+        <Button type='button' variant='ghost' className={cn(className)}>
           <HelpCircleIcon />
           <span>How to Share Filters</span>
         </Button>
@@ -80,7 +75,6 @@ export function ShareHelpDialog({ className }: ShareHelpDialogProps) {
                       className={cn(
                         buttonVariants({
                           variant: "secondary",
-                          size: "sm",
                         }),
                         "h-5 rounded-sm px-1.5 py-0 text-sm font-normal [&_svg]:size-3",
                       )}

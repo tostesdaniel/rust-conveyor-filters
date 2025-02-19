@@ -79,7 +79,6 @@ export function Header() {
               <SignedOut>
                 <Button
                   variant='default'
-                  size='sm'
                   className='hidden min-[800px]:block'
                   asChild
                 >

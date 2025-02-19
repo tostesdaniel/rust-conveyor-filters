@@ -30,7 +30,7 @@ export function SharedFilters() {
         <div className='flex items-center justify-between space-x-4'>
           <p className='text-sm font-medium'>Your share token</p>
           <CollapsibleTrigger asChild>
-            <Button type='button' variant='ghost' size='sm' className='w-9 p-0'>
+            <Button type='button' variant='ghost' className='w-9 p-0'>
               <ChevronsUpDownIcon />
               <span className='sr-only'>Toggle share token</span>
             </Button>

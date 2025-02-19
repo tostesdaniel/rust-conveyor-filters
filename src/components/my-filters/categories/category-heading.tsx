@@ -45,7 +45,7 @@ export function CategoryHeading({
       {withAction && (
         <div className='mt-3 flex items-center gap-x-2 sm:mt-0 sm:ml-4'>
           <CreateCategoryDialog parentId={null}>
-            <Button type='button' variant='ghost' size='sm'>
+            <Button type='button' variant='ghost'>
               <PlusIcon />
               Create Category
             </Button>
@@ -65,7 +65,7 @@ export function CategoryHeading({
         <div className='flex items-center gap-2'>
           {canCreateSubcategory && !isSubCategory && (
             <CreateCategoryDialog parentId={categoryId}>
-              <Button type='button' variant='ghost' size='sm'>
+              <Button type='button' variant='ghost'>
                 <PlusIcon />
                 Add Subcategory
               </Button>

@@ -35,11 +35,7 @@ export default function SignUpPage() {
                 <CardContent className='grid gap-y-4'>
                   <div className='grid grid-cols-2 gap-x-4'>
                     <Clerk.Connection name='discord' asChild>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        disabled={isGlobalLoading}
-                      >
+                      <Button variant='outline' disabled={isGlobalLoading}>
                         <Clerk.Loading scope='provider:discord'>
                           {(isLoading) =>
                             isLoading ? (
@@ -55,11 +51,7 @@ export default function SignUpPage() {
                       </Button>
                     </Clerk.Connection>
                     <Clerk.Connection name='google' asChild>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        disabled={isGlobalLoading}
-                      >
+                      <Button variant='outline' disabled={isGlobalLoading}>
                         <Clerk.Loading scope='provider:google'>
                           {(isLoading) =>
                             isLoading ? (
@@ -112,7 +104,7 @@ export default function SignUpPage() {
                         </Clerk.Loading>
                       </Button>
                     </SignUp.Action>
-                    <Button variant='link' size='sm' asChild>
+                    <Button variant='link' asChild>
                       <Link href='/sign-in'>
                         Already have an account? Sign in
                       </Link>
@@ -213,7 +205,7 @@ export default function SignUpPage() {
                           resend
                           className='text-muted-foreground'
                           fallback={({ resendableAfter }) => (
-                            <Button variant='link' size='sm' disabled>
+                            <Button variant='link' disabled>
                               Didn&apos;t recieve a code? Resend (
                               <span className='tabular-nums'>
                                 {resendableAfter}
@@ -222,7 +214,7 @@ export default function SignUpPage() {
                             </Button>
                           )}
                         >
-                          <Button variant='link' size='sm'>
+                          <Button variant='link'>
                             Didn&apos;t recieve a code? Resend
                           </Button>
                         </SignUp.Action>

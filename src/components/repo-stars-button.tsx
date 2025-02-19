@@ -27,7 +27,6 @@ export async function RepoStarsButton({
 }: RepoStarsButton) {
   return (
     <Button
-      size='sm'
       variant='outline'
       className={cn("group gap-x-2 hover:bg-secondary/50", className)}
       asChild

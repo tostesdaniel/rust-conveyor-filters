@@ -11,13 +11,12 @@ import {
 import { Loader2 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
 import { RepoStarsButton } from "@/components/repo-stars-button";
 
 import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
 import { ModeToggle } from "./mode-toggle";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { Icons } from "./ui/icons";
 
 export type Navigation = {

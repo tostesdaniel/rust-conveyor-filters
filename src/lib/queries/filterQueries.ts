@@ -6,7 +6,7 @@ import { and, desc, eq, gt, isNull, lt, or } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction } from "zsa";
 
-import { BadgeType, UserBadge } from "@/types/badges";
+import { BadgeType } from "@/types/badges";
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
 import { filters } from "@/db/schema";

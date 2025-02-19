@@ -99,7 +99,7 @@ export default function ViewFilter({
         <DialogTrigger asChild>
           <TriggerButton />
         </DialogTrigger>
-        <DialogContent className='max-w-2xl'>
+        <DialogContent className='sm:max-w-2xl'>
           <DialogHeader>
             <DialogTitle>{filter.name}</DialogTitle>
             <DialogDescription>{filter.description}</DialogDescription>

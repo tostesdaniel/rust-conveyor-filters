@@ -76,21 +76,23 @@ export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Donate</DialogTitle>
-          <DialogDescription>
-            Support the project and get a{" "}
-            <UserBadge type={BadgeType.DONATOR} className='mx-1' /> badge.
-            <Separator />
-            Content creator? Get a{" "}
-            <UserBadge type={BadgeType.CONTENT_CREATOR} className='mx-1' /> on
-            our
-            <a
-              href={siteConfig.links.discord}
-              className='ml-1 font-medium text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Discord
-            </a>
+          <DialogDescription asChild>
+            <div>
+              Support the project and get a{" "}
+              <UserBadge type={BadgeType.DONATOR} className='mx-1' /> badge.
+              <Separator className='my-2' />
+              Content creator? Get a{" "}
+              <UserBadge type={BadgeType.CONTENT_CREATOR} className='mx-1' /> on
+              our
+              <a
+                href={siteConfig.links.discord}
+                className='ml-1 font-medium text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Discord
+              </a>
+            </div>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

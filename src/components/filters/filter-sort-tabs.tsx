@@ -4,7 +4,6 @@ import { useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { filterSortOptions } from "@/types/filter-sorting";
-import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function FilterSortTabs() {
@@ -32,7 +31,7 @@ export function FilterSortTabs() {
             value={option.value}
             disabled={isPending}
           >
-            <option.icon className={cn("h-4 w-4", "mr-2 hidden sm:block")} />
+            <option.icon className='hidden sm:block' />
             {option.label}
           </TabsTrigger>
         ))}

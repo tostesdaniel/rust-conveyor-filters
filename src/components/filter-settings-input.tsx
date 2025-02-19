@@ -57,7 +57,7 @@ export function FilterSettingsInput({
   return (
     <FormItem>
       <div className='mt-2 flex rounded-md'>
-        <FormLabel className='inline-flex w-16 flex-none items-center rounded-l-md border border-r-0 border-input px-3 text-muted-foreground'>
+        <FormLabel className='inline-flex h-9 w-16 flex-none items-center rounded-l-md border border-r-0 border-input px-3 text-muted-foreground'>
           {label}
         </FormLabel>
         <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
@@ -77,7 +77,7 @@ export function FilterSettingsInput({
           <Button
             type='button'
             size='icon'
-            className='h-5 w-5 rounded-none rounded-tr-md'
+            className='h-4.5 w-4.5 rounded-none rounded-tr-md'
             onClick={() => handleValueChange(index, "increment", property)}
           >
             <ChevronUp className='h-4 w-4' />
@@ -85,7 +85,7 @@ export function FilterSettingsInput({
           <Button
             type='button'
             size='icon'
-            className='h-5 w-5 rounded-none rounded-br-md'
+            className='h-4.5 w-4.5 rounded-none rounded-br-md'
             onClick={() => handleValueChange(index, "decrement", property)}
           >
             <ChevronDown className='h-4 w-4' />

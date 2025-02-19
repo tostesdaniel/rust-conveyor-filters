@@ -1,13 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { useTheme } from "next-themes";
 
 import { ThemeImage } from "@/components/theme-image";
 
 export function HeroImage() {
   const [mounted, setMounted] = React.useState(false);
-  const { resolvedTheme } = useTheme();
 
   React.useEffect(() => {
     setMounted(true);

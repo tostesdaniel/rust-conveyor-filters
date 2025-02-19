@@ -9,7 +9,7 @@ export function FilterImage({ imagePath }: FilterImageProps) {
 
   if (!imagePath) {
     return (
-      <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-dashed border-input' />
+      <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-dashed border-input' />
     );
   }
 
@@ -17,8 +17,8 @@ export function FilterImage({ imagePath }: FilterImageProps) {
     <Image
       src={itemImage}
       alt='Filter cover item image'
-      width={40}
-      height={40}
+      width={36}
+      height={36}
     />
   );
 }

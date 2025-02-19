@@ -8,7 +8,7 @@ export function FormSkeleton() {
       <FormItemSkeleton className={{ label: "w-20", message: "w-[550px]" }} />
       <ImageComboboxSkeleton />
       <ConveyorSkeleton className={{ label: "w-20" }} />
-      <Skeleton className='h-10 w-[120px]' />
+      <Skeleton className='h-9 w-[120px]' />
     </div>
   );
 }
@@ -21,7 +21,7 @@ function FormItemSkeleton({
   return (
     <div className='space-y-2'>
       <Skeleton className={cn("h-[17px]", className.label)} />
-      <Skeleton className='h-10 w-full' />
+      <Skeleton className='h-9 w-full' />
       <Skeleton className={cn("h-3.5", className.message)} />
     </div>
   );
@@ -32,8 +32,8 @@ function ImageComboboxSkeleton() {
     <div className='space-y-2'>
       <Skeleton className='h-[17px] w-20' />
       <div className='flex items-center gap-x-3'>
-        <Skeleton className='h-10 w-10' />
-        <Skeleton className='h-10 w-[300px]' />
+        <Skeleton className='h-9 w-9' />
+        <Skeleton className='h-9 w-[300px]' />
       </div>
     </div>
   );

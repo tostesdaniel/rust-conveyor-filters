@@ -7,7 +7,7 @@ import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
 import { type Category, type Item } from "@/db/schema";
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface ImportButtonProps extends ButtonProps {
+interface ImportButtonProps extends React.ComponentProps<typeof Button> {
   onImport: UseFieldArrayReplace<FieldValues, "items">;
 }
 

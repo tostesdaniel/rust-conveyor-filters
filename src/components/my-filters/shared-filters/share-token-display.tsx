@@ -89,14 +89,14 @@ export function ShareTokenDisplay() {
           type='button'
           variant='secondary'
           onClick={() => setIsVisible(!isVisible)}
-          className='absolute top-1 right-[52px] size-8 bg-muted hover:bg-background/50'
+          className='absolute inset-y-0.5 right-[46px] size-8 bg-muted hover:bg-background/50'
           aria-label={isVisible ? "Hide token" : "Show token"}
         >
           {isVisible ? <EyeOff /> : <Eye />}
         </Button>
 
         {isPending && (
-          <Loader className='absolute top-3 left-3 size-4 animate-spin' />
+          <Loader className='absolute top-2.5 left-3 size-4 animate-spin' />
         )}
         <div className='w-10'>
           <Button

@@ -6,7 +6,12 @@ import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm, useFormState, type FieldValues } from "react-hook-form";
+import {
+  useForm,
+  useFormState,
+  type Control,
+  type FieldValues,
+} from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -29,6 +34,26 @@ import { ConveyorCard } from "@/components/conveyor-card";
 import { FilterImageCombobox } from "@/components/filter-image-combobox";
 import { FilterCategoryCombobox } from "@/components/my-filters/filter-category-combobox";
 import { FormSkeleton } from "@/components/my-filters/form-skeleton";
+
+interface FilterItemBase {
+  name: string;
+  max: number;
+  buffer: number;
+  min: number;
+  createdAt?: Date | string;
+}
+
+interface ItemFilterItem extends FilterItemBase {
+  itemId: number;
+  shortname?: string;
+  imagePath: string;
+}
+
+interface CategoryFilterItem extends FilterItemBase {
+  categoryId: number;
+}
+
+type FilterItem = ItemFilterItem | CategoryFilterItem;
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),
@@ -56,7 +81,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     },
   });
   const { dirtyFields } = useFormState({ control: form.control });
-  const [initialItems, setInitialItems] = React.useState<any[]>([]);
+  const [initialItems, setInitialItems] = React.useState<FilterItem[]>([]);
 
   const queryClient = useQueryClient();
 
@@ -75,30 +100,34 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
 
   React.useEffect(() => {
     if (data) {
-      const initialItemsData = data.filterItems.map((filterItem) => {
-        if (filterItem.item) {
-          const { item } = filterItem;
-          return {
-            name: item.name,
-            shortname: item.shortname,
-            imagePath: item.imagePath,
-            itemId: item.id,
-            max: filterItem.max,
-            buffer: filterItem.buffer,
-            min: filterItem.min,
-            createdAt: filterItem.createdAt,
-          };
-        } else if (filterItem.category) {
-          return {
-            name: filterItem.category.name,
-            categoryId: filterItem.category.id,
-            max: filterItem.max,
-            buffer: filterItem.buffer,
-            min: filterItem.min,
-            createdAt: filterItem.createdAt,
-          };
-        }
-      });
+      const initialItemsData = data.filterItems
+        .map((filterItem): FilterItem | null => {
+          if (filterItem.item) {
+            const { item } = filterItem;
+            return {
+              name: item.name,
+              shortname: item.shortname ?? "",
+              imagePath: item.imagePath,
+              itemId: item.id,
+              max: filterItem.max,
+              buffer: filterItem.buffer,
+              min: filterItem.min,
+              createdAt: filterItem.createdAt,
+            };
+          } else if (filterItem.category) {
+            return {
+              name: filterItem.category.name,
+              categoryId: filterItem.category.id,
+              max: filterItem.max,
+              buffer: filterItem.buffer,
+              min: filterItem.min,
+              createdAt: filterItem.createdAt,
+            };
+          }
+          return null;
+        })
+        .filter((item): item is FilterItem => item !== null);
+
       setInitialItems(initialItemsData);
       form.reset({
         name: data.name,
@@ -118,7 +147,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
 
   const getDirtyData = <T extends FieldValues>(
     allFields: T,
-    dirtyFields: Partial<Record<keyof T, any>>,
+    dirtyFields: Partial<Record<keyof T, unknown>>,
   ): Partial<T> => {
     const changedFieldValues = Object.keys(dirtyFields).reduce(
       (acc, currentField) => {
@@ -133,30 +162,44 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     return changedFieldValues;
   };
 
-  const getRemovedItems = (initialItems: any[], currentItems: any[]) => {
+  const getRemovedItems = (
+    initialItems: FilterItem[],
+    currentItems: FilterItem[],
+  ) => {
     return initialItems.filter((initialItem) => {
       if ("itemId" in initialItem) {
         return !currentItems.some(
-          (currentItem) => currentItem.itemId === initialItem.itemId,
+          (currentItem) =>
+            "itemId" in currentItem &&
+            currentItem.itemId === initialItem.itemId,
         );
       } else if ("categoryId" in initialItem) {
         return !currentItems.some(
-          (currentItem) => currentItem.categoryId === initialItem.categoryId,
+          (currentItem) =>
+            "categoryId" in currentItem &&
+            currentItem.categoryId === initialItem.categoryId,
         );
       }
       return false;
     });
   };
 
-  const getAddedItems = (initialItems: any[], currentItems: any[]) => {
+  const getAddedItems = (
+    initialItems: FilterItem[],
+    currentItems: FilterItem[],
+  ) => {
     return currentItems.filter((currentItem) => {
       if ("itemId" in currentItem) {
         return !initialItems.some(
-          (initialItem) => initialItem.itemId === currentItem.itemId,
+          (initialItem) =>
+            "itemId" in initialItem &&
+            initialItem.itemId === currentItem.itemId,
         );
       } else if ("categoryId" in currentItem) {
         return !initialItems.some(
-          (initialItem) => initialItem.categoryId === currentItem.categoryId,
+          (initialItem) =>
+            "categoryId" in initialItem &&
+            initialItem.categoryId === currentItem.categoryId,
         );
       }
       return false;
@@ -281,7 +324,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         </Button>
       </form>
       {process.env.NODE_ENV === "development" && (
-        <DevTool control={form.control as any} />
+        <DevTool control={form.control as unknown as Control<FieldValues>} />
       )}
     </Form>
   );

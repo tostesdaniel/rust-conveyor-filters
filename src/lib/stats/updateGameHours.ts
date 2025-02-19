@@ -2,6 +2,19 @@ import { Redis } from "@upstash/redis";
 
 import { steamConfig } from "@/lib/constants";
 
+interface SteamGame {
+  appid: number;
+  playtime_forever: number;
+  name?: string;
+}
+
+interface SteamApiResponse {
+  response: {
+    games: SteamGame[];
+    game_count?: number;
+  };
+}
+
 const redis = Redis.fromEnv();
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
@@ -13,10 +26,10 @@ export async function updateGameHours() {
 
   try {
     const res = await fetch(url, { cache: "no-store" });
-    const data = await res.json();
+    const data: SteamApiResponse = await res.json();
     const gameHours = Math.floor(
-      data.response.games.find((game: any) => game.appid === RUST_APP_ID)
-        .playtime_forever / 60,
+      data.response.games.find((game) => game.appid === RUST_APP_ID)
+        ?.playtime_forever ?? 0 / 60,
     );
     await redis.set("gameHours", gameHours);
     return gameHours;

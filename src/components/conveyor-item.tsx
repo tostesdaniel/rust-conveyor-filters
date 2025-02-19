@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
+import { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
 import { categoryMapping } from "@/lib/categoryMapping";
@@ -14,7 +16,7 @@ import { FormDescription, FormField } from "./ui/form";
 interface ConveyorItemProps {
   item: ItemWithFields;
   index: number;
-  control: Control<any>;
+  control: Control<z.infer<typeof createFilterSchema>>;
   onRemove: (index: number) => void;
 }
 

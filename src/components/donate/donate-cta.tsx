@@ -20,7 +20,7 @@ export function DonateCTA() {
           <span>and help keep the project running!</span>
         </div>
       </div>
-      <Button asChild variant='outline' size='sm'>
+      <Button asChild variant='outline'>
         <Link href='/donate'>
           <Heart />
           Donate

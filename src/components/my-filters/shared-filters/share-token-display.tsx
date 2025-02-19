@@ -118,7 +118,6 @@ export function ShareTokenDisplay() {
         <Button
           type='button'
           variant='link'
-          size='sm'
           className='text-xs'
           disabled={isPending}
           onClick={() => revokeTokenMutation(undefined)}

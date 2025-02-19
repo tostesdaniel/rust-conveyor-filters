@@ -337,7 +337,7 @@ export function ShareWithUserDialog({
             />
 
             <DialogFooter>
-              <Button type='submit' size='sm' disabled={isPending}>
+              <Button type='submit' disabled={isPending}>
                 Share
               </Button>
             </DialogFooter>

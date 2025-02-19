@@ -111,7 +111,7 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
       }}
     >
       <PopoverTrigger asChild>
-        <Button type='button' variant='secondary' size='sm' {...props}>
+        <Button type='button' variant='secondary' {...props}>
           <Upload />
           Import
         </Button>

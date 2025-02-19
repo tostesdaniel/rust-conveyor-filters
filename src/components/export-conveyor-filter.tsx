@@ -55,7 +55,6 @@ export function ExportConveyorFilter({
     <Button
       type='button'
       onClick={handleCopy(exportText)}
-      size='sm'
       className={className}
     >
       <Copy />

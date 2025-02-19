@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -170,7 +170,7 @@ export default function NewFilterForm() {
         </Button>
       </form>
       {process.env.NODE_ENV === "development" && (
-        <DevTool control={form.control as any} />
+        <DevTool control={form.control as unknown as Control<FieldValues>} />
       )}
     </Form>
   );

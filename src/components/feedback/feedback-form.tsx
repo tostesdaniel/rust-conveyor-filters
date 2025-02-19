@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -194,7 +194,7 @@ export function FeedbackForm() {
           )}
         </div>
         {process.env.NODE_ENV === "development" && (
-          <DevTool control={form.control as any} />
+          <DevTool control={form.control as unknown as Control<FieldValues>} />
         )}
       </form>
     </Form>

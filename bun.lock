@@ -10,10 +10,10 @@
         "@clerk/elements": "^0.22.11",
         "@clerk/nextjs": "^6.9.14",
         "@hookform/resolvers": "^4.0.0",
-        "@mdx-js/loader": "^3.0.1",
-        "@mdx-js/react": "^3.0.1",
+        "@mdx-js/loader": "^3.1.0",
+        "@mdx-js/react": "^3.1.0",
         "@neondatabase/serverless": "^0.10.1",
-        "@next/mdx": "14",
+        "@next/mdx": "^15.1.7",
         "@radix-ui/react-accordion": "^1.2.3",
         "@radix-ui/react-alert-dialog": "^1.1.6",
         "@radix-ui/react-checkbox": "^1.1.4",
@@ -391,7 +391,7 @@
 
     "@next/eslint-plugin-next": ["@next/eslint-plugin-next@15.1.7", "", { "dependencies": { "fast-glob": "3.3.1" } }, "sha512-kRP7RjSxfTO13NE317ek3mSGzoZlI33nc/i5hs1KaWpK+egs85xg0DJ4p32QEiHnR0mVjuUfhRIun7awqfL7pQ=="],
 
-    "@next/mdx": ["@next/mdx@14.2.23", "", { "dependencies": { "source-map": "^0.7.0" }, "peerDependencies": { "@mdx-js/loader": ">=0.15.0", "@mdx-js/react": ">=0.15.0" }, "optionalPeers": ["@mdx-js/loader", "@mdx-js/react"] }, "sha512-4JVc67Gaj4Tr8w0WO+F5TAjS1JszagcqT06NLQ7CE6lNCyxfYRavo4LRYSdc3enp06aPiZLW6kklE3Xqf3p5rg=="],
+    "@next/mdx": ["@next/mdx@15.1.7", "", { "dependencies": { "source-map": "^0.7.0" }, "peerDependencies": { "@mdx-js/loader": ">=0.15.0", "@mdx-js/react": ">=0.15.0" }, "optionalPeers": ["@mdx-js/loader", "@mdx-js/react"] }, "sha512-olVOjKA1K8b7/cu0zqWecVkwyCUnB9xlKXxB/CeCRoZYlH0zluLHwhWBX0PR9yf3CG7eNLrK+PfuPBF+LdWODQ=="],
 
     "@next/swc-darwin-arm64": ["@next/swc-darwin-arm64@15.1.7", "", { "os": "darwin", "cpu": "arm64" }, "sha512-hPFwzPJDpA8FGj7IKV3Yf1web3oz2YsR8du4amKw8d+jAOHfYHYFpMkoF6vgSY4W6vB29RtZEklK9ayinGiCmQ=="],
 

@@ -265,7 +265,7 @@ export function ShareWithUserDialog({
                           ) : (
                             "Enter or select a token..."
                           )}
-                          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          <ChevronsUpDown />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>

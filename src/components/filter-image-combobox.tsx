@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { ChevronsUpDown } from "lucide-react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
+import { z } from "zod";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -23,12 +25,13 @@ import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { FormControl } from "./ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
+type SelectedImage = string;
+
 interface FilterImageComboboxProps {
-  field: ControllerRenderProps<any, any>;
+  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "imagePath">;
   items: Item[];
 }
 
-type SelectedImage = string;
 const FilterImageCombobox = React.memo(
   ({ field, items }: FilterImageComboboxProps) => {
     const [open, setOpen] = React.useState(false);
@@ -128,7 +131,7 @@ interface ItemListProps {
   items: Item[];
   setOpen: (open: boolean) => void;
   setSelectedImage: (image: string) => void;
-  field: ControllerRenderProps<any, any>;
+  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "imagePath">;
 }
 
 const ItemList = React.memo(

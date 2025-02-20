@@ -1,8 +1,11 @@
 import { Loader2 } from "lucide-react";
 
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
-export function LoadingButton({ children, ...props }: ButtonProps) {
+export function LoadingButton({
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   return (
     <Button disabled {...props}>
       <Loader2 className='animate-spin' />

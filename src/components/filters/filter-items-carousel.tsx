@@ -52,12 +52,12 @@ export function FilterItemsCarousel({
   }, [api]);
 
   React.useEffect(() => {
-    if (inView) {
+    if (inView && api?.canScrollNext()) {
       autoplay.current.play();
     } else {
       autoplay.current.stop();
     }
-  }, [inView]);
+  }, [api, inView]);
 
   const itemsPerPage = React.useMemo(() => {
     if (isMinWidth550) return 6;

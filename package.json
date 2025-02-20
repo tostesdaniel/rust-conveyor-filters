@@ -53,7 +53,7 @@
     "cmdk": "^1.0.4",
     "date-fns": "^4.0.0",
     "drizzle-orm": "^0.38.4",
-    "embla-carousel-autoplay": "8.1.6",
+    "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
     "lucide-react": "^0.475.0",
     "millify": "^6.1.0",

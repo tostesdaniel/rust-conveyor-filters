@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.596.0",
-    "@aws-sdk/credential-providers": "^3.596.0",
+    "@aws-sdk/credential-providers": "^3.750.0",
     "@aws-sdk/s3-request-presigner": "^3.596.0",
     "@clerk/elements": "^0.22.11",
     "@clerk/nextjs": "^6.9.14",

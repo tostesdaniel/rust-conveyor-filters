@@ -1,4 +1,6 @@
+import type { createFilterSchema } from "@/schemas/filterFormSchema";
 import { useFormContext } from "react-hook-form";
+import type { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
 
@@ -10,7 +12,7 @@ interface ConveyorItemGridProps {
 }
 
 export function ConveyorItemGrid({ items, onRemove }: ConveyorItemGridProps) {
-  const { control } = useFormContext();
+  const { control } = useFormContext<z.infer<typeof createFilterSchema>>();
 
   if (!items.length) {
     return (

@@ -76,7 +76,7 @@
         "@tanstack/react-query-devtools": "^5.66.0",
         "@types/node": "^22",
         "@types/react": "^19.0.0",
-        "@types/react-dom": "^19.0.0",
+        "@types/react-dom": "^19.0.4",
         "drizzle-kit": "^0.30.2",
         "eslint": "^9",
         "eslint-config-next": "^15.1.7",
@@ -728,7 +728,7 @@
 
     "@types/react": ["@types/react@19.0.8", "", { "dependencies": { "csstype": "^3.0.2" } }, "sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw=="],
 
-    "@types/react-dom": ["@types/react-dom@19.0.3", "", { "peerDependencies": { "@types/react": "^19.0.0" } }, "sha512-0Knk+HJiMP/qOZgMyNFamlIjw9OFCsyC2ZbigmEEyXXixgre6IQpm/4V+r3qH4GC1JPvRJKInw+on2rV6YZLeA=="],
+    "@types/react-dom": ["@types/react-dom@19.0.4", "", { "peerDependencies": { "@types/react": "^19.0.0" } }, "sha512-4fSQ8vWFkg+TGhePfUzVmat3eC14TXYSsiiDSLI0dVLsrm9gZFABjPy/Qu6TKgl1tq1Bu1yDsuQgY3A3DOjCcg=="],
 
     "@types/unist": ["@types/unist@3.0.3", "", {}, "sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q=="],
 

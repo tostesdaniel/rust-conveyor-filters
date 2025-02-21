@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignUpButton } from "@clerk/nextjs";
 import { ArrowRightIcon } from "lucide-react";
 import * as motion from "motion/react-client";
 
@@ -79,7 +80,7 @@ export function CTA() {
               }}
             >
               <Button asChild>
-                <Link href='/sign-up'>Get Started</Link>
+                <SignUpButton>Get Started</SignUpButton>
               </Button>
             </motion.div>
             <motion.div

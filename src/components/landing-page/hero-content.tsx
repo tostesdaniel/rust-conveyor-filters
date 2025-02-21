@@ -48,12 +48,7 @@ export function HeroContent() {
           </SignedIn>
           <SignedOut>
             <Button type='button' asChild>
-              <SignUpButton
-                signInFallbackRedirectUrl='/my-filters'
-                fallbackRedirectUrl='/my-filters'
-              >
-                Get Started Now
-              </SignUpButton>
+              <SignUpButton>Get Started Now</SignUpButton>
             </Button>
           </SignedOut>
           <Button type='button' variant='link' className='group' asChild>

@@ -85,7 +85,7 @@
     "@tanstack/react-query-devtools": "^5.66.0",
     "@types/node": "^22",
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react-dom": "^19.0.4",
     "drizzle-kit": "^0.30.2",
     "eslint": "^9",
     "eslint-config-next": "^15.1.7",

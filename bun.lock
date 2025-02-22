@@ -38,7 +38,7 @@
         "@vercel/functions": "^2.0.0",
         "@vercel/speed-insights": "^1.2.0",
         "aws-sdk": "^2.1632.0",
-        "class-variance-authority": "^0.7.0",
+        "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.0.4",
         "date-fns": "^4.0.0",

@@ -33,8 +33,8 @@ export function ConveyorCard() {
   };
 
   return (
-    <Card className='divide-y'>
-      <CardHeader className='relative py-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
+    <Card className='gap-3 divide-y py-3'>
+      <CardHeader className='relative pb-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
         <div className='flex items-center gap-x-2 pr-10'>
           <BoxIcon className='h-5 w-5 shrink-0 text-muted-foreground' />
           <CardTitle className='shrink-0 text-xl'>Conveyor Filter</CardTitle>
@@ -52,7 +52,7 @@ export function ConveyorCard() {
           onRemove={remove}
         />
       </CardContent>
-      <CardFooter className='flex-col gap-x-4 gap-y-3 py-3 min-[550px]:flex-row sm:justify-end'>
+      <CardFooter className='flex-col gap-x-4 gap-y-3 min-[550px]:flex-row sm:justify-end'>
         <div className='order-last flex-1 self-start min-[550px]:order-none min-[550px]:self-auto sm:flex-none'>
           <FormField
             control={control}

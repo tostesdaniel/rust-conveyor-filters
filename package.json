@@ -77,7 +77,7 @@
     "zsa-react-query": "^0.2.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/eslintrc": "^3.3.0",
     "@hookform/devtools": "^4.3.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@tailwindcss/postcss": "^4.0.8",

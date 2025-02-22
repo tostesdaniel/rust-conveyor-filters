@@ -165,7 +165,7 @@ const FilterItem = ({ filterItem }: { filterItem: ConveyorFilterItem }) => {
   const CategoryIcon = getCategoryIcon(categoryKey!);
   return (
     <li className='snap-start'>
-      <Card className='aspect-square w-20'>
+      <Card className='aspect-square w-20 py-0'>
         {category ? (
           <CategoryIcon className='h-full w-full object-cover py-2' />
         ) : item ? (

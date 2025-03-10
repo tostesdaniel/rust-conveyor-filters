@@ -10,7 +10,8 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "seed": "bun run ./db/seed.ts",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "update-items": "bun run ./src/scripts/monthly-update/update-items.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.596.0",

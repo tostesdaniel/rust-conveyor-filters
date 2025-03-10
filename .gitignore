@@ -36,4 +36,6 @@ yarn-error.log*
 next-env.d.ts
 
 src/assets/items
+src/scripts/monthly-update/items-sink/*.json
+
 .cursorrules

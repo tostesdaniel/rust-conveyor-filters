@@ -1,0 +1,17 @@
+# Rust Conveyor Filters - Items Sink Directory
+
+This directory is used by the monthly update script to temporarily store new item data
+from Rust game updates before processing and integrating them into the database.
+
+## Purpose
+
+- Serves as a drop location for new JSON item files
+- Processed by the update-items.ts script
+- Files here are compared against existing items
+- New items are added, existing items are updated
+
+## How to use
+
+1. Place new item JSON files in this directory
+2. Run the update script: `bun update-items`
+3. The script will process these files and update the database

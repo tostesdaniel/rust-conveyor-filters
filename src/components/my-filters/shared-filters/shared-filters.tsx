@@ -24,10 +24,10 @@ export function SharedFilters() {
       <Collapsible
         className={cn(
           "group max-w-[300px] space-y-2",
-          "lg:absolute lg:-top-[46px] lg:right-0",
+          "lg:absolute lg:right-0",
         )}
       >
-        <div className='flex items-center justify-between space-x-4'>
+        <div className='flex items-center space-x-2 lg:justify-between'>
           <p className='text-sm font-medium'>Your share token</p>
           <CollapsibleTrigger asChild>
             <Button type='button' variant='ghost' className='w-9 p-0'>

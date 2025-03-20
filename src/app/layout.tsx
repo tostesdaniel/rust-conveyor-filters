@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -88,6 +89,7 @@ export default function RootLayout({
             src='https://umami.rustconveyorfilters.com/script.js'
             data-website-id='695aa61d-5756-4456-ae5b-ef75606debe5'
           />
+          <GoogleAnalytics gaId='G-BGERZ3ES1R' />
         </head>
         <body
           className={cn(

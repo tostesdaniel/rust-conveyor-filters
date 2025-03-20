@@ -93,7 +93,7 @@ export default function RootLayout({
         </head>
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "min-h-svh bg-background font-sans antialiased",
             inter.variable,
           )}
         >
@@ -104,7 +104,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className='flex min-h-screen flex-col'>{children}</div>
+              <div className='flex min-h-svh flex-col'>{children}</div>
               <Toaster richColors />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />

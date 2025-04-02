@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/db";
+import { pooledDb as db } from "@/db/pooled-connection";
 import { clerkClient } from "@clerk/nextjs/server";
 import { and, desc, eq, gt, isNull, lt, or } from "drizzle-orm";
 import { z } from "zod";

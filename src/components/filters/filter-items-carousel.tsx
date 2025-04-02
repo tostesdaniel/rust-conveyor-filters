@@ -124,7 +124,7 @@ export function FilterItemsCarousel({
                     {isCategory ? (
                       <>
                         <CategoryIcon className='h-14 w-full object-cover py-1' />
-                        <p className='text-center text-xs font-bold'>
+                        <p className='overflow-hidden text-center text-xs font-bold text-clip'>
                           {category?.name}
                         </p>
                       </>

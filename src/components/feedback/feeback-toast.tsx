@@ -23,7 +23,7 @@ export function SignInToast() {
           description: "Please sign in to share your feedback.",
           action: {
             label: "Sign in",
-            onClick: () => router.push("/sign-in"),
+            onClick: () => router.push("/auth/sign-in"),
           },
           position: "top-center",
         });

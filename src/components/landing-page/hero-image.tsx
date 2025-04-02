@@ -26,9 +26,10 @@ export function HeroImage() {
             srcDark='/images/hero-dark.webp'
             alt='Conveyor filter creator interface'
             quality={100}
+            fetchPriority='high'
             width={1408}
             height={1024}
-            className='relative w-[70rem] rounded-md ring-1 shadow-2xl ring-border/10 transition-transform duration-500 ease-in-out group-hover:scale-[1.02]'
+            className='relative w-[70rem] rounded-md shadow-2xl ring-1 ring-border/10 transition-transform duration-500 ease-in-out group-hover:scale-[1.02]'
           />
         </div>
       </div>

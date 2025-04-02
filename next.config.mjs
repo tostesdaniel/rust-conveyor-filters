@@ -11,6 +11,7 @@ const nextConfig = {
       },
       { protocol: "https", hostname: "steamuserimages-a.akamaihd.net" },
     ],
+    minimumCacheTTL: 2678400, // 31 days
   },
   rewrites: async () => [
     {

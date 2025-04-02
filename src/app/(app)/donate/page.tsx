@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: "Support the development of the app",
 };
 
-const { buyMeACoffee, kofi } = siteConfig.donate;
+const { buyMeACoffee, kofi, patreon } = siteConfig.donate;
 
 export default function DonatePage() {
   return (
@@ -60,6 +60,14 @@ export default function DonatePage() {
               icon={<Icons.kofi className='h-5 w-5 animate-kofi-wiggle' />}
             >
               Support me on Ko-fi
+            </DonateButton>
+            <DonateButton
+              href={patreon}
+              platform='patreon'
+              className='bg-[#FC674D] font-semibold text-[#202020] shadow-[1px_1px_0px_rgba(0,0,0,0.2)] transition-colors hover:bg-[#FC674D]/90'
+              icon={<Icons.patreon className='h-5 w-5' />}
+            >
+              Support me on Patreon
             </DonateButton>
           </ul>
 

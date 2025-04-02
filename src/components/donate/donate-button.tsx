@@ -11,12 +11,13 @@ interface DonateButtonProps extends ComponentProps<typeof Button> {
   icon?: React.ReactNode;
   children: React.ReactNode;
   href: string;
-  platform: "kofi" | "buyMeACoffee";
+  platform: "kofi" | "buyMeACoffee" | "patreon";
 }
 
 const platformNames = {
   kofi: "Ko-fi",
   buyMeACoffee: "Buy Me A Coffee",
+  patreon: "Patreon",
 } as const;
 
 export function DonateButton({
@@ -46,13 +47,13 @@ export function DonateButton({
           id: toastId,
           description: `Redirecting in ${secondsLeft}s...`,
           duration: 1000,
-          richColors: false,
+          richColors: true,
         });
       }, 1000);
 
       setTimeout(async () => {
         clearInterval(interval);
-        window.location.href = "/sign-in";
+        window.location.href = "/auth/sign-in";
       }, REDIRECT_DELAY);
       return;
     }

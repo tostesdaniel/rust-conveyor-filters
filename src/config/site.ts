@@ -13,6 +13,7 @@ export const siteConfig = {
   donate: {
     buyMeACoffee: "https://buymeacoffee.com/danieltostes",
     kofi: "https://ko-fi.com/danieltostes",
+    patreon: "https://www.patreon.com/danieltostes",
     steamTradeOffer:
       "https://steamcommunity.com/tradeoffer/new/?partner=399264387&token=l8mmGAe9",
     steamAwardsPost:

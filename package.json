@@ -11,12 +11,12 @@
     "migrate": "drizzle-kit migrate",
     "seed": "bun run ./db/seed.ts",
     "studio": "drizzle-kit studio",
-    "update-items": "bun run ./src/scripts/monthly-update/update-items.ts"
+    "update-items": "bun run ./src/scripts/monthly-update/update-items.ts",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.596.0",
-    "@aws-sdk/credential-providers": "^3.596.0",
-    "@aws-sdk/s3-request-presigner": "^3.596.0",
     "@clerk/nextjs": "^6.12.0",
     "@hookform/resolvers": "^4.1.0",
     "@mdx-js/loader": "^3.1.0",

@@ -82,6 +82,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@hookform/devtools": "^4.3.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
+    "@opennextjs/cloudflare": "^1.0.0-beta.0",
     "@tailwindcss/postcss": "^4.0.8",
     "@tanstack/eslint-plugin-query": "^5.66.1",
     "@tanstack/react-query-devtools": "^5.66.9",
@@ -96,6 +97,7 @@
     "prettier": "3.5.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.8",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.7.0"
   }
 }

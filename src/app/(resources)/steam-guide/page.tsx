@@ -4,6 +4,8 @@ import { steamConfig } from "@/lib/constants";
 import { Typography } from "@/components/ui/typography";
 import { SteamGuideCard } from "@/components/steam-guide/steam-guide-card";
 
+export const dynamic = "force-dynamic";
+
 export default function SteamGuidePage() {
   return (
     <div className='flex flex-col items-center justify-center'>

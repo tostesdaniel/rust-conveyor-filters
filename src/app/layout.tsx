@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -109,8 +107,6 @@ export default function RootLayout({
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryProvider>
-          <Analytics />
-          <SpeedInsights />
           <OutboundLinkTracker />
         </body>
       </html>

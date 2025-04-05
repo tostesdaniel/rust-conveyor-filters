@@ -2,23 +2,26 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "rust-conveyor-filters",
-  "compatibility_date": "2025-03-21",
+  "compatibility_date": "2025-04-05",
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "minify": true,
-  "observability": {
-    "enabled": true
-  },
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS",
+    "binding": "ASSETS"
   },
-  "services": [
-    {
-      "binding": "MY_BUCKET",
-      "service": "rustconveyorfilters"
-    }
+  "kv_namespaces": [
+    // Create a KV binding with the binding name "NEXT_INC_CACHE_KV"
+    // to enable the KV based caching:
+    // {
+    //   "binding": "NEXT_INC_CACHE_KV",
+    //   "id": "<BINDING_ID>"
+    // }
   ],
-  "upload_source_maps": true
+  "r2_buckets": [
+    {
+      "binding": "ITEMS_BUCKET",
+      "bucket_name": "rustconveyorfilters"
+    }
+  ]
 }

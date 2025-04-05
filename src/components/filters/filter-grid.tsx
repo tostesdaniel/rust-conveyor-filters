@@ -2,17 +2,12 @@
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
-import { keepPreviousData } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
+import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import type { FilterSortOption } from "@/types/filter-sorting";
-import { useServerActionInfiniteQuery } from "@/hooks/server-action-hooks";
-import {
-  getMostUsedFilters,
-  getNewFilters,
-  getPopularFilters,
-  getUpdatedFilters,
-} from "@/lib/queries";
+import { useFilters } from "@/hooks/use-filters";
+import { Typography } from "@/components/ui/typography";
 import { FilterSortTabs } from "@/components/filters/filter-sort-tabs";
 import FiltersLoading from "@/app/(app)/filters/loading";
 
@@ -20,18 +15,14 @@ import { FilterCard } from "./filter-card/filter-card";
 import { FilterCardSkeleton } from "./filter-card/filter-card-skeleton";
 
 export function FilterGrid() {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    delay: 100,
+    triggerOnce: false,
+    threshold: 0.5,
+  });
   const searchParams = useSearchParams();
-  const sortBy =
-    searchParams.get("sort") || ("popular" as FilterSortOption["value"]);
-
-  const queries = {
-    popular: getPopularFilters,
-    new: getNewFilters,
-    updated: getUpdatedFilters,
-    mostUsed: getMostUsedFilters,
-  };
-  const selectedQuery = queries[sortBy as keyof typeof queries];
+  const sortBy = (searchParams.get("sort") ||
+    "popular") as FilterSortOption["value"];
 
   const {
     data,
@@ -42,17 +33,7 @@ export function FilterGrid() {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
-  } = useServerActionInfiniteQuery(selectedQuery, {
-    queryKey: ["filters", sortBy],
-    initialPageParam: undefined,
-    input: ({ pageParam }) => ({
-      cursor: pageParam,
-      pageSize: 6,
-    }),
-    // @ts-expect-error workaround for using compound cursor
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    placeholderData: keepPreviousData,
-  });
+  } = useFilters(sortBy);
 
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -60,12 +41,29 @@ export function FilterGrid() {
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
+      fetchNextPage().catch((err) => {
+        console.error("Failed to fetch next page:", err);
+      });
     }
   }, [fetchNextPage, hasNextPage, inView, isFetchingNextPage]);
 
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <div className='p-4 text-center'>
+        <Typography variant='h4' className='text-red-500'>
+          Error loading filters
+        </Typography>
+        <Typography variant='p' className='mt-2'>
+          {error.message}
+        </Typography>
+        <button
+          onClick={() => window.location.reload()}
+          className='mt-4 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90'
+        >
+          Try Again
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -77,7 +75,7 @@ export function FilterGrid() {
         <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2 lg:place-items-stretch'>
           {data?.pages
             .flatMap((page) => page.data)
-            .map((filter) => (
+            .map((filter: ConveyorFilterWithAuthor) => (
               <div
                 key={filter.id}
                 className={`transition-opacity duration-300 ${

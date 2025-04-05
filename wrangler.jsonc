@@ -14,5 +14,11 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS",
   },
+  "services": [
+    {
+      "binding": "MY_BUCKET",
+      "service": "rustconveyorfilters"
+    }
+  ],
   "upload_source_maps": true
 }

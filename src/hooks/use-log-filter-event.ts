@@ -10,7 +10,11 @@ export const useLogFilterEvent = () => {
         method: "POST",
         body: JSON.stringify({ filterId, eventType }),
       });
-      const { success, userId, ip } = await rateLimitResponse.json();
+      const { success, userId, ip } = (await rateLimitResponse.json()) as {
+        success: boolean;
+        userId: string;
+        ip: string;
+      };
 
       const result = await mutateAsync({
         filterId,

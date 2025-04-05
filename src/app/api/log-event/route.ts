@@ -10,7 +10,10 @@ const rateLimit = new Ratelimit({
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
-  const { filterId, eventType } = await req.json();
+  const { filterId, eventType } = (await req.json()) as {
+    filterId: string;
+    eventType: string;
+  };
   const ip =
     req.headers.get("x-forwarded-for") ||
     req.headers.get("cf-connecting-ip") ||

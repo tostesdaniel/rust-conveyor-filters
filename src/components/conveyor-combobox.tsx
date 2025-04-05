@@ -12,6 +12,7 @@ import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
+import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Item, type Category } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
@@ -232,7 +233,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                     >
                       <div className='relative h-6 w-6'>
                         <Image
-                          src={`/items/${item.imagePath}.png`}
+                          src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
                           alt={item.name}
                           height={24}
                           width={24}

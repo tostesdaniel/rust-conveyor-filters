@@ -7,6 +7,7 @@ import { z } from "zod";
 import { type ItemWithFields } from "@/types/item";
 import { categoryMapping } from "@/lib/categoryMapping";
 import { FilterSettingsFieldDescription } from "@/lib/constants";
+import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Button } from "@/components/ui/button";
 import { getCategoryIcon } from "@/components/category-icons";
 
@@ -46,7 +47,7 @@ export function ConveyorItem({
           <CategoryIcon className='h-full w-full object-contain' />
         ) : (
           <Image
-            src={`/items/${item.imagePath}.png`}
+            src={getR2ImageUrl(item.imagePath + ".webp", "full")}
             alt={item.name}
             fill
             className='object-contain'

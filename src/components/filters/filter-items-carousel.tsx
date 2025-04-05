@@ -8,6 +8,7 @@ import { useInView } from "react-intersection-observer";
 import type { ConveyorFilterItem } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
+import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -130,7 +131,7 @@ export function FilterItemsCarousel({
                       </>
                     ) : (
                       <Image
-                        src={`/items/${item.imagePath}.png`}
+                        src={getR2ImageUrl(item.imagePath + ".webp", "medium")}
                         alt={item.name}
                         fill
                         sizes='80px'

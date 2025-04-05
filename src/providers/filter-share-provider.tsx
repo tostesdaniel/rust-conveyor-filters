@@ -47,7 +47,7 @@ export function FilterShareProvider({
 
   useEffect(() => {
     if (filter) {
-      setSharedFilter({ filter: filter[0], sharedBy });
+      setSharedFilter({ filter, sharedBy });
     }
   }, [filter, sharedBy]);
 

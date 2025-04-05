@@ -1,8 +1,6 @@
 type ImageSize = "tiny" | "small" | "medium" | "full";
 
-const R2_BUCKET_URL =
-  process.env.NEXT_PUBLIC_R2_BUCKET_URL ||
-  "https://pub-[your-bucket-id].r2.dev"; // Replace with your actual R2 bucket URL
+const R2_BUCKET_URL = process.env.NEXT_PUBLIC_R2_BUCKET_URL;
 
 /**
  * Generates a URL for an image stored in Cloudflare R2

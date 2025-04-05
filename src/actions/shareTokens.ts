@@ -1,7 +1,6 @@
 "use server";
 
 import { db } from "@/db";
-import { pooledDb } from "@/db/pooled-connection";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
@@ -77,7 +76,7 @@ export const revokeShareToken = authenticatedProcedure
         throw new Error("Share token not found");
       }
 
-      await pooledDb.transaction(async (tx) => {
+      await db.transaction(async (tx) => {
         await tx
           .update(shareTokens)
           .set({

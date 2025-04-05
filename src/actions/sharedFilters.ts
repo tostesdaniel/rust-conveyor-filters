@@ -1,7 +1,6 @@
 "use server";
 
 import { db } from "@/db";
-import { pooledDb } from "@/db/pooled-connection";
 import { clerkClient } from "@clerk/nextjs/server";
 import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
@@ -22,7 +21,7 @@ export const shareFilter = ownsFilterProcedure
   .handler(async ({ ctx, input }) => {
     const { filterId } = input;
     try {
-      await pooledDb.transaction(async (tx) => {
+      await db.transaction(async (tx) => {
         const filter = await tx.query.filters.findFirst({
           where: eq(filters.id, filterId),
         });
@@ -142,7 +141,7 @@ export const shareFilterCategory = authenticatedProcedure
     }
 
     try {
-      return await pooledDb.transaction(async (tx) => {
+      return await db.transaction(async (tx) => {
         const ownToken = await tx.query.shareTokens.findFirst({
           where: and(
             eq(shareTokens.revoked, false),

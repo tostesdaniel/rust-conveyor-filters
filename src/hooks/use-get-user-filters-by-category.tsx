@@ -1,9 +1,18 @@
-import { useServerActionQuery } from "@/hooks/server-action-hooks";
-import { getUserFiltersByCategory } from "@/lib/queries/filterQueries";
+import { useQuery } from "@tanstack/react-query";
+
+import type { ConveyorFilter } from "@/types/filter";
 
 export function useGetUserFiltersByCategory(categoryId: number | null) {
-  return useServerActionQuery(getUserFiltersByCategory, {
-    input: { categoryId },
+  return useQuery<ConveyorFilter[]>({
     queryKey: ["user-filters-by-category", categoryId],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/filters/by-category?categoryId=${categoryId ?? ""}`,
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch filters");
+      }
+      return response.json();
+    },
   });
 }

@@ -1,17 +1,16 @@
 import Image from "next/image";
-import { Redis } from "@upstash/redis";
 import { LinkedinIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { getRedisClient } from "@/lib/redis";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Typography } from "@/components/ui/typography";
 
-const redis = Redis.fromEnv();
-
 const { links } = siteConfig;
 
 export async function AboutHero() {
+  const redis = await getRedisClient();
   const gameHours = await redis.get<number>("gameHours");
 
   return (

@@ -1,15 +1,14 @@
-import { Redis } from "@upstash/redis";
 import { Octokit } from "octokit";
 
 import { siteConfig } from "@/config/site";
-
-const redis = Redis.fromEnv();
+import { getRedisClient } from "@/lib/redis";
 
 const GITHUB_REPO_OWNER = siteConfig.links.repo.split("/")[3];
 const GITHUB_REPO_NAME = siteConfig.links.repo.split("/")[4];
 
 export async function updateRepoStars() {
   try {
+    const redis = await getRedisClient();
     const noCacheFetch = (url: string, options: RequestInit) => {
       return fetch(url, {
         ...options,

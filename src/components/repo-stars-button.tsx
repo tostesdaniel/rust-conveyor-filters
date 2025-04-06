@@ -1,19 +1,18 @@
 import { Suspense } from "react";
-import { Redis } from "@upstash/redis";
 import { Loader2, StarIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { getRedisClient } from "@/lib/redis";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
-const redis = Redis.fromEnv();
 
 interface RepoStarsButton {
   className?: string;
 }
 
 async function StargazersCount() {
+  const redis = await getRedisClient();
   const stars = await redis.get<number>("repo-stars");
   if (!stars) {
     return <>N/A</>;

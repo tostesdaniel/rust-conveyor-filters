@@ -23,5 +23,6 @@
       "binding": "ITEMS_BUCKET",
       "bucket_name": "rustconveyorfilters"
     }
-  ]
+  ],
+  "keep_vars": true,
 }

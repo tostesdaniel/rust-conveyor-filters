@@ -31,7 +31,7 @@
     }
   ],
   "placement": {
-    "mode": "smart"
+    "mode": "off"
   },
   "keep_vars": true,
 }

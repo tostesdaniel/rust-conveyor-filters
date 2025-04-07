@@ -17,7 +17,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.12.0",
+    "@clerk/nextjs": "^6.13.0",
     "@hookform/resolvers": "^4.1.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",

@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { type Item } from "@/db/schema";
 
 import { FilterImage } from "./filter-image";
@@ -160,7 +161,7 @@ const ItemList = React.memo(
               >
                 <div className='relative h-6 w-6'>
                   <Image
-                    src={`/items/${item.imagePath}.png`}
+                    src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
                     alt={item.name}
                     width={24}
                     height={24}

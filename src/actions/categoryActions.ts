@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/db";
+import { pooledDb as txDb } from "@/db/pooled-connection";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import * as z from "zod";
 
@@ -116,7 +117,7 @@ export const manageFilterCategory = authenticatedProcedure
     const { isSubCategory, filterId, categoryId } = input;
 
     try {
-      await db.transaction(async (tx) => {
+      await txDb.transaction(async (tx) => {
         const existingFilter = await tx.query.filters.findFirst({
           where: and(
             eq(filters.id, filterId),
@@ -255,7 +256,7 @@ export const clearFilterCategory = authenticatedProcedure
   )
   .handler(async ({ ctx, input }) => {
     try {
-      await db.transaction(async (tx) => {
+      await txDb.transaction(async (tx) => {
         const currentFilter = await tx.query.filters.findFirst({
           where: and(
             eq(filters.id, input.filterId),
@@ -427,7 +428,7 @@ export const deleteCategory = authenticatedProcedure
   )
   .handler(async ({ ctx, input }) => {
     try {
-      await db.transaction(async (tx) => {
+      await txDb.transaction(async (tx) => {
         const filtersInCategory = await tx.query.filters.findMany({
           where: and(
             eq(filters.authorId, ctx.userId),

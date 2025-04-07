@@ -1,5 +1,6 @@
 "use server";
 
+import { pooledDb as txDb } from "@/db/pooled-connection";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -246,7 +247,7 @@ export const deleteFilter = ownsFilterProcedure
   .handler(async ({ input }) => {
     const { filterId } = input;
     try {
-      await db.transaction(async (tx) => {
+      await txDb.transaction(async (tx) => {
         const [deletedFilter] = await tx
           .delete(filters)
           .where(eq(filters.id, filterId))
@@ -301,7 +302,7 @@ export const updateFilterOrder = authenticatedProcedure
     const { filters: filterUpdates, categoryId, subCategoryId } = input;
 
     try {
-      await db.transaction(async (tx) => {
+      await txDb.transaction(async (tx) => {
         const updatePromises = filterUpdates.map(({ filterId, order }) =>
           tx
             .update(filters)

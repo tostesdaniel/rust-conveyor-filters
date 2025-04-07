@@ -6,6 +6,12 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "minify": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.5,
+  },
+  "upload_source_maps": true,
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -24,5 +30,8 @@
       "bucket_name": "rustconveyorfilters"
     }
   ],
+  "placement": {
+    "mode": "smart"
+  },
   "keep_vars": true,
 }

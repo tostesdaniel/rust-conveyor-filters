@@ -98,21 +98,9 @@ rust-conveyor-filters/
     └── images/                # Static images                # Game data and images
 ```
 
-## ⚙️ Configuration
+## ⚙️ Contributing
 
-### Environment Setup
-
-Create a `.env.local` file in root directory:
-
-```env
-DATABASE_URL=your_database_url
-```
-
-### Styling & Code Quality
-
-- Styling: Tailwind CSS (`tailwind.config.ts`)
-- Linting: ESLint (`.eslintrc.json`)
-- Formatting: Prettier (`.prettierrc`)
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for instructions on how to contribute to this project.
 
 ## 🛠️ Built With
 

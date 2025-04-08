@@ -2,6 +2,21 @@
   "name": "rust-conveyor-filters",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://rustconveyorfilters.com",
+  "bugs": {
+    "url": "https://github.com/tostesdaniel/rust-conveyor-filters/issues",
+    "email": "tostes.dev@gmail.com"
+  },
+  "license": "GPL-3.0-only",
+  "author": {
+    "name": "Daniel Tostes",
+    "email": "tostes.dev@gmail.com",
+    "url": "https://github.com/tostesdaniel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tostesdaniel/rust-conveyor-filters.git"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -94,5 +109,8 @@
     "tailwindcss": "^4.0.8",
     "typescript": "^5",
     "wrangler": "^4.7.2"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   }
 }

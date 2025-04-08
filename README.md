@@ -19,23 +19,27 @@ This project is a web application for generating, editing, and sharing Rust conv
 ### Prerequisites
 
 You'll need:
+
 - Node.js
 - Package manager (npm, yarn, pnpm, or bun)
 
 ### Installation
 
 1. Clone and enter the project:
+
    ```bash
    git clone https://github.com/tostesdaniel/rust-conveyor-filters.git
    cd rust-conveyor-filters
    ```
 
 2. Install the dependencies:
+
    ```bash
    npm install   # or yarn/pnpm/bun install
    ```
 
 3. Fire it up:
+
    ```bash
    npm run dev   # or yarn/pnpm/bun dev
    ```
@@ -60,48 +64,52 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 The project is organized as follows:
 
-```
+```text
 rust-conveyor-filters/
 ├── src/
 │   ├── app/                   # Next.js app router pages and layouts
 │   │   ├── (app)/             # Main application pages
-│   │   ├── (auth)/            # Authentication pages
 │   │   ├── (legal)/           # Terms and privacy pages
-│   │   └── (resources)/       # Public resources
+│   │   ├── (resources)/       # Public resources
+│   │   └── api/               # Route handlers
 │   ├── components/            # Reusable React components
 │   │   ├── about/             # About page components
+│   │   ├── analytics/         # Analytics hooking
 │   │   ├── donate/            # Donation related components
 │   │   ├── feedback/          # Feedback related components
 │   │   ├── filters/           # Public filters components
 │   │   ├── landing-page/      # Home page components
 │   │   ├── my-filters/        # User filters components
 │   │   ├── steam-guide/       # Steam guide components
-│   │   └── ui/                # Shadcn UI components
+│   │   └── ui/                # Shared UI components
 │   ├── config/                # App metadata & config
-│   ├── db/                    # Database schema
+│   ├── db/                    # Database schema & setup
 │   ├── hooks/                 # Custom React hooks
 │   ├── lib/                   # Utility functions and constants
 │   │   ├── donation/          # Donation webhook validation
 │   │   ├── queries/           # Database queries
-│   │   └── stats/             # Cron jobs
+│   │   ├── stats/             # Cron jobs
+│   │   └── utils/             # Utility functions
 │   ├── providers/             # React context providers
-│   ├── schems/                # Form schema definitions
+│   ├── schemas/               # Form schema definitions
 │   └── types/                 # TypeScript type definitions
-├── public/                    # Static assets
-│   ├── icons/                 # App icons
-│   └── images/                # Static images
-└── assets/                    # Game data and images
+└── public/                    # Static assets
+    ├── icons/                 # App icons
+    └── images/                # Static images                # Game data and images
 ```
 
 ## ⚙️ Configuration
 
 ### Environment Setup
+
 Create a `.env.local` file in root directory:
+
 ```env
 DATABASE_URL=your_database_url
 ```
 
 ### Styling & Code Quality
+
 - Styling: Tailwind CSS (`tailwind.config.ts`)
 - Linting: ESLint (`.eslintrc.json`)
 - Formatting: Prettier (`.prettierrc`)
@@ -116,6 +124,7 @@ DATABASE_URL=your_database_url
 ## 🤝 Contributing
 
 Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
+
 - 🐛 Report bugs
 - 💡 Suggest new features
 - 🔧 Submit pull requests
@@ -126,13 +135,13 @@ This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
 
 ## 📬 Get in Touch
 
-Have questions? Join our [Discord community](https://discord.gg/DGzAHXvU93) or email me at tostes.dev@gmail.com.
+Have questions? Join our [Discord community](https://discord.gg/DGzAHXvU93) or email me at <tostes.dev@gmail.com>.
 
 ---
 
 <div align="center">
 
-**Made with ❤️ for the Rust community**
+## Made with ❤️ for the Rust community
 
 [Join Discord](https://discord.gg/DGzAHXvU93) • [Report Bug](https://github.com/tostesdaniel/rust-conveyor-filters/issues) • [Request Feature](https://github.com/tostesdaniel/rust-conveyor-filters/issues)
 

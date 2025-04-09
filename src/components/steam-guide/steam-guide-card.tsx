@@ -26,11 +26,15 @@ export async function SteamGuideCard() {
     },
   ).then((res) => res.json());
 
+  const previewUrl =
+    guide.preview_url ||
+    "https://images.steamusercontent.com/ugc/2407823090587833568/565887E3C1B64A41F9CD1F1EE8ADBE3C241823FE/?imw=128&imh=128&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true";
+
   return (
     <Card className='mx-auto mt-6 max-w-3xl rounded-none sm:rounded-lg'>
       <CardHeader className='grid grid-cols-2 sm:flex sm:flex-row'>
         <Image
-          src={guide.preview_url}
+          src={previewUrl}
           alt={guide.title}
           width={80}
           height={80}

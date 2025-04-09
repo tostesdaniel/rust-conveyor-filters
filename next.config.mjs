@@ -6,7 +6,7 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "steamuserimages-a.akamaihd.net" },
+      { protocol: "https", hostname: "images.steamusercontent.com" },
       { protocol: "https", hostname: "cdn.rustconveyorfilters.com" },
     ],
     minimumCacheTTL: 2678400, // 31 days

@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { Clapperboard, HeartHandshake, Verified } from "lucide-react";
+import { Clapperboard, CodeXmlIcon, HeartHandshake, Verified } from "lucide-react";
 
 import { BadgeType } from "@/types/badges";
 import { cn } from "@/lib/utils";
@@ -28,6 +28,11 @@ const badgeConfig: Record<
     className: "bg-green-500/10 text-green-500 hover:bg-green-500/20",
     label: "Content Creator",
   },
+  [BadgeType.CONTRIBUTOR]: {
+    icon: <CodeXmlIcon className='h-3 w-3' />,
+    className: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20",
+    label: "Contributor",
+  },
 };
 
 interface UserBadgeProps {
@@ -37,7 +42,7 @@ interface UserBadgeProps {
 
 export function UserBadge({ type, className }: UserBadgeProps) {
   const config = badgeConfig[type];
-
+  
   return (
     <Badge
       variant='outline'

@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     eventType: string;
   };
   const ip =
-    req.headers.get("x-forwarded-for") ||
-    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("X-Forwarded-For") ||
+    req.headers.get("CF-Connecting-IP") ||
     "unknown";
   const key = userId
     ? `${userId}:${filterId}:${eventType}`

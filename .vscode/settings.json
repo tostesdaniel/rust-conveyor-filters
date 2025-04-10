@@ -11,5 +11,8 @@
   },
   "tailwindCSS.classFunctions": ["cn"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.preferences.preferTypeOnlyAutoImports": true
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/{layout,page}.tsx": "${dirname}/${filename}"
+  }
 }

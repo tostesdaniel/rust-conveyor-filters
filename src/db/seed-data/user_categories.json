@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Electrical"
+  },
+  {
+    "id": 2,
+    "name": "Automation"
+  },
+  {
+    "id": 3,
+    "name": "Clothing"
+  },
+  {
+    "id": 4,
+    "name": "Weapons"
+  },
+  {
+    "id": 5,
+    "name": "Tools"
+  }
+]

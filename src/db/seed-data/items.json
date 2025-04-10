@@ -1,0 +1,6234 @@
+[
+  {
+    "id": 1,
+    "itemId": 1840570710,
+    "shortname": "abovegroundpool",
+    "name": "Above Ground Pool",
+    "category": "Fun",
+    "imagePath": "abovegroundpool"
+  },
+  {
+    "id": 2,
+    "itemId": -335089230,
+    "shortname": "gates.external.high.wood",
+    "name": "High External Wooden Gate",
+    "category": "Construction",
+    "imagePath": "gates.external.high.wood"
+  },
+  {
+    "id": 3,
+    "itemId": -727717969,
+    "shortname": "ammo.shotgun.slug",
+    "name": "12 Gauge Slug",
+    "category": "Ammunition",
+    "imagePath": "ammo.shotgun.slug"
+  },
+  {
+    "id": 4,
+    "itemId": 1638322904,
+    "shortname": "ammo.rocket.fire",
+    "name": "Incendiary Rocket",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.fire"
+  },
+  {
+    "id": 5,
+    "itemId": -280223496,
+    "shortname": "firework.boomer.violet",
+    "name": "Violet Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.violet"
+  },
+  {
+    "id": 6,
+    "itemId": 605467368,
+    "shortname": "ammo.rifle.incendiary",
+    "name": "Incendiary 5.56 Rifle Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.rifle.incendiary"
+  },
+  {
+    "id": 7,
+    "itemId": -1321651331,
+    "shortname": "ammo.rifle.explosive",
+    "name": "Explosive 5.56 Rifle Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.rifle.explosive"
+  },
+  {
+    "id": 8,
+    "itemId": -454370658,
+    "shortname": "firework.volcano.red",
+    "name": "Red Volcano Firework",
+    "category": "Fun",
+    "imagePath": "firework.volcano.red"
+  },
+  {
+    "id": 9,
+    "itemId": 343045591,
+    "shortname": "aiming.module.mlrs",
+    "name": "MLRS Aiming Module",
+    "category": "Component",
+    "imagePath": "aiming.module.mlrs"
+  },
+  {
+    "id": 10,
+    "itemId": -1878475007,
+    "shortname": "explosive.satchel",
+    "name": "Satchel Charge",
+    "category": "Tool",
+    "imagePath": "explosive.satchel"
+  },
+  {
+    "id": 11,
+    "itemId": -44876289,
+    "shortname": "electric.igniter",
+    "name": "Igniter",
+    "category": "Electrical",
+    "imagePath": "electric.igniter"
+  },
+  {
+    "id": 12,
+    "itemId": -1843426638,
+    "shortname": "ammo.rocket.mlrs",
+    "name": "MLRS Rocket",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.mlrs"
+  },
+  {
+    "id": 13,
+    "itemId": 665332906,
+    "shortname": "electric.timer",
+    "name": "Timer",
+    "category": "Electrical",
+    "imagePath": "electric.timer"
+  },
+  {
+    "id": 14,
+    "itemId": 1422530437,
+    "shortname": "deermeat.raw",
+    "name": "Raw Deer Meat",
+    "category": "Food",
+    "imagePath": "deermeat.raw"
+  },
+  {
+    "id": 15,
+    "itemId": -930193596,
+    "shortname": "fertilizer",
+    "name": "Fertilizer",
+    "category": "Resources",
+    "imagePath": "fertilizer"
+  },
+  {
+    "id": 16,
+    "itemId": 1712070256,
+    "shortname": "ammo.rifle.hv",
+    "name": "HV 5.56 Rifle Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.rifle.hv"
+  },
+  {
+    "id": 17,
+    "itemId": 2090395347,
+    "shortname": "electric.solarpanel.large",
+    "name": "Large Solar Panel",
+    "category": "Electrical",
+    "imagePath": "electric.solarpanel.large"
+  },
+  {
+    "id": 18,
+    "itemId": 553270375,
+    "shortname": "electric.battery.rechargable.large",
+    "name": "Large Rechargeable Battery",
+    "category": "Electrical",
+    "imagePath": "electric.battery.rechargable.large"
+  },
+  {
+    "id": 19,
+    "itemId": 1390353317,
+    "shortname": "door.double.hinged.metal",
+    "name": "Sheet Metal Double Door",
+    "category": "Construction",
+    "imagePath": "door.double.hinged.metal"
+  },
+  {
+    "id": 20,
+    "itemId": -746647361,
+    "shortname": "electrical.memorycell",
+    "name": "Memory Cell",
+    "category": "Electrical",
+    "imagePath": "electrical.memorycell"
+  },
+  {
+    "id": 21,
+    "itemId": -282113991,
+    "shortname": "electric.simplelight",
+    "name": "Simple Light",
+    "category": "Electrical",
+    "imagePath": "electric.simplelight"
+  },
+  {
+    "id": 22,
+    "itemId": 1177596584,
+    "shortname": "elevator",
+    "name": "Elevator",
+    "category": "Electrical",
+    "imagePath": "elevator"
+  },
+  {
+    "id": 23,
+    "itemId": -1519126340,
+    "shortname": "dropbox",
+    "name": "Drop Box",
+    "category": "Items",
+    "imagePath": "dropbox"
+  },
+  {
+    "id": 24,
+    "itemId": -1196547867,
+    "shortname": "electric.furnace",
+    "name": "Electric Furnace",
+    "category": "Electrical",
+    "imagePath": "electric.furnace"
+  },
+  {
+    "id": 25,
+    "itemId": 286648290,
+    "shortname": "discofloor",
+    "name": "Disco Floor",
+    "category": "Fun",
+    "imagePath": "discofloor"
+  },
+  {
+    "id": 26,
+    "itemId": -1211166256,
+    "shortname": "ammo.rifle",
+    "name": "5.56 Rifle Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.rifle"
+  },
+  {
+    "id": 27,
+    "itemId": -126305173,
+    "shortname": "easter.paintedeggs",
+    "name": "Painted Egg",
+    "category": "Misc",
+    "imagePath": "easter.paintedeggs"
+  },
+  {
+    "id": 28,
+    "itemId": -321733511,
+    "shortname": "crude.oil",
+    "name": "Crude Oil",
+    "category": "Resources",
+    "imagePath": "crude.oil"
+  },
+  {
+    "id": 29,
+    "itemId": 588596902,
+    "shortname": "ammo.handmade.shell",
+    "name": "Handmade Shell",
+    "category": "Ammunition",
+    "imagePath": "ammo.handmade.shell"
+  },
+  {
+    "id": 30,
+    "itemId": 1055319033,
+    "shortname": "ammo.grenadelauncher.buckshot",
+    "name": "40mm Shotgun Round",
+    "category": "Ammunition",
+    "imagePath": "ammo.grenadelauncher.buckshot"
+  },
+  {
+    "id": 31,
+    "itemId": -2067472972,
+    "shortname": "door.hinged.metal",
+    "name": "Sheet Metal Door",
+    "category": "Construction",
+    "imagePath": "door.hinged.metal"
+  },
+  {
+    "id": 32,
+    "itemId": 1965232394,
+    "shortname": "crossbow",
+    "name": "Crossbow",
+    "category": "Weapon",
+    "imagePath": "crossbow"
+  },
+  {
+    "id": 33,
+    "itemId": -1486461488,
+    "shortname": "firework.romancandle.red",
+    "name": "Red Roman Candle",
+    "category": "Fun",
+    "imagePath": "firework.romancandle.red"
+  },
+  {
+    "id": 34,
+    "itemId": -1002156085,
+    "shortname": "easter.goldegg",
+    "name": "Gold Egg",
+    "category": "Misc",
+    "imagePath": "easter.goldegg"
+  },
+  {
+    "id": 35,
+    "itemId": 1296788329,
+    "shortname": "ammo.rocket.seeker",
+    "name": "Homing Missile",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.seeker"
+  },
+  {
+    "id": 36,
+    "itemId": -1044468317,
+    "shortname": "electric.rf.broadcaster",
+    "name": "RF Broadcaster",
+    "category": "Electrical",
+    "imagePath": "electric.rf.broadcaster"
+  },
+  {
+    "id": 37,
+    "itemId": -1036635990,
+    "shortname": "ammo.shotgun.fire",
+    "name": "12 Gauge Incendiary Shell",
+    "category": "Ammunition",
+    "imagePath": "ammo.shotgun.fire"
+  },
+  {
+    "id": 38,
+    "itemId": -803263829,
+    "shortname": "coffeecan.helmet",
+    "name": "Coffee Can Helmet",
+    "category": "Attire",
+    "imagePath": "coffeecan.helmet"
+  },
+  {
+    "id": 39,
+    "itemId": -384243979,
+    "shortname": "ammo.rocket.sam",
+    "name": "SAM Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.sam"
+  },
+  {
+    "id": 40,
+    "itemId": 2133269020,
+    "shortname": "clone.red.berry",
+    "name": "Red Berry Clone",
+    "category": "Food",
+    "imagePath": "clone.red.berry"
+  },
+  {
+    "id": 41,
+    "itemId": -1305326964,
+    "shortname": "clone.green.berry",
+    "name": "Green Berry Clone",
+    "category": "Food",
+    "imagePath": "clone.green.berry"
+  },
+  {
+    "id": 42,
+    "itemId": -1101924344,
+    "shortname": "diving.wetsuit",
+    "name": "Wetsuit",
+    "category": "Attire",
+    "imagePath": "diving.wetsuit"
+  },
+  {
+    "id": 43,
+    "itemId": 479143914,
+    "shortname": "gears",
+    "name": "Gears",
+    "category": "Component",
+    "imagePath": "gears"
+  },
+  {
+    "id": 44,
+    "itemId": 1512054436,
+    "shortname": "clone.potato",
+    "name": "Potato Clone",
+    "category": "Food",
+    "imagePath": "clone.potato"
+  },
+  {
+    "id": 45,
+    "itemId": 1367190888,
+    "shortname": "corn",
+    "name": "Corn",
+    "category": "Food",
+    "imagePath": "corn"
+  },
+  {
+    "id": 46,
+    "itemId": 1424075905,
+    "shortname": "bucket.water",
+    "name": "Water Bucket",
+    "category": "Tool",
+    "imagePath": "bucket.water"
+  },
+  {
+    "id": 47,
+    "itemId": 1142993169,
+    "shortname": "ceilinglight",
+    "name": "Ceiling Light",
+    "category": "Electrical",
+    "imagePath": "ceilinglight"
+  },
+  {
+    "id": 48,
+    "itemId": 1729120840,
+    "shortname": "door.hinged.wood",
+    "name": "Wooden Door",
+    "category": "Construction",
+    "imagePath": "door.hinged.wood"
+  },
+  {
+    "id": 49,
+    "itemId": 656371027,
+    "shortname": "carburetor2",
+    "name": "Medium Quality Carburetor",
+    "category": "Component",
+    "imagePath": "carburetor2"
+  },
+  {
+    "id": 50,
+    "itemId": -1336109173,
+    "shortname": "door.double.hinged.wood",
+    "name": "Wood Double Door",
+    "category": "Construction",
+    "imagePath": "door.double.hinged.wood"
+  },
+  {
+    "id": 51,
+    "itemId": 1112162468,
+    "shortname": "blue.berry",
+    "name": "Blue Berry",
+    "category": "Food",
+    "imagePath": "blue.berry"
+  },
+  {
+    "id": 52,
+    "itemId": -886280491,
+    "shortname": "clone.hemp",
+    "name": "Hemp Clone",
+    "category": "Food",
+    "imagePath": "clone.hemp"
+  },
+  {
+    "id": 53,
+    "itemId": 634478325,
+    "shortname": "cctv.camera",
+    "name": "CCTV Camera",
+    "category": "Resources",
+    "imagePath": "cctv.camera"
+  },
+  {
+    "id": 54,
+    "itemId": 656371028,
+    "shortname": "carburetor1",
+    "name": "Low Quality Carburetor",
+    "category": "Component",
+    "imagePath": "carburetor1"
+  },
+  {
+    "id": 55,
+    "itemId": 833533164,
+    "shortname": "box.wooden.large",
+    "name": "Large Wood Box",
+    "category": "Items",
+    "imagePath": "box.wooden.large"
+  },
+  {
+    "id": 56,
+    "itemId": 1524980732,
+    "shortname": "carvable.pumpkin",
+    "name": "Carvable Pumpkin",
+    "category": "Items",
+    "imagePath": "carvable.pumpkin"
+  },
+  {
+    "id": 57,
+    "itemId": 1158340334,
+    "shortname": "crankshaft1",
+    "name": "Low Quality Crankshaft",
+    "category": "Component",
+    "imagePath": "crankshaft1"
+  },
+  {
+    "id": 58,
+    "itemId": 1353298668,
+    "shortname": "door.hinged.toptier",
+    "name": "Armored Door",
+    "category": "Construction",
+    "imagePath": "door.hinged.toptier"
+  },
+  {
+    "id": 59,
+    "itemId": 1242522330,
+    "shortname": "cursedcauldron",
+    "name": "Cursed Cauldron",
+    "category": "Misc",
+    "imagePath": "cursedcauldron"
+  },
+  {
+    "id": 60,
+    "itemId": 1523403414,
+    "shortname": "cassette.short",
+    "name": "Cassette - Short",
+    "category": "Fun",
+    "imagePath": "cassette.short"
+  },
+  {
+    "id": 61,
+    "itemId": -180129657,
+    "shortname": "box.wooden",
+    "name": "Wood Storage Box",
+    "category": "Items",
+    "imagePath": "box.wooden"
+  },
+  {
+    "id": 62,
+    "itemId": 1525520776,
+    "shortname": "building.planner",
+    "name": "Building Plan",
+    "category": "Construction",
+    "imagePath": "building.planner"
+  },
+  {
+    "id": 63,
+    "itemId": 1104520648,
+    "shortname": "chainsaw",
+    "name": "Chainsaw",
+    "category": "Tool",
+    "imagePath": "chainsaw"
+  },
+  {
+    "id": 64,
+    "itemId": 1534542921,
+    "shortname": "chair",
+    "name": "Chair",
+    "category": "Items",
+    "imagePath": "chair"
+  },
+  {
+    "id": 65,
+    "itemId": 1973684065,
+    "shortname": "chicken.burned",
+    "name": "Burnt Chicken",
+    "category": "Food",
+    "imagePath": "chicken.burned"
+  },
+  {
+    "id": 66,
+    "itemId": 1898094925,
+    "shortname": "clone.pumpkin",
+    "name": "Pumpkin Plant Clone",
+    "category": "Food",
+    "imagePath": "clone.pumpkin"
+  },
+  {
+    "id": 67,
+    "itemId": 968019378,
+    "shortname": "clatter.helmet",
+    "name": "Clatter Helmet",
+    "category": "Attire",
+    "imagePath": "clatter.helmet"
+  },
+  {
+    "id": 68,
+    "itemId": 838831151,
+    "shortname": "clone.blue.berry",
+    "name": "Blue Berry Clone",
+    "category": "Food",
+    "imagePath": "clone.blue.berry"
+  },
+  {
+    "id": 69,
+    "itemId": -700591459,
+    "shortname": "can.beans",
+    "name": "Can of Beans",
+    "category": "Food",
+    "imagePath": "can.beans"
+  },
+  {
+    "id": 70,
+    "itemId": 1783512007,
+    "shortname": "cactusflesh",
+    "name": "Cactus Flesh",
+    "category": "Food",
+    "imagePath": "cactusflesh"
+  },
+  {
+    "id": 71,
+    "itemId": -321431890,
+    "shortname": "beachchair",
+    "name": "Beach Chair",
+    "category": "Fun",
+    "imagePath": "beachchair"
+  },
+  {
+    "id": 72,
+    "itemId": 476066818,
+    "shortname": "cassette",
+    "name": "Cassette - Long",
+    "category": "Fun",
+    "imagePath": "cassette"
+  },
+  {
+    "id": 73,
+    "itemId": -1440987069,
+    "shortname": "chicken.raw",
+    "name": "Raw Chicken Breast",
+    "category": "Food",
+    "imagePath": "chicken.raw"
+  },
+  {
+    "id": 74,
+    "itemId": -1113501606,
+    "shortname": "boombox",
+    "name": "Boom Box",
+    "category": "Fun",
+    "imagePath": "boombox"
+  },
+  {
+    "id": 75,
+    "itemId": 656371026,
+    "shortname": "carburetor3",
+    "name": "High Quality Carburetor",
+    "category": "Component",
+    "imagePath": "carburetor3"
+  },
+  {
+    "id": 76,
+    "itemId": -1000573653,
+    "shortname": "boots.frog",
+    "name": "Frog Boots",
+    "category": "Attire",
+    "imagePath": "boots.frog"
+  },
+  {
+    "id": 77,
+    "itemId": -1938052175,
+    "shortname": "charcoal",
+    "name": "Charcoal",
+    "category": "Resources",
+    "imagePath": "charcoal"
+  },
+  {
+    "id": 78,
+    "itemId": 803222026,
+    "shortname": "box.repair.bench",
+    "name": "Repair Bench",
+    "category": "Items",
+    "imagePath": "box.repair.bench"
+  },
+  {
+    "id": 79,
+    "itemId": -2097376851,
+    "shortname": "ammo.nailgun.nails",
+    "name": "Nailgun Nails",
+    "category": "Ammunition",
+    "imagePath": "ammo.nailgun.nails"
+  },
+  {
+    "id": 80,
+    "itemId": -1488398114,
+    "shortname": "composter",
+    "name": "Composter",
+    "category": "Items",
+    "imagePath": "composter"
+  },
+  {
+    "id": 81,
+    "itemId": 1992974553,
+    "shortname": "burlap.trousers",
+    "name": "Burlap Trousers",
+    "category": "Attire",
+    "imagePath": "burlap.trousers"
+  },
+  {
+    "id": 82,
+    "itemId": -1941646328,
+    "shortname": "can.tuna",
+    "name": "Can of Tuna",
+    "category": "Food",
+    "imagePath": "can.tuna"
+  },
+  {
+    "id": 83,
+    "itemId": -1848736516,
+    "shortname": "chicken.cooked",
+    "name": "Cooked Chicken",
+    "category": "Food",
+    "imagePath": "chicken.cooked"
+  },
+  {
+    "id": 84,
+    "itemId": -761829530,
+    "shortname": "burlap.shoes",
+    "name": "Burlap Shoes",
+    "category": "Attire",
+    "imagePath": "burlap.shoes"
+  },
+  {
+    "id": 85,
+    "itemId": -1691396643,
+    "shortname": "ammo.pistol.hv",
+    "name": "HV Pistol Ammo",
+    "category": "Ammunition",
+    "imagePath": "ammo.pistol.hv"
+  },
+  {
+    "id": 86,
+    "itemId": -778875547,
+    "shortname": "clone.corn",
+    "name": "Corn Clone",
+    "category": "Food",
+    "imagePath": "clone.corn"
+  },
+  {
+    "id": 87,
+    "itemId": -965336208,
+    "shortname": "chocolate",
+    "name": "Chocolate Bar",
+    "category": "Food",
+    "imagePath": "chocolate"
+  },
+  {
+    "id": 88,
+    "itemId": 613961768,
+    "shortname": "botabag",
+    "name": "Bota Bag",
+    "category": "Items",
+    "imagePath": "botabag"
+  },
+  {
+    "id": 89,
+    "itemId": 1719978075,
+    "shortname": "bone.fragments",
+    "name": "Bone Fragments",
+    "category": "Resources",
+    "imagePath": "bone.fragments"
+  },
+  {
+    "id": 90,
+    "itemId": 850280505,
+    "shortname": "bucket.helmet",
+    "name": "Bucket Helmet",
+    "category": "Attire",
+    "imagePath": "bucket.helmet"
+  },
+  {
+    "id": 91,
+    "itemId": 15388698,
+    "shortname": "barricade.stone",
+    "name": "Stone Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.stone"
+  },
+  {
+    "id": 92,
+    "itemId": 1711033574,
+    "shortname": "bone.club",
+    "name": "Bone Club",
+    "category": "Weapon",
+    "imagePath": "bone.club"
+  },
+  {
+    "id": 93,
+    "itemId": -586342290,
+    "shortname": "blueberries",
+    "name": "Blueberries",
+    "category": "Food",
+    "imagePath": "blueberries"
+  },
+  {
+    "id": 94,
+    "itemId": 1655979682,
+    "shortname": "can.beans.empty",
+    "name": "Empty Can Of Beans",
+    "category": "Resources",
+    "imagePath": "can.beans.empty"
+  },
+  {
+    "id": 95,
+    "itemId": 1931713481,
+    "shortname": "black.raspberries",
+    "name": "Black Raspberries",
+    "category": "Food",
+    "imagePath": "black.raspberries"
+  },
+  {
+    "id": 96,
+    "itemId": -1685290200,
+    "shortname": "ammo.shotgun",
+    "name": "12 Gauge Buckshot",
+    "category": "Ammunition",
+    "imagePath": "ammo.shotgun"
+  },
+  {
+    "id": 97,
+    "itemId": -1234735557,
+    "shortname": "arrow.wooden",
+    "name": "Wooden Arrow",
+    "category": "Ammunition",
+    "imagePath": "arrow.wooden"
+  },
+  {
+    "id": 98,
+    "itemId": 1382263453,
+    "shortname": "barricade.woodwire",
+    "name": "Barbed Wooden Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.woodwire"
+  },
+  {
+    "id": 99,
+    "itemId": 980333378,
+    "shortname": "attire.hide.poncho",
+    "name": "Hide Poncho",
+    "category": "Attire",
+    "imagePath": "attire.hide.poncho"
+  },
+  {
+    "id": 100,
+    "itemId": -1621539785,
+    "shortname": "beachparasol",
+    "name": "Beach Parasol",
+    "category": "Fun",
+    "imagePath": "beachparasol"
+  },
+  {
+    "id": 101,
+    "itemId": -559599960,
+    "shortname": "barricade.sandbags",
+    "name": "Sandbag Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.sandbags"
+  },
+  {
+    "id": 102,
+    "itemId": -1273339005,
+    "shortname": "bed",
+    "name": "Bed",
+    "category": "Items",
+    "imagePath": "bed"
+  },
+  {
+    "id": 103,
+    "itemId": 1877339384,
+    "shortname": "burlap.headwrap",
+    "name": "Burlap Headwrap",
+    "category": "Attire",
+    "imagePath": "burlap.headwrap"
+  },
+  {
+    "id": 104,
+    "itemId": 1121925526,
+    "shortname": "candycane",
+    "name": "Candy Cane",
+    "category": "Food",
+    "imagePath": "candycane"
+  },
+  {
+    "id": 105,
+    "itemId": -989755543,
+    "shortname": "bearmeat.burned",
+    "name": "Burnt Bear Meat",
+    "category": "Food",
+    "imagePath": "bearmeat.burned"
+  },
+  {
+    "id": 106,
+    "itemId": -1478094705,
+    "shortname": "boogieboard",
+    "name": "Boogie Board",
+    "category": "Fun",
+    "imagePath": "boogieboard"
+  },
+  {
+    "id": 107,
+    "itemId": 1366282552,
+    "shortname": "burlap.gloves",
+    "name": "Leather Gloves",
+    "category": "Attire",
+    "imagePath": "burlap.gloves"
+  },
+  {
+    "id": 108,
+    "itemId": 884424049,
+    "shortname": "bow.compound",
+    "name": "Compound Bow",
+    "category": "Weapon",
+    "imagePath": "bow.compound"
+  },
+  {
+    "id": 109,
+    "itemId": 602741290,
+    "shortname": "burlap.shirt",
+    "name": "Burlap Shirt",
+    "category": "Attire",
+    "imagePath": "burlap.shirt"
+  },
+  {
+    "id": 110,
+    "itemId": 2041899972,
+    "shortname": "floor.triangle.ladder.hatch",
+    "name": "Triangle Ladder Hatch",
+    "category": "Construction",
+    "imagePath": "floor.triangle.ladder.hatch"
+  },
+  {
+    "id": 111,
+    "itemId": -1274093662,
+    "shortname": "bathtub.planter",
+    "name": "Bath Tub Planter",
+    "category": "Items",
+    "imagePath": "bathtub.planter"
+  },
+  {
+    "id": 112,
+    "itemId": -265292885,
+    "shortname": "fluid.combiner",
+    "name": "Fluid Combiner",
+    "category": "Electrical",
+    "imagePath": "fluid.combiner"
+  },
+  {
+    "id": 113,
+    "itemId": 359723196,
+    "shortname": "arcade.machine.chippy",
+    "name": "Chippy Arcade Game",
+    "category": "Items",
+    "imagePath": "arcade.machine.chippy"
+  },
+  {
+    "id": 114,
+    "itemId": -1530414568,
+    "shortname": "fun.casetterecorder",
+    "name": "Cassette Recorder",
+    "category": "Fun",
+    "imagePath": "fun.casetterecorder"
+  },
+  {
+    "id": 115,
+    "itemId": 1784406797,
+    "shortname": "fun.tuba",
+    "name": "Sousaphone",
+    "category": "Fun",
+    "imagePath": "fun.tuba"
+  },
+  {
+    "id": 116,
+    "itemId": 215754713,
+    "shortname": "arrow.bone",
+    "name": "Bone Arrow",
+    "category": "Ammunition",
+    "imagePath": "arrow.bone"
+  },
+  {
+    "id": 117,
+    "itemId": -2040817543,
+    "shortname": "fun.flute",
+    "name": "Pan Flute",
+    "category": "Fun",
+    "imagePath": "fun.flute"
+  },
+  {
+    "id": 118,
+    "itemId": -1166712463,
+    "shortname": "fluid.splitter",
+    "name": "Fluid Splitter",
+    "category": "Electrical",
+    "imagePath": "fluid.splitter"
+  },
+  {
+    "id": 119,
+    "itemId": 1099314009,
+    "shortname": "bbq",
+    "name": "Barbeque",
+    "category": "Items",
+    "imagePath": "bbq"
+  },
+  {
+    "id": 120,
+    "itemId": -1654233406,
+    "shortname": "fish.sardine",
+    "name": "Sardine",
+    "category": "Food",
+    "imagePath": "fish.sardine"
+  },
+  {
+    "id": 121,
+    "itemId": 1081315464,
+    "shortname": "attire.nesthat",
+    "name": "Nest Hat",
+    "category": "Attire",
+    "imagePath": "attire.nesthat"
+  },
+  {
+    "id": 122,
+    "itemId": -742865266,
+    "shortname": "ammo.rocket.basic",
+    "name": "Rocket",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.basic"
+  },
+  {
+    "id": 123,
+    "itemId": 21402876,
+    "shortname": "burlap.gloves.new",
+    "name": "Burlap Gloves",
+    "category": "Attire",
+    "imagePath": "burlap.gloves.new"
+  },
+  {
+    "id": 124,
+    "itemId": -1999722522,
+    "shortname": "furnace",
+    "name": "Furnace",
+    "category": "Items",
+    "imagePath": "furnace"
+  },
+  {
+    "id": 125,
+    "itemId": 1443579727,
+    "shortname": "bow.hunting",
+    "name": "Hunting Bow",
+    "category": "Weapon",
+    "imagePath": "bow.hunting"
+  },
+  {
+    "id": 126,
+    "itemId": -1773144852,
+    "shortname": "attire.hide.skirt",
+    "name": "Hide Skirt",
+    "category": "Attire",
+    "imagePath": "attire.hide.skirt"
+  },
+  {
+    "id": 127,
+    "itemId": 794356786,
+    "shortname": "attire.hide.boots",
+    "name": "Hide Boots",
+    "category": "Attire",
+    "imagePath": "attire.hide.boots"
+  },
+  {
+    "id": 128,
+    "itemId": -1698937385,
+    "shortname": "fish.herring",
+    "name": "Herring",
+    "category": "Food",
+    "imagePath": "fish.herring"
+  },
+  {
+    "id": 129,
+    "itemId": 1746956556,
+    "shortname": "bone.armor.suit",
+    "name": "Bone Armor",
+    "category": "Attire",
+    "imagePath": "bone.armor.suit"
+  },
+  {
+    "id": 130,
+    "itemId": 14241751,
+    "shortname": "arrow.fire",
+    "name": "Fire Arrow",
+    "category": "Ammunition",
+    "imagePath": "arrow.fire"
+  },
+  {
+    "id": 131,
+    "itemId": -2124352573,
+    "shortname": "fun.guitar",
+    "name": "Acoustic Guitar",
+    "category": "Fun",
+    "imagePath": "fun.guitar"
+  },
+  {
+    "id": 132,
+    "itemId": -691113464,
+    "shortname": "gates.external.high.stone",
+    "name": "High External Stone Gate",
+    "category": "Construction",
+    "imagePath": "gates.external.high.stone"
+  },
+  {
+    "id": 133,
+    "itemId": -1973785141,
+    "shortname": "fogmachine",
+    "name": "Fogger-3000",
+    "category": "Misc",
+    "imagePath": "fogmachine"
+  },
+  {
+    "id": 134,
+    "itemId": 609049394,
+    "shortname": "battery.small",
+    "name": "Battery - Small",
+    "category": "Resources",
+    "imagePath": "battery.small"
+  },
+  {
+    "id": 135,
+    "itemId": 443432036,
+    "shortname": "fluid.switch",
+    "name": "Fluid Switch & Pump",
+    "category": "Electrical",
+    "imagePath": "fluid.switch"
+  },
+  {
+    "id": 136,
+    "itemId": -1992717673,
+    "shortname": "furnace.large",
+    "name": "Large Furnace",
+    "category": "Items",
+    "imagePath": "furnace.large"
+  },
+  {
+    "id": 137,
+    "itemId": 1548091822,
+    "shortname": "apple",
+    "name": "Apple",
+    "category": "Food",
+    "imagePath": "apple"
+  },
+  {
+    "id": 138,
+    "itemId": -1768880890,
+    "shortname": "fish.smallshark",
+    "name": "Small Shark",
+    "category": "Food",
+    "imagePath": "fish.smallshark"
+  },
+  {
+    "id": 139,
+    "itemId": 989925924,
+    "shortname": "fish.raw",
+    "name": "Raw Fish",
+    "category": "Food",
+    "imagePath": "fish.raw"
+  },
+  {
+    "id": 140,
+    "itemId": 559147458,
+    "shortname": "fishtrap.small",
+    "name": "Survival Fish Trap",
+    "category": "Items",
+    "imagePath": "fishtrap.small"
+  },
+  {
+    "id": 141,
+    "itemId": -1878764039,
+    "shortname": "fish.troutsmall",
+    "name": "Small Trout",
+    "category": "Food",
+    "imagePath": "fish.troutsmall"
+  },
+  {
+    "id": 142,
+    "itemId": -979951147,
+    "shortname": "fun.jerrycanguitar",
+    "name": "Jerry Can Guitar",
+    "category": "Fun",
+    "imagePath": "fun.jerrycanguitar"
+  },
+  {
+    "id": 143,
+    "itemId": -196667575,
+    "shortname": "flashlight.held",
+    "name": "Flashlight",
+    "category": "Tool",
+    "imagePath": "flashlight.held"
+  },
+  {
+    "id": 144,
+    "itemId": -1049881973,
+    "shortname": "fun.cowbell",
+    "name": "Cowbell",
+    "category": "Fun",
+    "imagePath": "fun.cowbell"
+  },
+  {
+    "id": 145,
+    "itemId": 342438846,
+    "shortname": "fish.anchovy",
+    "name": "Anchovy",
+    "category": "Food",
+    "imagePath": "fish.anchovy"
+  },
+  {
+    "id": 146,
+    "itemId": 1373240771,
+    "shortname": "barricade.wood.cover",
+    "name": "Wooden Barricade Cover",
+    "category": "Construction",
+    "imagePath": "barricade.wood.cover"
+  },
+  {
+    "id": 147,
+    "itemId": -2139580305,
+    "shortname": "autoturret",
+    "name": "Auto Turret",
+    "category": "Electrical",
+    "imagePath": "autoturret"
+  },
+  {
+    "id": 148,
+    "itemId": -2072273936,
+    "shortname": "bandage",
+    "name": "Bandage",
+    "category": "Medical",
+    "imagePath": "bandage"
+  },
+  {
+    "id": 149,
+    "itemId": -8312704,
+    "shortname": "beachtowel",
+    "name": "Beach Towel",
+    "category": "Fun",
+    "imagePath": "beachtowel"
+  },
+  {
+    "id": 150,
+    "itemId": -1841918730,
+    "shortname": "ammo.rocket.hv",
+    "name": "High Velocity Rocket",
+    "category": "Ammunition",
+    "imagePath": "ammo.rocket.hv"
+  },
+  {
+    "id": 151,
+    "itemId": 3222790,
+    "shortname": "attire.hide.helterneck",
+    "name": "Hide Halterneck",
+    "category": "Attire",
+    "imagePath": "attire.hide.helterneck"
+  },
+  {
+    "id": 152,
+    "itemId": 304481038,
+    "shortname": "flare",
+    "name": "Flare",
+    "category": "Tool",
+    "imagePath": "flare"
+  },
+  {
+    "id": 153,
+    "itemId": 528668503,
+    "shortname": "flameturret",
+    "name": "Flame Turret",
+    "category": "Traps",
+    "imagePath": "flameturret"
+  },
+  {
+    "id": 154,
+    "itemId": 657352755,
+    "shortname": "beachtable",
+    "name": "Beach Table",
+    "category": "Fun",
+    "imagePath": "beachtable"
+  },
+  {
+    "id": 155,
+    "itemId": 680234026,
+    "shortname": "fish.yellowperch",
+    "name": "Yellow Perch",
+    "category": "Food",
+    "imagePath": "fish.yellowperch"
+  },
+  {
+    "id": 156,
+    "itemId": 1413014235,
+    "shortname": "fridge",
+    "name": "Fridge",
+    "category": "Items",
+    "imagePath": "fridge"
+  },
+  {
+    "id": 157,
+    "itemId": 196700171,
+    "shortname": "attire.hide.vest",
+    "name": "Hide Vest",
+    "category": "Attire",
+    "imagePath": "attire.hide.vest"
+  },
+  {
+    "id": 158,
+    "itemId": -587989372,
+    "shortname": "fish.catfish",
+    "name": "Catfish",
+    "category": "Food",
+    "imagePath": "fish.catfish"
+  },
+  {
+    "id": 159,
+    "itemId": 1983621560,
+    "shortname": "floor.triangle.grill",
+    "name": "Floor triangle grill",
+    "category": "Construction",
+    "imagePath": "floor.triangle.grill"
+  },
+  {
+    "id": 160,
+    "itemId": -1913996738,
+    "shortname": "fishtrophy",
+    "name": "Fish Trophy",
+    "category": "Items",
+    "imagePath": "fishtrophy"
+  },
+  {
+    "id": 161,
+    "itemId": -851988960,
+    "shortname": "fish.salmon",
+    "name": "Salmon",
+    "category": "Food",
+    "imagePath": "fish.salmon"
+  },
+  {
+    "id": 162,
+    "itemId": 1948067030,
+    "shortname": "floor.ladder.hatch",
+    "name": "Ladder Hatch",
+    "category": "Construction",
+    "imagePath": "floor.ladder.hatch"
+  },
+  {
+    "id": 163,
+    "itemId": 1569882109,
+    "shortname": "fishingrod.handmade",
+    "name": "Handmade Fishing Rod",
+    "category": "Tool",
+    "imagePath": "fishingrod.handmade"
+  },
+  {
+    "id": 164,
+    "itemId": 273172220,
+    "shortname": "fun.trumpet",
+    "name": "Plumber's Trumpet",
+    "category": "Fun",
+    "imagePath": "fun.trumpet"
+  },
+  {
+    "id": 165,
+    "itemId": 1722154847,
+    "shortname": "attire.hide.pants",
+    "name": "Hide Pants",
+    "category": "Attire",
+    "imagePath": "attire.hide.pants"
+  },
+  {
+    "id": 166,
+    "itemId": -379734527,
+    "shortname": "firework.boomer.pattern",
+    "name": "Pattern Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.pattern"
+  },
+  {
+    "id": 167,
+    "itemId": 576509618,
+    "shortname": "fun.boomboxportable",
+    "name": "Portable Boom Box",
+    "category": "Fun",
+    "imagePath": "fun.boomboxportable"
+  },
+  {
+    "id": 168,
+    "itemId": -1306288356,
+    "shortname": "firework.romancandle.green",
+    "name": "Green Roman Candle",
+    "category": "Fun",
+    "imagePath": "firework.romancandle.green"
+  },
+  {
+    "id": 169,
+    "itemId": 349762871,
+    "shortname": "ammo.grenadelauncher.he",
+    "name": "40mm HE Grenade",
+    "category": "Ammunition",
+    "imagePath": "ammo.grenadelauncher.he"
+  },
+  {
+    "id": 170,
+    "itemId": -1819763926,
+    "shortname": "generator.wind.scrap",
+    "name": "Wind Turbine",
+    "category": "Electrical",
+    "imagePath": "generator.wind.scrap"
+  },
+  {
+    "id": 171,
+    "itemId": 51984655,
+    "shortname": "ammo.pistol.fire",
+    "name": "Incendiary Pistol Bullet",
+    "category": "Ammunition",
+    "imagePath": "ammo.pistol.fire"
+  },
+  {
+    "id": 172,
+    "itemId": -695124222,
+    "shortname": "giantcandycanedecor",
+    "name": "Giant Candy Decor",
+    "category": "Misc",
+    "imagePath": "giantcandycanedecor"
+  },
+  {
+    "id": 173,
+    "itemId": -2049214035,
+    "shortname": "electric.pressurepad",
+    "name": "Pressure Pad",
+    "category": "Electrical",
+    "imagePath": "electric.pressurepad"
+  },
+  {
+    "id": 174,
+    "itemId": -1553999294,
+    "shortname": "firework.boomer.red",
+    "name": "Red Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.red"
+  },
+  {
+    "id": 175,
+    "itemId": 888415708,
+    "shortname": "electric.rf.receiver",
+    "name": "RF Receiver",
+    "category": "Electrical",
+    "imagePath": "electric.rf.receiver"
+  },
+  {
+    "id": 176,
+    "itemId": 1324203999,
+    "shortname": "firework.boomer.champagne",
+    "name": "Champagne Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.champagne"
+  },
+  {
+    "id": 177,
+    "itemId": -1538109120,
+    "shortname": "firework.volcano.violet",
+    "name": "Violet Volcano Firework",
+    "category": "Fun",
+    "imagePath": "firework.volcano.violet"
+  },
+  {
+    "id": 178,
+    "itemId": 1744298439,
+    "shortname": "firework.boomer.blue",
+    "name": "Blue Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.blue"
+  },
+  {
+    "id": 179,
+    "itemId": -1432674913,
+    "shortname": "antiradpills",
+    "name": "Anti-Radiation Pills",
+    "category": "Medical",
+    "imagePath": "antiradpills"
+  },
+  {
+    "id": 180,
+    "itemId": -7270019,
+    "shortname": "firework.boomer.orange",
+    "name": "Orange Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.orange"
+  },
+  {
+    "id": 181,
+    "itemId": -781014061,
+    "shortname": "electric.sprinkler",
+    "name": "Sprinkler",
+    "category": "Electrical",
+    "imagePath": "electric.sprinkler"
+  },
+  {
+    "id": 182,
+    "itemId": 2100007442,
+    "shortname": "electric.audioalarm",
+    "name": "Audio Alarm",
+    "category": "Electrical",
+    "imagePath": "electric.audioalarm"
+  },
+  {
+    "id": 183,
+    "itemId": 915408809,
+    "shortname": "ammo.grenadelauncher.smoke",
+    "name": "40mm Smoke Grenade",
+    "category": "Ammunition",
+    "imagePath": "ammo.grenadelauncher.smoke"
+  },
+  {
+    "id": 184,
+    "itemId": 785728077,
+    "shortname": "ammo.pistol",
+    "name": "Pistol Bullet",
+    "category": "Ammunition",
+    "imagePath": "ammo.pistol"
+  },
+  {
+    "id": 185,
+    "itemId": -1018587433,
+    "shortname": "fat.animal",
+    "name": "Animal Fat",
+    "category": "Resources",
+    "imagePath": "fat.animal"
+  },
+  {
+    "id": 186,
+    "itemId": 261913429,
+    "shortname": "firework.volcano",
+    "name": "White Volcano Firework",
+    "category": "Fun",
+    "imagePath": "firework.volcano"
+  },
+  {
+    "id": 187,
+    "itemId": -1506397857,
+    "shortname": "hammer.salvaged",
+    "name": "Salvaged Hammer",
+    "category": "Tool",
+    "imagePath": "hammer.salvaged"
+  },
+  {
+    "id": 188,
+    "itemId": 1675639563,
+    "shortname": "hat.beenie",
+    "name": "Beenie Hat",
+    "category": "Attire",
+    "imagePath": "hat.beenie"
+  },
+  {
+    "id": 189,
+    "itemId": -1022661119,
+    "shortname": "hat.cap",
+    "name": "Baseball Cap",
+    "category": "Attire",
+    "imagePath": "hat.cap"
+  },
+  {
+    "id": 190,
+    "itemId": 1714496074,
+    "shortname": "hat.candle",
+    "name": "Candle Hat",
+    "category": "Attire",
+    "imagePath": "hat.candle"
+  },
+  {
+    "id": 191,
+    "itemId": -1535621066,
+    "shortname": "fireplace.stone",
+    "name": "Stone Fireplace",
+    "category": "Items",
+    "imagePath": "fireplace.stone"
+  },
+  {
+    "id": 192,
+    "itemId": -1507239837,
+    "shortname": "electric.hbhfsensor",
+    "name": "HBHF Sensor",
+    "category": "Electrical",
+    "imagePath": "electric.hbhfsensor"
+  },
+  {
+    "id": 193,
+    "itemId": 762289806,
+    "shortname": "electric.sirenlight",
+    "name": "Siren Light",
+    "category": "Electrical",
+    "imagePath": "electric.sirenlight"
+  },
+  {
+    "id": 194,
+    "itemId": -1903165497,
+    "shortname": "deer.skull.mask",
+    "name": "Bone Helmet",
+    "category": "Attire",
+    "imagePath": "deer.skull.mask"
+  },
+  {
+    "id": 195,
+    "itemId": -515830359,
+    "shortname": "firework.romancandle.blue",
+    "name": "Blue Roman Candle",
+    "category": "Fun",
+    "imagePath": "firework.romancandle.blue"
+  },
+  {
+    "id": 196,
+    "itemId": -592016202,
+    "shortname": "explosives",
+    "name": "Explosives",
+    "category": "Resources",
+    "imagePath": "explosives"
+  },
+  {
+    "id": 197,
+    "itemId": -784870360,
+    "shortname": "electric.heater",
+    "name": "Electric Heater",
+    "category": "Electrical",
+    "imagePath": "electric.heater"
+  },
+  {
+    "id": 198,
+    "itemId": 1658229558,
+    "shortname": "lantern",
+    "name": "Lantern",
+    "category": "Items",
+    "imagePath": "lantern"
+  },
+  {
+    "id": 199,
+    "itemId": -1469578201,
+    "shortname": "longsword",
+    "name": "Longsword",
+    "category": "Weapon",
+    "imagePath": "longsword"
+  },
+  {
+    "id": 200,
+    "itemId": -586784898,
+    "shortname": "mailbox",
+    "name": "Mail Box",
+    "category": "Items",
+    "imagePath": "mailbox"
+  },
+  {
+    "id": 201,
+    "itemId": 1895235349,
+    "shortname": "discoball",
+    "name": "Disco Ball",
+    "category": "Fun",
+    "imagePath": "discoball"
+  },
+  {
+    "id": 202,
+    "itemId": -1966748496,
+    "shortname": "mace",
+    "name": "Mace",
+    "category": "Weapon",
+    "imagePath": "mace"
+  },
+  {
+    "id": 203,
+    "itemId": -1137865085,
+    "shortname": "machete",
+    "name": "Machete",
+    "category": "Weapon",
+    "imagePath": "machete"
+  },
+  {
+    "id": 204,
+    "itemId": 1391703481,
+    "shortname": "meat.pork.burned",
+    "name": "Burnt Pork",
+    "category": "Food",
+    "imagePath": "meat.pork.burned"
+  },
+  {
+    "id": 205,
+    "itemId": 621915341,
+    "shortname": "meat.boar",
+    "name": "Raw Pork",
+    "category": "Food",
+    "imagePath": "meat.boar"
+  },
+  {
+    "id": 206,
+    "itemId": -194953424,
+    "shortname": "metal.facemask",
+    "name": "Metal Facemask",
+    "category": "Attire",
+    "imagePath": "metal.facemask"
+  },
+  {
+    "id": 207,
+    "itemId": -1184406448,
+    "shortname": "maxhealthtea",
+    "name": "Basic Max Health Tea",
+    "category": "Food",
+    "imagePath": "maxhealthtea"
+  },
+  {
+    "id": 208,
+    "itemId": 1712261904,
+    "shortname": "maxhealthtea.pure",
+    "name": "Pure Max Health Tea",
+    "category": "Food",
+    "imagePath": "maxhealthtea.pure"
+  },
+  {
+    "id": 209,
+    "itemId": -242084766,
+    "shortname": "meat.pork.cooked",
+    "name": "Cooked Pork",
+    "category": "Food",
+    "imagePath": "meat.pork.cooked"
+  },
+  {
+    "id": 210,
+    "itemId": 95950017,
+    "shortname": "metalpipe",
+    "name": "Metal Pipe",
+    "category": "Component",
+    "imagePath": "metalpipe"
+  },
+  {
+    "id": 211,
+    "itemId": 1168856825,
+    "shortname": "metal.detector",
+    "name": "Metal Detector",
+    "category": "Tool",
+    "imagePath": "metal.detector"
+  },
+  {
+    "id": 212,
+    "itemId": -583379016,
+    "shortname": "megaphone",
+    "name": "Megaphone",
+    "category": "Fun",
+    "imagePath": "megaphone"
+  },
+  {
+    "id": 213,
+    "itemId": -1449152644,
+    "shortname": "mlrs",
+    "name": "MLRS",
+    "category": "Misc",
+    "imagePath": "mlrs"
+  },
+  {
+    "id": 214,
+    "itemId": 69511070,
+    "shortname": "metal.fragments",
+    "name": "Metal Fragments",
+    "category": "Resources",
+    "imagePath": "metal.fragments"
+  },
+  {
+    "id": 215,
+    "itemId": 703057617,
+    "shortname": "military flamethrower",
+    "name": "Military Flame Thrower",
+    "category": "Weapon",
+    "imagePath": "military flamethrower"
+  },
+  {
+    "id": 216,
+    "itemId": 1259919256,
+    "shortname": "mixingtable",
+    "name": "Mixing Table",
+    "category": "Items",
+    "imagePath": "mixingtable"
+  },
+  {
+    "id": 217,
+    "itemId": 935606207,
+    "shortname": "minigun",
+    "name": "Minigun",
+    "category": "Weapon",
+    "imagePath": "minigun"
+  },
+  {
+    "id": 218,
+    "itemId": 1361520181,
+    "shortname": "minecart.planter",
+    "name": "Minecart Planter",
+    "category": "Items",
+    "imagePath": "minecart.planter"
+  },
+  {
+    "id": 219,
+    "itemId": 1110385766,
+    "shortname": "metal.plate.torso",
+    "name": "Metal Chest Plate",
+    "category": "Attire",
+    "imagePath": "metal.plate.torso"
+  },
+  {
+    "id": 220,
+    "itemId": -295829489,
+    "shortname": "electric.generator.small",
+    "name": "Test Generator",
+    "category": "Electrical",
+    "imagePath": "electric.generator.small"
+  },
+  {
+    "id": 221,
+    "itemId": -1962971928,
+    "shortname": "mushroom",
+    "name": "Mushroom",
+    "category": "Food",
+    "imagePath": "mushroom"
+  },
+  {
+    "id": 222,
+    "itemId": -4031221,
+    "shortname": "metal.ore",
+    "name": "Metal Ore",
+    "category": "Resources",
+    "imagePath": "metal.ore"
+  },
+  {
+    "id": 223,
+    "itemId": 39600618,
+    "shortname": "microphonestand",
+    "name": "Microphone Stand",
+    "category": "Fun",
+    "imagePath": "microphonestand"
+  },
+  {
+    "id": 224,
+    "itemId": 317398316,
+    "shortname": "metal.refined",
+    "name": "High Quality Metal",
+    "category": "Resources",
+    "imagePath": "metal.refined"
+  },
+  {
+    "id": 225,
+    "itemId": -2047081330,
+    "shortname": "movembermoustache",
+    "name": "Movember Moustache",
+    "category": "Attire",
+    "imagePath": "movembermoustache"
+  },
+  {
+    "id": 226,
+    "itemId": -1123473824,
+    "shortname": "multiplegrenadelauncher",
+    "name": "Multiple Grenade Launcher",
+    "category": "Weapon",
+    "imagePath": "multiplegrenadelauncher"
+  },
+  {
+    "id": 227,
+    "itemId": -961457160,
+    "shortname": "newyeargong",
+    "name": "New Year Gong",
+    "category": "Fun",
+    "imagePath": "newyeargong"
+  },
+  {
+    "id": 228,
+    "itemId": -1021495308,
+    "shortname": "metalspring",
+    "name": "Metal Spring",
+    "category": "Component",
+    "imagePath": "metalspring"
+  },
+  {
+    "id": 229,
+    "itemId": 1882709339,
+    "shortname": "metalblade",
+    "name": "Metal Blade",
+    "category": "Component",
+    "imagePath": "metalblade"
+  },
+  {
+    "id": 230,
+    "itemId": -20045316,
+    "shortname": "mobilephone",
+    "name": "Mobile Phone",
+    "category": "Fun",
+    "imagePath": "mobilephone"
+  },
+  {
+    "id": 231,
+    "itemId": 2063916636,
+    "shortname": "oretea.advanced",
+    "name": "Advanced Ore Tea",
+    "category": "Food",
+    "imagePath": "oretea.advanced"
+  },
+  {
+    "id": 232,
+    "itemId": -563624462,
+    "shortname": "electric.splitter",
+    "name": "Splitter",
+    "category": "Electrical",
+    "imagePath": "electric.splitter"
+  },
+  {
+    "id": 233,
+    "itemId": 1696050067,
+    "shortname": "modularcarlift",
+    "name": "Modular Car Lift",
+    "category": "Electrical",
+    "imagePath": "modularcarlift"
+  },
+  {
+    "id": 234,
+    "itemId": -690968985,
+    "shortname": "electric.blocker",
+    "name": "Blocker",
+    "category": "Electrical",
+    "imagePath": "electric.blocker"
+  },
+  {
+    "id": 235,
+    "itemId": 237239288,
+    "shortname": "pants",
+    "name": "Pants",
+    "category": "Attire",
+    "imagePath": "pants"
+  },
+  {
+    "id": 236,
+    "itemId": 602628465,
+    "shortname": "parachute",
+    "name": "Parachute",
+    "category": "Attire",
+    "imagePath": "parachute"
+  },
+  {
+    "id": 237,
+    "itemId": 1480022580,
+    "shortname": "oretea",
+    "name": "Basic Ore Tea",
+    "category": "Food",
+    "imagePath": "oretea"
+  },
+  {
+    "id": 238,
+    "itemId": 1414245162,
+    "shortname": "note",
+    "name": "Note",
+    "category": "Misc",
+    "imagePath": "note"
+  },
+  {
+    "id": 239,
+    "itemId": -1518883088,
+    "shortname": "nightvisiongoggles",
+    "name": "Night Vision Goggles",
+    "category": "Attire",
+    "imagePath": "nightvisiongoggles"
+  },
+  {
+    "id": 240,
+    "itemId": 1729374708,
+    "shortname": "oretea.pure",
+    "name": "Pure Ore Tea",
+    "category": "Food",
+    "imagePath": "oretea.pure"
+  },
+  {
+    "id": 241,
+    "itemId": -733625651,
+    "shortname": "paddlingpool",
+    "name": "Paddling Pool",
+    "category": "Fun",
+    "imagePath": "paddlingpool"
+  },
+  {
+    "id": 242,
+    "itemId": 1491189398,
+    "shortname": "paddle",
+    "name": "Paddle",
+    "category": "Weapon",
+    "imagePath": "paddle"
+  },
+  {
+    "id": 243,
+    "itemId": -99886070,
+    "shortname": "firework.romancandle.violet",
+    "name": "Violet Roman Candle",
+    "category": "Fun",
+    "imagePath": "firework.romancandle.violet"
+  },
+  {
+    "id": 244,
+    "itemId": -1695367501,
+    "shortname": "pants.shorts",
+    "name": "Shorts",
+    "category": "Attire",
+    "imagePath": "pants.shorts"
+  },
+  {
+    "id": 245,
+    "itemId": -458565393,
+    "shortname": "electrical.combiner",
+    "name": "Root Combiner",
+    "category": "Electrical",
+    "imagePath": "electrical.combiner"
+  },
+  {
+    "id": 246,
+    "itemId": 1248356124,
+    "shortname": "explosive.timed",
+    "name": "Timed Explosive Charge",
+    "category": "Tool",
+    "imagePath": "explosive.timed"
+  },
+  {
+    "id": 247,
+    "itemId": 62577426,
+    "shortname": "photo",
+    "name": "Photograph",
+    "category": "Misc",
+    "imagePath": "photo"
+  },
+  {
+    "id": 248,
+    "itemId": 492357192,
+    "shortname": "electric.random.switch",
+    "name": "RAND Switch",
+    "category": "Electrical",
+    "imagePath": "electric.random.switch"
+  },
+  {
+    "id": 249,
+    "itemId": 1371909803,
+    "shortname": "electric.teslacoil",
+    "name": "Tesla Coil",
+    "category": "Electrical",
+    "imagePath": "electric.teslacoil"
+  },
+  {
+    "id": 250,
+    "itemId": -798293154,
+    "shortname": "electric.laserdetector",
+    "name": "Laser Detector",
+    "category": "Electrical",
+    "imagePath": "electric.laserdetector"
+  },
+  {
+    "id": 251,
+    "itemId": -979302481,
+    "shortname": "easterdoorwreath",
+    "name": "Easter Door Wreath",
+    "category": "Items",
+    "imagePath": "easterdoorwreath"
+  },
+  {
+    "id": 252,
+    "itemId": 1865253052,
+    "shortname": "draculamask",
+    "name": "Dracula Mask",
+    "category": "Attire",
+    "imagePath": "draculamask"
+  },
+  {
+    "id": 253,
+    "itemId": 1293102274,
+    "shortname": "electric.xorswitch",
+    "name": "XOR Switch",
+    "category": "Electrical",
+    "imagePath": "electric.xorswitch"
+  },
+  {
+    "id": 254,
+    "itemId": -858312878,
+    "shortname": "cloth",
+    "name": "Cloth",
+    "category": "Resources",
+    "imagePath": "cloth"
+  },
+  {
+    "id": 255,
+    "itemId": -692338819,
+    "shortname": "electric.battery.rechargable.small",
+    "name": "Small Rechargeable Battery",
+    "category": "Electrical",
+    "imagePath": "electric.battery.rechargable.small"
+  },
+  {
+    "id": 256,
+    "itemId": 1757265204,
+    "shortname": "easter.silveregg",
+    "name": "Silver Egg",
+    "category": "Misc",
+    "imagePath": "easter.silveregg"
+  },
+  {
+    "id": 257,
+    "itemId": -656349006,
+    "shortname": "firework.boomer.green",
+    "name": "Green Boomer",
+    "category": "Fun",
+    "imagePath": "firework.boomer.green"
+  },
+  {
+    "id": 258,
+    "itemId": -1151332840,
+    "shortname": "door.double.hinged.bardoors",
+    "name": "Wooden Frontier Bar Doors",
+    "category": "Construction",
+    "imagePath": "door.double.hinged.bardoors"
+  },
+  {
+    "id": 259,
+    "itemId": -1286302544,
+    "shortname": "electric.orswitch",
+    "name": "OR Switch",
+    "category": "Electrical",
+    "imagePath": "electric.orswitch"
+  },
+  {
+    "id": 260,
+    "itemId": -1448252298,
+    "shortname": "electrical.branch",
+    "name": "Electrical Branch",
+    "category": "Electrical",
+    "imagePath": "electrical.branch"
+  },
+  {
+    "id": 261,
+    "itemId": -113413047,
+    "shortname": "diving.mask",
+    "name": "Diving Mask",
+    "category": "Attire",
+    "imagePath": "diving.mask"
+  },
+  {
+    "id": 262,
+    "itemId": 968421290,
+    "shortname": "connected.speaker",
+    "name": "Connected Speaker",
+    "category": "Fun",
+    "imagePath": "connected.speaker"
+  },
+  {
+    "id": 263,
+    "itemId": 1221063409,
+    "shortname": "door.double.hinged.toptier",
+    "name": "Armored Double Door",
+    "category": "Construction",
+    "imagePath": "door.double.hinged.toptier"
+  },
+  {
+    "id": 264,
+    "itemId": -216999575,
+    "shortname": "electric.counter",
+    "name": "Counter",
+    "category": "Electrical",
+    "imagePath": "electric.counter"
+  },
+  {
+    "id": 265,
+    "itemId": -854270928,
+    "shortname": "dragondoorknocker",
+    "name": "Dragon Door Knocker",
+    "category": "Items",
+    "imagePath": "dragondoorknocker"
+  },
+  {
+    "id": 266,
+    "itemId": -2022172587,
+    "shortname": "diving.tank",
+    "name": "Diving Tank",
+    "category": "Attire",
+    "imagePath": "diving.tank"
+  },
+  {
+    "id": 267,
+    "itemId": 296519935,
+    "shortname": "diving.fins",
+    "name": "Diving Fins",
+    "category": "Attire",
+    "imagePath": "diving.fins"
+  },
+  {
+    "id": 268,
+    "itemId": 1849887541,
+    "shortname": "electric.fuelgenerator.small",
+    "name": "Small Generator",
+    "category": "Electrical",
+    "imagePath": "electric.fuelgenerator.small"
+  },
+  {
+    "id": 269,
+    "itemId": -1588628467,
+    "shortname": "computerstation",
+    "name": "Computer Station",
+    "category": "Electrical",
+    "imagePath": "computerstation"
+  },
+  {
+    "id": 270,
+    "itemId": -912398867,
+    "shortname": "cassette.medium",
+    "name": "Cassette - Medium",
+    "category": "Fun",
+    "imagePath": "cassette.medium"
+  },
+  {
+    "id": 271,
+    "itemId": -1778897469,
+    "shortname": "electric.button",
+    "name": "Button",
+    "category": "Electrical",
+    "imagePath": "electric.button"
+  },
+  {
+    "id": 272,
+    "itemId": -939424778,
+    "shortname": "electric.flasherlight",
+    "name": "Flasher Light",
+    "category": "Electrical",
+    "imagePath": "electric.flasherlight"
+  },
+  {
+    "id": 273,
+    "itemId": -75944661,
+    "shortname": "pistol.eoka",
+    "name": "Eoka Pistol",
+    "category": "Weapon",
+    "imagePath": "pistol.eoka"
+  },
+  {
+    "id": 274,
+    "itemId": 1697996440,
+    "shortname": "photoframe.landscape",
+    "name": "Landscape Photo Frame",
+    "category": "Items",
+    "imagePath": "photoframe.landscape"
+  },
+  {
+    "id": 275,
+    "itemId": 1953903201,
+    "shortname": "pistol.nailgun",
+    "name": "Nailgun",
+    "category": "Weapon",
+    "imagePath": "pistol.nailgun"
+  },
+  {
+    "id": 276,
+    "itemId": 1373971859,
+    "shortname": "pistol.python",
+    "name": "Python Revolver",
+    "category": "Weapon",
+    "imagePath": "pistol.python"
+  },
+  {
+    "id": 277,
+    "itemId": 1914691295,
+    "shortname": "pistol.prototype17",
+    "name": "Prototype 17",
+    "category": "Weapon",
+    "imagePath": "pistol.prototype17"
+  },
+  {
+    "id": 278,
+    "itemId": -1651220691,
+    "shortname": "pookie.bear",
+    "name": "Pookie Bear",
+    "category": "Items",
+    "imagePath": "pookie.bear"
+  },
+  {
+    "id": 279,
+    "itemId": 1903654061,
+    "shortname": "planter.small",
+    "name": "Small Planter Box",
+    "category": "Items",
+    "imagePath": "planter.small"
+  },
+  {
+    "id": 280,
+    "itemId": -2086926071,
+    "shortname": "potato",
+    "name": "Potato",
+    "category": "Food",
+    "imagePath": "potato"
+  },
+  {
+    "id": 281,
+    "itemId": 818877484,
+    "shortname": "pistol.semiauto",
+    "name": "Semi-Automatic Pistol",
+    "category": "Weapon",
+    "imagePath": "pistol.semiauto"
+  },
+  {
+    "id": 282,
+    "itemId": 1581210395,
+    "shortname": "planter.large",
+    "name": "Large Planter Box",
+    "category": "Items",
+    "imagePath": "planter.large"
+  },
+  {
+    "id": 283,
+    "itemId": 1205084994,
+    "shortname": "photoframe.large",
+    "name": "Large Photo Frame",
+    "category": "Items",
+    "imagePath": "photoframe.large"
+  },
+  {
+    "id": 284,
+    "itemId": -1442496789,
+    "shortname": "pinata",
+    "name": "Pinata",
+    "category": "Fun",
+    "imagePath": "pinata"
+  },
+  {
+    "id": 285,
+    "itemId": 615112838,
+    "shortname": "rail.road.planter",
+    "name": "Rail Road Planter",
+    "category": "Items",
+    "imagePath": "rail.road.planter"
+  },
+  {
+    "id": 286,
+    "itemId": -144513264,
+    "shortname": "pipetool",
+    "name": "Pipe Tool",
+    "category": "Electrical",
+    "imagePath": "pipetool"
+  },
+  {
+    "id": 287,
+    "itemId": -365097295,
+    "shortname": "powered.water.purifier",
+    "name": "Powered Water Purifier",
+    "category": "Electrical",
+    "imagePath": "powered.water.purifier"
+  },
+  {
+    "id": 288,
+    "itemId": 1588298435,
+    "shortname": "rifle.bolt",
+    "name": "Bolt Action Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.bolt"
+  },
+  {
+    "id": 289,
+    "itemId": -778367295,
+    "shortname": "rifle.l96",
+    "name": "L96 Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.l96"
+  },
+  {
+    "id": 290,
+    "itemId": 1272430949,
+    "shortname": "piano",
+    "name": "Wheelbarrow Piano",
+    "category": "Fun",
+    "imagePath": "piano"
+  },
+  {
+    "id": 291,
+    "itemId": -33009419,
+    "shortname": "radiationresisttea.pure",
+    "name": "Pure Anti-Rad Tea",
+    "category": "Food",
+    "imagePath": "radiationresisttea.pure"
+  },
+  {
+    "id": 292,
+    "itemId": -487356515,
+    "shortname": "radiationresisttea",
+    "name": "Basic Anti-Rad Tea",
+    "category": "Food",
+    "imagePath": "radiationresisttea"
+  },
+  {
+    "id": 293,
+    "itemId": 1272194103,
+    "shortname": "red.berry",
+    "name": "Red Berry",
+    "category": "Food",
+    "imagePath": "red.berry"
+  },
+  {
+    "id": 294,
+    "itemId": 1729712564,
+    "shortname": "photoframe.portrait",
+    "name": "Portrait Photo Frame",
+    "category": "Items",
+    "imagePath": "photoframe.portrait"
+  },
+  {
+    "id": 295,
+    "itemId": -852563019,
+    "shortname": "pistol.m92",
+    "name": "M92 Pistol",
+    "category": "Weapon",
+    "imagePath": "pistol.m92"
+  },
+  {
+    "id": 296,
+    "itemId": 1545779598,
+    "shortname": "rifle.ak",
+    "name": "Assault Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.ak"
+  },
+  {
+    "id": 297,
+    "itemId": -1812555177,
+    "shortname": "rifle.lr300",
+    "name": "LR-300 Assault Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.lr300"
+  },
+  {
+    "id": 298,
+    "itemId": 28201841,
+    "shortname": "rifle.m39",
+    "name": "M39 Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.m39"
+  },
+  {
+    "id": 299,
+    "itemId": 649912614,
+    "shortname": "pistol.revolver",
+    "name": "Revolver",
+    "category": "Weapon",
+    "imagePath": "pistol.revolver"
+  },
+  {
+    "id": 300,
+    "itemId": 1883981798,
+    "shortname": "piston1",
+    "name": "Low Quality Pistons",
+    "category": "Component",
+    "imagePath": "piston1"
+  },
+  {
+    "id": 301,
+    "itemId": 176787552,
+    "shortname": "riflebody",
+    "name": "Rifle Body",
+    "category": "Component",
+    "imagePath": "riflebody"
+  },
+  {
+    "id": 302,
+    "itemId": 671063303,
+    "shortname": "riot.helmet",
+    "name": "Riot Helmet",
+    "category": "Attire",
+    "imagePath": "riot.helmet"
+  },
+  {
+    "id": 303,
+    "itemId": -804769727,
+    "shortname": "plantfiber",
+    "name": "Plant Fiber",
+    "category": "Resources",
+    "imagePath": "plantfiber"
+  },
+  {
+    "id": 304,
+    "itemId": 1883981801,
+    "shortname": "piston2",
+    "name": "Medium Quality Pistons",
+    "category": "Component",
+    "imagePath": "piston2"
+  },
+  {
+    "id": 305,
+    "itemId": -1815301988,
+    "shortname": "pistol.water",
+    "name": "Water Pistol",
+    "category": "Weapon",
+    "imagePath": "pistol.water"
+  },
+  {
+    "id": 306,
+    "itemId": 1883981800,
+    "shortname": "piston3",
+    "name": "High Quality Pistons",
+    "category": "Component",
+    "imagePath": "piston3"
+  },
+  {
+    "id": 307,
+    "itemId": -566907190,
+    "shortname": "rf_pager",
+    "name": "RF Pager",
+    "category": "Electrical",
+    "imagePath": "rf_pager"
+  },
+  {
+    "id": 308,
+    "itemId": 596469572,
+    "shortname": "rf.detonator",
+    "name": "RF Transmitter",
+    "category": "Tool",
+    "imagePath": "rf.detonator"
+  },
+  {
+    "id": 309,
+    "itemId": -1673693549,
+    "shortname": "propanetank",
+    "name": "Empty Propane Tank",
+    "category": "Component",
+    "imagePath": "propanetank"
+  },
+  {
+    "id": 310,
+    "itemId": -1861522751,
+    "shortname": "research.table",
+    "name": "Research Table",
+    "category": "Items",
+    "imagePath": "research.table"
+  },
+  {
+    "id": 311,
+    "itemId": 442886268,
+    "shortname": "rocket.launcher",
+    "name": "Rocket Launcher",
+    "category": "Weapon",
+    "imagePath": "rocket.launcher"
+  },
+  {
+    "id": 312,
+    "itemId": 140006625,
+    "shortname": "ptz.cctv.camera",
+    "name": "PTZ CCTV Camera",
+    "category": "Electrical",
+    "imagePath": "ptz.cctv.camera"
+  },
+  {
+    "id": 313,
+    "itemId": 1346158228,
+    "shortname": "pumpkinbasket",
+    "name": "Pumpkin Bucket",
+    "category": "Misc",
+    "imagePath": "pumpkinbasket"
+  },
+  {
+    "id": 314,
+    "itemId": -567909622,
+    "shortname": "pumpkin",
+    "name": "Pumpkin",
+    "category": "Food",
+    "imagePath": "pumpkin"
+  },
+  {
+    "id": 315,
+    "itemId": -1729415579,
+    "shortname": "radiationresisttea.advanced",
+    "name": "Advanced Anti-Rad Tea",
+    "category": "Food",
+    "imagePath": "radiationresisttea.advanced"
+  },
+  {
+    "id": 316,
+    "itemId": -904863145,
+    "shortname": "rifle.semiauto",
+    "name": "Semi-Automatic Rifle",
+    "category": "Weapon",
+    "imagePath": "rifle.semiauto"
+  },
+  {
+    "id": 317,
+    "itemId": 963906841,
+    "shortname": "rock",
+    "name": "Rock",
+    "category": "Tool",
+    "imagePath": "rock"
+  },
+  {
+    "id": 318,
+    "itemId": -1985799200,
+    "shortname": "rug",
+    "name": "Rug",
+    "category": "Items",
+    "imagePath": "rug"
+  },
+  {
+    "id": 319,
+    "itemId": 1850456855,
+    "shortname": "roadsign.kilt",
+    "name": "Road Sign Kilt",
+    "category": "Attire",
+    "imagePath": "roadsign.kilt"
+  },
+  {
+    "id": 320,
+    "itemId": 1199391518,
+    "shortname": "roadsigns",
+    "name": "Road Signs",
+    "category": "Component",
+    "imagePath": "roadsigns"
+  },
+  {
+    "id": 321,
+    "itemId": -173268125,
+    "shortname": "rustige_egg_e",
+    "name": "Rustigé Egg - Green",
+    "category": "Misc",
+    "imagePath": "rustige_egg_e"
+  },
+  {
+    "id": 322,
+    "itemId": -2002277461,
+    "shortname": "roadsign.jacket",
+    "name": "Road Sign Jacket",
+    "category": "Attire",
+    "imagePath": "roadsign.jacket"
+  },
+  {
+    "id": 323,
+    "itemId": -502177121,
+    "shortname": "electric.doorcontroller",
+    "name": "Door Controller",
+    "category": "Electrical",
+    "imagePath": "electric.doorcontroller"
+  },
+  {
+    "id": 324,
+    "itemId": -699558439,
+    "shortname": "roadsign.gloves",
+    "name": "Roadsign Gloves",
+    "category": "Attire",
+    "imagePath": "roadsign.gloves"
+  },
+  {
+    "id": 325,
+    "itemId": -1863063690,
+    "shortname": "rockingchair",
+    "name": "Rocking Chair",
+    "category": "Items",
+    "imagePath": "rockingchair"
+  },
+  {
+    "id": 326,
+    "itemId": 1414245522,
+    "shortname": "rope",
+    "name": "Rope",
+    "category": "Component",
+    "imagePath": "rope"
+  },
+  {
+    "id": 327,
+    "itemId": -173268126,
+    "shortname": "rustige_egg_d",
+    "name": "Rustigé Egg - Ivory",
+    "category": "Misc",
+    "imagePath": "rustige_egg_d"
+  },
+  {
+    "id": 328,
+    "itemId": -575483084,
+    "shortname": "santahat",
+    "name": "Santa Hat",
+    "category": "Attire",
+    "imagePath": "santahat"
+  },
+  {
+    "id": 329,
+    "itemId": 524678627,
+    "shortname": "scraptea.advanced",
+    "name": "Advanced Scrap Tea",
+    "category": "Food",
+    "imagePath": "scraptea.advanced"
+  },
+  {
+    "id": 330,
+    "itemId": -173268129,
+    "shortname": "rustige_egg_a",
+    "name": "Rustigé Egg - Red",
+    "category": "Misc",
+    "imagePath": "rustige_egg_a"
+  },
+  {
+    "id": 331,
+    "itemId": -1978999529,
+    "shortname": "salvaged.cleaver",
+    "name": "Salvaged Cleaver",
+    "category": "Weapon",
+    "imagePath": "salvaged.cleaver"
+  },
+  {
+    "id": 332,
+    "itemId": 1326180354,
+    "shortname": "salvaged.sword",
+    "name": "Salvaged Sword",
+    "category": "Weapon",
+    "imagePath": "salvaged.sword"
+  },
+  {
+    "id": 333,
+    "itemId": 177226991,
+    "shortname": "scarecrow",
+    "name": "Scarecrow",
+    "category": "Items",
+    "imagePath": "scarecrow"
+  },
+  {
+    "id": 334,
+    "itemId": -173268128,
+    "shortname": "rustige_egg_f",
+    "name": "Rustigé Egg - White",
+    "category": "Misc",
+    "imagePath": "rustige_egg_f"
+  },
+  {
+    "id": 335,
+    "itemId": -1104881824,
+    "shortname": "rug.bear",
+    "name": "Rug Bear Skin",
+    "category": "Items",
+    "imagePath": "rug.bear"
+  },
+  {
+    "id": 336,
+    "itemId": -173268131,
+    "shortname": "rustige_egg_c",
+    "name": "Rustigé Egg - Purple",
+    "category": "Misc",
+    "imagePath": "rustige_egg_c"
+  },
+  {
+    "id": 337,
+    "itemId": 2024467711,
+    "shortname": "scraptea.pure",
+    "name": "Pure Scrap Tea",
+    "category": "Food",
+    "imagePath": "scraptea.pure"
+  },
+  {
+    "id": 338,
+    "itemId": 263834859,
+    "shortname": "scraptea",
+    "name": "Basic Scrap Tea",
+    "category": "Food",
+    "imagePath": "scraptea"
+  },
+  {
+    "id": 339,
+    "itemId": 567871954,
+    "shortname": "secretlabchair",
+    "name": "Secret Lab Chair",
+    "category": "Items",
+    "imagePath": "secretlabchair"
+  },
+  {
+    "id": 340,
+    "itemId": -173268132,
+    "shortname": "rustige_egg_b",
+    "name": "Rustigé Egg - Blue",
+    "category": "Misc",
+    "imagePath": "rustige_egg_b"
+  },
+  {
+    "id": 341,
+    "itemId": 2126889441,
+    "shortname": "santabeard",
+    "name": "Santa Beard",
+    "category": "Attire",
+    "imagePath": "santabeard"
+  },
+  {
+    "id": 342,
+    "itemId": -1009359066,
+    "shortname": "samsite",
+    "name": "SAM Site",
+    "category": "Traps",
+    "imagePath": "samsite"
+  },
+  {
+    "id": 343,
+    "itemId": -1776128552,
+    "shortname": "seed.green.berry",
+    "name": "Green Berry Seed",
+    "category": "Food",
+    "imagePath": "seed.green.berry"
+  },
+  {
+    "id": 344,
+    "itemId": -932201673,
+    "shortname": "scrap",
+    "name": "Scrap",
+    "category": "Resources",
+    "imagePath": "scrap"
+  },
+  {
+    "id": 345,
+    "itemId": -992286106,
+    "shortname": "seed.white.berry",
+    "name": "White Berry Seed",
+    "category": "Food",
+    "imagePath": "seed.white.berry"
+  },
+  {
+    "id": 346,
+    "itemId": 830839496,
+    "shortname": "seed.red.berry",
+    "name": "Red Berry Seed",
+    "category": "Food",
+    "imagePath": "seed.red.berry"
+  },
+  {
+    "id": 347,
+    "itemId": 998894949,
+    "shortname": "seed.corn",
+    "name": "Corn Seed",
+    "category": "Food",
+    "imagePath": "seed.corn"
+  },
+  {
+    "id": 348,
+    "itemId": 1171735914,
+    "shortname": "electric.andswitch",
+    "name": "AND Switch",
+    "category": "Electrical",
+    "imagePath": "electric.andswitch"
+  },
+  {
+    "id": 349,
+    "itemId": -237809779,
+    "shortname": "seed.hemp",
+    "name": "Hemp Seed",
+    "category": "Food",
+    "imagePath": "seed.hemp"
+  },
+  {
+    "id": 350,
+    "itemId": 803954639,
+    "shortname": "seed.blue.berry",
+    "name": "Blue Berry Seed",
+    "category": "Food",
+    "imagePath": "seed.blue.berry"
+  },
+  {
+    "id": 351,
+    "itemId": 2087678962,
+    "shortname": "searchlight",
+    "name": "Search Light",
+    "category": "Electrical",
+    "imagePath": "searchlight"
+  },
+  {
+    "id": 352,
+    "itemId": -2084071424,
+    "shortname": "seed.potato",
+    "name": "Potato Seed",
+    "category": "Food",
+    "imagePath": "seed.potato"
+  },
+  {
+    "id": 353,
+    "itemId": 1950721418,
+    "shortname": "shelves",
+    "name": "Salvaged Shelves",
+    "category": "Items",
+    "imagePath": "shelves"
+  },
+  {
+    "id": 354,
+    "itemId": -1994909036,
+    "shortname": "sheetmetal",
+    "name": "Sheet Metal",
+    "category": "Component",
+    "imagePath": "sheetmetal"
+  },
+  {
+    "id": 355,
+    "itemId": 1234880403,
+    "shortname": "sewingkit",
+    "name": "Sewing Kit",
+    "category": "Component",
+    "imagePath": "sewingkit"
+  },
+  {
+    "id": 356,
+    "itemId": 573926264,
+    "shortname": "semibody",
+    "name": "Semi Automatic Body",
+    "category": "Component",
+    "imagePath": "semibody"
+  },
+  {
+    "id": 357,
+    "itemId": -520133715,
+    "shortname": "seed.yellow.berry",
+    "name": "Yellow Berry Seed",
+    "category": "Food",
+    "imagePath": "seed.yellow.berry"
+  },
+  {
+    "id": 358,
+    "itemId": 1608640313,
+    "shortname": "shirt.tanktop",
+    "name": "Tank Top",
+    "category": "Attire",
+    "imagePath": "shirt.tanktop"
+  },
+  {
+    "id": 359,
+    "itemId": -2025184684,
+    "shortname": "shirt.collared",
+    "name": "Shirt",
+    "category": "Attire",
+    "imagePath": "shirt.collared"
+  },
+  {
+    "id": 360,
+    "itemId": -1511285251,
+    "shortname": "seed.pumpkin",
+    "name": "Pumpkin Seed",
+    "category": "Food",
+    "imagePath": "seed.pumpkin"
+  },
+  {
+    "id": 361,
+    "itemId": -765183617,
+    "shortname": "shotgun.double",
+    "name": "Double Barrel Shotgun",
+    "category": "Weapon",
+    "imagePath": "shotgun.double"
+  },
+  {
+    "id": 362,
+    "itemId": -78533081,
+    "shortname": "deermeat.burned",
+    "name": "Burnt Deer Meat",
+    "category": "Food",
+    "imagePath": "deermeat.burned"
+  },
+  {
+    "id": 363,
+    "itemId": -1549739227,
+    "shortname": "shoes.boots",
+    "name": "Boots",
+    "category": "Attire",
+    "imagePath": "shoes.boots"
+  },
+  {
+    "id": 364,
+    "itemId": 678698219,
+    "shortname": "shotgun.m4",
+    "name": "M4 Shotgun",
+    "category": "Weapon",
+    "imagePath": "shotgun.m4"
+  },
+  {
+    "id": 365,
+    "itemId": 795371088,
+    "shortname": "shotgun.pump",
+    "name": "Pump Shotgun",
+    "category": "Weapon",
+    "imagePath": "shotgun.pump"
+  },
+  {
+    "id": 366,
+    "itemId": -1557377697,
+    "shortname": "can.tuna.empty",
+    "name": "Empty Tuna Can",
+    "category": "Resources",
+    "imagePath": "can.tuna.empty"
+  },
+  {
+    "id": 367,
+    "itemId": -41440462,
+    "shortname": "shotgun.spas12",
+    "name": "Spas-12 Shotgun",
+    "category": "Weapon",
+    "imagePath": "shotgun.spas12"
+  },
+  {
+    "id": 368,
+    "itemId": -1509851560,
+    "shortname": "deermeat.cooked",
+    "name": "Cooked Deer Meat",
+    "category": "Food",
+    "imagePath": "deermeat.cooked"
+  },
+  {
+    "id": 369,
+    "itemId": 1158340332,
+    "shortname": "crankshaft3",
+    "name": "High Quality Crankshaft",
+    "category": "Component",
+    "imagePath": "crankshaft3"
+  },
+  {
+    "id": 370,
+    "itemId": 390728933,
+    "shortname": "clone.yellow.berry",
+    "name": "Yellow Berry Clone",
+    "category": "Food",
+    "imagePath": "clone.yellow.berry"
+  },
+  {
+    "id": 371,
+    "itemId": -1367281941,
+    "shortname": "shotgun.waterpipe",
+    "name": "Waterpipe Shotgun",
+    "category": "Weapon",
+    "imagePath": "shotgun.waterpipe"
+  },
+  {
+    "id": 372,
+    "itemId": 1533551194,
+    "shortname": "clone.white.berry",
+    "name": "White Berry Clone",
+    "category": "Food",
+    "imagePath": "clone.white.berry"
+  },
+  {
+    "id": 373,
+    "itemId": -1199897172,
+    "shortname": "shutter.metal.embrasure.b",
+    "name": "Metal Vertical embrasure",
+    "category": "Construction",
+    "imagePath": "shutter.metal.embrasure.b"
+  },
+  {
+    "id": 374,
+    "itemId": -1199897169,
+    "shortname": "shutter.metal.embrasure.a",
+    "name": "Metal horizontal embrasure",
+    "category": "Construction",
+    "imagePath": "shutter.metal.embrasure.a"
+  },
+  {
+    "id": 375,
+    "itemId": 1856217390,
+    "shortname": "easterbasket",
+    "name": "Egg Basket",
+    "category": "Misc",
+    "imagePath": "easterbasket"
+  },
+  {
+    "id": 376,
+    "itemId": 23352662,
+    "shortname": "sign.hanging.banner.large",
+    "name": "Large Banner Hanging",
+    "category": "Items",
+    "imagePath": "sign.hanging.banner.large"
+  },
+  {
+    "id": 377,
+    "itemId": -1023374709,
+    "shortname": "shutter.wood.a",
+    "name": "Wood Shutters",
+    "category": "Construction",
+    "imagePath": "shutter.wood.a"
+  },
+  {
+    "id": 378,
+    "itemId": 1205607945,
+    "shortname": "sign.hanging",
+    "name": "Two Sided Hanging Sign",
+    "category": "Items",
+    "imagePath": "sign.hanging"
+  },
+  {
+    "id": 379,
+    "itemId": -1368584029,
+    "shortname": "sickle",
+    "name": "Sickle",
+    "category": "Misc",
+    "imagePath": "sickle"
+  },
+  {
+    "id": 380,
+    "itemId": -1647846966,
+    "shortname": "sign.hanging.ornate",
+    "name": "Two Sided Ornate Hanging Sign",
+    "category": "Items",
+    "imagePath": "sign.hanging.ornate"
+  },
+  {
+    "id": 381,
+    "itemId": 1305578813,
+    "shortname": "sign.neon.125x125",
+    "name": "Small Neon Sign",
+    "category": "Electrical",
+    "imagePath": "sign.neon.125x125"
+  },
+  {
+    "id": 382,
+    "itemId": -1423304443,
+    "shortname": "sign.neon.125x215",
+    "name": "Medium Neon Sign",
+    "category": "Electrical",
+    "imagePath": "sign.neon.125x215"
+  },
+  {
+    "id": 383,
+    "itemId": 42535890,
+    "shortname": "sign.neon.125x215.animated",
+    "name": "Medium Animated Neon Sign",
+    "category": "Electrical",
+    "imagePath": "sign.neon.125x215.animated"
+  },
+  {
+    "id": 384,
+    "itemId": 1158340331,
+    "shortname": "crankshaft2",
+    "name": "Medium Quality Crankshaft",
+    "category": "Component",
+    "imagePath": "crankshaft2"
+  },
+  {
+    "id": 385,
+    "itemId": -97956382,
+    "shortname": "cupboard.tool",
+    "name": "Tool Cupboard",
+    "category": "Construction",
+    "imagePath": "cupboard.tool"
+  },
+  {
+    "id": 386,
+    "itemId": 1588492232,
+    "shortname": "drone",
+    "name": "Drone",
+    "category": "Items",
+    "imagePath": "drone"
+  },
+  {
+    "id": 387,
+    "itemId": -152332823,
+    "shortname": "chicken.costume",
+    "name": "Chicken Costume",
+    "category": "Attire",
+    "imagePath": "chicken.costume"
+  },
+  {
+    "id": 388,
+    "itemId": 2023888403,
+    "shortname": "electric.battery.rechargable.medium",
+    "name": "Medium Rechargeable Battery",
+    "category": "Electrical",
+    "imagePath": "electric.battery.rechargable.medium"
+  },
+  {
+    "id": 389,
+    "itemId": 1643667218,
+    "shortname": "sign.neon.xl.animated",
+    "name": "Large Animated Neon Sign",
+    "category": "Electrical",
+    "imagePath": "sign.neon.xl.animated"
+  },
+  {
+    "id": 390,
+    "itemId": -770304148,
+    "shortname": "chineselanternwhite",
+    "name": "Chinese Lantern White",
+    "category": "Items",
+    "imagePath": "chineselanternwhite"
+  },
+  {
+    "id": 391,
+    "itemId": 866332017,
+    "shortname": "sign.neon.xl",
+    "name": "Large Neon Sign",
+    "category": "Electrical",
+    "imagePath": "sign.neon.xl"
+  },
+  {
+    "id": 392,
+    "itemId": 1568388703,
+    "shortname": "diesel_barrel",
+    "name": "Diesel Fuel",
+    "category": "Resources",
+    "imagePath": "diesel_barrel"
+  },
+  {
+    "id": 393,
+    "itemId": -845557339,
+    "shortname": "sign.pictureframe.landscape",
+    "name": "Landscape Picture Frame",
+    "category": "Items",
+    "imagePath": "sign.pictureframe.landscape"
+  },
+  {
+    "id": 394,
+    "itemId": 1655650836,
+    "shortname": "barricade.metal",
+    "name": "Metal Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.metal"
+  },
+  {
+    "id": 395,
+    "itemId": -1916473915,
+    "shortname": "chineselantern",
+    "name": "Chinese Lantern",
+    "category": "Items",
+    "imagePath": "chineselantern"
+  },
+  {
+    "id": 396,
+    "itemId": -996185386,
+    "shortname": "sign.pictureframe.xl",
+    "name": "XL Picture Frame",
+    "category": "Items",
+    "imagePath": "sign.pictureframe.xl"
+  },
+  {
+    "id": 397,
+    "itemId": 121049755,
+    "shortname": "sign.pictureframe.tall",
+    "name": "Tall Picture Frame",
+    "category": "Items",
+    "imagePath": "sign.pictureframe.tall"
+  },
+  {
+    "id": 398,
+    "itemId": 1946219319,
+    "shortname": "campfire",
+    "name": "Camp Fire",
+    "category": "Items",
+    "imagePath": "campfire"
+  },
+  {
+    "id": 399,
+    "itemId": 98508942,
+    "shortname": "sign.pictureframe.xxl",
+    "name": "XXL Picture Frame",
+    "category": "Items",
+    "imagePath": "sign.pictureframe.xxl"
+  },
+  {
+    "id": 400,
+    "itemId": 1521286012,
+    "shortname": "sign.post.double",
+    "name": "Double Sign Post",
+    "category": "Items",
+    "imagePath": "sign.post.double"
+  },
+  {
+    "id": 401,
+    "itemId": 2070189026,
+    "shortname": "sign.pole.banner.large",
+    "name": "Large Banner on pole",
+    "category": "Items",
+    "imagePath": "sign.pole.banner.large"
+  },
+  {
+    "id": 402,
+    "itemId": -1370759135,
+    "shortname": "sign.pictureframe.portrait",
+    "name": "Portrait Picture Frame",
+    "category": "Items",
+    "imagePath": "sign.pictureframe.portrait"
+  },
+  {
+    "id": 403,
+    "itemId": -1832422579,
+    "shortname": "sign.post.town",
+    "name": "One Sided Town Sign Post",
+    "category": "Items",
+    "imagePath": "sign.post.town"
+  },
+  {
+    "id": 404,
+    "itemId": 1789825282,
+    "shortname": "candycaneclub",
+    "name": "Candy Cane Club",
+    "category": "Weapon",
+    "imagePath": "candycaneclub"
+  },
+  {
+    "id": 405,
+    "itemId": 1873897110,
+    "shortname": "bearmeat.cooked",
+    "name": "Cooked Bear Meat",
+    "category": "Food",
+    "imagePath": "bearmeat.cooked"
+  },
+  {
+    "id": 406,
+    "itemId": 1542290441,
+    "shortname": "sign.post.single",
+    "name": "Single Sign Post",
+    "category": "Items",
+    "imagePath": "sign.post.single"
+  },
+  {
+    "id": 407,
+    "itemId": 1668129151,
+    "shortname": "fish.cooked",
+    "name": "Cooked Fish",
+    "category": "Food",
+    "imagePath": "fish.cooked"
+  },
+  {
+    "id": 408,
+    "itemId": 826309791,
+    "shortname": "sign.post.town.roof",
+    "name": "Two Sided Town Sign Post",
+    "category": "Items",
+    "imagePath": "sign.post.town.roof"
+  },
+  {
+    "id": 409,
+    "itemId": -143132326,
+    "shortname": "sign.wooden.huge",
+    "name": "Huge Wooden Sign",
+    "category": "Items",
+    "imagePath": "sign.wooden.huge"
+  },
+  {
+    "id": 410,
+    "itemId": -1138208076,
+    "shortname": "sign.wooden.small",
+    "name": "Small Wooden Sign",
+    "category": "Items",
+    "imagePath": "sign.wooden.small"
+  },
+  {
+    "id": 411,
+    "itemId": 996293980,
+    "shortname": "skull.human",
+    "name": "Human Skull",
+    "category": "Resources",
+    "imagePath": "skull.human"
+  },
+  {
+    "id": 412,
+    "itemId": -769647921,
+    "shortname": "skull.trophy",
+    "name": "Skull Trophy",
+    "category": "Fun",
+    "imagePath": "skull.trophy"
+  },
+  {
+    "id": 413,
+    "itemId": 1819863051,
+    "shortname": "skylantern",
+    "name": "Sky Lantern",
+    "category": "Fun",
+    "imagePath": "skylantern"
+  },
+  {
+    "id": 414,
+    "itemId": 553887414,
+    "shortname": "skull_fire_pit",
+    "name": "Skull Fire Pit",
+    "category": "Items",
+    "imagePath": "skull_fire_pit"
+  },
+  {
+    "id": 415,
+    "itemId": 1153652756,
+    "shortname": "sign.wooden.large",
+    "name": "Large Wooden Sign",
+    "category": "Items",
+    "imagePath": "sign.wooden.large"
+  },
+  {
+    "id": 416,
+    "itemId": -1293296287,
+    "shortname": "small.oil.refinery",
+    "name": "Small Oil Refinery",
+    "category": "Items",
+    "imagePath": "small.oil.refinery"
+  },
+  {
+    "id": 417,
+    "itemId": 2048317869,
+    "shortname": "skull.wolf",
+    "name": "Wolf Skull",
+    "category": "Resources",
+    "imagePath": "skull.wolf"
+  },
+  {
+    "id": 418,
+    "itemId": -1819233322,
+    "shortname": "sign.wooden.medium",
+    "name": "Medium Wooden Sign",
+    "category": "Items",
+    "imagePath": "sign.wooden.medium"
+  },
+  {
+    "id": 419,
+    "itemId": -333406828,
+    "shortname": "sled",
+    "name": "Sled",
+    "category": "Fun",
+    "imagePath": "sled"
+  },
+  {
+    "id": 420,
+    "itemId": -216116642,
+    "shortname": "skulldoorknocker",
+    "name": "Skull Door Knocker",
+    "category": "Items",
+    "imagePath": "skulldoorknocker"
+  },
+  {
+    "id": 421,
+    "itemId": 1318558775,
+    "shortname": "smg.mp5",
+    "name": "MP5A4",
+    "category": "Weapon",
+    "imagePath": "smg.mp5"
+  },
+  {
+    "id": 422,
+    "itemId": -1073015016,
+    "shortname": "skullspikes",
+    "name": "Skull Spikes",
+    "category": "Fun",
+    "imagePath": "skullspikes"
+  },
+  {
+    "id": 423,
+    "itemId": -363689972,
+    "shortname": "snowball",
+    "name": "Snowball",
+    "category": "Weapon",
+    "imagePath": "snowball"
+  },
+  {
+    "id": 424,
+    "itemId": 988652725,
+    "shortname": "smart.switch",
+    "name": "Smart Switch",
+    "category": "Electrical",
+    "imagePath": "smart.switch"
+  },
+  {
+    "id": 425,
+    "itemId": 1230323789,
+    "shortname": "smgbody",
+    "name": "SMG Body",
+    "category": "Component",
+    "imagePath": "smgbody"
+  },
+  {
+    "id": 426,
+    "itemId": 1103488722,
+    "shortname": "snowballgun",
+    "name": "Snowball Gun",
+    "category": "Weapon",
+    "imagePath": "snowballgun"
+  },
+  {
+    "id": 427,
+    "itemId": 2068884361,
+    "shortname": "smallbackpack",
+    "name": "Small Backpack",
+    "category": "Attire",
+    "imagePath": "smallbackpack"
+  },
+  {
+    "id": 428,
+    "itemId": -1754948969,
+    "shortname": "sleepingbag",
+    "name": "Sleeping Bag",
+    "category": "Items",
+    "imagePath": "sleepingbag"
+  },
+  {
+    "id": 429,
+    "itemId": -493159321,
+    "shortname": "sparkplug2",
+    "name": "Medium Quality Spark Plugs",
+    "category": "Component",
+    "imagePath": "sparkplug2"
+  },
+  {
+    "id": 430,
+    "itemId": -695978112,
+    "shortname": "smart.alarm",
+    "name": "Smart Alarm",
+    "category": "Electrical",
+    "imagePath": "smart.alarm"
+  },
+  {
+    "id": 431,
+    "itemId": -1039528932,
+    "shortname": "smallwaterbottle",
+    "name": "Small Water Bottle",
+    "category": "Food",
+    "imagePath": "smallwaterbottle"
+  },
+  {
+    "id": 432,
+    "itemId": -343857907,
+    "shortname": "soundlight",
+    "name": "Sound Light",
+    "category": "Fun",
+    "imagePath": "soundlight"
+  },
+  {
+    "id": 433,
+    "itemId": 782422285,
+    "shortname": "sofa.pattern",
+    "name": "Sofa - Pattern",
+    "category": "Items",
+    "imagePath": "sofa.pattern"
+  },
+  {
+    "id": 434,
+    "itemId": 1602646136,
+    "shortname": "spear.stone",
+    "name": "Stone Spear",
+    "category": "Weapon",
+    "imagePath": "spear.stone"
+  },
+  {
+    "id": 435,
+    "itemId": -1517740219,
+    "shortname": "speargun",
+    "name": "Speargun",
+    "category": "Weapon",
+    "imagePath": "speargun"
+  },
+  {
+    "id": 436,
+    "itemId": 1796682209,
+    "shortname": "smg.2",
+    "name": "Custom SMG",
+    "category": "Weapon",
+    "imagePath": "smg.2"
+  },
+  {
+    "id": 437,
+    "itemId": 882559853,
+    "shortname": "spiderweb",
+    "name": "Spider Webs",
+    "category": "Misc",
+    "imagePath": "spiderweb"
+  },
+  {
+    "id": 438,
+    "itemId": -1379036069,
+    "shortname": "fun.tambourine",
+    "name": "Canbourine",
+    "category": "Fun",
+    "imagePath": "fun.tambourine"
+  },
+  {
+    "id": 439,
+    "itemId": -1758372725,
+    "shortname": "smg.thompson",
+    "name": "Thompson",
+    "category": "Weapon",
+    "imagePath": "smg.thompson"
+  },
+  {
+    "id": 440,
+    "itemId": -369760990,
+    "shortname": "stash.small",
+    "name": "Small Stash",
+    "category": "Items",
+    "imagePath": "stash.small"
+  },
+  {
+    "id": 441,
+    "itemId": 1149964039,
+    "shortname": "storage.monitor",
+    "name": "Storage Monitor",
+    "category": "Electrical",
+    "imagePath": "storage.monitor"
+  },
+  {
+    "id": 442,
+    "itemId": 1629293099,
+    "shortname": "snowman",
+    "name": "Snowman",
+    "category": "Items",
+    "imagePath": "snowman"
+  },
+  {
+    "id": 443,
+    "itemId": -1421257350,
+    "shortname": "storage_barrel_c",
+    "name": "Storage Barrel Horizontal",
+    "category": "Items",
+    "imagePath": "storage_barrel_c"
+  },
+  {
+    "id": 444,
+    "itemId": -555122905,
+    "shortname": "sofa",
+    "name": "Sofa",
+    "category": "Items",
+    "imagePath": "sofa"
+  },
+  {
+    "id": 445,
+    "itemId": 1358643074,
+    "shortname": "snowmachine",
+    "name": "Snow Machine",
+    "category": "Misc",
+    "imagePath": "snowmachine"
+  },
+  {
+    "id": 446,
+    "itemId": 1885488976,
+    "shortname": "spookyspeaker",
+    "name": "Spooky Speaker",
+    "category": "Misc",
+    "imagePath": "spookyspeaker"
+  },
+  {
+    "id": 447,
+    "itemId": 2104517339,
+    "shortname": "strobelight",
+    "name": "Strobe Light",
+    "category": "Misc",
+    "imagePath": "strobelight"
+  },
+  {
+    "id": 448,
+    "itemId": -89874794,
+    "shortname": "sparkplug1",
+    "name": "Low Quality Spark Plugs",
+    "category": "Component",
+    "imagePath": "sparkplug1"
+  },
+  {
+    "id": 449,
+    "itemId": -1100422738,
+    "shortname": "spinner.wheel",
+    "name": "Spinning wheel",
+    "category": "Items",
+    "imagePath": "spinner.wheel"
+  },
+  {
+    "id": 450,
+    "itemId": -92759291,
+    "shortname": "spikes.floor",
+    "name": "Wooden Floor Spikes",
+    "category": "Traps",
+    "imagePath": "spikes.floor"
+  },
+  {
+    "id": 451,
+    "itemId": 1540934679,
+    "shortname": "spear.wooden",
+    "name": "Wooden Spear",
+    "category": "Weapon",
+    "imagePath": "spear.wooden"
+  },
+  {
+    "id": 452,
+    "itemId": 1072924620,
+    "shortname": "sparkplug3",
+    "name": "High Quality Spark Plugs",
+    "category": "Component",
+    "imagePath": "sparkplug3"
+  },
+  {
+    "id": 453,
+    "itemId": -465682601,
+    "shortname": "stocking.large",
+    "name": "SUPER Stocking",
+    "category": "Items",
+    "imagePath": "stocking.large"
+  },
+  {
+    "id": 454,
+    "itemId": -596876839,
+    "shortname": "spraycan",
+    "name": "Spray Can",
+    "category": "Tool",
+    "imagePath": "spraycan"
+  },
+  {
+    "id": 455,
+    "itemId": -1800345240,
+    "shortname": "speargun.spear",
+    "name": "Speargun Spear",
+    "category": "Ammunition",
+    "imagePath": "speargun.spear"
+  },
+  {
+    "id": 456,
+    "itemId": -1108136649,
+    "shortname": "tactical.gloves",
+    "name": "Tactical Gloves",
+    "category": "Attire",
+    "imagePath": "tactical.gloves"
+  },
+  {
+    "id": 457,
+    "itemId": -1583967946,
+    "shortname": "stonehatchet",
+    "name": "Stone Hatchet",
+    "category": "Tool",
+    "imagePath": "stonehatchet"
+  },
+  {
+    "id": 458,
+    "itemId": 1307626005,
+    "shortname": "storage_barrel_b",
+    "name": "Storage Barrel Vertical",
+    "category": "Items",
+    "imagePath": "storage_barrel_b"
+  },
+  {
+    "id": 459,
+    "itemId": 1668858301,
+    "shortname": "stocking.small",
+    "name": "Small Stocking",
+    "category": "Items",
+    "imagePath": "stocking.small"
+  },
+  {
+    "id": 460,
+    "itemId": -1671551935,
+    "shortname": "submarine.torpedo.straight",
+    "name": "Torpedo",
+    "category": "Ammunition",
+    "imagePath": "submarine.torpedo.straight"
+  },
+  {
+    "id": 461,
+    "itemId": 1079279582,
+    "shortname": "syringe.medical",
+    "name": "Medical Syringe",
+    "category": "Medical",
+    "imagePath": "syringe.medical"
+  },
+  {
+    "id": 462,
+    "itemId": 171931394,
+    "shortname": "stone.pickaxe",
+    "name": "Stone Pickaxe",
+    "category": "Tool",
+    "imagePath": "stone.pickaxe"
+  },
+  {
+    "id": 463,
+    "itemId": -1049172752,
+    "shortname": "storageadaptor",
+    "name": "Storage Adaptor",
+    "category": "Electrical",
+    "imagePath": "storageadaptor"
+  },
+  {
+    "id": 464,
+    "itemId": -1581843485,
+    "shortname": "sulfur",
+    "name": "Sulfur",
+    "category": "Resources",
+    "imagePath": "sulfur"
+  },
+  {
+    "id": 465,
+    "itemId": -2099697608,
+    "shortname": "stones",
+    "name": "Stones",
+    "category": "Resources",
+    "imagePath": "stones"
+  },
+  {
+    "id": 466,
+    "itemId": 1234878710,
+    "shortname": "telephone",
+    "name": "Telephone",
+    "category": "Fun",
+    "imagePath": "telephone"
+  },
+  {
+    "id": 467,
+    "itemId": -2001260025,
+    "shortname": "tool.instant_camera",
+    "name": "Instant Camera",
+    "category": "Tool",
+    "imagePath": "tool.instant_camera"
+  },
+  {
+    "id": 468,
+    "itemId": 1523195708,
+    "shortname": "targeting.computer",
+    "name": "Targeting Computer",
+    "category": "Resources",
+    "imagePath": "targeting.computer"
+  },
+  {
+    "id": 469,
+    "itemId": 2019042823,
+    "shortname": "tarp",
+    "name": "Tarp",
+    "category": "Component",
+    "imagePath": "tarp"
+  },
+  {
+    "id": 470,
+    "itemId": -1157596551,
+    "shortname": "sulfur.ore",
+    "name": "Sulfur Ore",
+    "category": "Resources",
+    "imagePath": "sulfur.ore"
+  },
+  {
+    "id": 471,
+    "itemId": 1397052267,
+    "shortname": "supply.signal",
+    "name": "Supply Signal",
+    "category": "Tool",
+    "imagePath": "supply.signal"
+  },
+  {
+    "id": 472,
+    "itemId": -1262185308,
+    "shortname": "tool.binoculars",
+    "name": "Binoculars",
+    "category": "Tool",
+    "imagePath": "tool.binoculars"
+  },
+  {
+    "id": 473,
+    "itemId": 352321488,
+    "shortname": "sunglasses",
+    "name": "Sunglasses",
+    "category": "Attire",
+    "imagePath": "sunglasses"
+  },
+  {
+    "id": 474,
+    "itemId": 795236088,
+    "shortname": "torch",
+    "name": "Torch",
+    "category": "Tool",
+    "imagePath": "torch"
+  },
+  {
+    "id": 475,
+    "itemId": -1736356576,
+    "shortname": "target.reactive",
+    "name": "Reactive Target",
+    "category": "Electrical",
+    "imagePath": "target.reactive"
+  },
+  {
+    "id": 476,
+    "itemId": 975983052,
+    "shortname": "trophy",
+    "name": "Twitch Rivals Trophy",
+    "category": "Items",
+    "imagePath": "trophy"
+  },
+  {
+    "id": 477,
+    "itemId": -1506417026,
+    "shortname": "attire.ninja.suit",
+    "name": "Ninja Suit",
+    "category": "Attire",
+    "imagePath": "attire.ninja.suit"
+  },
+  {
+    "id": 478,
+    "itemId": 593465182,
+    "shortname": "table",
+    "name": "Table",
+    "category": "Items",
+    "imagePath": "table"
+  },
+  {
+    "id": 479,
+    "itemId": -582782051,
+    "shortname": "trap.bear",
+    "name": "Snap Trap",
+    "category": "Traps",
+    "imagePath": "trap.bear"
+  },
+  {
+    "id": 480,
+    "itemId": -1663759755,
+    "shortname": "trap.landmine",
+    "name": "Homemade Landmine",
+    "category": "Traps",
+    "imagePath": "trap.landmine"
+  },
+  {
+    "id": 481,
+    "itemId": 1803831286,
+    "shortname": "toolgun",
+    "name": "Garry's Mod Tool Gun",
+    "category": "Tool",
+    "imagePath": "toolgun"
+  },
+  {
+    "id": 482,
+    "itemId": 73681876,
+    "shortname": "techparts",
+    "name": "Tech Trash",
+    "category": "Component",
+    "imagePath": "techparts"
+  },
+  {
+    "id": 483,
+    "itemId": 223891266,
+    "shortname": "tshirt",
+    "name": "T-Shirt",
+    "category": "Attire",
+    "imagePath": "tshirt"
+  },
+  {
+    "id": 484,
+    "itemId": -1478445584,
+    "shortname": "tunalight",
+    "name": "Tuna Can Lamp",
+    "category": "Items",
+    "imagePath": "tunalight"
+  },
+  {
+    "id": 485,
+    "itemId": 446206234,
+    "shortname": "torchholder",
+    "name": "Torch Holder",
+    "category": "Items",
+    "imagePath": "torchholder"
+  },
+  {
+    "id": 486,
+    "itemId": -1950721390,
+    "shortname": "barricade.concrete",
+    "name": "Concrete Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.concrete"
+  },
+  {
+    "id": 487,
+    "itemId": -901370585,
+    "shortname": "trophy2023",
+    "name": "Twitch Rivals Trophy 2023",
+    "category": "Items",
+    "imagePath": "trophy2023"
+  },
+  {
+    "id": 488,
+    "itemId": -1569700847,
+    "shortname": "twitch.headset",
+    "name": "Headset",
+    "category": "Attire",
+    "imagePath": "twitch.headset"
+  },
+  {
+    "id": 489,
+    "itemId": -1520560807,
+    "shortname": "bearmeat",
+    "name": "Raw Bear Meat",
+    "category": "Food",
+    "imagePath": "bearmeat"
+  },
+  {
+    "id": 490,
+    "itemId": -1023065463,
+    "shortname": "arrow.hv",
+    "name": "High Velocity Arrow",
+    "category": "Ammunition",
+    "imagePath": "arrow.hv"
+  },
+  {
+    "id": 491,
+    "itemId": 866889860,
+    "shortname": "barricade.wood",
+    "name": "Wooden Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.wood"
+  },
+  {
+    "id": 492,
+    "itemId": 20489901,
+    "shortname": "twitchsunglasses",
+    "name": "Purple Sunglasses",
+    "category": "Attire",
+    "imagePath": "twitchsunglasses"
+  },
+  {
+    "id": 493,
+    "itemId": -1802083073,
+    "shortname": "valve3",
+    "name": "High Quality Valves",
+    "category": "Component",
+    "imagePath": "valve3"
+  },
+  {
+    "id": 494,
+    "itemId": -262590403,
+    "shortname": "axe.salvaged",
+    "name": "Salvaged Axe",
+    "category": "Tool",
+    "imagePath": "axe.salvaged"
+  },
+  {
+    "id": 495,
+    "itemId": 1330084809,
+    "shortname": "valve1",
+    "name": "Low Quality Valves",
+    "category": "Component",
+    "imagePath": "valve1"
+  },
+  {
+    "id": 496,
+    "itemId": -985781766,
+    "shortname": "wall.external.high.ice",
+    "name": "High Ice Wall",
+    "category": "Construction",
+    "imagePath": "wall.external.high.ice"
+  },
+  {
+    "id": 497,
+    "itemId": 895374329,
+    "shortname": "vehicle.2mod.passengers",
+    "name": "Passenger Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.2mod.passengers"
+  },
+  {
+    "id": 498,
+    "itemId": -885833256,
+    "shortname": "vampire.stake",
+    "name": "Vampire Stake",
+    "category": "Weapon",
+    "imagePath": "vampire.stake"
+  },
+  {
+    "id": 499,
+    "itemId": -1880231361,
+    "shortname": "vehicle.1mod.flatbed",
+    "name": "Flatbed Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.flatbed"
+  },
+  {
+    "id": 500,
+    "itemId": 926800282,
+    "shortname": "valve2",
+    "name": "Medium Quality Valves",
+    "category": "Component",
+    "imagePath": "valve2"
+  },
+  {
+    "id": 501,
+    "itemId": 1376065505,
+    "shortname": "vehicle.1mod.rear.seats",
+    "name": "Rear Seats Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.rear.seats"
+  },
+  {
+    "id": 502,
+    "itemId": -1615281216,
+    "shortname": "vehicle.1mod.passengers.armored",
+    "name": "Armored Passenger Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.passengers.armored"
+  },
+  {
+    "id": 503,
+    "itemId": 268565518,
+    "shortname": "vehicle.1mod.storage",
+    "name": "Storage Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.storage"
+  },
+  {
+    "id": 504,
+    "itemId": -1040518150,
+    "shortname": "vehicle.2mod.camper",
+    "name": "Camper Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.2mod.camper"
+  },
+  {
+    "id": 505,
+    "itemId": 1874610722,
+    "shortname": "vehicle.1mod.cockpit.armored",
+    "name": "Armored Cockpit Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.cockpit.armored"
+  },
+  {
+    "id": 506,
+    "itemId": 1559779253,
+    "shortname": "vehicle.1mod.engine",
+    "name": "Engine Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.engine"
+  },
+  {
+    "id": 507,
+    "itemId": 198438816,
+    "shortname": "vending.machine",
+    "name": "Vending Machine",
+    "category": "Items",
+    "imagePath": "vending.machine"
+  },
+  {
+    "id": 508,
+    "itemId": 1186655046,
+    "shortname": "vehicle.2mod.fuel.tank",
+    "name": "Fuel Tank Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.2mod.fuel.tank"
+  },
+  {
+    "id": 509,
+    "itemId": -626174997,
+    "shortname": "vehicle.1mod.taxi",
+    "name": "Taxi Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.taxi"
+  },
+  {
+    "id": 510,
+    "itemId": -1501451746,
+    "shortname": "vehicle.1mod.cockpit",
+    "name": "Cockpit Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.cockpit"
+  },
+  {
+    "id": 511,
+    "itemId": 170758448,
+    "shortname": "vehicle.1mod.cockpit.with.engine",
+    "name": "Cockpit With Engine Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.1mod.cockpit.with.engine"
+  },
+  {
+    "id": 512,
+    "itemId": -1693832478,
+    "shortname": "vehicle.2mod.flatbed",
+    "name": "Large Flatbed Vehicle Module",
+    "category": "Component",
+    "imagePath": "vehicle.2mod.flatbed"
+  },
+  {
+    "id": 513,
+    "itemId": 99588025,
+    "shortname": "wall.external.high",
+    "name": "High External Wooden Wall",
+    "category": "Construction",
+    "imagePath": "wall.external.high"
+  },
+  {
+    "id": 514,
+    "itemId": -1904821376,
+    "shortname": "fish.orangeroughy",
+    "name": "Orange Roughy",
+    "category": "Food",
+    "imagePath": "fish.orangeroughy"
+  },
+  {
+    "id": 515,
+    "itemId": -956706906,
+    "shortname": "wall.frame.cell.gate",
+    "name": "Prison Cell Gate",
+    "category": "Construction",
+    "imagePath": "wall.frame.cell.gate"
+  },
+  {
+    "id": 516,
+    "itemId": -967648160,
+    "shortname": "wall.external.high.stone",
+    "name": "High External Stone Wall",
+    "category": "Construction",
+    "imagePath": "wall.external.high.stone"
+  },
+  {
+    "id": 517,
+    "itemId": -1429456799,
+    "shortname": "wall.frame.cell",
+    "name": "Prison Cell Wall",
+    "category": "Construction",
+    "imagePath": "wall.frame.cell"
+  },
+  {
+    "id": 518,
+    "itemId": 1451568081,
+    "shortname": "wall.frame.fence.gate",
+    "name": "Chainlink Fence Gate",
+    "category": "Construction",
+    "imagePath": "wall.frame.fence.gate"
+  },
+  {
+    "id": 519,
+    "itemId": -1117626326,
+    "shortname": "wall.frame.fence",
+    "name": "Chainlink Fence",
+    "category": "Construction",
+    "imagePath": "wall.frame.fence"
+  },
+  {
+    "id": 520,
+    "itemId": -747743875,
+    "shortname": "attire.egg.suit",
+    "name": "Egg Suit",
+    "category": "Attire",
+    "imagePath": "attire.egg.suit"
+  },
+  {
+    "id": 521,
+    "itemId": -148794216,
+    "shortname": "wall.frame.garagedoor",
+    "name": "Garage Door",
+    "category": "Construction",
+    "imagePath": "wall.frame.garagedoor"
+  },
+  {
+    "id": 522,
+    "itemId": -148229307,
+    "shortname": "wall.frame.shopfront.metal",
+    "name": "Metal Shop Front",
+    "category": "Construction",
+    "imagePath": "wall.frame.shopfront.metal"
+  },
+  {
+    "id": 523,
+    "itemId": -1679267738,
+    "shortname": "wall.graveyard.fence",
+    "name": "Graveyard Fence",
+    "category": "Misc",
+    "imagePath": "wall.graveyard.fence"
+  },
+  {
+    "id": 524,
+    "itemId": 936496778,
+    "shortname": "floor.grill",
+    "name": "Floor grill",
+    "category": "Construction",
+    "imagePath": "floor.grill"
+  },
+  {
+    "id": 525,
+    "itemId": 1516985844,
+    "shortname": "wall.frame.netting",
+    "name": "Netting",
+    "category": "Construction",
+    "imagePath": "wall.frame.netting"
+  },
+  {
+    "id": 526,
+    "itemId": -796583652,
+    "shortname": "wall.frame.shopfront",
+    "name": "Shop Front",
+    "category": "Construction",
+    "imagePath": "wall.frame.shopfront"
+  },
+  {
+    "id": 527,
+    "itemId": 1327005675,
+    "shortname": "wall.ice.wall",
+    "name": "Short Ice Wall",
+    "category": "Construction",
+    "imagePath": "wall.ice.wall"
+  },
+  {
+    "id": 528,
+    "itemId": -819720157,
+    "shortname": "wall.window.bars.metal",
+    "name": "Metal Window Bars",
+    "category": "Construction",
+    "imagePath": "wall.window.bars.metal"
+  },
+  {
+    "id": 529,
+    "itemId": -1183726687,
+    "shortname": "wall.window.bars.wood",
+    "name": "Wooden Window Bars",
+    "category": "Construction",
+    "imagePath": "wall.window.bars.wood"
+  },
+  {
+    "id": 530,
+    "itemId": 671706427,
+    "shortname": "wall.window.bars.toptier",
+    "name": "Reinforced Glass Window",
+    "category": "Construction",
+    "imagePath": "wall.window.bars.toptier"
+  },
+  {
+    "id": 531,
+    "itemId": -2107018088,
+    "shortname": "fun.bass",
+    "name": "Shovel Bass",
+    "category": "Fun",
+    "imagePath": "fun.bass"
+  },
+  {
+    "id": 532,
+    "itemId": -1215753368,
+    "shortname": "flamethrower",
+    "name": "Flame Thrower",
+    "category": "Weapon",
+    "imagePath": "flamethrower"
+  },
+  {
+    "id": 533,
+    "itemId": 282103175,
+    "shortname": "giantlollipops",
+    "name": "Giant Lollipop Decor",
+    "category": "Misc",
+    "imagePath": "giantlollipops"
+  },
+  {
+    "id": 534,
+    "itemId": -746030907,
+    "shortname": "granolabar",
+    "name": "Granola Bar",
+    "category": "Food",
+    "imagePath": "granolabar"
+  },
+  {
+    "id": 535,
+    "itemId": -1614955425,
+    "shortname": "wall.window.glass.reinforced",
+    "name": "Strengthened Glass Window",
+    "category": "Construction",
+    "imagePath": "wall.window.glass.reinforced"
+  },
+  {
+    "id": 536,
+    "itemId": -463122489,
+    "shortname": "watchtower.wood",
+    "name": "Watch Tower",
+    "category": "Construction",
+    "imagePath": "watchtower.wood"
+  },
+  {
+    "id": 537,
+    "itemId": -1344017968,
+    "shortname": "wantedposter",
+    "name": "Wanted Poster",
+    "category": "Items",
+    "imagePath": "wantedposter"
+  },
+  {
+    "id": 538,
+    "itemId": -1100168350,
+    "shortname": "water.catcher.large",
+    "name": "Large Water Catcher",
+    "category": "Construction",
+    "imagePath": "water.catcher.large"
+  },
+  {
+    "id": 539,
+    "itemId": -1863559151,
+    "shortname": "water.barrel",
+    "name": "Water Barrel",
+    "category": "Items",
+    "imagePath": "water.barrel"
+  },
+  {
+    "id": 540,
+    "itemId": -132247350,
+    "shortname": "water.catcher.small",
+    "name": "Small Water Catcher",
+    "category": "Construction",
+    "imagePath": "water.catcher.small"
+  },
+  {
+    "id": 541,
+    "itemId": 2114754781,
+    "shortname": "water.purifier",
+    "name": "Water Purifier",
+    "category": "Items",
+    "imagePath": "water.purifier"
+  },
+  {
+    "id": 542,
+    "itemId": -119235651,
+    "shortname": "waterjug",
+    "name": "Water Jug",
+    "category": "Food",
+    "imagePath": "waterjug"
+  },
+  {
+    "id": 543,
+    "itemId": 174866732,
+    "shortname": "weapon.mod.8x.scope",
+    "name": "Variable Zoom Scope",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.8x.scope"
+  },
+  {
+    "id": 544,
+    "itemId": -1284169891,
+    "shortname": "waterpump",
+    "name": "Water Pump",
+    "category": "Electrical",
+    "imagePath": "waterpump"
+  },
+  {
+    "id": 545,
+    "itemId": 2005491391,
+    "shortname": "weapon.mod.extendedmags",
+    "name": "Extended Magazine",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.extendedmags"
+  },
+  {
+    "id": 546,
+    "itemId": 838308300,
+    "shortname": "weapon.mod.burstmodule",
+    "name": "Burst Module",
+    "category": "Component",
+    "imagePath": "weapon.mod.burstmodule"
+  },
+  {
+    "id": 547,
+    "itemId": 143803535,
+    "shortname": "grenade.f1",
+    "name": "F1 Grenade",
+    "category": "Weapon",
+    "imagePath": "grenade.f1"
+  },
+  {
+    "id": 548,
+    "itemId": 442289265,
+    "shortname": "weapon.mod.holosight",
+    "name": "Holosight",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.holosight"
+  },
+  {
+    "id": 549,
+    "itemId": -1405508498,
+    "shortname": "weapon.mod.muzzleboost",
+    "name": "Muzzle Boost",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.muzzleboost"
+  },
+  {
+    "id": 550,
+    "itemId": 952603248,
+    "shortname": "weapon.mod.flashlight",
+    "name": "Weapon flashlight",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.flashlight"
+  },
+  {
+    "id": 551,
+    "itemId": -855748505,
+    "shortname": "weapon.mod.simplesight",
+    "name": "Simple Handmade Sight",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.simplesight"
+  },
+  {
+    "id": 552,
+    "itemId": 60528587,
+    "shortname": "horse.armor.roadsign",
+    "name": "Roadsign Horse Armor",
+    "category": "Attire",
+    "imagePath": "horse.armor.roadsign"
+  },
+  {
+    "id": 553,
+    "itemId": 567235583,
+    "shortname": "weapon.mod.small.scope",
+    "name": "8x Zoom Scope",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.small.scope"
+  },
+  {
+    "id": 554,
+    "itemId": -132516482,
+    "shortname": "weapon.mod.lasersight",
+    "name": "Weapon Lasersight",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.lasersight"
+  },
+  {
+    "id": 555,
+    "itemId": -144417939,
+    "shortname": "wiretool",
+    "name": "Wire Tool",
+    "category": "Electrical",
+    "imagePath": "wiretool"
+  },
+  {
+    "id": 556,
+    "itemId": 1478091698,
+    "shortname": "weapon.mod.muzzlebrake",
+    "name": "Muzzle Brake",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.muzzlebrake"
+  },
+  {
+    "id": 557,
+    "itemId": -1850571427,
+    "shortname": "weapon.mod.silencer",
+    "name": "Silencer",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.silencer"
+  },
+  {
+    "id": 558,
+    "itemId": 854447607,
+    "shortname": "white.berry",
+    "name": "White Berry",
+    "category": "Food",
+    "imagePath": "white.berry"
+  },
+  {
+    "id": 559,
+    "itemId": 1827479659,
+    "shortname": "wolfmeat.burned",
+    "name": "Burnt Wolf Meat",
+    "category": "Food",
+    "imagePath": "wolfmeat.burned"
+  },
+  {
+    "id": 560,
+    "itemId": -395377963,
+    "shortname": "wolfmeat.raw",
+    "name": "Raw Wolf Meat",
+    "category": "Food",
+    "imagePath": "wolfmeat.raw"
+  },
+  {
+    "id": 561,
+    "itemId": -2123125470,
+    "shortname": "healingtea.advanced",
+    "name": "Advanced Healing Tea",
+    "category": "Food",
+    "imagePath": "healingtea.advanced"
+  },
+  {
+    "id": 562,
+    "itemId": 813023040,
+    "shortname": "wolfmeat.cooked",
+    "name": "Cooked Wolf Meat",
+    "category": "Food",
+    "imagePath": "wolfmeat.cooked"
+  },
+  {
+    "id": 563,
+    "itemId": -1778159885,
+    "shortname": "heavy.plate.pants",
+    "name": "Heavy Plate Pants",
+    "category": "Attire",
+    "imagePath": "heavy.plate.pants"
+  },
+  {
+    "id": 564,
+    "itemId": -151838493,
+    "shortname": "wood",
+    "name": "Wood",
+    "category": "Resources",
+    "imagePath": "wood"
+  },
+  {
+    "id": 565,
+    "itemId": -649128577,
+    "shortname": "woodtea",
+    "name": "Basic Wood Tea",
+    "category": "Food",
+    "imagePath": "woodtea"
+  },
+  {
+    "id": 566,
+    "itemId": -557539629,
+    "shortname": "woodtea.pure",
+    "name": "Pure Wood Tea",
+    "category": "Food",
+    "imagePath": "woodtea.pure"
+  },
+  {
+    "id": 567,
+    "itemId": 1524187186,
+    "shortname": "workbench1",
+    "name": "Workbench Level 1",
+    "category": "Items",
+    "imagePath": "workbench1"
+  },
+  {
+    "id": 568,
+    "itemId": 832133926,
+    "shortname": "wood.armor.pants",
+    "name": "Wood Armor Pants",
+    "category": "Attire",
+    "imagePath": "wood.armor.pants"
+  },
+  {
+    "id": 569,
+    "itemId": -2094954543,
+    "shortname": "wood.armor.helmet",
+    "name": "Wood Armor Helmet",
+    "category": "Attire",
+    "imagePath": "wood.armor.helmet"
+  },
+  {
+    "id": 570,
+    "itemId": -218009552,
+    "shortname": "homingmissile.launcher",
+    "name": "Homing Missile Launcher",
+    "category": "Weapon",
+    "imagePath": "homingmissile.launcher"
+  },
+  {
+    "id": 571,
+    "itemId": -41896755,
+    "shortname": "workbench2",
+    "name": "Workbench Level 2",
+    "category": "Items",
+    "imagePath": "workbench2"
+  },
+  {
+    "id": 572,
+    "itemId": 418081930,
+    "shortname": "wood.armor.jacket",
+    "name": "Wood Chestplate",
+    "category": "Attire",
+    "imagePath": "wood.armor.jacket"
+  },
+  {
+    "id": 573,
+    "itemId": 1181207482,
+    "shortname": "heavy.plate.helmet",
+    "name": "Heavy Plate Helmet",
+    "category": "Attire",
+    "imagePath": "heavy.plate.helmet"
+  },
+  {
+    "id": 574,
+    "itemId": -541206665,
+    "shortname": "woodtea.advanced",
+    "name": "Advanced Wood Tea",
+    "category": "Food",
+    "imagePath": "woodtea.advanced"
+  },
+  {
+    "id": 575,
+    "itemId": 1770475779,
+    "shortname": "worm",
+    "name": "Worm",
+    "category": "Food",
+    "imagePath": "worm"
+  },
+  {
+    "id": 576,
+    "itemId": -129230242,
+    "shortname": "xmas.decoration.pinecone",
+    "name": "Decorative Pinecones",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.pinecone"
+  },
+  {
+    "id": 577,
+    "itemId": 1686524871,
+    "shortname": "xmas.decoration.gingerbreadmen",
+    "name": "Decorative Gingerbread Men",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.gingerbreadmen"
+  },
+  {
+    "id": 578,
+    "itemId": -1607980696,
+    "shortname": "workbench3",
+    "name": "Workbench Level 3",
+    "category": "Items",
+    "imagePath": "workbench3"
+  },
+  {
+    "id": 579,
+    "itemId": -1331212963,
+    "shortname": "xmas.decoration.star",
+    "name": "Star Tree Topper",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.star"
+  },
+  {
+    "id": 580,
+    "itemId": -209869746,
+    "shortname": "xmas.decoration.candycanes",
+    "name": "Decorative Plastic Candy Canes",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.candycanes"
+  },
+  {
+    "id": 581,
+    "itemId": -2027793839,
+    "shortname": "xmas.advent",
+    "name": "Advent Calendar",
+    "category": "Items",
+    "imagePath": "xmas.advent"
+  },
+  {
+    "id": 582,
+    "itemId": -1230433643,
+    "shortname": "xmas.double.door.garland",
+    "name": "Festive Double Doorway Garland",
+    "category": "Items",
+    "imagePath": "xmas.double.door.garland"
+  },
+  {
+    "id": 583,
+    "itemId": 204970153,
+    "shortname": "wrappedgift",
+    "name": "Wrapped Gift",
+    "category": "Fun",
+    "imagePath": "wrappedgift"
+  },
+  {
+    "id": 584,
+    "itemId": 674734128,
+    "shortname": "xmas.door.garland",
+    "name": "Festive Doorway Garland",
+    "category": "Items",
+    "imagePath": "xmas.door.garland"
+  },
+  {
+    "id": 585,
+    "itemId": 1058261682,
+    "shortname": "xmas.lightstring",
+    "name": "Christmas Lights",
+    "category": "Items",
+    "imagePath": "xmas.lightstring"
+  },
+  {
+    "id": 586,
+    "itemId": 1094293920,
+    "shortname": "wrappingpaper",
+    "name": "Wrapping Paper",
+    "category": "Fun",
+    "imagePath": "wrappingpaper"
+  },
+  {
+    "id": 587,
+    "itemId": -1667224349,
+    "shortname": "xmas.decoration.baubels",
+    "name": "Decorative Baubels",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.baubels"
+  },
+  {
+    "id": 588,
+    "itemId": 794443127,
+    "shortname": "xmas.tree",
+    "name": "Christmas Tree",
+    "category": "Items",
+    "imagePath": "xmas.tree"
+  },
+  {
+    "id": 589,
+    "itemId": -722241321,
+    "shortname": "xmas.present.small",
+    "name": "Small Present",
+    "category": "Misc",
+    "imagePath": "xmas.present.small"
+  },
+  {
+    "id": 590,
+    "itemId": 2009734114,
+    "shortname": "xmasdoorwreath",
+    "name": "Christmas Door Wreath",
+    "category": "Items",
+    "imagePath": "xmasdoorwreath"
+  },
+  {
+    "id": 591,
+    "itemId": 2106561762,
+    "shortname": "xmas.decoration.tinsel",
+    "name": "Decorative Tinsel",
+    "category": "Misc",
+    "imagePath": "xmas.decoration.tinsel"
+  },
+  {
+    "id": 592,
+    "itemId": 1660145984,
+    "shortname": "yellow.berry",
+    "name": "Yellow Berry",
+    "category": "Food",
+    "imagePath": "yellow.berry"
+  },
+  {
+    "id": 593,
+    "itemId": -151387974,
+    "shortname": "xmas.lightstring.advanced",
+    "name": "Deluxe Christmas Lights",
+    "category": "Electrical",
+    "imagePath": "xmas.lightstring.advanced"
+  },
+  {
+    "id": 594,
+    "itemId": 756517185,
+    "shortname": "xmas.present.medium",
+    "name": "Medium Present",
+    "category": "Misc",
+    "imagePath": "xmas.present.medium"
+  },
+  {
+    "id": 595,
+    "itemId": -1379835144,
+    "shortname": "xmas.window.garland",
+    "name": "Festive Window Garland",
+    "category": "Items",
+    "imagePath": "xmas.window.garland"
+  },
+  {
+    "id": 596,
+    "itemId": -211235948,
+    "shortname": "xylophone",
+    "name": "Xylobone",
+    "category": "Fun",
+    "imagePath": "xylophone"
+  },
+  {
+    "id": 597,
+    "itemId": -1622660759,
+    "shortname": "xmas.present.large",
+    "name": "Large Present",
+    "category": "Misc",
+    "imagePath": "xmas.present.large"
+  },
+  {
+    "id": 598,
+    "itemId": 858486327,
+    "shortname": "green.berry",
+    "name": "Green Berry",
+    "category": "Food",
+    "imagePath": "green.berry"
+  },
+  {
+    "id": 599,
+    "itemId": 1263920163,
+    "shortname": "grenade.smoke",
+    "name": "Smoke Grenade",
+    "category": "Tool",
+    "imagePath": "grenade.smoke"
+  },
+  {
+    "id": 600,
+    "itemId": 1840822026,
+    "shortname": "grenade.beancan",
+    "name": "Beancan Grenade",
+    "category": "Weapon",
+    "imagePath": "grenade.beancan"
+  },
+  {
+    "id": 601,
+    "itemId": -936921910,
+    "shortname": "grenade.flashbang",
+    "name": "Flashbang",
+    "category": "Weapon",
+    "imagePath": "grenade.flashbang"
+  },
+  {
+    "id": 602,
+    "itemId": 1556365900,
+    "shortname": "grenade.molotov",
+    "name": "Molotov Cocktail",
+    "category": "Weapon",
+    "imagePath": "grenade.molotov"
+  },
+  {
+    "id": 603,
+    "itemId": 1951603367,
+    "shortname": "electric.switch",
+    "name": "Switch",
+    "category": "Electrical",
+    "imagePath": "electric.switch"
+  },
+  {
+    "id": 604,
+    "itemId": -265876753,
+    "shortname": "gunpowder",
+    "name": "Gun Powder",
+    "category": "Resources",
+    "imagePath": "gunpowder"
+  },
+  {
+    "id": 605,
+    "itemId": 1973949960,
+    "shortname": "gunrack.single.1.horizontal",
+    "name": "Frontier Bolts Single Item Rack",
+    "category": "Items",
+    "imagePath": "gunrack.single.1.horizontal"
+  },
+  {
+    "id": 606,
+    "itemId": -568419968,
+    "shortname": "grub",
+    "name": "Grub",
+    "category": "Food",
+    "imagePath": "grub"
+  },
+  {
+    "id": 607,
+    "itemId": -52398594,
+    "shortname": "gunrack.single.3.horizontal",
+    "name": "Frontier Horns Single Item Rack",
+    "category": "Items",
+    "imagePath": "gunrack.single.3.horizontal"
+  },
+  {
+    "id": 608,
+    "itemId": 240752557,
+    "shortname": "gunrack_tall.horizontal",
+    "name": "Tall Weapon Rack",
+    "category": "Items",
+    "imagePath": "gunrack_tall.horizontal"
+  },
+  {
+    "id": 609,
+    "itemId": 722955039,
+    "shortname": "gun.water",
+    "name": "Water Gun",
+    "category": "Weapon",
+    "imagePath": "gun.water"
+  },
+  {
+    "id": 610,
+    "itemId": 1899610628,
+    "shortname": "halloween.lootbag.medium",
+    "name": "Medium Loot Bag",
+    "category": "Misc",
+    "imagePath": "halloween.lootbag.medium"
+  },
+  {
+    "id": 611,
+    "itemId": 352499047,
+    "shortname": "guntrap",
+    "name": "Shotgun Trap",
+    "category": "Traps",
+    "imagePath": "guntrap"
+  },
+  {
+    "id": 612,
+    "itemId": -1759188988,
+    "shortname": "habrepair",
+    "name": "Hab Repair",
+    "category": "Misc",
+    "imagePath": "habrepair"
+  },
+  {
+    "id": 613,
+    "itemId": 200773292,
+    "shortname": "hammer",
+    "name": "Hammer",
+    "category": "Tool",
+    "imagePath": "hammer"
+  },
+  {
+    "id": 614,
+    "itemId": -96256997,
+    "shortname": "gunrack_wide.horizontal",
+    "name": "Wide Weapon Rack",
+    "category": "Items",
+    "imagePath": "gunrack_wide.horizontal"
+  },
+  {
+    "id": 615,
+    "itemId": 1315082560,
+    "shortname": "hat.oxmask",
+    "name": "Ox Mask",
+    "category": "Attire",
+    "imagePath": "hat.oxmask"
+  },
+  {
+    "id": 616,
+    "itemId": 1132603396,
+    "shortname": "gunrack_stand",
+    "name": "Weapon Rack Stand",
+    "category": "Items",
+    "imagePath": "gunrack_stand"
+  },
+  {
+    "id": 617,
+    "itemId": 1319617282,
+    "shortname": "halloween.lootbag.small",
+    "name": "Small Loot Bag",
+    "category": "Misc",
+    "imagePath": "halloween.lootbag.small"
+  },
+  {
+    "id": 618,
+    "itemId": -888153050,
+    "shortname": "halloween.candy",
+    "name": "Halloween Candy",
+    "category": "Misc",
+    "imagePath": "halloween.candy"
+  },
+  {
+    "id": 619,
+    "itemId": -1677315902,
+    "shortname": "healingtea.pure",
+    "name": "Pure Healing Tea",
+    "category": "Food",
+    "imagePath": "healingtea.pure"
+  },
+  {
+    "id": 620,
+    "itemId": 1266491000,
+    "shortname": "hazmatsuit",
+    "name": "Hazmat Suit",
+    "category": "Attire",
+    "imagePath": "hazmatsuit"
+  },
+  {
+    "id": 621,
+    "itemId": -1478212975,
+    "shortname": "hat.wolf",
+    "name": "Wolf Headdress",
+    "category": "Attire",
+    "imagePath": "hat.wolf"
+  },
+  {
+    "id": 622,
+    "itemId": 209218760,
+    "shortname": "head.bag",
+    "name": "Head Bag",
+    "category": "Misc",
+    "imagePath": "head.bag"
+  },
+  {
+    "id": 623,
+    "itemId": -1442559428,
+    "shortname": "hobobarrel",
+    "name": "Hobo Barrel",
+    "category": "Items",
+    "imagePath": "hobobarrel"
+  },
+  {
+    "id": 624,
+    "itemId": -986782031,
+    "shortname": "hat.rabbitmask",
+    "name": "Rabbit Mask",
+    "category": "Attire",
+    "imagePath": "hat.rabbitmask"
+  },
+  {
+    "id": 625,
+    "itemId": 709206314,
+    "shortname": "hat.tigermask",
+    "name": "Tiger Mask",
+    "category": "Attire",
+    "imagePath": "hat.tigermask"
+  },
+  {
+    "id": 626,
+    "itemId": 23391694,
+    "shortname": "hat.bunnyhat",
+    "name": "Bunny Hat",
+    "category": "Attire",
+    "imagePath": "hat.bunnyhat"
+  },
+  {
+    "id": 627,
+    "itemId": -1252059217,
+    "shortname": "hatchet",
+    "name": "Hatchet",
+    "category": "Tool",
+    "imagePath": "hatchet"
+  },
+  {
+    "id": 628,
+    "itemId": -1214542497,
+    "shortname": "hmlmg",
+    "name": "HMLMG",
+    "category": "Weapon",
+    "imagePath": "hmlmg"
+  },
+  {
+    "id": 629,
+    "itemId": -1323101799,
+    "shortname": "horse.saddle.double",
+    "name": "Double Horse Saddle",
+    "category": "Attire",
+    "imagePath": "horse.saddle.double"
+  },
+  {
+    "id": 630,
+    "itemId": 1751045826,
+    "shortname": "hoodie",
+    "name": "Hoodie",
+    "category": "Attire",
+    "imagePath": "hoodie"
+  },
+  {
+    "id": 631,
+    "itemId": 1400460850,
+    "shortname": "horse.saddlebag",
+    "name": "Saddle bag",
+    "category": "Attire",
+    "imagePath": "horse.saddlebag"
+  },
+  {
+    "id": 632,
+    "itemId": 1659447559,
+    "shortname": "horse.armor.wood",
+    "name": "Wooden Horse Armor",
+    "category": "Attire",
+    "imagePath": "horse.armor.wood"
+  },
+  {
+    "id": 633,
+    "itemId": -1211268013,
+    "shortname": "horse.shoes.basic",
+    "name": "Basic Horse Shoes",
+    "category": "Attire",
+    "imagePath": "horse.shoes.basic"
+  },
+  {
+    "id": 634,
+    "itemId": 1160881421,
+    "shortname": "hitchtroughcombo",
+    "name": "Hitch & Trough",
+    "category": "Items",
+    "imagePath": "hitchtroughcombo"
+  },
+  {
+    "id": 635,
+    "itemId": -722629980,
+    "shortname": "heavyscientistyoutooz",
+    "name": "Heavy Scientist Youtooz",
+    "category": "Items",
+    "imagePath": "heavyscientistyoutooz"
+  },
+  {
+    "id": 636,
+    "itemId": -1102429027,
+    "shortname": "heavy.plate.jacket",
+    "name": "Heavy Plate Jacket",
+    "category": "Attire",
+    "imagePath": "heavy.plate.jacket"
+  },
+  {
+    "id": 637,
+    "itemId": 1917703890,
+    "shortname": "horsemeat.burned",
+    "name": "Burnt Horse Meat",
+    "category": "Food",
+    "imagePath": "horsemeat.burned"
+  },
+  {
+    "id": 638,
+    "itemId": 1536610005,
+    "shortname": "humanmeat.cooked",
+    "name": "Cooked Human Meat",
+    "category": "Food",
+    "imagePath": "humanmeat.cooked"
+  },
+  {
+    "id": 639,
+    "itemId": 1989785143,
+    "shortname": "horse.shoes.advanced",
+    "name": "High Quality Horse Shoes",
+    "category": "Attire",
+    "imagePath": "horse.shoes.advanced"
+  },
+  {
+    "id": 640,
+    "itemId": 610102428,
+    "shortname": "industrial.conveyor",
+    "name": "Industrial Conveyor",
+    "category": "Electrical",
+    "imagePath": "industrial.conveyor"
+  },
+  {
+    "id": 641,
+    "itemId": -1780802565,
+    "shortname": "icepick.salvaged",
+    "name": "Salvaged Icepick",
+    "category": "Tool",
+    "imagePath": "icepick.salvaged"
+  },
+  {
+    "id": 642,
+    "itemId": -1709878924,
+    "shortname": "humanmeat.raw",
+    "name": "Raw Human Meat",
+    "category": "Food",
+    "imagePath": "humanmeat.raw"
+  },
+  {
+    "id": 643,
+    "itemId": 742745918,
+    "shortname": "industrial.splitter",
+    "name": "Industrial Splitter",
+    "category": "Electrical",
+    "imagePath": "industrial.splitter"
+  },
+  {
+    "id": 644,
+    "itemId": 1559915778,
+    "shortname": "horse.saddle.single",
+    "name": "Single Horse Saddle",
+    "category": "Attire",
+    "imagePath": "horse.saddle.single"
+  },
+  {
+    "id": 645,
+    "itemId": -1163532624,
+    "shortname": "jacket",
+    "name": "Jacket",
+    "category": "Attire",
+    "imagePath": "jacket"
+  },
+  {
+    "id": 646,
+    "itemId": -1130350864,
+    "shortname": "horsemeat.raw",
+    "name": "Raw Horse Meat",
+    "category": "Food",
+    "imagePath": "horsemeat.raw"
+  },
+  {
+    "id": 647,
+    "itemId": -2073432256,
+    "shortname": "knife.skinning",
+    "name": "Skinning Knife",
+    "category": "Weapon",
+    "imagePath": "knife.skinning"
+  },
+  {
+    "id": 648,
+    "itemId": 2040726127,
+    "shortname": "knife.combat",
+    "name": "Combat Knife",
+    "category": "Weapon",
+    "imagePath": "knife.combat"
+  },
+  {
+    "id": 649,
+    "itemId": 1268178466,
+    "shortname": "industrial.wall.light.green",
+    "name": "Green Industrial Wall Light",
+    "category": "Electrical",
+    "imagePath": "industrial.wall.light.green"
+  },
+  {
+    "id": 650,
+    "itemId": 286193827,
+    "shortname": "jar.pickle",
+    "name": "Pickles",
+    "category": "Food",
+    "imagePath": "jar.pickle"
+  },
+  {
+    "id": 651,
+    "itemId": 1814288539,
+    "shortname": "knife.bone",
+    "name": "Bone Knife",
+    "category": "Weapon",
+    "imagePath": "knife.bone"
+  },
+  {
+    "id": 652,
+    "itemId": -1880870149,
+    "shortname": "keycard_red",
+    "name": "Red Keycard",
+    "category": "Misc",
+    "imagePath": "keycard_red"
+  },
+  {
+    "id": 653,
+    "itemId": -1824943010,
+    "shortname": "jackolantern.happy",
+    "name": "Jack O Lantern Happy",
+    "category": "Items",
+    "imagePath": "jackolantern.happy"
+  },
+  {
+    "id": 654,
+    "itemId": 607400343,
+    "shortname": "legacy.shelter.wood",
+    "name": "Legacy Wood Shelter",
+    "category": "Construction",
+    "imagePath": "legacy.shelter.wood"
+  },
+  {
+    "id": 655,
+    "itemId": 1488979457,
+    "shortname": "jackhammer",
+    "name": "Jackhammer",
+    "category": "Tool",
+    "imagePath": "jackhammer"
+  },
+  {
+    "id": 656,
+    "itemId": -702051347,
+    "shortname": "mask.bandana",
+    "name": "Bandana Mask",
+    "category": "Attire",
+    "imagePath": "mask.bandana"
+  },
+  {
+    "id": 657,
+    "itemId": -110921842,
+    "shortname": "locker",
+    "name": "Locker",
+    "category": "Items",
+    "imagePath": "locker"
+  },
+  {
+    "id": 658,
+    "itemId": 254522515,
+    "shortname": "largemedkit",
+    "name": "Large Medkit",
+    "category": "Medical",
+    "imagePath": "largemedkit"
+  },
+  {
+    "id": 659,
+    "itemId": -2069578888,
+    "shortname": "lmg.m249",
+    "name": "M249",
+    "category": "Weapon",
+    "imagePath": "lmg.m249"
+  },
+  {
+    "id": 660,
+    "itemId": 853471967,
+    "shortname": "laserlight",
+    "name": "Laser Light",
+    "category": "Fun",
+    "imagePath": "laserlight"
+  },
+  {
+    "id": 661,
+    "itemId": 603811464,
+    "shortname": "maxhealthtea.advanced",
+    "name": "Advanced Max Health Tea",
+    "category": "Food",
+    "imagePath": "maxhealthtea.advanced"
+  },
+  {
+    "id": 662,
+    "itemId": -850982208,
+    "shortname": "lock.key",
+    "name": "Key Lock",
+    "category": "Construction",
+    "imagePath": "lock.key"
+  },
+  {
+    "id": 663,
+    "itemId": -2012470695,
+    "shortname": "mask.balaclava",
+    "name": "Improvised Balaclava",
+    "category": "Attire",
+    "imagePath": "mask.balaclava"
+  },
+  {
+    "id": 664,
+    "itemId": -907422733,
+    "shortname": "largebackpack",
+    "name": "Large Backpack",
+    "category": "Attire",
+    "imagePath": "largebackpack"
+  },
+  {
+    "id": 665,
+    "itemId": -1539025626,
+    "shortname": "hat.miner",
+    "name": "Miners Hat",
+    "category": "Attire",
+    "imagePath": "hat.miner"
+  },
+  {
+    "id": 666,
+    "itemId": -849373693,
+    "shortname": "gunrack.single.2.horizontal",
+    "name": "Frontier Horseshoe Single Item Rack",
+    "category": "Items",
+    "imagePath": "gunrack.single.2.horizontal"
+  },
+  {
+    "id": 667,
+    "itemId": -929092070,
+    "shortname": "healingtea",
+    "name": "Basic Healing Tea",
+    "category": "Food",
+    "imagePath": "healingtea"
+  },
+  {
+    "id": 668,
+    "itemId": -23994173,
+    "shortname": "hat.boonie",
+    "name": "Boonie Hat",
+    "category": "Attire",
+    "imagePath": "hat.boonie"
+  },
+  {
+    "id": 669,
+    "itemId": 271048478,
+    "shortname": "hat.ratmask",
+    "name": "Rat Mask",
+    "category": "Attire",
+    "imagePath": "hat.ratmask"
+  },
+  {
+    "id": 670,
+    "itemId": 479292118,
+    "shortname": "halloween.lootbag.large",
+    "name": "Large Loot Bag",
+    "category": "Misc",
+    "imagePath": "halloween.lootbag.large"
+  },
+  {
+    "id": 671,
+    "itemId": -246672609,
+    "shortname": "gunrack.horizontal",
+    "name": "Horizontal Weapon Rack",
+    "category": "Items",
+    "imagePath": "gunrack.horizontal"
+  },
+  {
+    "id": 672,
+    "itemId": -22883916,
+    "shortname": "hat.dragonmask",
+    "name": "Dragon Mask",
+    "category": "Attire",
+    "imagePath": "hat.dragonmask"
+  },
+  {
+    "id": 673,
+    "itemId": -1579932985,
+    "shortname": "horsedung",
+    "name": "Horse Dung",
+    "category": "Resources",
+    "imagePath": "horsedung"
+  },
+  {
+    "id": 674,
+    "itemId": -1696379844,
+    "shortname": "hazmatyoutooz",
+    "name": "Hazmat Youtooz",
+    "category": "Items",
+    "imagePath": "hazmatyoutooz"
+  },
+  {
+    "id": 675,
+    "itemId": -1160621614,
+    "shortname": "industrial.wall.light.red",
+    "name": "Red Industrial Wall Light",
+    "category": "Electrical",
+    "imagePath": "industrial.wall.light.red"
+  },
+  {
+    "id": 676,
+    "itemId": 960673498,
+    "shortname": "huntingtrophylarge",
+    "name": "Large Hunting Trophy",
+    "category": "Items",
+    "imagePath": "huntingtrophylarge"
+  },
+  {
+    "id": 677,
+    "itemId": 363163265,
+    "shortname": "hosetool",
+    "name": "Hose Tool",
+    "category": "Electrical",
+    "imagePath": "hosetool"
+  },
+  {
+    "id": 678,
+    "itemId": -1162759543,
+    "shortname": "horsemeat.cooked",
+    "name": "Cooked Horse Meat",
+    "category": "Food",
+    "imagePath": "horsemeat.cooked"
+  },
+  {
+    "id": 679,
+    "itemId": -682687162,
+    "shortname": "humanmeat.burned",
+    "name": "Burnt Human Meat",
+    "category": "Food",
+    "imagePath": "humanmeat.burned"
+  },
+  {
+    "id": 680,
+    "itemId": -869598982,
+    "shortname": "huntingtrophysmall",
+    "name": "Small Hunting Trophy",
+    "category": "Items",
+    "imagePath": "huntingtrophysmall"
+  },
+  {
+    "id": 681,
+    "itemId": 1538126328,
+    "shortname": "industrial.combiner",
+    "name": "Industrial Combiner",
+    "category": "Electrical",
+    "imagePath": "industrial.combiner"
+  },
+  {
+    "id": 682,
+    "itemId": 1430085198,
+    "shortname": "industrial.crafter",
+    "name": "Industrial Crafter",
+    "category": "Electrical",
+    "imagePath": "industrial.crafter"
+  },
+  {
+    "id": 683,
+    "itemId": -484206264,
+    "shortname": "keycard_blue",
+    "name": "Blue Keycard",
+    "category": "Misc",
+    "imagePath": "keycard_blue"
+  },
+  {
+    "id": 684,
+    "itemId": -194509282,
+    "shortname": "knife.butcher",
+    "name": "Butcher Knife",
+    "category": "Weapon",
+    "imagePath": "knife.butcher"
+  },
+  {
+    "id": 685,
+    "itemId": -316250604,
+    "shortname": "ladder.wooden.wall",
+    "name": "Wooden Ladder",
+    "category": "Construction",
+    "imagePath": "ladder.wooden.wall"
+  },
+  {
+    "id": 686,
+    "itemId": 37122747,
+    "shortname": "keycard_green",
+    "name": "Green Keycard",
+    "category": "Misc",
+    "imagePath": "keycard_green"
+  },
+  {
+    "id": 687,
+    "itemId": 190184021,
+    "shortname": "kayak",
+    "name": "Kayak",
+    "category": "Items",
+    "imagePath": "kayak"
+  },
+  {
+    "id": 688,
+    "itemId": -697981032,
+    "shortname": "innertube",
+    "name": "Inner Tube",
+    "category": "Fun",
+    "imagePath": "innertube"
+  },
+  {
+    "id": 689,
+    "itemId": -489848205,
+    "shortname": "largecandles",
+    "name": "Large Candle Set",
+    "category": "Misc",
+    "imagePath": "largecandles"
+  },
+  {
+    "id": 690,
+    "itemId": -946369541,
+    "shortname": "lowgradefuel",
+    "name": "Low Grade Fuel",
+    "category": "Resources",
+    "imagePath": "lowgradefuel"
+  },
+  {
+    "id": 691,
+    "itemId": 1242482355,
+    "shortname": "jackolantern.angry",
+    "name": "Jack O Lantern Angry",
+    "category": "Items",
+    "imagePath": "jackolantern.angry"
+  },
+  {
+    "id": 692,
+    "itemId": -1982036270,
+    "shortname": "hq.metal.ore",
+    "name": "High Quality Metal Ore",
+    "category": "Resources",
+    "imagePath": "hq.metal.ore"
+  },
+  {
+    "id": 693,
+    "itemId": 1623701499,
+    "shortname": "industrial.wall.light",
+    "name": "Industrial Wall Light",
+    "category": "Electrical",
+    "imagePath": "industrial.wall.light"
+  },
+  {
+    "id": 694,
+    "itemId": 1381010055,
+    "shortname": "leather",
+    "name": "Leather",
+    "category": "Resources",
+    "imagePath": "leather"
+  },
+  {
+    "id": 695,
+    "itemId": 1159991980,
+    "shortname": "lock.code",
+    "name": "Code Lock",
+    "category": "Construction",
+    "imagePath": "lock.code"
+  },
+  {
+    "id": 696,
+    "itemId": -629028935,
+    "shortname": "fuse",
+    "name": "Electric Fuse",
+    "category": "Component",
+    "imagePath": "fuse"
+  },
+  {
+    "id": 697,
+    "itemId": -948291630,
+    "shortname": "electric.seismicsensor",
+    "name": "Seismic Sensor",
+    "category": "Electrical",
+    "imagePath": "electric.seismicsensor"
+  },
+  {
+    "id": 699,
+    "itemId": -1302129395,
+    "shortname": "pickaxe",
+    "name": "Pickaxe",
+    "category": "Tool",
+    "imagePath": "pickaxe"
+  },
+  {
+    "id": 700,
+    "itemId": -92315244,
+    "shortname": "revolver.hc",
+    "name": "High Caliber Revolver",
+    "category": "Weapon",
+    "imagePath": "revolver.hc"
+  },
+  {
+    "id": 701,
+    "itemId": -1501434104,
+    "shortname": "wallpaper",
+    "name": "Wallpaper",
+    "category": "Items",
+    "imagePath": "wallpaper"
+  },
+  {
+    "id": 702,
+    "itemId": -1056824343,
+    "shortname": "skidoo",
+    "name": "Diver propulsion vehicle",
+    "category": "Items",
+    "imagePath": "skidoo"
+  },
+  {
+    "id": 703,
+    "itemId": 1619039771,
+    "shortname": "electric.digitalclock",
+    "name": "Digital Clock",
+    "category": "Electrical",
+    "imagePath": "electric.digitalclock"
+  },
+  {
+    "id": 704,
+    "itemId": -1767794021,
+    "shortname": "weapon.mod.gascompressionovedrive",
+    "name": "Gas Compression Overdrive",
+    "category": "Weapon",
+    "imagePath": "weapon.mod.gascompressionovedrive"
+  },
+  {
+    "id": 705,
+    "itemId": -48090175,
+    "shortname": "jacket.snow",
+    "name": "Snow Jacket",
+    "category": "Attire",
+    "imagePath": "jacket.snow"
+  },
+  {
+    "id": 706,
+    "itemId": 935692442,
+    "shortname": "tshirt.long",
+    "name": "Longsleeve T-Shirt",
+    "category": "Attire",
+    "imagePath": "tshirt.long"
+  },
+  {
+    "id": 707,
+    "itemId": 2083256995,
+    "shortname": "t1_smg",
+    "name": "Handmade SMG",
+    "category": "Weapon",
+    "imagePath": "t1_smg"
+  },
+  {
+    "id": 708,
+    "itemId": -348232115,
+    "shortname": "rifle.sks",
+    "name": "SKS",
+    "category": "Weapon",
+    "imagePath": "rifle.sks"
+  },
+  {
+    "id": 709,
+    "itemId": 721798950,
+    "shortname": "vehicle.car_radio",
+    "name": "Car Radio",
+    "category": "Fun",
+    "imagePath": "vehicle.car_radio"
+  },
+  {
+    "id": 710,
+    "itemId": -842267147,
+    "shortname": "attire.snowman.helmet",
+    "name": "Snowman Helmet",
+    "category": "Attire",
+    "imagePath": "attire.snowman.helmet"
+  },
+  {
+    "id": 711,
+    "itemId": -759279626,
+    "shortname": "ballista.mounted",
+    "name": "Mounted Ballista",
+    "category": "Weapon",
+    "imagePath": "ballista.mounted"
+  },
+  {
+    "id": 712,
+    "itemId": 1714509152,
+    "shortname": "ballista.static",
+    "name": "Ballista",
+    "category": "Weapon",
+    "imagePath": "ballista.static"
+  },
+  {
+    "id": 713,
+    "itemId": -1127003365,
+    "shortname": "ballista.bolt.piercer",
+    "name": "Piercer Bolt",
+    "category": "Ammunition",
+    "imagePath": "ballista.bolt.piercer"
+  },
+  {
+    "id": 714,
+    "itemId": -357442017,
+    "shortname": "ballista.bolt.pitchfork",
+    "name": "Pitchfork Bolt",
+    "category": "Ammunition",
+    "imagePath": "ballista.bolt.pitchfork"
+  },
+  {
+    "id": 715,
+    "itemId": -19318653,
+    "shortname": "ballista.bolt.hammerhead",
+    "name": "Hammerhead Bolt",
+    "category": "Ammunition",
+    "imagePath": "ballista.bolt.hammerhead"
+  },
+  {
+    "id": 716,
+    "itemId": -1987565603,
+    "shortname": "ballista.bolt.incendiary",
+    "name": "Incendiary Bolt",
+    "category": "Ammunition",
+    "imagePath": "ballista.bolt.incendiary"
+  },
+  {
+    "id": 717,
+    "itemId": -424687710,
+    "shortname": "barricade.medieval",
+    "name": "Medieval Barricade",
+    "category": "Construction",
+    "imagePath": "barricade.medieval"
+  },
+  {
+    "id": 718,
+    "itemId": 1145722690,
+    "shortname": "catapult",
+    "name": "Catapult",
+    "category": "Weapon",
+    "imagePath": "catapult"
+  },
+  {
+    "id": 719,
+    "itemId": 1831249347,
+    "shortname": "catapult.ammo.boulder",
+    "name": "Scattershot",
+    "category": "Ammunition",
+    "imagePath": "catapult.ammo.boulder"
+  },
+  {
+    "id": 720,
+    "itemId": -1827561369,
+    "shortname": "catapult.ammo.explosive",
+    "name": "Propane Explosive Bomb",
+    "category": "Ammunition",
+    "imagePath": "catapult.ammo.explosive"
+  },
+  {
+    "id": 721,
+    "itemId": -484006286,
+    "shortname": "catapult.ammo.incendiary",
+    "name": "Firebomb",
+    "category": "Ammunition",
+    "imagePath": "catapult.ammo.incendiary"
+  },
+  {
+    "id": 722,
+    "itemId": -187304968,
+    "shortname": "batteringram",
+    "name": "Battering Ram",
+    "category": "Weapon",
+    "imagePath": "batteringram"
+  },
+  {
+    "id": 723,
+    "itemId": -1290278434,
+    "shortname": "siegetower",
+    "name": "Siege Tower",
+    "category": "Weapon",
+    "imagePath": "siegetower"
+  },
+  {
+    "id": 724,
+    "itemId": -507248640,
+    "shortname": "hat.wellipets",
+    "name": "Wellipets Hat",
+    "category": "Attire",
+    "imagePath": "hat.wellipets"
+  },
+  {
+    "id": 725,
+    "itemId": 196784377,
+    "shortname": "improvised.shield",
+    "name": "Improvised Shield",
+    "category": "Attire",
+    "imagePath": "improvised.shield"
+  },
+  {
+    "id": 726,
+    "itemId": 625599716,
+    "shortname": "metal.shield",
+    "name": "Metal Shield",
+    "category": "Attire",
+    "imagePath": "metal.shield"
+  },
+  {
+    "id": 727,
+    "itemId": 1604837581,
+    "shortname": "wooden.shield",
+    "name": "Wooden Shield",
+    "category": "Attire",
+    "imagePath": "wooden.shield"
+  },
+  {
+    "id": 728,
+    "itemId": -482348853,
+    "shortname": "minicrossbow",
+    "name": "Mini Crossbow",
+    "category": "Weapon",
+    "imagePath": "minicrossbow"
+  },
+  {
+    "id": 729,
+    "itemId": 969768382,
+    "shortname": "reinforced.wooden.shield",
+    "name": "Reinforced Wooden Shield",
+    "category": "Attire",
+    "imagePath": "reinforced.wooden.shield"
+  },
+  {
+    "id": 730,
+    "itemId": 1115193056,
+    "shortname": "wall.frame.lunar2025_a",
+    "name": "Lunar Wall Frame Inlay",
+    "category": "Construction",
+    "imagePath": "wall.frame.lunar2025_a"
+  },
+  {
+    "id": 731,
+    "itemId": -1314079879,
+    "shortname": "hat.snakemask",
+    "name": "Snake mask",
+    "category": "Attire",
+    "imagePath": "hat.snakemask"
+  },
+  {
+    "id": 732,
+    "itemId": 962186730,
+    "shortname": "tincan.alarm",
+    "name": "Tin Can Alarm",
+    "category": "Traps",
+    "imagePath": "tincan.alarm"
+  },
+  {
+    "id": 733,
+    "itemId": 573676040,
+    "shortname": "coffin.storage",
+    "name": "Coffin",
+    "category": "Misc",
+    "imagePath": "coffin.storage"
+  },
+  {
+    "id": 734,
+    "itemId": 1348294923,
+    "shortname": "bearmeat.spoiled",
+    "name": "Spoiled Bear Meat",
+    "category": "Food",
+    "imagePath": "bearmeat.spoiled"
+  },
+  {
+    "id": 735,
+    "itemId": 184516676,
+    "shortname": "beehive",
+    "name": "Beehive",
+    "category": "Construction",
+    "imagePath": "beehive"
+  },
+  {
+    "id": 736,
+    "itemId": 281099360,
+    "shortname": "bread.loaf",
+    "name": "Bread Loaf",
+    "category": "Food",
+    "imagePath": "bread.loaf"
+  },
+  {
+    "id": 737,
+    "itemId": -2018158920,
+    "shortname": "chickencoop",
+    "name": "Chicken Coop",
+    "category": "Items",
+    "imagePath": "chickencoop"
+  },
+  {
+    "id": 738,
+    "itemId": -798662404,
+    "shortname": "clone.orchid",
+    "name": "Orchid Clone",
+    "category": "Food",
+    "imagePath": "clone.orchid"
+  },
+  {
+    "id": 739,
+    "itemId": -19360132,
+    "shortname": "clone.rose",
+    "name": "Rose Clone",
+    "category": "Food",
+    "imagePath": "clone.rose"
+  },
+  {
+    "id": 740,
+    "itemId": 912235912,
+    "shortname": "clone.sunflower",
+    "name": "Sunflower Clone",
+    "category": "Food",
+    "imagePath": "clone.sunflower"
+  },
+  {
+    "id": 741,
+    "itemId": 924598634,
+    "shortname": "clone.wheat",
+    "name": "Wheat Clone",
+    "category": "Food",
+    "imagePath": "clone.wheat"
+  },
+  {
+    "id": 742,
+    "itemId": -903796529,
+    "shortname": "clothing.mod.armorinsert_asbestos",
+    "name": "Asbestos Armor Insert",
+    "category": "Items",
+    "imagePath": "clothing.mod.armorinsert_asbestos"
+  },
+  {
+    "id": 743,
+    "itemId": 2047789913,
+    "shortname": "clothing.mod.armorinsert_lead",
+    "name": "Lead Armor Insert",
+    "category": "Items",
+    "imagePath": "clothing.mod.armorinsert_lead"
+  },
+  {
+    "id": 744,
+    "itemId": 1099611828,
+    "shortname": "clothing.mod.armorinsert_metal",
+    "name": "Metal Armor Insert",
+    "category": "Items",
+    "imagePath": "clothing.mod.armorinsert_metal"
+  },
+  {
+    "id": 745,
+    "itemId": -593892112,
+    "shortname": "clothing.mod.armorinsert_wood",
+    "name": "Wooden Armor Insert",
+    "category": "Items",
+    "imagePath": "clothing.mod.armorinsert_wood"
+  },
+  {
+    "id": 746,
+    "itemId": 1456143403,
+    "shortname": "cookingworkbench",
+    "name": "Cooking Workbench",
+    "category": "Items",
+    "imagePath": "cookingworkbench"
+  },
+  {
+    "id": 747,
+    "itemId": -1260229965,
+    "shortname": "coolingtea",
+    "name": "Cooling Tea",
+    "category": "Food",
+    "imagePath": "coolingtea"
+  },
+  {
+    "id": 748,
+    "itemId": 368008432,
+    "shortname": "craftingtea_quality",
+    "name": "Crafting Quality Tea",
+    "category": "Food",
+    "imagePath": "craftingtea_quality"
+  },
+  {
+    "id": 749,
+    "itemId": -2035449523,
+    "shortname": "deermeat.spoiled",
+    "name": "Spoiled Deer Meat",
+    "category": "Food",
+    "imagePath": "deermeat.spoiled"
+  },
+  {
+    "id": 750,
+    "itemId": 1858828593,
+    "shortname": "egg",
+    "name": "Egg",
+    "category": "Food",
+    "imagePath": "egg"
+  },
+  {
+    "id": 751,
+    "itemId": 1130729138,
+    "shortname": "fish.spoiled",
+    "name": "Spoiled Fish Meat",
+    "category": "Food",
+    "imagePath": "fish.spoiled"
+  },
+  {
+    "id": 752,
+    "itemId": 1168916338,
+    "shortname": "grenade.bee",
+    "name": "Bee Grenade",
+    "category": "Weapon",
+    "imagePath": "grenade.bee"
+  },
+  {
+    "id": 753,
+    "itemId": 1516531815,
+    "shortname": "harvestingtea",
+    "name": "Harvesting Tea",
+    "category": "Food",
+    "imagePath": "harvestingtea"
+  },
+  {
+    "id": 754,
+    "itemId": 1601800933,
+    "shortname": "honey",
+    "name": "Jar of Honey",
+    "category": "Food",
+    "imagePath": "honey"
+  },
+  {
+    "id": 755,
+    "itemId": -1513203236,
+    "shortname": "honeycomb",
+    "name": "Honeycomb",
+    "category": "Resources",
+    "imagePath": "honeycomb"
+  },
+  {
+    "id": 756,
+    "itemId": 1428574144,
+    "shortname": "hopper",
+    "name": "Hopper",
+    "category": "Electrical",
+    "imagePath": "hopper"
+  },
+  {
+    "id": 757,
+    "itemId": -724146494,
+    "shortname": "horsemeat.spoiled",
+    "name": "Spoiled Horse Meat",
+    "category": "Food",
+    "imagePath": "horsemeat.spoiled"
+  },
+  {
+    "id": 758,
+    "itemId": 210787554,
+    "shortname": "iotable",
+    "name": "Engineering Workbench",
+    "category": "Items",
+    "imagePath": "iotable"
+  },
+  {
+    "id": 759,
+    "itemId": -1811234677,
+    "shortname": "nucleus",
+    "name": "Beehive Nucleus",
+    "category": "Resources",
+    "imagePath": "nucleus"
+  },
+  {
+    "id": 760,
+    "itemId": 734320711,
+    "shortname": "orchid",
+    "name": "Orchid",
+    "category": "Food",
+    "imagePath": "orchid"
+  },
+  {
+    "id": 761,
+    "itemId": 4384538,
+    "shortname": "pie.apple",
+    "name": "Apple Pie",
+    "category": "Food",
+    "imagePath": "pie.apple"
+  },
+  {
+    "id": 762,
+    "itemId": 2039177180,
+    "shortname": "pie.bear",
+    "name": "Bear Pie",
+    "category": "Food",
+    "imagePath": "pie.bear"
+  },
+  {
+    "id": 763,
+    "itemId": 120820987,
+    "shortname": "pie.chicken",
+    "name": "Chicken Pie",
+    "category": "Food",
+    "imagePath": "pie.chicken"
+  },
+  {
+    "id": 764,
+    "itemId": -1785248332,
+    "shortname": "pie.fish",
+    "name": "Fish Pie",
+    "category": "Food",
+    "imagePath": "pie.fish"
+  },
+  {
+    "id": 765,
+    "itemId": 320438357,
+    "shortname": "pie.hunters",
+    "name": "Hunters Pie",
+    "category": "Food",
+    "imagePath": "pie.hunters"
+  },
+  {
+    "id": 766,
+    "itemId": 1467878256,
+    "shortname": "pie.pork",
+    "name": "Pork Pie",
+    "category": "Food",
+    "imagePath": "pie.pork"
+  },
+  {
+    "id": 767,
+    "itemId": -1488408786,
+    "shortname": "pie.pumpkin",
+    "name": "Pumpkin Pie",
+    "category": "Food",
+    "imagePath": "pie.pumpkin"
+  },
+  {
+    "id": 768,
+    "itemId": -963820355,
+    "shortname": "pie.survivors",
+    "name": "Survivor's Pie",
+    "category": "Food",
+    "imagePath": "pie.survivors"
+  },
+  {
+    "id": 769,
+    "itemId": -280812482,
+    "shortname": "planter.triangle",
+    "name": "Triangle Planter Box",
+    "category": "Items",
+    "imagePath": "planter.triangle"
+  },
+  {
+    "id": 770,
+    "itemId": -430416124,
+    "shortname": "plantpot.single",
+    "name": "Single Plant Pot",
+    "category": "Items",
+    "imagePath": "plantpot.single"
+  },
+  {
+    "id": 771,
+    "itemId": 1925646349,
+    "shortname": "porkmeat.spoiled",
+    "name": "Spoiled Pork Meat",
+    "category": "Food",
+    "imagePath": "porkmeat.spoiled"
+  },
+  {
+    "id": 772,
+    "itemId": 1414245519,
+    "shortname": "rose",
+    "name": "Rose",
+    "category": "Food",
+    "imagePath": "rose"
+  },
+  {
+    "id": 773,
+    "itemId": 1004843240,
+    "shortname": "seed.orchid",
+    "name": "Orchid Seed",
+    "category": "Food",
+    "imagePath": "seed.orchid"
+  },
+  {
+    "id": 774,
+    "itemId": -1037472336,
+    "shortname": "seed.rose",
+    "name": "Rose Seed",
+    "category": "Food",
+    "imagePath": "seed.rose"
+  },
+  {
+    "id": 775,
+    "itemId": 1412103380,
+    "shortname": "seed.sunflower",
+    "name": "Sunflower Seed",
+    "category": "Food",
+    "imagePath": "seed.sunflower"
+  },
+  {
+    "id": 776,
+    "itemId": -1790885730,
+    "shortname": "seed.wheat",
+    "name": "Wheat Seed",
+    "category": "Food",
+    "imagePath": "seed.wheat"
+  },
+  {
+    "id": 777,
+    "itemId": -611118083,
+    "shortname": "sunflower",
+    "name": "Sunflower",
+    "category": "Food",
+    "imagePath": "sunflower"
+  },
+  {
+    "id": 778,
+    "itemId": 647240052,
+    "shortname": "triangle.rail.road.planter",
+    "name": "Triangle Rail Road Planter",
+    "category": "Items",
+    "imagePath": "triangle.rail.road.planter"
+  },
+  {
+    "id": 779,
+    "itemId": -1142222427,
+    "shortname": "warmingtea",
+    "name": "Warming Tea",
+    "category": "Food",
+    "imagePath": "warmingtea"
+  },
+  {
+    "id": 780,
+    "itemId": 1178325727,
+    "shortname": "wheat",
+    "name": "Wheat",
+    "category": "Food",
+    "imagePath": "wheat"
+  }
+]

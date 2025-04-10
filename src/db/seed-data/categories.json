@@ -1,0 +1,16 @@
+[
+  { "id": 0, "name": "Weapons" },
+  { "id": 1, "name": "Construction" },
+  { "id": 2, "name": "#bp_deployables" },
+  { "id": 3, "name": "Resources" },
+  { "id": 4, "name": "Clothing" },
+  { "id": 5, "name": "Tools" },
+  { "id": 6, "name": "Medical" },
+  { "id": 7, "name": "Food" },
+  { "id": 8, "name": "Ammo" },
+  { "id": 9, "name": "Traps" },
+  { "id": 10, "name": "Other" },
+  { "id": 13, "name": "Components" },
+  { "id": 16, "name": "Electrical" },
+  { "id": 17, "name": "Fun" }
+]

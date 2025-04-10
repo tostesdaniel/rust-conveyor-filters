@@ -39,6 +39,16 @@ function saveSortPreference(key: string, value: FilterSortType["value"]) {
   localStorage.setItem(SORT_PREFERENCE_KEY, JSON.stringify(preferences));
 }
 
+// In Cloudflare Workers, dates are serialized as strings, and they're not
+// automatically converted back to Date objects.
+function getTimestamp(dateValue: Date | string): number {
+  if (dateValue instanceof Date) {
+    return dateValue.getTime();
+  }
+
+  return new Date(dateValue).getTime();
+}
+
 export type FilterSortType = {
   value: "nameAsc" | "nameDesc" | "dateAsc" | "dateDesc";
   label: string;
@@ -120,9 +130,9 @@ export function useFilterSort({
           case "nameDesc":
             return b.name.localeCompare(a.name);
           case "dateAsc":
-            return a.createdAt.getTime() - b.createdAt.getTime();
+            return getTimestamp(a.createdAt) - getTimestamp(b.createdAt);
           case "dateDesc":
-            return b.createdAt.getTime() - a.createdAt.getTime();
+            return getTimestamp(b.createdAt) - getTimestamp(a.createdAt);
         }
       });
 
@@ -148,9 +158,9 @@ export function useFilterSort({
         case "nameDesc":
           return b.name.localeCompare(a.name);
         case "dateAsc":
-          return a.createdAt.getTime() - b.createdAt.getTime();
+          return getTimestamp(a.createdAt) - getTimestamp(b.createdAt);
         case "dateDesc":
-          return b.createdAt.getTime() - a.createdAt.getTime();
+          return getTimestamp(b.createdAt) - getTimestamp(a.createdAt);
       }
     });
   }, [filters, sortType]);

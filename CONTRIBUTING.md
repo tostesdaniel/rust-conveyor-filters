@@ -20,7 +20,7 @@ Thank you for your interest in contributing to Rust Conveyor Filters! This guide
 2. **Clerk Authentication (Required)**
    - Create an account at [Clerk](https://dashboard.clerk.com/sign-up)
    - Set up a new application:
-     - For the Application name I suggest **Dev - Rust Conveyor Filters**`\*\*
+     - For the Application name I suggest **Dev - Rust Conveyor Filters**
      - For the Sign in options, toggle **Username** and **Discord** and keep the rest as-is.
      - Go in **Configure** tab, scroll until **API keys**, then copy the publishable key and secret key to your `.env` file
 

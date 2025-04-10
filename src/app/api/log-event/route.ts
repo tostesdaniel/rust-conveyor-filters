@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Ratelimit } from "@upstash/ratelimit";
+import type { Redis } from "@upstash/redis/cloudflare";
 
 import { getRedisClient } from "@/lib/redis";
 
 export async function POST(req: NextRequest) {
   const { ctx } = getCloudflareContext();
-  const redis = await getRedisClient();
+  const redis = (await getRedisClient()) as Redis;
   const rateLimit = new Ratelimit({
     redis,
     limiter: Ratelimit.fixedWindow(1, "5m"),

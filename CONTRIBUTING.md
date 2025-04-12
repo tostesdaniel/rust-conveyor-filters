@@ -78,25 +78,44 @@ The following services are optional for development. The application will either
 
 ## Project Structure
 
-The project follows a feature-based colocation structure:
-
 ```text
-src/
-├── actions/              # Server actions
-├── app/                  # Next.js app router pages
-├── components/           # Shared components
-│   └── ui/               # UI components
-├── config/               # Metadata for the site
-├── db/                   # Database config
-├── hooks/                # React hooks
-├── lib/                  # Shared utilities and configurations
-├── providers/            # Application providers
-├── schemas/              # Zod schemas
-├── scripts/              # Scripts for the project
-│   └── monthly-update/   # Monthly update script
-├── services/             # Services for the project
-├── styles/               # Global styles and Tailwind configuration
-└── types/                # TypeScript type definitions
+rust-conveyor-filters/
+├── src/
+│   ├── actions/               # Server actions
+│   ├── app/                   # Next.js app router pages and layouts
+│   │   ├── (app)/             # Main application pages
+│   │   ├── (legal)/           # Terms and privacy pages
+│   │   ├── (resources)/       # Public resources
+│   │   └── api/               # Route handlers
+│   ├── components/            # Reusable React components
+│   │   ├── about/             # About page components
+│   │   ├── analytics/         # Analytics hooking
+│   │   ├── donate/            # Donation related components
+│   │   ├── feedback/          # Feedback related components
+│   │   ├── filters/           # Public filters components
+│   │   ├── landing-page/      # Home page components
+│   │   ├── my-filters/        # User filters components
+│   │   ├── steam-guide/       # Steam guide components
+│   │   └── ui/                # Shared UI components
+│   ├── config/                # App metadata & config
+│   ├── db/                    # Database schema & setup
+│   │   └── seed-data/         # Seed data for the database
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utility functions and constants
+│   │   ├── donation/          # Donation webhook validation
+│   │   ├── queries/           # Database queries
+│   │   ├── stats/             # Cron jobs
+│   │   └── utils/             # Utility functions
+│   ├── providers/             # React context providers
+│   ├── schemas/               # Form schema definitions
+│   ├── scripts/               # Scripts for the project
+│   │   └── monthly-update/    # Monthly update script
+│   ├── services/              # Services for the project
+│   └── types/                 # TypeScript type definitions
+└── public/                    # Static assets
+    ├── icons/                 # App icons
+    ├── images/                # Static images
+    └── items/                 # Item assets
 ```
 
 Note: Some files might be in temporary locations and could be moved to more appropriate directories. This is a good opportunity for contribution!

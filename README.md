@@ -62,11 +62,10 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 ## 🏗️ Project Structure
 
-The project is organized as follows:
-
 ```text
 rust-conveyor-filters/
 ├── src/
+│   ├── actions/               # Server actions
 │   ├── app/                   # Next.js app router pages and layouts
 │   │   ├── (app)/             # Main application pages
 │   │   ├── (legal)/           # Terms and privacy pages
@@ -84,6 +83,7 @@ rust-conveyor-filters/
 │   │   └── ui/                # Shared UI components
 │   ├── config/                # App metadata & config
 │   ├── db/                    # Database schema & setup
+│   │   └── seed-data/         # Seed data for the database
 │   ├── hooks/                 # Custom React hooks
 │   ├── lib/                   # Utility functions and constants
 │   │   ├── donation/          # Donation webhook validation
@@ -92,10 +92,14 @@ rust-conveyor-filters/
 │   │   └── utils/             # Utility functions
 │   ├── providers/             # React context providers
 │   ├── schemas/               # Form schema definitions
+│   ├── scripts/               # Scripts for the project
+│   │   └── monthly-update/    # Monthly update script
+│   ├── services/              # Services for the project
 │   └── types/                 # TypeScript type definitions
 └── public/                    # Static assets
     ├── icons/                 # App icons
-    └── images/                # Static images                # Game data and images
+    ├── images/                # Static images
+    └── items/                 # Item assets
 ```
 
 ## ⚙️ Contributing

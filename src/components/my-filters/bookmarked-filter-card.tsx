@@ -21,9 +21,11 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
           height='64'
         />
       </div>
-      <div className='flex flex-1 items-center justify-between rounded-r-md border-2 border-l-0 border-card-foreground/70'>
-        <div className='flex-1 px-4 py-2 text-sm'>
-          <p className='font-medium'>{filter.name}</p>
+      <div className='flex flex-1 items-center justify-between overflow-hidden rounded-r-md border-2 border-l-0 border-card-foreground/70'>
+        <div className='flex-1 overflow-hidden px-4 py-2 text-sm'>
+          <p className='overflow-hidden font-medium text-ellipsis'>
+            {filter.name}
+          </p>
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
         <div className='space-x-2 pr-2'>

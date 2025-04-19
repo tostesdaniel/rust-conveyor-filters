@@ -125,8 +125,8 @@ Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
 
 Thanks to all the contributors who take their time to make this project better!
 
-<!-- readme: contributors,bots/- -start -->
-<!-- readme: contributors,bots/- -end -->
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
 
 ## 📝 License
 

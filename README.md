@@ -121,6 +121,13 @@ Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
 - 💡 Suggest new features
 - 🔧 Submit pull requests
 
+## 🌟 Contributors
+
+Thanks to all the contributors who take their time to make this project better!
+
+<!-- readme: contributors,bots/- -start -->
+<!-- readme: contributors,bots/- -end -->
+
 ## 📝 License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0).

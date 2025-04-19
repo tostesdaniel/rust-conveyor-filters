@@ -126,6 +126,26 @@ Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
 Thanks to all the contributors who take their time to make this project better!
 
 <!-- readme: contributors,bots/- -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/tostesdaniel">
+                    <img src="https://avatars.githubusercontent.com/u/41529552?v=4" width="100;" alt="tostesdaniel"/>
+                    <br />
+                    <sub><b>Daniel Tostes</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/dependabot[bot]">
+                    <img src="https://avatars.githubusercontent.com/in/29110?v=4" width="100;" alt="dependabot[bot]"/>
+                    <br />
+                    <sub><b>dependabot[bot]</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: contributors,bots/- -end -->
 
 ## 📝 License

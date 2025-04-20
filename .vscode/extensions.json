@@ -4,8 +4,7 @@
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
+    "davidanson.vscode-markdownlint"
   ],
-  "unwantedRecommendations": [
-    "biomejs.biome"
-  ]
+  "unwantedRecommendations": ["biomejs.biome"]
 }

@@ -14,5 +14,8 @@
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "workbench.editor.customLabels.patterns": {
     "**/{layout,page}.tsx": "${dirname}/${filename}"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }

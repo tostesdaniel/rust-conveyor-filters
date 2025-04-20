@@ -136,6 +136,13 @@ Thanks to all the contributors who take their time to make this project better!
                     <sub><b>Daniel Tostes</b></sub>
                 </a>
             </td>
+            <td align="center">
+                <a href="https://github.com/nic-w">
+                    <img src="https://avatars.githubusercontent.com/u/43260193?v=4" width="100;" alt="nic-w"/>
+                    <br />
+                    <sub><b>Nic</b></sub>
+                </a>
+            </td>
 		</tr>
 	<tbody>
 </table>

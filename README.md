@@ -102,10 +102,6 @@ rust-conveyor-filters/
     └── items/                 # Item assets
 ```
 
-## ⚙️ Contributing
-
-Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for instructions on how to contribute to this project.
-
 ## 🛠️ Built With
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
@@ -115,16 +111,23 @@ Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for instructions on 
 
 ## 🤝 Contributing
 
-Got ideas? Found a bug? Contributions are welcome! Here's how you can help:
+### Quick Start
 
-- 🐛 Report bugs
-- 💡 Suggest new features
+Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed instructions on getting started.
+
+### Ways to Contribute
+
+- 🐛 Report bugs and issues
+- 💡 Suggest new features or improvements
+- 📝 Improve documentation
 - 🔧 Submit pull requests
+- 🗣️ Share the project with others
 
-## 🌟 Contributors
+### 🌟 Contributors Wall
 
 Thanks to all the contributors who take their time to make this project better!
 
+<!-- markdownlint-disable -->
 <!-- readme: contributors -start -->
 <table>
 	<tbody>
@@ -147,6 +150,7 @@ Thanks to all the contributors who take their time to make this project better!
 	<tbody>
 </table>
 <!-- readme: contributors -end -->
+<!-- markdownlint-restore -->
 
 ## 📝 License
 

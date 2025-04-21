@@ -3,9 +3,7 @@
   "main": ".open-next/worker.js",
   "name": "rust-conveyor-filters",
   "compatibility_date": "2025-04-05",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "minify": true,
   "observability": {
     "enabled": true,
@@ -14,24 +12,36 @@
   "upload_source_maps": true,
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "rust-conveyor-filters" },
+  ],
   "kv_namespaces": [
-    // Create a KV binding with the binding name "NEXT_INC_CACHE_KV"
-    // to enable the KV based caching:
-    // {
-    //   "binding": "NEXT_INC_CACHE_KV",
-    //   "id": "<BINDING_ID>"
-    // }
+    {
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "f9ba458138884fa9a03dc7a09d1a4bef",
+    },
   ],
   "r2_buckets": [
     {
       "binding": "ITEMS_BUCKET",
-      "bucket_name": "rustconveyorfilters"
-    }
+      "bucket_name": "rustconveyorfilters",
+    },
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DOQueueHandler"],
+    },
   ],
   "placement": {
-    "mode": "off"
+    "mode": "off",
   },
   "keep_vars": true,
 }

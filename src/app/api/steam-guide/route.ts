@@ -13,7 +13,12 @@ const STEAM_API_KEY = process.env.STEAM_API_KEY;
 async function fetchSteamUserDetails(): Promise<SteamUserDetails> {
   const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${STEAM_API_KEY}&steamids=${steamConfig.STEAM_ID}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    next: {
+      revalidate: 60 * 60 * 24, // 24 hours
+      tags: ["steam-user"],
+    },
+  });
   const data: GetPlayerSummaries = await res.json();
   return data.response.players[0];
 }
@@ -28,6 +33,10 @@ async function fetchGuideDetails(): Promise<SteamGuideDetails> {
   const res = await fetch(url, {
     method: "POST",
     body,
+    next: {
+      revalidate: 60 * 60 * 24, // 24 hours
+      tags: ["steam-guide"],
+    },
   });
   const data: GetPublishedFileDetails = await res.json();
   return data.response.publishedfiledetails[0];

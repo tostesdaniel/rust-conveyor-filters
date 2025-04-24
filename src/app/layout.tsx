@@ -7,9 +7,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
-import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
+
+import { TRPCReactProvider } from "@/trpc/client";
 
 import { siteConfig } from "@/config/site";
 import { OutboundLinkTracker } from "@/components/analytics/outbound-link-tracker";
@@ -95,7 +96,7 @@ export default function RootLayout({
             inter.variable,
           )}
         >
-          <QueryProvider>
+          <TRPCReactProvider>
             <ThemeProvider
               attribute='class'
               defaultTheme='system'
@@ -106,7 +107,7 @@ export default function RootLayout({
               <Toaster richColors />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
-          </QueryProvider>
+          </TRPCReactProvider>
           <OutboundLinkTracker />
         </body>
       </html>

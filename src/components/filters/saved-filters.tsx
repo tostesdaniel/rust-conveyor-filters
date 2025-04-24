@@ -1,14 +1,15 @@
 "use client";
 
+import { api } from "@/trpc/client";
 import { BookmarkPlusIcon, GlobeIcon } from "lucide-react";
 
-import { useGetBookmarkedFilters } from "@/hooks/use-get-bookmarked-filters";
 import { EmptyState } from "@/components/empty-state";
 
 import { BookmarkedFilterCard } from "../my-filters/bookmarked-filter-card";
 
 export function SavedFilters() {
-  const { data: bookmarkedFilters } = useGetBookmarkedFilters();
+  const { data: bookmarkedFilters } =
+    api.bookmarks.getBookmarkedFilters.useQuery();
 
   if (!bookmarkedFilters?.length) {
     return (

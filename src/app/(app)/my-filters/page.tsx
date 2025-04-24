@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { api, getQueryClient } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import { getBookmarkedFilters } from "@/actions/bookmark-filter";
 import {
   getUserCategories,
   getUserCategoryHierarchy,
@@ -26,16 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default async function MyFiltersPage() {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
+  void api.bookmarks.getBookmarkedFilters.prefetch();
 
   await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: ["bookmarked-filters"],
-      queryFn: async () => {
-        const [data] = await getBookmarkedFilters();
-        return data;
-      },
-    }),
     queryClient.prefetchQuery({
       queryKey: ["user-filters-by-category", null],
       queryFn: async () => {

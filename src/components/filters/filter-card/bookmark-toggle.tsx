@@ -1,17 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { api } from "@/trpc/client";
 import { useUser } from "@clerk/nextjs";
 import type { ToggleProps } from "@radix-ui/react-toggle";
-import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 
-import { bookmarkFilter, getBookmarkedStatus } from "@/actions/bookmark-filter";
-import {
-  useServerActionMutation,
-  useServerActionQuery,
-} from "@/hooks/server-action-hooks";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps extends ToggleProps {
@@ -26,34 +21,31 @@ export function BookmarkToggle({
 }: BookmarkToggleProps) {
   const { isLoaded, isSignedIn } = useUser();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(initialBookmarked);
-  const queryClient = useQueryClient();
 
-  const { data: bookmarkedData, isLoading } = useServerActionQuery(
-    getBookmarkedStatus,
-    {
-      input: { filterId },
-      queryKey: ["bookmarked", filterId],
-      enabled: isLoaded && isSignedIn && !initialBookmarked,
-    },
-  );
+  const utils = api.useUtils();
+  const { data: bookmarkedData, isLoading } =
+    api.bookmarks.getBookmarkedStatus.useQuery(
+      { filterId },
+      { enabled: isLoaded && isSignedIn && !initialBookmarked },
+    );
 
-  const mutation = useServerActionMutation(bookmarkFilter, {
+  const mutation = api.bookmarks.bookmark.useMutation({
     onSuccess: (data) => {
       setIsBookmarked(data.bookmarked);
       toast.success(
         data.bookmarked ? "Filter bookmarked" : "Filter unbookmarked",
       );
     },
-    onError: (err) => {
-      if (err.code === "NOT_AUTHORIZED") {
+    onError: (error) => {
+      if (error.data?.code === "UNAUTHORIZED") {
         toast.error("You must be signed in to bookmark a filter");
       } else {
         toast.error("An error occurred while bookmarking the filter");
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookmarked", filterId] });
-      queryClient.invalidateQueries({ queryKey: ["bookmarked-filters"] });
+      utils.bookmarks.getBookmarkedStatus.invalidate();
+      utils.bookmarks.getBookmarkedFilters.invalidate();
     },
   });
 

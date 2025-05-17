@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Ratelimit } from "@upstash/ratelimit";
-import type { Redis } from "@upstash/redis/cloudflare";
+import type { Redis } from "@upstash/redis";
+import { ipAddress } from "@vercel/functions";
 
 import { getRedisClient } from "@/lib/redis";
 
 export async function POST(req: NextRequest) {
-  const { ctx } = getCloudflareContext();
   const redis = (await getRedisClient()) as Redis;
   const rateLimit = new Ratelimit({
     redis,
@@ -19,15 +18,11 @@ export async function POST(req: NextRequest) {
     filterId: string;
     eventType: string;
   };
-  const ip =
-    req.headers.get("X-Forwarded-For") ||
-    req.headers.get("CF-Connecting-IP") ||
-    "unknown";
+  const ip = req.headers.get("x-forwarded-for") || ipAddress(req);
   const key = userId
     ? `${userId}:${filterId}:${eventType}`
     : `${ip}:${filterId}:${eventType}`;
-  const { pending } = await rateLimit.limit(key);
-  ctx.waitUntil(pending);
+  const { success } = await rateLimit.limit(key);
 
-  return NextResponse.json({ success: true, userId, ip });
+  return NextResponse.json({ success, userId, ip });
 }

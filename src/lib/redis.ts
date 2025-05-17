@@ -1,5 +1,5 @@
 // import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { Redis } from "@upstash/redis/cloudflare";
+import { Redis } from "@upstash/redis";
 
 type RedisValue = string | number | boolean | null | undefined | object;
 

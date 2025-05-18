@@ -6230,5 +6230,21 @@
     "name": "Wheat",
     "category": "Food",
     "imagePath": "wheat"
+  },
+  {
+    "id": 781,
+    "itemid": -1989600732,
+    "shortname": "hab.armor",
+    "name": "Hot Air Balloon Armor",
+    "category": "Attire",
+    "image_path": "hab.armor"
+  },
+  {
+    "id": 782,
+    "itemid": 1346158228,
+    "shortname": "pumpkinbasket",
+    "name": "Pumpkin Basket",
+    "category": "Misc",
+    "image_path": "pumpkinbasket"
   }
 ]

@@ -26,8 +26,8 @@ export async function updateGameHours() {
     const res = await fetch(url, { cache: "no-store" });
     const data: SteamApiResponse = await res.json();
     const gameHours = Math.floor(
-      data.response.games.find((game) => game.appid === RUST_APP_ID)
-        ?.playtime_forever ?? 0 / 60,
+      (data.response.games.find((game) => game.appid === RUST_APP_ID)
+        ?.playtime_forever ?? 0) / 60,
     );
     await redis.set("gameHours", gameHours);
     return gameHours;

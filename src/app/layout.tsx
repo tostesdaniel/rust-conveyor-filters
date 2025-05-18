@@ -85,7 +85,7 @@ export default function RootLayout({
           <script
             defer
             src='https://umami.rustconveyorfilters.com/script.js'
-            data-website-id='695aa61d-5756-4456-ae5b-ef75606debe5'
+            data-website-id='0c163345-6b1c-45ed-ab99-f8411b8fa1cb'
           />
           <GoogleAnalytics gaId='G-BGERZ3ES1R' />
         </head>

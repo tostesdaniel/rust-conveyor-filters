@@ -6246,5 +6246,189 @@
     "name": "Pumpkin Basket",
     "category": "Misc",
     "image_path": "pumpkinbasket"
+  },
+  {
+    "id": 783,
+    "itemid": -170436364,
+    "shortname": "snakemeat.cooked",
+    "name": "Cooked Snake Meat",
+    "category": "Food",
+    "image_path": "snakemeat.cooked"
+  },
+  {
+    "id": 784,
+    "itemid": -2100458529,
+    "shortname": "snakemeat",
+    "name": "Raw Snake Meat",
+    "category": "Food",
+    "image_path": "snakemeat"
+  },
+  {
+    "id": 785,
+    "itemid": -1923843855,
+    "shortname": "half.bamboo.shelves",
+    "name": "Half Height Bamboo Shelves",
+    "category": "Items",
+    "image_path": "half.bamboo.shelves"
+  },
+  {
+    "id": 786,
+    "itemid": -851288382,
+    "shortname": "blowpipe",
+    "name": "Blow Pipe",
+    "category": "Weapon",
+    "image_path": "blowpipe"
+  },
+  {
+    "id": 787,
+    "itemid": 54265286,
+    "shortname": "pie.crocodile",
+    "name": "Crocodile Pie",
+    "category": "Food",
+    "image_path": "pie.crocodile"
+  },
+  {
+    "id": 788,
+    "itemid": -594596146,
+    "shortname": "dart.radiation",
+    "name": "Radiation Dart",
+    "category": "Ammunition",
+    "image_path": "dart.radiation"
+  },
+  {
+    "id": 789,
+    "itemid": -1652561344,
+    "shortname": "bamboo.barrel",
+    "name": "Bamboo Barrel",
+    "category": "Items",
+    "image_path": "bamboo.barrel"
+  },
+  {
+    "id": 790,
+    "itemid": -1081599445,
+    "shortname": "crocodilemeat",
+    "name": "Raw Crocodile Meat",
+    "category": "Food",
+    "image_path": "crocodilemeat"
+  },
+  {
+    "id": 791,
+    "itemid": 309017792,
+    "shortname": "pie.bigcat",
+    "name": "Big Cat Pie",
+    "category": "Food",
+    "image_path": "pie.bigcat"
+  },
+  {
+    "id": 792,
+    "itemid": 2036395619,
+    "shortname": "dart.scatter",
+    "name": "Scatter Dart",
+    "category": "Ammunition",
+    "image_path": "dart.scatter"
+  },
+  {
+    "id": 793,
+    "itemid": 248643189,
+    "shortname": "bigcatmeat.spoiled",
+    "name": "Spoiled Big Cat Meat",
+    "category": "Food",
+    "image_path": "bigcatmeat.spoiled"
+  },
+  {
+    "id": 794,
+    "itemid": -526026171,
+    "shortname": "wicker.barrel",
+    "name": "Wicker Barrel",
+    "category": "Items",
+    "image_path": "wicker.barrel"
+  },
+  {
+    "id": 795,
+    "itemid": 392828520,
+    "shortname": "crocodilemeat.cooked",
+    "name": "Cooked Crocodile Meat",
+    "category": "Food",
+    "image_path": "crocodilemeat.cooked"
+  },
+  {
+    "id": 796,
+    "itemid": -870140677,
+    "shortname": "venom.snake",
+    "name": "Snake Venom",
+    "category": "Items",
+    "image_path": "venom.snake"
+  },
+  {
+    "id": 797,
+    "itemid": -1616704051,
+    "shortname": "snakemeat.spoiled",
+    "name": "Spoiled Snake Meat",
+    "category": "Food",
+    "image_path": "snakemeat.spoiled"
+  },
+  {
+    "id": 798,
+    "itemid": -963819285,
+    "shortname": "dart.incapacitate",
+    "name": "Incapacitate Dart",
+    "category": "Ammunition",
+    "image_path": "dart.incapacitate"
+  },
+  {
+    "id": 799,
+    "itemid": -274709858,
+    "shortname": "dart.wood",
+    "name": "Wood Dart",
+    "category": "Ammunition",
+    "image_path": "dart.wood"
+  },
+  {
+    "id": 800,
+    "itemid": -1318837358,
+    "shortname": "bigcatmeat.cooked",
+    "name": "Cooked Big Cat Meat",
+    "category": "Food",
+    "image_path": "bigcatmeat.cooked"
+  },
+  {
+    "id": 801,
+    "itemid": -2095813057,
+    "shortname": "bigcatmeat",
+    "name": "Raw Big Cat Meat",
+    "category": "Food",
+    "image_path": "bigcatmeat"
+  },
+  {
+    "id": 802,
+    "itemid": -1796837031,
+    "shortname": "crocodilemeat.spoiled",
+    "name": "Spoiled Crocodile Meat",
+    "category": "Food",
+    "image_path": "crocodilemeat.spoiled"
+  },
+  {
+    "id": 803,
+    "itemid": -193519904,
+    "shortname": "single.shallow.wall.shelves",
+    "name": "Single Shallow Wall Shelves",
+    "category": "Items",
+    "image_path": "single.shallow.wall.shelves"
+  },
+  {
+    "id": 804,
+    "itemid": 1680793490,
+    "shortname": "boomerang",
+    "name": "Boomerang",
+    "category": "Weapon",
+    "image_path": "boomerang"
+  },
+  {
+    "id": 805,
+    "itemid": -459159118,
+    "shortname": "woodarmor.gloves",
+    "name": "Wood Armor Gloves",
+    "category": "Attire",
+    "image_path": "woodarmor.gloves"
   }
 ]

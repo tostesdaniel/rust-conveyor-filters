@@ -1,12 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
-import type { FilterSortOption } from "@/types/filter-sorting";
 import { useFilters } from "@/hooks/use-filters";
+import { useSearchParams } from "@/hooks/useSearchParams";
 import { Typography } from "@/components/ui/typography";
 import { FilterSortTabs } from "@/components/filters/filter-sort-tabs";
 import FiltersLoading from "@/app/(app)/filters/loading";
@@ -20,9 +19,7 @@ export function FilterGrid() {
     triggerOnce: false,
     threshold: 0.5,
   });
-  const searchParams = useSearchParams();
-  const sortBy = (searchParams.get("sort") ||
-    "popular") as FilterSortOption["value"];
+  const [{ sort }] = useSearchParams();
 
   const {
     data,
@@ -33,11 +30,11 @@ export function FilterGrid() {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
-  } = useFilters(sortBy);
+  } = useFilters(sort);
 
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [sortBy]);
+  }, [sort]);
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {

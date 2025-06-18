@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -102,7 +103,9 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className='flex min-h-svh flex-col'>{children}</div>
+              <NuqsAdapter>
+                <div className='flex min-h-svh flex-col'>{children}</div>
+              </NuqsAdapter>
               <Toaster richColors />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />

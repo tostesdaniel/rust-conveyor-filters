@@ -10,3 +10,20 @@ export const steamConfig = {
   GUIDE_URL: `https://steamcommunity.com/sharedfiles/filedetails/?id=${STEAM_GUIDE_ID}`,
   STEAM_ID: process.env.STEAM_ID,
 };
+
+export const ITEM_CATEGORIES = [
+  "Weapons",
+  "Construction",
+  "#bp_deployables",
+  "Resources",
+  "Clothing",
+  "Tools",
+  "Medical",
+  "Food",
+  "Ammo",
+  "Traps",
+  "Other",
+  "Components",
+  "Electrical",
+  "Fun",
+] as const;

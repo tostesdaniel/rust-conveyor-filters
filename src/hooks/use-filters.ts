@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import type { inferParserType } from "nuqs";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import type { FilterSortOption } from "@/types/filter-sorting";
+import type { searchParams } from "@/lib/search-params";
 
 interface FiltersResponse {
   data: ConveyorFilterWithAuthor[];
@@ -20,7 +22,7 @@ async function fetchFilters({
   cursor,
   pageSize,
 }: {
-  sortBy: FilterSortOption["value"];
+  sortBy: inferParserType<typeof searchParams>["sort"];
   cursor?: CursorType;
   pageSize: number;
 }): Promise<FiltersResponse> {

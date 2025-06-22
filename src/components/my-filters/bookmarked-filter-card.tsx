@@ -19,6 +19,7 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
           alt='Collection image'
           width='64'
           height='64'
+          unoptimized
         />
       </div>
       <div className='flex flex-1 items-center justify-between overflow-hidden rounded-r-md border-2 border-l-0 border-card-foreground/70'>

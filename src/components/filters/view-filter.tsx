@@ -175,6 +175,7 @@ const FilterItem = ({ filterItem }: { filterItem: ConveyorFilterItem }) => {
             alt={item.name}
             width={80}
             height={80}
+            unoptimized
             className='pointer-events-none object-contain p-1'
           />
         ) : null}

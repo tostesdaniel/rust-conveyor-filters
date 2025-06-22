@@ -238,6 +238,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                           height={24}
                           width={24}
                           loading='lazy'
+                          unoptimized
                           className='rounded-sm object-contain'
                         />
                       </div>

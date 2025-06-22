@@ -136,7 +136,7 @@ export function FilterItemsCarousel({
                         fill
                         sizes='80px'
                         style={{ objectFit: "cover" }}
-                        quality={75}
+                        unoptimized
                       />
                     )}
                   </CardContent>

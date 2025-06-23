@@ -30,6 +30,7 @@
     "upload-images": "bun run ./src/scripts/monthly-update/optimize-and-upload-images.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.832.0",
     "@clerk/nextjs": "^6.13.0",
     "@hookform/resolvers": "^4.1.0",
     "@mdx-js/loader": "^3.1.0",
@@ -112,5 +113,8 @@
   },
   "engines": {
     "node": ">=18.18.0"
+  },
+  "overrides": {
+    "@radix-ui/react-focus-scope": "1.1.1"
   }
 }

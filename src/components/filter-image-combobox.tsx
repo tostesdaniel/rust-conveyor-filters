@@ -165,6 +165,7 @@ const ItemList = React.memo(
                     alt={item.name}
                     width={24}
                     height={24}
+                    unoptimized
                     className='rounded-sm object-contain'
                   />
                 </div>

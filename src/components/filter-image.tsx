@@ -19,6 +19,7 @@ export function FilterImage({ imagePath }: FilterImageProps) {
       alt='Filter cover item image'
       width={36}
       height={36}
+      unoptimized
     />
   );
 }

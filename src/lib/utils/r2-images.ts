@@ -1,7 +1,5 @@
 type ImageSize = "tiny" | "small" | "medium" | "full";
 
-const R2_BUCKET_URL = process.env.NEXT_PUBLIC_R2_BUCKET_URL;
-
 /**
  * Generates a URL for an image stored in Cloudflare R2
  * @param imageName - The name of the image file (e.g., 'rifle.bolt.webp')
@@ -12,5 +10,5 @@ export function getR2ImageUrl(imageName: string, size: ImageSize): string {
   if (process.env.NODE_ENV === "development") {
     return `/items/${size}/${imageName}`;
   }
-  return `${R2_BUCKET_URL}/items/${size}/${imageName}`;
+  return `/api/images/items/${size}/${imageName}`;
 }

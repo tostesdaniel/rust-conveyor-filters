@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Teko } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -16,6 +16,7 @@ import { siteConfig } from "@/config/site";
 import { OutboundLinkTracker } from "@/components/analytics/outbound-link-tracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });
 
 export const metadata: Metadata = {
   title: {
@@ -94,6 +95,7 @@ export default function RootLayout({
           className={cn(
             "min-h-svh bg-background font-sans antialiased",
             inter.variable,
+            teko.variable,
           )}
         >
           <QueryProvider>

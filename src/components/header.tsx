@@ -45,19 +45,9 @@ export function Header() {
         </div>
         <DesktopNav />
         <div className='flex flex-1 items-center justify-end gap-2'>
-          <RepoStarsButton className='hidden min-[800px]:inline-flex' />
           <div className='flex items-center gap-0.5'>
             <nav className='flex items-center gap-0.5'>
-              <Button variant='ghost' size='icon' className='size-9'>
-                <a
-                  href={siteConfig.links.repo}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <Icons.gitHub />
-                  <span className='sr-only'>GitHub</span>
-                </a>
-              </Button>
+              <RepoStarsButton />
               <Button variant='ghost' size='icon' className='size-9'>
                 <a
                   href={siteConfig.links.discord}

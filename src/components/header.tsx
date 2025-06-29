@@ -61,7 +61,7 @@ export function Header() {
             </nav>
             <ModeToggle />
           </div>
-          <div className='ml-2 flex items-center'>
+          <div className='ml-2 flex size-7 items-center'>
             <ClerkLoading>
               <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>

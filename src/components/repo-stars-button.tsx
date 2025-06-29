@@ -23,9 +23,12 @@ async function StargazersCount({
   return (
     <span
       className={cn("text-xs text-muted-foreground tabular-nums", className)}
+      aria-label={stars ? `${stars} GitHub stars` : "Star count unavailable"}
       {...props}
     >
-      {stars ? millify(stars, { lowercase: true }) : "N/A"}
+      <span aria-hidden='true'>
+        {stars ? millify(stars, { lowercase: true }) : "N/A"}
+      </span>
     </span>
   );
 }
@@ -42,12 +45,22 @@ export async function RepoStarsButton({
       asChild
       {...props}
     >
-      <a href={siteConfig.links.repo} target='_blank' rel='noopener noreferrer'>
-        <Icons.gitHub />
+      <a
+        href={siteConfig.links.repo}
+        target='_blank'
+        rel='noopener noreferrer'
+        aria-label='View project on GitHub and see star count'
+      >
+        <Icons.gitHub aria-hidden='true' />
+        <span className='sr-only'>GitHub repository with</span>
         <Suspense fallback={<Skeleton className='h-4 w-10' />}>
           <StargazersCount />
-          <StarIcon className='-ml-0.5 size-3.5 text-muted-foreground group-hover:text-[#daaa3f]' />
+          <StarIcon
+            className='-ml-0.5 size-3.5 text-muted-foreground group-hover:text-[#daaa3f]'
+            aria-hidden='true'
+          />
         </Suspense>
+        <span className='sr-only'>stars</span>
       </a>
     </Button>
   );

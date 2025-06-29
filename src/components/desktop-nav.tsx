@@ -1,28 +1,38 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 import { SITE_NAV_ITEMS } from "./header";
 
-export function DesktopNav() {
+export function DesktopNav({
+  className,
+  ...props
+}: React.ComponentProps<"nav">) {
   const pathname = usePathname();
 
   return (
-    <nav className='mr-4 hidden md:flex md:gap-x-4'>
-      {SITE_NAV_ITEMS.map((item, i) => (
-        <Link
-          key={i}
-          href={item.href}
+    <nav
+      className={cn("hidden lg:ml-6 lg:flex lg:gap-x-8", className)}
+      {...props}
+    >
+      {SITE_NAV_ITEMS.map((item) => (
+        <Button
+          key={item.href}
+          variant='link'
+          asChild
           className={cn(
-            "transition-colors hover:text-foreground",
-            pathname === item.href ? "text-foreground" : "text-foreground/60",
+            "rounded-none text-primary/70 hover:no-underline",
+            "border-b-2 border-transparent hover:border-primary/80 hover:text-primary/90",
+            pathname === item.href && "!border-blue-500 !text-primary",
           )}
         >
-          {item.name}
-        </Link>
+          <Link href={item.href}>{item.name}</Link>
+        </Button>
       ))}
     </nav>
   );

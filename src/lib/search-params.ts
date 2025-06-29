@@ -18,7 +18,7 @@ export const searchParams = {
     "mostUsed",
   ]).withDefault("popular"),
   items: parseAsArrayOf(parseAsString),
-  categories: parseAsStringLiteral(ITEM_CATEGORIES),
+  categories: parseAsArrayOf(parseAsStringLiteral(ITEM_CATEGORIES)),
 };
 
 export const urlKeys = {

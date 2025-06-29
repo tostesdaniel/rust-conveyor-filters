@@ -16,10 +16,7 @@ export function DesktopNav({
   const pathname = usePathname();
 
   return (
-    <nav
-      className={cn("hidden lg:ml-6 lg:flex lg:gap-x-8", className)}
-      {...props}
-    >
+    <nav className={className} {...props}>
       {SITE_NAV_ITEMS.map((item) => (
         <Button
           key={item.href}

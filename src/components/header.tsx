@@ -43,7 +43,7 @@ export function Header() {
             </span>
           </Link>
         </div>
-        <DesktopNav />
+        <DesktopNav className='hidden lg:ml-6 lg:flex lg:gap-x-8' />
         <div className='flex flex-1 items-center justify-end gap-2'>
           <div className='flex items-center gap-0.5'>
             <nav className='flex items-center gap-0.5'>

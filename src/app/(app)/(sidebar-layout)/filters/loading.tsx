@@ -2,7 +2,7 @@ import { FilterCardSkeleton } from "@/components/filters/filter-card/filter-card
 
 export default function FiltersLoading() {
   return (
-    <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2 lg:place-items-stretch'>
+    <div className='lg:place-items-stretc grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2 lg:justify-between'>
       <FilterCardSkeleton />
       <FilterCardSkeleton />
       <FilterCardSkeleton />

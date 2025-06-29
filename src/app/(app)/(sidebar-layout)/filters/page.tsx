@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Typography } from "@/components/ui/typography";
 import { FilterGrid } from "@/components/filters/filter-grid";
 import { FilterShareProvider } from "@/providers/filter-share-provider";
 
@@ -18,7 +17,6 @@ export const metadata: Metadata = {
 export default function FiltersPage() {
   return (
     <FilterShareProvider>
-      <Typography variant='h1'>Browse Filters</Typography>
       <FilterGrid />
     </FilterShareProvider>
   );

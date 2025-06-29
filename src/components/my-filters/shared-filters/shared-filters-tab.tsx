@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetSharedFilters } from "@/hooks/useGetSharedFilters";
-import { FiltersTreeSkeleton } from "@/app/(app)/my-filters/loading";
+import { FiltersTreeSkeleton } from "@/app/(app)/(stacked-layout)/my-filters/loading";
 
 import { SharedFiltersEmptyState } from "./empty-state";
 import { SharedFilters } from "./shared-filters";

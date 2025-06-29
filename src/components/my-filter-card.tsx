@@ -18,7 +18,7 @@ import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import ViewFilter from "@/components/filters/view-filter";
 import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
-import { DeleteFilterForm } from "@/app/(app)/my-filters/components/forms/delete-filter-form";
+import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
 import { DeleteSharedFilterDialog } from "./my-filters/shared-filters/delete-shared-filter-dialog";

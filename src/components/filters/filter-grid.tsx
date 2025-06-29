@@ -8,7 +8,7 @@ import { useFilters } from "@/hooks/use-filters";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { Typography } from "@/components/ui/typography";
 import { FilterSortTabs } from "@/components/filters/filter-sort-tabs";
-import FiltersLoading from "@/app/(app)/filters/loading";
+import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
 
 import { FilterCard } from "./filter-card/filter-card";
 import { FilterCardSkeleton } from "./filter-card/filter-card-skeleton";
@@ -64,12 +64,12 @@ export function FilterGrid() {
   }
 
   return (
-    <div className='pt-4'>
+    <div className='-mt-0.5'>
       <FilterSortTabs />
       {isLoading ? (
         <FiltersLoading />
       ) : (
-        <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2 lg:place-items-stretch'>
+        <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2'>
           {data?.pages
             .flatMap((page) => page.data)
             .map((filter: ConveyorFilterWithAuthor) => (

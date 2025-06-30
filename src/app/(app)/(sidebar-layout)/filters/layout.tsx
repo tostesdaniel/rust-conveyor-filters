@@ -9,7 +9,7 @@ export default function FiltersLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider className='container py-0'>
+    <SidebarProvider className='mx-auto max-w-[1400px] px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
       <BannerWrapper />
       <FiltersSidebar />
       <SidebarInset>

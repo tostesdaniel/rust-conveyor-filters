@@ -28,7 +28,7 @@ export function FilterSortTabs() {
             value={option.value}
             disabled={isLoading}
           >
-            <option.icon className='hidden sm:block' />
+            <option.icon className='hidden min-[412px]:block' />
             {option.label}
           </TabsTrigger>
         ))}

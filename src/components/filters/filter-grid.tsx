@@ -19,7 +19,7 @@ export function FilterGrid() {
     triggerOnce: false,
     threshold: 0.5,
   });
-  const [{ sort }] = useSearchParams();
+  const [{ sort, search, categories }] = useSearchParams();
 
   const {
     data,
@@ -30,7 +30,7 @@ export function FilterGrid() {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
-  } = useFilters(sort);
+  } = useFilters(sort, search, categories);
 
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

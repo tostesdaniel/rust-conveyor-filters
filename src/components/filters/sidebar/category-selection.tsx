@@ -54,13 +54,13 @@ export function CategorySelection() {
           {ITEM_CATEGORIES.map((category) => (
             <SidebarMenuSubItem key={category}>
               <SidebarMenuSubButton
-                isActive={categories?.includes(category)}
+                isActive={categories?.includes(category) ?? false}
                 onClick={() => handleCategoryClick(category)}
                 className='group cursor-pointer'
               >
                 <Checkbox
                   className='group-hover:border-ring'
-                  checked={categories?.includes(category)}
+                  checked={categories?.includes(category) ?? false}
                   onCheckedChange={() => handleCategoryClick(category)}
                 />
                 <span>{category}</span>

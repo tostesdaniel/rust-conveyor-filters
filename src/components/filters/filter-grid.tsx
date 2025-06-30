@@ -69,7 +69,7 @@ export function FilterGrid() {
       {isLoading ? (
         <FiltersLoading />
       ) : (
-        <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-4 py-6 lg:grid-cols-2'>
           {data?.pages
             .flatMap((page) => page.data)
             .map((filter: ConveyorFilterWithAuthor) => (

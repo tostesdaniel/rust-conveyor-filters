@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { and, desc, eq, gt, lt, or } from "drizzle-orm";
+import { and, desc, eq, exists, gt, ilike, inArray, lt, or } from "drizzle-orm";
 import { z } from "zod";
 
+import { loadSearchParams } from "@/lib/search-params";
 import { enrichWithAuthor } from "@/lib/utils/enrich-filter";
-import { filters } from "@/db/schema";
+import {
+  categories as categoriesTable,
+  filterItems,
+  filters,
+  items,
+} from "@/db/schema";
 
 const cursorSchema = z.object({
   id: z.number(),
@@ -21,7 +27,7 @@ const cursorSchema = z.object({
 });
 
 const querySchema = z.object({
-  sortBy: z.enum(["popular", "new", "updated", "mostUsed"]),
+  sort: z.enum(["popular", "new", "updated", "mostUsed"]),
   cursor: z
     .string()
     .nullish()
@@ -33,24 +39,88 @@ const querySchema = z.object({
 
 export async function GET(request: Request) {
   try {
+    const { categories, search, sort } = loadSearchParams(request);
     const { searchParams } = new URL(request.url);
-    const sortBy = searchParams.get("sortBy") || "popular";
     const cursor = searchParams.get("cursor");
     const pageSize = Number(searchParams.get("pageSize")) || 6;
 
     const validatedParams = querySchema.parse({
-      sortBy,
+      sort,
       cursor,
       pageSize,
     });
 
+    const searchConditions = [
+      eq(filters.isPublic, true),
+      ...(search !== ""
+        ? [
+            or(
+              ilike(filters.name, `%${search}%`),
+              ilike(filters.description, `%${search}%`),
+              // Search in item names within the filter
+              exists(
+                db
+                  .select()
+                  .from(filterItems)
+                  .innerJoin(items, eq(filterItems.itemId, items.id))
+                  .where(
+                    and(
+                      eq(filterItems.filterId, filters.id),
+                      or(
+                        ilike(items.name, `%${search}%`),
+                        ilike(items.shortname, `%${search}%`),
+                        ilike(items.category, `%${search}%`),
+                      ),
+                    ),
+                  ),
+              ),
+              // Search in category names within the filter
+              exists(
+                db
+                  .select()
+                  .from(filterItems)
+                  .innerJoin(
+                    categoriesTable,
+                    eq(filterItems.categoryId, categoriesTable.id),
+                  )
+                  .where(
+                    and(
+                      eq(filterItems.filterId, filters.id),
+                      ilike(categoriesTable.name, `%${search}%`),
+                    ),
+                  ),
+              ),
+            ),
+          ]
+        : []),
+      ...(categories && categories.length > 0
+        ? [
+            exists(
+              db
+                .select()
+                .from(filterItems)
+                .innerJoin(
+                  categoriesTable,
+                  eq(filterItems.categoryId, categoriesTable.id),
+                )
+                .where(
+                  and(
+                    eq(filterItems.filterId, filters.id),
+                    inArray(categoriesTable.name, categories),
+                  ),
+                ),
+            ),
+          ]
+        : []),
+    ];
+
     let query;
-    switch (validatedParams.sortBy) {
+    switch (validatedParams.sort) {
       case "popular":
         query = await db.query.filters.findMany({
           where: validatedParams.cursor
             ? and(
-                eq(filters.isPublic, true),
+                ...searchConditions,
                 or(
                   lt(
                     filters.popularityScore,
@@ -65,7 +135,7 @@ export async function GET(request: Request) {
                   ),
                 ),
               )
-            : eq(filters.isPublic, true),
+            : and(...searchConditions),
           limit: validatedParams.pageSize,
           with: {
             filterItems: {
@@ -80,7 +150,7 @@ export async function GET(request: Request) {
         query = await db.query.filters.findMany({
           where: validatedParams.cursor
             ? and(
-                eq(filters.isPublic, true),
+                ...searchConditions,
                 or(
                   lt(
                     filters.createdAt,
@@ -95,7 +165,7 @@ export async function GET(request: Request) {
                   ),
                 ),
               )
-            : eq(filters.isPublic, true),
+            : and(...searchConditions),
           limit: validatedParams.pageSize,
           with: {
             filterItems: {
@@ -110,7 +180,7 @@ export async function GET(request: Request) {
         query = await db.query.filters.findMany({
           where: validatedParams.cursor
             ? and(
-                eq(filters.isPublic, true),
+                ...searchConditions,
                 or(
                   lt(
                     filters.updatedAt,
@@ -125,7 +195,7 @@ export async function GET(request: Request) {
                   ),
                 ),
               )
-            : eq(filters.isPublic, true),
+            : and(...searchConditions),
           limit: validatedParams.pageSize,
           with: {
             filterItems: {
@@ -140,7 +210,7 @@ export async function GET(request: Request) {
         query = await db.query.filters.findMany({
           where: validatedParams.cursor
             ? and(
-                eq(filters.isPublic, true),
+                ...searchConditions,
                 or(
                   lt(
                     filters.exportCount,
@@ -155,7 +225,7 @@ export async function GET(request: Request) {
                   ),
                 ),
               )
-            : eq(filters.isPublic, true),
+            : and(...searchConditions),
           limit: validatedParams.pageSize,
           with: {
             filterItems: {
@@ -168,7 +238,7 @@ export async function GET(request: Request) {
         break;
       default:
         query = await db.query.filters.findMany({
-          where: eq(filters.isPublic, true),
+          where: and(...searchConditions),
           limit: validatedParams.pageSize,
           with: {
             filterItems: {

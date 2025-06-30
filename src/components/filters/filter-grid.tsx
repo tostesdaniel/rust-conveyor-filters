@@ -83,7 +83,9 @@ export function FilterGrid() {
               </div>
             ))}
           {isFetchingNextPage &&
-            [...Array(4)].map((_, i) => <FilterCardSkeleton key={i} />)}
+            [...Array(4)].map((_, i) => (
+              <FilterCardSkeleton key={`skeleton-${i}`} />
+            ))}
           <div ref={ref} />
         </div>
       )}

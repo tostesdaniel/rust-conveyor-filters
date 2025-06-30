@@ -109,7 +109,7 @@ export function FilterItemsCarousel({
           {filterItems.map((filterItem) => {
             const { item, category } = filterItem;
             const isCategory = !item;
-            const key = item?.id || category?.id;
+            const key = `${item?.id}-${category?.id}`;
             const categoryKey = Object.keys(categoryMapping).find(
               (key) => categoryMapping[key] === category?.name,
             );

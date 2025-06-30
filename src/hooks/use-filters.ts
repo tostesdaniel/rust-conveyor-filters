@@ -33,9 +33,9 @@ async function fetchFilters({
   const nuqsSearchParams = serializeSearchParams({
     search,
     categories,
+    sort: sortBy,
   });
   const params = new URLSearchParams(nuqsSearchParams);
-  params.set("sortBy", sortBy);
   params.set("pageSize", String(pageSize));
 
   if (cursor) {

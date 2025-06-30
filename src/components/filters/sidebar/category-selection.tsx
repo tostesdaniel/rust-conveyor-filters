@@ -45,7 +45,9 @@ export function CategorySelection() {
     <SidebarGroup>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton>Categories</SidebarMenuButton>
+          <SidebarMenuButton className='font-semibold hover:bg-transparent active:bg-transparent'>
+            Categories
+          </SidebarMenuButton>
         </SidebarMenuItem>
 
         <SidebarMenuSub>

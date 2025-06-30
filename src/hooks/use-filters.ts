@@ -3,7 +3,7 @@ import type { inferParserType } from "nuqs";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import type { FilterSortOption } from "@/types/filter-sorting";
-import type { searchParams } from "@/lib/search-params";
+import { serializeSearchParams, type searchParams } from "@/lib/search-params";
 
 interface FiltersResponse {
   data: ConveyorFilterWithAuthor[];
@@ -21,15 +21,22 @@ async function fetchFilters({
   sortBy,
   cursor,
   pageSize,
+  search,
+  categories,
 }: {
   sortBy: inferParserType<typeof searchParams>["sort"];
   cursor?: CursorType;
   pageSize: number;
+  search: inferParserType<typeof searchParams>["search"];
+  categories?: inferParserType<typeof searchParams>["categories"];
 }): Promise<FiltersResponse> {
-  const params = new URLSearchParams({
-    sortBy,
-    pageSize: String(pageSize),
+  const nuqsSearchParams = serializeSearchParams({
+    search,
+    categories,
   });
+  const params = new URLSearchParams(nuqsSearchParams);
+  params.set("sortBy", sortBy);
+  params.set("pageSize", String(pageSize));
 
   if (cursor) {
     params.set("cursor", JSON.stringify(cursor));
@@ -43,7 +50,11 @@ async function fetchFilters({
   return response.json();
 }
 
-export function useFilters(sortBy: FilterSortOption["value"]) {
+export function useFilters(
+  sortBy: FilterSortOption["value"],
+  search: inferParserType<typeof searchParams>["search"],
+  categories: inferParserType<typeof searchParams>["categories"],
+) {
   return useInfiniteQuery<
     FiltersResponse,
     Error,
@@ -51,15 +62,22 @@ export function useFilters(sortBy: FilterSortOption["value"]) {
       pages: FiltersResponse[];
       pageParams: (CursorType | undefined)[];
     },
-    ["filters", string],
+    [
+      "filters",
+      FilterSortOption["value"],
+      inferParserType<typeof searchParams>["search"],
+      inferParserType<typeof searchParams>["categories"],
+    ],
     CursorType
   >({
-    queryKey: ["filters", sortBy],
+    queryKey: ["filters", sortBy, search, categories],
     queryFn: ({ pageParam }) =>
       fetchFilters({
         sortBy,
         cursor: pageParam,
         pageSize: 6,
+        search,
+        categories,
       }),
     initialPageParam: undefined as CursorType | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

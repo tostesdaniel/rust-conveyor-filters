@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { ITEM_CATEGORIES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   SidebarGroup,
@@ -47,6 +48,20 @@ export function CategorySelection() {
         <SidebarMenuItem>
           <SidebarMenuButton className='font-semibold hover:bg-transparent active:bg-transparent'>
             Categories
+            <span
+              className={cn(
+                "ml-auto text-xs",
+                !categories?.length
+                  ? "text-muted-foreground"
+                  : categories.length <= 2
+                    ? "text-green-600 dark:text-green-400"
+                    : categories.length <= 4
+                      ? "text-yellow-600 dark:text-yellow-400"
+                      : "text-red-600 dark:text-red-400",
+              )}
+            >
+              {categories?.length ?? 0}/5
+            </span>
           </SidebarMenuButton>
         </SidebarMenuItem>
 

@@ -1,4 +1,5 @@
 import { CategorySelection } from "@/components/filters/sidebar/category-selection";
+import { ClearFiltersButton } from "@/components/filters/sidebar/clear-filters-button";
 import { ItemsSelection } from "@/components/filters/sidebar/items-selection";
 
 export function FiltersSidebarContent() {
@@ -6,6 +7,7 @@ export function FiltersSidebarContent() {
     <>
       <ItemsSelection />
       <CategorySelection />
+      <ClearFiltersButton />
     </>
   );
 }

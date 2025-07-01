@@ -1,6 +1,7 @@
 import { formatDistanceToNowStrict } from "date-fns";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import { cn } from "@/lib/utils";
 import { CardDescription, CardFooter } from "@/components/ui/card";
 import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
 import ViewFilter from "@/components/filters/view-filter";
@@ -11,8 +12,15 @@ export function FilterCardFooter({
   filter: ConveyorFilterWithAuthor;
 }) {
   return (
-    <CardFooter className='items-end justify-center min-[475px]:justify-between'>
-      <div className='hidden min-[475px]:block'>
+    <CardFooter
+      className={cn(
+        "flex-col gap-3",
+        "sm:flex-row sm:justify-between",
+        "lg:flex-col",
+        "xl:flex-row",
+      )}
+    >
+      <div className='self-start'>
         <CardDescription>
           Created at: {formatDistanceToNowStrict(filter.createdAt)} ago
         </CardDescription>
@@ -20,14 +28,14 @@ export function FilterCardFooter({
           Updated at: {formatDistanceToNowStrict(filter.updatedAt)} ago
         </CardDescription>
       </div>
-      <div className='flex w-full items-center justify-center space-x-4 min-[475px]:block min-[475px]:w-auto'>
+      <div className='flex w-full justify-center gap-2 sm:w-auto lg:w-full xl:w-auto'>
         <ViewFilter filter={filter} log />
         <ExportConveyorFilter
           type='button'
           filter={filter.filterItems}
           filterId={filter.id}
           log
-          className='w-full min-[475px]:w-auto'
+          className='flex-1 sm:flex-none lg:flex-1 xl:flex-none'
         />
       </div>
     </CardFooter>

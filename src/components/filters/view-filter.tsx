@@ -66,7 +66,7 @@ export default function ViewFilter({
         type='button'
         variant='secondary'
         icon={EyeIcon}
-        className='w-full min-[475px]:w-auto'
+        className='flex-1 sm:flex-none lg:flex-1 xl:flex-none'
         {...props}
       >
         Visualize

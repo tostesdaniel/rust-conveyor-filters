@@ -26,6 +26,11 @@ export function FilterItemsCarousel({
 }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [currentPage, setCurrentPage] = React.useState(1);
+  const isMinWidth1300 = useMediaQuery("(min-width: 1300px)");
+  const isMinWidth1200 = useMediaQuery("(min-width: 1200px)");
+  const isMinWidth1024 = useMediaQuery("(min-width: 1024px)");
+  const isMinWidth800 = useMediaQuery("(min-width: 800px)");
+  const isMinWidth768 = useMediaQuery("(min-width: 768px)");
   const isMinWidth550 = useMediaQuery("(min-width: 550px)");
   const isMinWidth440 = useMediaQuery("(min-width: 440px)");
   const isMinWidth360 = useMediaQuery("(min-width: 360px)");
@@ -61,11 +66,25 @@ export function FilterItemsCarousel({
   }, [api, inView]);
 
   const itemsPerPage = React.useMemo(() => {
+    if (isMinWidth1300) return 6;
+    if (isMinWidth1200) return 5;
+    if (isMinWidth1024) return 4;
+    if (isMinWidth800) return 6;
+    if (isMinWidth768) return 5;
     if (isMinWidth550) return 6;
     if (isMinWidth440) return 5;
     if (isMinWidth360) return 4;
     return 3;
-  }, [isMinWidth360, isMinWidth440, isMinWidth550]);
+  }, [
+    isMinWidth360,
+    isMinWidth440,
+    isMinWidth550,
+    isMinWidth768,
+    isMinWidth800,
+    isMinWidth1024,
+    isMinWidth1200,
+    isMinWidth1300,
+  ]);
 
   const carouselOpts: CarouselOptions = React.useMemo(
     () => ({
@@ -74,6 +93,11 @@ export function FilterItemsCarousel({
         "(min-width: 360px)": { slidesToScroll: 4 },
         "(min-width: 440px)": { slidesToScroll: 5 },
         "(min-width: 550px)": { slidesToScroll: 6 },
+        "(min-width: 768px)": { slidesToScroll: 5 },
+        "(min-width: 800px)": { slidesToScroll: 6 },
+        "(min-width: 1024px)": { slidesToScroll: 4 },
+        "(min-width: 1200px)": { slidesToScroll: 5 },
+        "(min-width: 1300px)": { slidesToScroll: 6 },
       },
     }),
     [],
@@ -118,7 +142,7 @@ export function FilterItemsCarousel({
             return (
               <CarouselItem
                 key={key}
-                className='basis-1/3 min-[360px]:basis-1/4 min-[440px]:basis-1/5 min-[550px]:basis-1/6'
+                className='basis-1/3 min-[360px]:basis-1/4 min-[440px]:basis-1/5 min-[550px]:basis-1/6 min-[768px]:basis-1/5 min-[800px]:basis-1/6 min-[1024px]:basis-1/4 min-[1200px]:basis-1/5 min-[1300px]:basis-1/6'
               >
                 <Card className='p-1'>
                   <CardContent className='relative aspect-square items-center justify-center p-0'>

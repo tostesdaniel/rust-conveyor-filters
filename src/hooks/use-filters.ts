@@ -23,16 +23,19 @@ async function fetchFilters({
   pageSize,
   search,
   categories,
+  items,
 }: {
   sortBy: inferParserType<typeof searchParams>["sort"];
   cursor?: CursorType;
   pageSize: number;
   search: inferParserType<typeof searchParams>["search"];
   categories?: inferParserType<typeof searchParams>["categories"];
+  items?: inferParserType<typeof searchParams>["items"];
 }): Promise<FiltersResponse> {
   const nuqsSearchParams = serializeSearchParams({
     search,
     categories,
+    items,
     sort: sortBy,
   });
   const params = new URLSearchParams(nuqsSearchParams);
@@ -54,6 +57,7 @@ export function useFilters(
   sortBy: FilterSortOption["value"],
   search: inferParserType<typeof searchParams>["search"],
   categories: inferParserType<typeof searchParams>["categories"],
+  items: inferParserType<typeof searchParams>["items"],
 ) {
   return useInfiniteQuery<
     FiltersResponse,
@@ -67,10 +71,11 @@ export function useFilters(
       FilterSortOption["value"],
       inferParserType<typeof searchParams>["search"],
       inferParserType<typeof searchParams>["categories"],
+      inferParserType<typeof searchParams>["items"],
     ],
     CursorType
   >({
-    queryKey: ["filters", sortBy, search, categories],
+    queryKey: ["filters", sortBy, search, categories, items],
     queryFn: ({ pageParam }) =>
       fetchFilters({
         sortBy,
@@ -78,6 +83,7 @@ export function useFilters(
         pageSize: 6,
         search,
         categories,
+        items,
       }),
     initialPageParam: undefined as CursorType | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

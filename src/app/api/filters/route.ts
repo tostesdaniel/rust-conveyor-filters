@@ -9,7 +9,7 @@ import {
   categories as categoriesTable,
   filterItems,
   filters,
-  items,
+  items as itemsTable,
 } from "@/db/schema";
 
 const cursorSchema = z.object({
@@ -39,7 +39,7 @@ const querySchema = z.object({
 
 export async function GET(request: Request) {
   try {
-    const { categories, search, sort } = loadSearchParams(request);
+    const { categories, items, search, sort } = loadSearchParams(request);
     const { searchParams } = new URL(request.url);
     const cursor = searchParams.get("cursor");
     const pageSize = Number(searchParams.get("pageSize")) || 6;
@@ -62,14 +62,14 @@ export async function GET(request: Request) {
                 db
                   .select()
                   .from(filterItems)
-                  .innerJoin(items, eq(filterItems.itemId, items.id))
+                  .innerJoin(itemsTable, eq(filterItems.itemId, itemsTable.id))
                   .where(
                     and(
                       eq(filterItems.filterId, filters.id),
                       or(
-                        ilike(items.name, `%${search}%`),
-                        ilike(items.shortname, `%${search}%`),
-                        ilike(items.category, `%${search}%`),
+                        ilike(itemsTable.name, `%${search}%`),
+                        ilike(itemsTable.shortname, `%${search}%`),
+                        ilike(itemsTable.category, `%${search}%`),
                       ),
                     ),
                   ),
@@ -107,6 +107,22 @@ export async function GET(request: Request) {
                   and(
                     eq(filterItems.filterId, filters.id),
                     inArray(categoriesTable.name, categories),
+                  ),
+                ),
+            ),
+          ]
+        : []),
+      ...(items && items.length > 0
+        ? [
+            exists(
+              db
+                .select()
+                .from(filterItems)
+                .innerJoin(itemsTable, eq(filterItems.itemId, itemsTable.id))
+                .where(
+                  and(
+                    eq(filterItems.filterId, filters.id),
+                    inArray(itemsTable.name, items),
                   ),
                 ),
             ),

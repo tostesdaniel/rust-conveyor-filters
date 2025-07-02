@@ -37,8 +37,8 @@ export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
 
   if (isDesktop) {
     return (
-      <div className='-mx-4 mb-0 sm:-mx-6 lg:-mx-8'>
-        <Banner className='flex-col border-b bg-pink-500/5 sm:flex-row sm:items-center sm:before:flex-1'>
+      <div className='x pointer-events-none fixed inset-x-0 bottom-0 z-50 sm:flex sm:justify-center sm:px-6 sm:pb-5 lg:px-8'>
+        <Banner className='pointer-events-auto flex-col border-b bg-accent sm:flex-row sm:items-center sm:rounded-xl sm:before:flex-1'>
           <BannerDescription className='flex items-center text-sm/6'>
             <span className='flex items-center font-semibold'>
               Support the project and get a{" "}

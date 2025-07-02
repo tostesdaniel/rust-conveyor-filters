@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { and, desc, eq, exists, gt, ilike, inArray, lt, or } from "drizzle-orm";
+import { and, desc, eq, exists, gt, ilike, lt, or } from "drizzle-orm";
 import { z } from "zod";
 
 import { loadSearchParams } from "@/lib/search-params";
@@ -94,7 +94,7 @@ export async function GET(request: Request) {
           ]
         : []),
       ...(categories && categories.length > 0
-        ? [
+        ? categories.map((categoryName) =>
             exists(
               db
                 .select()
@@ -106,14 +106,14 @@ export async function GET(request: Request) {
                 .where(
                   and(
                     eq(filterItems.filterId, filters.id),
-                    inArray(categoriesTable.name, categories),
+                    eq(categoriesTable.name, categoryName),
                   ),
                 ),
             ),
-          ]
+          )
         : []),
       ...(items && items.length > 0
-        ? [
+        ? items.map((itemName) =>
             exists(
               db
                 .select()
@@ -122,11 +122,11 @@ export async function GET(request: Request) {
                 .where(
                   and(
                     eq(filterItems.filterId, filters.id),
-                    inArray(itemsTable.name, items),
+                    eq(itemsTable.name, itemName),
                   ),
                 ),
             ),
-          ]
+          )
         : []),
     ];
 

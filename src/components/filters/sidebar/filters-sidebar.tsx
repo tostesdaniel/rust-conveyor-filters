@@ -1,9 +1,12 @@
+import { Suspense } from "react";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { FiltersSidebarContent } from "@/components/filters/sidebar/filters-sidebar-content";
 import { FiltersSidebarHeader } from "@/components/filters/sidebar/filters-sidebar-header";
@@ -19,7 +22,9 @@ export function FiltersSidebar() {
         <FiltersSidebarHeader />
         <SidebarGroup className='py-0'>
           <SidebarGroupContent className='shrink-0'>
-            <SearchBar />
+            <Suspense fallback={<SidebarMenuSkeleton showIcon />}>
+              <SearchBar />
+            </Suspense>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarHeader>

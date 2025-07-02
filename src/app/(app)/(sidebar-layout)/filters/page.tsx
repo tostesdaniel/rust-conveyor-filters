@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { FilterGrid } from "@/components/filters/filter-grid";
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function FiltersPage() {
   return (
     <FilterShareProvider>
-      <FilterGrid />
+      <Suspense>
+        <FilterGrid />
+      </Suspense>
     </FilterShareProvider>
   );
 }

@@ -65,7 +65,9 @@ export function FilterGrid() {
 
   return (
     <div className='-mt-0.5'>
-      <FilterSortTabs />
+      <React.Suspense>
+        <FilterSortTabs />
+      </React.Suspense>
       {isLoading ? (
         <FiltersLoading />
       ) : (

@@ -91,7 +91,7 @@ export function ItemsSelection() {
             <SidebarMenuItem className='px-2'>
               <ItemsCombobox />
             </SidebarMenuItem>
-            <SidebarMenuSub className='mr-0'>
+            <SidebarMenuSub className='mr-0' hidden={!items?.length}>
               {items?.map((item) => {
                 const foundItem = itemsData?.data?.find((i) => i.name === item);
                 return foundItem ? (

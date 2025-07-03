@@ -1,23 +1,11 @@
 "use server";
 
 import { db } from "@/db";
-import { auth } from "@clerk/nextjs/server";
 import { asc } from "drizzle-orm";
 
 import { items } from "@/db/schema";
 
 export async function getItems() {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return {
-      success: false,
-      error: {
-        message: "Unauthorized",
-      },
-    };
-  }
-
   try {
     const result = await db
       .select()

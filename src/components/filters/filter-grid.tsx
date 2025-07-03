@@ -1,15 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
+import { RotateCcw, Search } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
-import type { FilterSortOption } from "@/types/filter-sorting";
 import { useFilters } from "@/hooks/use-filters";
+import { useSearchParams } from "@/hooks/useSearchParams";
 import { Typography } from "@/components/ui/typography";
+import { EmptyState } from "@/components/empty-state";
 import { FilterSortTabs } from "@/components/filters/filter-sort-tabs";
-import FiltersLoading from "@/app/(app)/filters/loading";
+import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
 
 import { FilterCard } from "./filter-card/filter-card";
 import { FilterCardSkeleton } from "./filter-card/filter-card-skeleton";
@@ -20,9 +21,7 @@ export function FilterGrid() {
     triggerOnce: false,
     threshold: 0.5,
   });
-  const searchParams = useSearchParams();
-  const sortBy = (searchParams.get("sort") ||
-    "popular") as FilterSortOption["value"];
+  const [{ sort, search, categories, items }] = useSearchParams();
 
   const {
     data,
@@ -33,11 +32,11 @@ export function FilterGrid() {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
-  } = useFilters(sortBy);
+  } = useFilters(sort, search, categories, items);
 
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [sortBy]);
+  }, [sort]);
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -66,28 +65,44 @@ export function FilterGrid() {
     );
   }
 
+  const allFilters = data?.pages.flatMap((page) => page.data) || [];
+  const hasFilters = allFilters.length > 0;
+
   return (
-    <div className='pt-4'>
-      <FilterSortTabs />
+    <div className='-mt-0.5'>
+      <React.Suspense>
+        <FilterSortTabs />
+      </React.Suspense>
       {isLoading ? (
         <FiltersLoading />
-      ) : (
-        <div className='grid grid-cols-1 gap-4 pt-6 lg:grid-cols-2 lg:place-items-stretch'>
-          {data?.pages
-            .flatMap((page) => page.data)
-            .map((filter: ConveyorFilterWithAuthor) => (
-              <div
-                key={filter.id}
-                className={`transition-opacity duration-300 ${
-                  isPlaceholderData ? "opacity-50" : "opacity-100"
-                }`}
-              >
-                <FilterCard filter={filter} />
-              </div>
-            ))}
+      ) : hasFilters ? (
+        <div className='grid grid-cols-1 gap-4 py-6 lg:grid-cols-2 lg:pb-16'>
+          {allFilters.map((filter: ConveyorFilterWithAuthor) => (
+            <div
+              key={filter.id}
+              className={`transition-opacity duration-300 ${
+                isPlaceholderData ? "opacity-50" : "opacity-100"
+              }`}
+            >
+              <FilterCard filter={filter} />
+            </div>
+          ))}
           {isFetchingNextPage &&
-            [...Array(4)].map((_, i) => <FilterCardSkeleton key={i} />)}
+            [...Array(4)].map((_, i) => (
+              <FilterCardSkeleton key={`skeleton-${i}`} />
+            ))}
           <div ref={ref} />
+        </div>
+      ) : (
+        <div className='mt-12 px-4'>
+          <EmptyState
+            Icon={Search}
+            title='No filters found'
+            description='Try adjusting your search terms or clearing filters to see more results.'
+            label='Clear filters'
+            ButtonIcon={RotateCcw}
+            redirectUrl='/filters'
+          />
         </div>
       )}
     </div>

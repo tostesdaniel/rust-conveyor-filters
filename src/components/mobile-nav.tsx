@@ -4,18 +4,55 @@ import { useState } from "react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import {
+  BoxIcon,
+  Filter,
+  HeartIcon,
+  InfoIcon,
+  Menu,
+  MessageSquareIcon,
+  type LucideIcon,
+} from "lucide-react";
 
-import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { MobileFiltersSidebar } from "@/components/filters/sidebar/mobile-filters-sidebar";
 
-import { SITE_NAV_ITEMS } from "./header";
+import { SITE_NAV_ITEMS, type Navigation } from "./header";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+
+type MobileNavigation = Navigation & {
+  readonly icon: LucideIcon;
+};
+
+const NAV_ICON_MAP = {
+  "/filters": BoxIcon,
+  "/my-filters": HeartIcon,
+  "/feedback": MessageSquareIcon,
+  "/about": InfoIcon,
+} as const satisfies Record<string, LucideIcon>;
+
+const createMobileNavItems = (): readonly MobileNavigation[] =>
+  SITE_NAV_ITEMS.map(
+    (item): MobileNavigation => ({
+      ...item,
+      icon: NAV_ICON_MAP[item.href as keyof typeof NAV_ICON_MAP] ?? Filter,
+    }),
+  );
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  const mobileNavItems = createMobileNavItems();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -28,41 +65,64 @@ export function MobileNav() {
           <span className='sr-only'>Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side='right' className='p-6'>
-        <MobileLink
-          href='/'
-          className='flex items-center'
-          onOpenChange={setOpen}
-        >
+      <SheetContent
+        side='right'
+        className='grow gap-y-5 overflow-y-auto px-6 pb-4'
+      >
+        <VisuallyHidden>
+          <SheetTitle>Navigation Menu</SheetTitle>
+          <SheetDescription>
+            Navigate through the app sections and access filtering tools for
+            your search.
+          </SheetDescription>
+        </VisuallyHidden>
+        <div className='flex h-16 shrink-0 items-center'>
           <Image
             src='/logo.png'
-            className='mr-2'
             width={40}
             height={40}
             alt='Logo'
             quality={100}
+            priority
           />
-          <span className='font-bold'>{siteConfig.name}</span>
-        </MobileLink>
-        <div className='mt-6 pl-6'>
-          <div className='flex flex-col space-y-2'>
-            {SITE_NAV_ITEMS.map((item, i) => (
-              <MobileLink
-                key={i}
-                href={item.href}
-                onOpenChange={setOpen}
-                className={cn(
-                  "transition-colors hover:text-foreground",
-                  pathname?.startsWith(item.href)
-                    ? "text-foreground"
-                    : "text-foreground/60",
-                )}
-              >
-                {item.name}
-              </MobileLink>
-            ))}
-          </div>
         </div>
+        <nav className='flex flex-1 flex-col'>
+          <ul className='flex flex-1 flex-col'>
+            <li>
+              <ul className='-mx-2 space-y-1'>
+                {mobileNavItems.map((item, i) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <li key={i}>
+                      <MobileLink
+                        key={i}
+                        href={item.href}
+                        onOpenChange={setOpen}
+                        className={cn(
+                          "w-full",
+                          pathname?.startsWith(item.href)
+                            ? "text-foreground"
+                            : "text-foreground/60",
+                        )}
+                      >
+                        <IconComponent className='h-4 w-4' />
+                        {item.name}
+                      </MobileLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+            {pathname === "/filters" && (
+              <>
+                <Separator className='my-4 w-full' />
+                <li>
+                  <MobileFiltersSidebar />
+                </li>
+              </>
+            )}
+          </ul>
+        </nav>
       </SheetContent>
     </Sheet>
   );
@@ -83,17 +143,16 @@ function MobileLink({
 }: MobileLinkProps) {
   const router = useRouter();
 
+  const handleClick = () => {
+    router.push(href.toString());
+    onOpenChange?.(false);
+  };
+
   return (
-    <Link
-      href={href}
-      onClick={() => {
-        router.push(href.toString());
-        onOpenChange?.(false);
-      }}
-      className={cn(className)}
-      {...props}
-    >
-      {children}
-    </Link>
+    <Button asChild variant='ghost' className={cn("justify-start", className)}>
+      <Link href={href} onClick={handleClick} {...props}>
+        {children}
+      </Link>
+    </Button>
   );
 }

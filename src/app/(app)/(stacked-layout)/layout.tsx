@@ -1,11 +1,11 @@
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 
-interface AppLayoutProps {
+interface StackedLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AppLayout({ children }: AppLayoutProps) {
+export default function StackedLayout({ children }: StackedLayoutProps) {
   return (
     <>
       <Header />

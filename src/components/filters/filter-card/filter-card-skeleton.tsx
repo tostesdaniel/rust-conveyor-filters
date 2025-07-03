@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function FilterCardSkeleton() {
   return (
-    <Card className='max-w-(--breakpoint-sm)'>
+    <Card className='flex h-full max-w-(--breakpoint-sm) flex-col'>
       <CardHeader>
         <Skeleton className='h-6 w-3/5' />
         <Skeleton className='h-5 w-1/2' />

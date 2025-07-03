@@ -43,21 +43,11 @@ export function Header() {
             </span>
           </Link>
         </div>
-        <DesktopNav />
+        <DesktopNav className='hidden lg:ml-6 lg:flex lg:gap-x-8' />
         <div className='flex flex-1 items-center justify-end gap-2'>
-          <RepoStarsButton className='hidden min-[800px]:inline-flex' />
           <div className='flex items-center gap-0.5'>
             <nav className='flex items-center gap-0.5'>
-              <Button variant='ghost' size='icon' className='size-9'>
-                <a
-                  href={siteConfig.links.repo}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <Icons.gitHub />
-                  <span className='sr-only'>GitHub</span>
-                </a>
-              </Button>
+              <RepoStarsButton />
               <Button variant='ghost' size='icon' className='size-9'>
                 <a
                   href={siteConfig.links.discord}
@@ -71,7 +61,7 @@ export function Header() {
             </nav>
             <ModeToggle />
           </div>
-          <div className='ml-2 flex items-center'>
+          <div className='ml-2 flex size-7 items-center'>
             <ClerkLoading>
               <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>

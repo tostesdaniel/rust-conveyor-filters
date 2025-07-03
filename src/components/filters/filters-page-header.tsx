@@ -36,7 +36,7 @@ export function FiltersPageHeader() {
           <DesktopNav className='hidden xl:ml-6 xl:flex xl:gap-x-8' />
         </div>
 
-        <div className='ml-auto flex items-center px-2 lg:ml-6 lg:justify-end'>
+        <div className='ml-auto flex items-center lg:ml-6 lg:justify-end'>
           <div className='flex items-center gap-0.5'>
             <RepoStarsButton />
             <Button variant='ghost' size='icon' className='size-9'>
@@ -51,7 +51,7 @@ export function FiltersPageHeader() {
             </Button>
             <ModeToggle />
           </div>
-          <div className='ml-2 flex size-7 items-center'>
+          <div className='ml-2 flex h-7 w-auto items-center'>
             <ClerkLoading>
               <Loader2Icon className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>

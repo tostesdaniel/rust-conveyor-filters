@@ -34,7 +34,7 @@ export const SITE_NAV_ITEMS: Navigation[] = [
 export function Header() {
   return (
     <header className='sticky top-0 z-50 border-b border-border/40 bg-background'>
-      <div className='mx-auto flex h-14 max-w-(--breakpoint-2xl) items-center px-4 sm:px-6 lg:px-8'>
+      <div className='mx-auto flex h-16 max-w-(--breakpoint-2xl) items-center px-4 sm:px-6 lg:px-8'>
         <div className='mr-6 shrink-0'>
           <Link href='/' className='flex items-center space-x-2'>
             <Image src='/logo.png' width={40} height={40} alt='Logo' />
@@ -61,7 +61,7 @@ export function Header() {
             </nav>
             <ModeToggle />
           </div>
-          <div className='ml-2 flex size-7 items-center'>
+          <div className='ml-2 flex h-7 w-auto items-center'>
             <ClerkLoading>
               <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>

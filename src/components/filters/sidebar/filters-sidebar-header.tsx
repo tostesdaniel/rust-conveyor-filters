@@ -12,7 +12,7 @@ export function FiltersSidebarHeader() {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size='lg' asChild>
-          <Link href='/filters' aria-label='Reload filters page'>
+          <Link href='/' aria-label='Go to home page'>
             <div className='flex items-center gap-2'>
               <Image
                 src='/logo.png'

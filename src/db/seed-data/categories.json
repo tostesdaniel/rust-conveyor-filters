@@ -1,7 +1,7 @@
 [
   { "id": 0, "name": "Weapons" },
   { "id": 1, "name": "Construction" },
-  { "id": 2, "name": "#bp_deployables" },
+  { "id": 2, "name": "Items" },
   { "id": 3, "name": "Resources" },
   { "id": 4, "name": "Clothing" },
   { "id": 5, "name": "Tools" },

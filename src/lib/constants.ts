@@ -14,7 +14,7 @@ export const steamConfig = {
 export const ITEM_CATEGORIES = [
   "Weapons",
   "Construction",
-  "#bp_deployables",
+  "Items",
   "Resources",
   "Clothing",
   "Tools",

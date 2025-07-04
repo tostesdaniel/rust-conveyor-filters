@@ -1,7 +1,7 @@
 export const categoryMapping: Record<string, string> = {
   Weapon: "Weapons",
   Construction: "Construction",
-  Items: "#bp_deployables",
+  Items: "Items",
   Resources: "Resources",
   Attire: "Clothing",
   Tool: "Tools",

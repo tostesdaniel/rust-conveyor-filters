@@ -19,7 +19,10 @@ export function HeroContent() {
             >
               🎉
             </span>{" "}
-            Now with filter categories!
+            Filters Search is here!
+            <span className='ml-1 bg-gradient-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
+              Finally!
+            </span>
           </p>
         </div>
         <Typography

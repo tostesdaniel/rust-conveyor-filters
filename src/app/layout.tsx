@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     url: "https://github.com/tostesdaniel",
   },
   creator: "Daniel Tostes",
+  publisher: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -58,6 +59,8 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
+    creator: "@RustFiltersApp",
+    site: "@RustFiltersApp",
   },
   manifest: "/manifest.webmanifest",
   robots: {

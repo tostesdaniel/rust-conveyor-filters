@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     follow: true,
     nocache: true,
   },
+  alternates: {
+    canonical: "/filters",
+  },
 };
 
 export default function FiltersPage() {

@@ -277,15 +277,17 @@ export async function GET(request: Request) {
         }
       : undefined;
 
-    const response = NextResponse.json({
-      data: enrichedFilters,
-      nextCursor,
-    });
-
-    // Add caching headers for better performance
-    response.headers.set("Cache-Control", "public, s-maxage=10");
-
-    return response;
+    return NextResponse.json(
+      {
+        data: enrichedFilters,
+        nextCursor,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        },
+      },
+    );
   } catch (error) {
     console.error("Error fetching filters:", error);
     return NextResponse.json(

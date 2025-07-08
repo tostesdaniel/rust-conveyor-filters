@@ -56,25 +56,13 @@ export const filters = pgTable(
       .notNull()
       .default(sql`now()`),
   },
-  (t) => ({
-    uniqueIndex: uniqueIndex("filters_id_idx").on(t.id),
-    popularityIdx: index("filters_popularity_idx").on(
-      t.popularityScore.desc(),
-      t.id.asc(),
-    ),
-    createdAtIdx: index("filters_created_at_idx").on(
-      t.createdAt.desc(),
-      t.id.asc(),
-    ),
-    updatedAtIdx: index("filters_updated_at_idx").on(
-      t.updatedAt.desc(),
-      t.id.asc(),
-    ),
-    exportCountIdx: index("filters_export_count_idx").on(
-      t.exportCount.desc(),
-      t.id.asc(),
-    ),
-  }),
+  (t) => [
+    uniqueIndex("filters_id_idx").on(t.id),
+    index("filters_popularity_idx").on(t.popularityScore.desc(), t.id.asc()),
+    index("filters_created_at_idx").on(t.createdAt.desc(), t.id.asc()),
+    index("filters_updated_at_idx").on(t.updatedAt.desc(), t.id.asc()),
+    index("filters_export_count_idx").on(t.exportCount.desc(), t.id.asc()),
+  ],
 );
 
 export type Filter = typeof filters.$inferSelect;

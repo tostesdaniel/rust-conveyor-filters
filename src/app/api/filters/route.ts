@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { and, desc, eq, exists, gt, ilike, lt, or } from "drizzle-orm";
+import { and, desc, eq, exists, gt, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { loadSearchParams } from "@/lib/search-params";
 import { enrichWithAuthor } from "@/lib/utils/enrich-filter";
+import { createTsQuery } from "@/lib/utils/text-search";
 import {
   categories as categoriesTable,
   filterItems,
@@ -53,45 +54,7 @@ export async function GET(request: Request) {
     const searchConditions = [
       eq(filters.isPublic, true),
       ...(search !== ""
-        ? [
-            or(
-              ilike(filters.name, `%${search}%`),
-              ilike(filters.description, `%${search}%`),
-              // Search in item names within the filter
-              exists(
-                db
-                  .select()
-                  .from(filterItems)
-                  .innerJoin(itemsTable, eq(filterItems.itemId, itemsTable.id))
-                  .where(
-                    and(
-                      eq(filterItems.filterId, filters.id),
-                      or(
-                        ilike(itemsTable.name, `%${search}%`),
-                        ilike(itemsTable.shortname, `%${search}%`),
-                        ilike(itemsTable.category, `%${search}%`),
-                      ),
-                    ),
-                  ),
-              ),
-              // Search in category names within the filter
-              exists(
-                db
-                  .select()
-                  .from(filterItems)
-                  .innerJoin(
-                    categoriesTable,
-                    eq(filterItems.categoryId, categoriesTable.id),
-                  )
-                  .where(
-                    and(
-                      eq(filterItems.filterId, filters.id),
-                      ilike(categoriesTable.name, `%${search}%`),
-                    ),
-                  ),
-              ),
-            ),
-          ]
+        ? [sql`${filters.searchVector} @@ ${createTsQuery(search)}`]
         : []),
       ...(categories && categories.length > 0
         ? categories.map((categoryName) =>

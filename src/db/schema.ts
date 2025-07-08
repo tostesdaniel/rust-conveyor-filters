@@ -1,3 +1,4 @@
+import { tsVector } from "@/db/custom-types/ts-vector";
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
@@ -49,6 +50,7 @@ export const filters = pgTable(
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
+    searchVector: tsVector("search_vector"),
     createdAt: timestamp("created_at")
       .notNull()
       .default(sql`now()`),
@@ -62,6 +64,7 @@ export const filters = pgTable(
     index("filters_created_at_idx").on(t.createdAt.desc(), t.id.asc()),
     index("filters_updated_at_idx").on(t.updatedAt.desc(), t.id.asc()),
     index("filters_export_count_idx").on(t.exportCount.desc(), t.id.asc()),
+    index("filters_search_idx").using("gin", t.searchVector),
   ],
 );
 

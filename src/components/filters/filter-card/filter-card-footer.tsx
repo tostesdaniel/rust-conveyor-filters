@@ -1,4 +1,5 @@
-import { formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
+import { ArrowBigUpDashIcon, ClockFadingIcon } from "lucide-react";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { cn } from "@/lib/utils";
@@ -21,11 +22,13 @@ export function FilterCardFooter({
       )}
     >
       <div className='self-start'>
-        <CardDescription>
-          Created at: {formatDistanceToNowStrict(filter.createdAt)} ago
-        </CardDescription>
-        <CardDescription>
+        <CardDescription className='flex items-center gap-1 leading-6'>
+          <ClockFadingIcon aria-hidden='true' className='size-4' />
           Updated at: {formatDistanceToNowStrict(filter.updatedAt)} ago
+        </CardDescription>
+        <CardDescription className='flex items-center gap-1 leading-6'>
+          <ArrowBigUpDashIcon aria-hidden='true' className='-ml-0.5 size-5' />
+          Created at: {format(filter.createdAt, "MMM d, yyyy")}
         </CardDescription>
       </div>
       <div className='flex w-full justify-center gap-2 sm:w-auto lg:w-full xl:w-auto'>

@@ -16,7 +16,7 @@ export function FilterCardHeader({
         <CardTitle className='overflow-hidden text-2xl text-ellipsis'>
           {filter.name}
         </CardTitle>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-2 self-start'>
           <ShareButton filterId={filter.id} />
           <BookmarkToggle filterId={filter.id} />
         </div>

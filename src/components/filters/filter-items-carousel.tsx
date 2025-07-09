@@ -129,7 +129,7 @@ export function FilterItemsCarousel({
         }}
         plugins={[autoplay.current]}
       >
-        <CarouselContent>
+        <CarouselContent className='py-0.5'>
           {filterItems.map((filterItem) => {
             const { item, category } = filterItem;
             const isCategory = !item;

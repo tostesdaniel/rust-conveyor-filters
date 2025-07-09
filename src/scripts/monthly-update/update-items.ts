@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 
 import { GameItem } from "@/types/gameItem";
+import { siteConfig } from "@/config/site";
 import { items, type Item } from "@/db/schema";
 
 async function updateItems() {
@@ -52,6 +53,11 @@ async function updateItems() {
       await db.insert(items).values(item);
     }
 
+    if (updatedItems.length > 0 || newItems.length > 0) {
+      console.log("🔄 Invalidating Vercel cache...");
+      await invalidateVercelCache();
+    }
+
     console.log("Item update completed successfully!");
     const addedCount = newItems.length;
     const updatedCount = updatedItems.length;
@@ -66,6 +72,48 @@ async function updateItems() {
   } catch (error) {
     console.error("Error updating items:", error);
     process.exit(1);
+  }
+}
+
+async function invalidateVercelCache() {
+  try {
+    const productionUrl = process.env.NEXT_PUBLIC_APP_URL || siteConfig.url;
+    const revalidateSecret = process.env.REVALIDATE_SECRET;
+
+    if (!revalidateSecret) {
+      console.log(
+        "  ⚠️  REVALIDATE_SECRET not set, skipping cache invalidation",
+      );
+      return;
+    }
+
+    const response = await fetch(`${productionUrl}/api/revalidate-items`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${revalidateSecret}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log("  ✅ Vercel cache invalidated successfully");
+      console.log(`  📝 ${result.message}`);
+      console.log(`  📅 ${result.timestamp}`);
+    } else {
+      console.log("  ❌ Failed to invalidate Vercel cache");
+      console.log(`  📄 Status: ${response.status} ${response.statusText}`);
+      console.log(`  💬 Error: ${result.error || "Unknown error"}`);
+      if (result.message) {
+        console.log(`  📝 Details: ${result.message}`);
+      }
+    }
+  } catch (error) {
+    console.log("  ❌ Error calling revalidation endpoint:", error);
+    console.log(
+      "  ℹ️  Database was updated successfully, but cache invalidation failed",
+    );
   }
 }
 

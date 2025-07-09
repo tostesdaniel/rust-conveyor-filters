@@ -1,10 +1,10 @@
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import fs from "fs/promises";
 import path from "path";
 import { promisify } from "util";
 import sharp from "sharp";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 const SIZES = [
   { name: "tiny", size: 24 },
@@ -29,8 +29,8 @@ async function ensureDir(dir: string) {
 }
 
 async function uploadToR2(localPath: string, remotePath: string) {
-  const cmd = `rclone copyto --no-update-modtime ${localPath} ${remotePath}`;
-  await execAsync(cmd);
+  const args = ["copyto", "--no-update-modtime", localPath, remotePath];
+  await execFileAsync("rclone", args);
 }
 
 async function processImage(imageName: string) {

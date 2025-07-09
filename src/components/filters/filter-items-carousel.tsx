@@ -147,12 +147,14 @@ export function FilterItemsCarousel({
                 <Card className='p-1'>
                   <CardContent className='relative aspect-square items-center justify-center p-0'>
                     {isCategory ? (
-                      <>
-                        <CategoryIcon className='h-14 w-full object-cover py-1' />
-                        <p className='overflow-hidden text-center text-xs font-bold text-clip'>
+                      <div className='flex h-full w-full flex-col items-center justify-center'>
+                        <div className='flex flex-1 items-center justify-center'>
+                          <CategoryIcon className='h-8 w-8' />
+                        </div>
+                        <p className='mt-1 w-full overflow-hidden px-0.5 text-center text-xs font-bold whitespace-nowrap'>
                           {category?.name}
                         </p>
-                      </>
+                      </div>
                     ) : (
                       <Image
                         src={getR2ImageUrl(item.imagePath + ".webp", "medium")}

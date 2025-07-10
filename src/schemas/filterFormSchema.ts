@@ -90,7 +90,8 @@ export const createFilterSchema = baseFilterSchema.superRefine((data, ctx) => {
   if (!validateNameLatinChars(data.name)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Public filter name must use only Latin characters",
+      message:
+        "Public filters: English letters only. For non-English characters, make filter private.",
       path: ["name"],
     });
   }
@@ -98,7 +99,8 @@ export const createFilterSchema = baseFilterSchema.superRefine((data, ctx) => {
   if (!validateDescriptionLatinChars(data.description)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Public filter description must use only Latin characters",
+      message:
+        "Public filters: English letters only. For non-English characters, make filter private.",
       path: ["description"],
     });
   }

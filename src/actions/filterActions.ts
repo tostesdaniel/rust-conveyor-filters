@@ -31,7 +31,7 @@ export const createFilter = authenticatedProcedure
       newFilter.isPublic &&
       !validatePublicFilterLatinChars(newFilter.name, newFilter.description)
     ) {
-      throw "Public filters must use only Latin characters in name and description";
+      throw "Cannot create public filter with non-English characters. Make it private or use English letters only.";
     }
 
     const { category } = parsed.data;
@@ -120,7 +120,7 @@ export const updateFilter = ownsFilterProcedure
       finalIsPublic &&
       !validatePublicFilterLatinChars(finalName, finalDescription)
     ) {
-      throw "Public filters must use only Latin characters in name and description";
+      throw "Cannot update to public with non-English characters. Use English letters or keep filter private.";
     }
 
     const updateData: Partial<{

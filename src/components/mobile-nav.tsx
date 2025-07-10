@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   BoxIcon,
   Filter,
@@ -14,6 +13,7 @@ import {
   MessageSquareIcon,
   type LucideIcon,
 } from "lucide-react";
+import { VisuallyHidden } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -69,13 +69,13 @@ export function MobileNav() {
         side='right'
         className='grow gap-y-5 overflow-y-auto px-6 pb-4'
       >
-        <VisuallyHidden>
+        <VisuallyHidden.Root>
           <SheetTitle>Navigation Menu</SheetTitle>
           <SheetDescription>
             Navigate through the app sections and access filtering tools for
             your search.
           </SheetDescription>
-        </VisuallyHidden>
+        </VisuallyHidden.Root>
         <div className='flex h-16 shrink-0 items-center'>
           <Image
             src='/logo.png'

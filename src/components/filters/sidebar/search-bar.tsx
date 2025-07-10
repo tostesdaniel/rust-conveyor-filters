@@ -44,7 +44,8 @@ export function SearchBar() {
           </TooltipTrigger>
           <TooltipContent sideOffset={4} side='right'>
             <p>
-              Search for filters by name, description, item names or category.
+              Search for filters by name, description, item names or category
+              names.
             </p>
           </TooltipContent>
         </div>

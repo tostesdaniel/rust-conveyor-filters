@@ -21,7 +21,7 @@ import { CheckboxWithDescription } from "./ui/checkbox-with-text";
 import { FormField } from "./ui/form";
 
 export function ConveyorCard() {
-  const { control, watch } = useFormContext();
+  const { control, watch, trigger } = useFormContext();
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "items",
@@ -61,7 +61,10 @@ export function ConveyorCard() {
               <CheckboxWithDescription
                 label='I want to make this filter public'
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked);
+                  trigger(["name", "description"]);
+                }}
               />
             )}
           />

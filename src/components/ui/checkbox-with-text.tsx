@@ -19,7 +19,7 @@ export function CheckboxWithDescription({
   description,
 }: CheckBoxWithDescriptionProps) {
   return (
-    <FormItem className='flex items-center space-y-0 space-x-3'>
+    <FormItem className='flex items-center space-y-0 '>
       <FormControl>
         <Checkbox checked={checked} onCheckedChange={onCheckedChange} />
       </FormControl>

@@ -92,8 +92,8 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       refetch();
       router.push("/my-filters");
     },
-    onError: () => {
-      toast.error("Failed to update filter");
+    onError: (err) => {
+      toast.error(err.message);
       refetch();
     },
   });

@@ -1,7 +1,11 @@
 "use server";
 
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { createFilterSchema } from "@/schemas/filterFormSchema";
+import {
+  createFilterSchema,
+  updateFilterInputSchema,
+  validatePublicFilterLatinChars,
+} from "@/schemas/filterFormSchema";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
@@ -20,6 +24,16 @@ export const createFilter = authenticatedProcedure
       throw "Invalid form data";
     }
 
+    const newFilter = parsed.data;
+
+    // Validate Latin characters for public filters
+    if (
+      newFilter.isPublic &&
+      !validatePublicFilterLatinChars(newFilter.name, newFilter.description)
+    ) {
+      throw "Public filters must use only Latin characters in name and description";
+    }
+
     const { category } = parsed.data;
     const maxOrder = await db.query.filters.findFirst({
       where: and(
@@ -35,7 +49,6 @@ export const createFilter = authenticatedProcedure
       orderBy: desc(filters.order),
     });
 
-    const newFilter = parsed.data;
     try {
       const [insertedFilter] = await db
         .insert(filters)
@@ -84,56 +97,32 @@ export const createFilter = authenticatedProcedure
 
 export const updateFilter = ownsFilterProcedure
   .createServerAction()
-  .input(
-    z.object({
-      data: createFilterSchema.partial(),
-      filterId: z.number(),
-      removedItems: z
-        .array(
-          z.union([
-            z.object({
-              itemId: z.number(),
-              name: z.string(),
-              imagePath: z.string(),
-              max: z.number(),
-              buffer: z.number(),
-              min: z.number(),
-            }),
-            z.object({
-              categoryId: z.number(),
-              name: z.string(),
-              max: z.number(),
-              buffer: z.number(),
-              min: z.number(),
-            }),
-          ]),
-        )
-        .optional(),
-      addedItems: z
-        .array(
-          z.union([
-            z.object({
-              itemId: z.number(),
-              name: z.string(),
-              imagePath: z.string(),
-              max: z.number(),
-              buffer: z.number(),
-              min: z.number(),
-            }),
-            z.object({
-              categoryId: z.number(),
-              name: z.string(),
-              max: z.number(),
-              buffer: z.number(),
-              min: z.number(),
-            }),
-          ]),
-        )
-        .optional(),
-    }),
-  )
+  .input(updateFilterInputSchema)
   .handler(async ({ input }) => {
     const { data, filterId, removedItems, addedItems } = input;
+
+    // Get the current filter data first to validate Latin characters
+    const currentFilter = await db.query.filters.findFirst({
+      where: eq(filters.id, filterId),
+    });
+
+    if (!currentFilter) {
+      throw new Error("Filter not found");
+    }
+
+    // Determine final values after update
+    const finalName = data.name ?? currentFilter.name;
+    const finalDescription = data.description ?? currentFilter.description;
+    const finalIsPublic = data.isPublic ?? currentFilter.isPublic;
+
+    // Validate Latin characters for public filters BEFORE making any database changes
+    if (
+      finalIsPublic &&
+      !validatePublicFilterLatinChars(finalName, finalDescription)
+    ) {
+      throw "Public filters must use only Latin characters in name and description";
+    }
+
     const updateData: Partial<{
       name: string;
       description: string | undefined;
@@ -163,19 +152,17 @@ export const updateFilter = ownsFilterProcedure
       }
 
       if (data.items) {
-        const filterItemsData = data.items.map(
-          (item: (typeof data.items)[0]) => {
-            return {
-              filterId: filterId,
-              itemId: "itemId" in item ? item.itemId : null,
-              categoryId: "categoryId" in item ? item.categoryId : null,
-              max: item.max,
-              buffer: item.buffer,
-              min: item.min,
-              updatedAt: new Date(),
-            };
-          },
-        );
+        const filterItemsData = data.items.map((item) => {
+          return {
+            filterId: filterId,
+            itemId: "itemId" in item ? item.itemId : null,
+            categoryId: "categoryId" in item ? item.categoryId : null,
+            max: item.max,
+            buffer: item.buffer,
+            min: item.min,
+            updatedAt: new Date(),
+          };
+        });
 
         for (const item of filterItemsData) {
           const isCategory = item.categoryId !== null;
@@ -218,16 +205,14 @@ export const updateFilter = ownsFilterProcedure
       }
 
       if (addedItems && addedItems.length > 0) {
-        const addedItemsData = addedItems.map(
-          (item: (typeof addedItems)[0]) => ({
-            filterId: filterId,
-            itemId: "itemId" in item ? item.itemId : null,
-            categoryId: "categoryId" in item ? item.categoryId : null,
-            max: item.max,
-            buffer: item.buffer,
-            min: item.min,
-          }),
-        );
+        const addedItemsData = addedItems.map((item) => ({
+          filterId: filterId,
+          itemId: "itemId" in item ? item.itemId : null,
+          categoryId: "categoryId" in item ? item.categoryId : null,
+          max: item.max,
+          buffer: item.buffer,
+          min: item.min,
+        }));
 
         await db.insert(filterItems).values(addedItemsData);
       }

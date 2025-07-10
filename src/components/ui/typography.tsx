@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot as SlotPrimitive } from "radix-ui";
 import { cva, VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
@@ -57,7 +57,7 @@ export interface TypographyProps
 const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant, as, asChild, ...props }, ref) => {
     const Comp = asChild
-      ? Slot
+      ? SlotPrimitive.Slot
       : (as ?? (variant ? variantElementMap[variant] : undefined) ?? "div");
     return (
       <Comp

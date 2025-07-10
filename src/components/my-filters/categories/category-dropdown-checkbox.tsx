@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronsDown } from "lucide-react";
+import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
@@ -12,7 +12,9 @@ import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import type { UserCategory } from "@/db/schema";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+type DropdownMenuCheckboxItemProps = React.ComponentProps<
+  typeof DropdownMenuPrimitive.CheckboxItem
+>;
 
 interface CategoryDropdownCheckboxProps {
   category: UserCategory;
@@ -25,7 +27,9 @@ export function CategoryDropdownCheckbox({
   filter,
   isSubCategory = false,
 }: CategoryDropdownCheckboxProps) {
-  const [checked, setChecked] = useState<Checked>(
+  const [checked, setChecked] = useState<
+    DropdownMenuCheckboxItemProps["checked"]
+  >(
     isSubCategory
       ? category.id === filter.subCategoryId
       : category.id === filter.categoryId,

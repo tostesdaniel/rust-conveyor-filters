@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import type { ToggleProps } from "@radix-ui/react-toggle";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
+import { Toggle as TogglePrimitive } from "radix-ui";
 import { toast } from "sonner";
 
 import { bookmarkFilter, getBookmarkedStatus } from "@/actions/bookmark-filter";
@@ -14,7 +14,8 @@ import {
 } from "@/hooks/server-action-hooks";
 import { Toggle } from "@/components/ui/toggle";
 
-interface BookmarkToggleProps extends ToggleProps {
+interface BookmarkToggleProps
+  extends React.ComponentProps<typeof TogglePrimitive.Root> {
   filterId: number;
   initialBookmarked?: boolean;
 }

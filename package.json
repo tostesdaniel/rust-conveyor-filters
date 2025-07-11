@@ -81,7 +81,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/eslint-plugin-query": "^5.73.3",
-    "@tanstack/react-query-devtools": "^5.82.0",
+    "@tanstack/react-query-devtools": "^5.83.0",
     "@types/node": "^22",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.1.2",

@@ -55,7 +55,7 @@
         "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
         "@tailwindcss/postcss": "^4.1.11",
         "@tanstack/eslint-plugin-query": "^5.73.3",
-        "@tanstack/react-query-devtools": "^5.82.0",
+        "@tanstack/react-query-devtools": "^5.83.0",
         "@types/node": "^22",
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.1.2",
@@ -759,7 +759,7 @@
 
     "@tanstack/react-query": ["@tanstack/react-query@5.82.0", "", { "dependencies": { "@tanstack/query-core": "5.82.0" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-mnk8/ofKEthFeMdhV1dV8YXRf+9HqvXAcciXkoo755d/ocfWq7N/Y9jGOzS3h7ZW9dDGwSIhs3/HANWUBsyqYg=="],
 
-    "@tanstack/react-query-devtools": ["@tanstack/react-query-devtools@5.82.0", "", { "dependencies": { "@tanstack/query-devtools": "5.81.2" }, "peerDependencies": { "@tanstack/react-query": "^5.82.0", "react": "^18 || ^19" } }, "sha512-MC05Zq3zr/59jhgF7dL6JSGPg1krbasDSizmRxjNcvxgh/sUTwRFD9CGN10YYX7LB6jq0ZpFtCjSVGdLiFrKAA=="],
+    "@tanstack/react-query-devtools": ["@tanstack/react-query-devtools@5.83.0", "", { "dependencies": { "@tanstack/query-devtools": "5.81.2" }, "peerDependencies": { "@tanstack/react-query": "^5.83.0", "react": "^18 || ^19" } }, "sha512-yfp8Uqd3I1jgx8gl0lxbSSESu5y4MO2ThOPBnGNTYs0P+ZFu+E9g5IdOngyUGuo6Uz6Qa7p9TLdZEX3ntik2fQ=="],
 
     "@tybys/wasm-util": ["@tybys/wasm-util@0.9.0", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw=="],
 

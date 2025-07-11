@@ -41,7 +41,7 @@ export function ConveyorItem({
   const CategoryIcon = getCategoryIcon(categoryKey!);
 
   return (
-    <li key={`${item.id}`}>
+    <li key={`${isCategory ? "category" : "item"} - ${item.id}`}>
       <div className='relative h-40 w-auto'>
         {isCategory ? (
           <CategoryIcon className='h-full w-full object-contain' />

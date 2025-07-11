@@ -66,7 +66,7 @@ export function FilterSettingsInput({
               type='text'
               id={id}
               placeholder='0'
-              className='rounded-none border-r-0 text-end selection:bg-transparent focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset'
+              className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset'
               {...field}
               onFocus={handleInputFocus}
               onChange={handleInputChange}

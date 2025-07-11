@@ -85,7 +85,7 @@
     "@types/node": "^22",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.1.2",
-    "drizzle-kit": "^0.31.0",
+    "drizzle-kit": "^0.31.4",
     "eslint": "^9",
     "eslint-config-next": "^15.1.7",
     "eslint-config-prettier": "^10.1.5",

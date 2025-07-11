@@ -10,6 +10,7 @@
     "*.css": "tailwindcss"
   },
   "tailwindCSS.classFunctions": ["cn"],
+  "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "workbench.editor.customLabels.patterns": {

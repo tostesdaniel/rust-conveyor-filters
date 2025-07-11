@@ -65,7 +65,7 @@
     "react-intersection-observer": "^9.16.0",
     "server-only": "^0.0.1",
     "sharp": "^0.34.1",
-    "sonner": "^2.0.3",
+    "sonner": "^2.0.6",
     "svix": "^1.64.1",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",

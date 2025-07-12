@@ -45,46 +45,6 @@ export const createCategory = authenticatedProcedure
     return await createUserCategory(input.name, ctx.userId);
   });
 
-export const getUserCategoryHierarchy = authenticatedProcedure
-  .createServerAction()
-  .handler(async ({ ctx }) => {
-    return await db.query.userCategories.findMany({
-      where: eq(userCategories.userId, ctx.userId),
-      with: {
-        filters: {
-          where: isNull(filters.subCategoryId),
-          with: {
-            filterItems: {
-              with: { category: true, item: true },
-            },
-          },
-          orderBy: filters.order,
-        },
-        subCategories: {
-          with: {
-            filters: {
-              with: {
-                filterItems: {
-                  with: { category: true, item: true },
-                },
-              },
-              orderBy: filters.order,
-            },
-          },
-        },
-      },
-    });
-  });
-
-export const getUserCategories = authenticatedProcedure
-  .createServerAction()
-  .handler(async ({ ctx }) => {
-    return await db.query.userCategories.findMany({
-      where: eq(userCategories.userId, ctx.userId),
-      with: { subCategories: true },
-    });
-  });
-
 export const manageFilterCategory = authenticatedProcedure
   .createServerAction()
   .input(

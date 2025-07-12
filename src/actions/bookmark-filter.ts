@@ -1,5 +1,6 @@
 "use server";
 
+import { bookmarkFilter, findExistingBookmark, unbookmarkFilter } from "@/data";
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -7,7 +8,7 @@ import { z } from "zod";
 import { authenticatedProcedure } from "@/lib/safe-action";
 import { bookmarks } from "@/db/schema";
 
-export const bookmarkFilter = authenticatedProcedure
+export const bookmarkFilterAction = authenticatedProcedure
   .createServerAction()
   .input(
     z.object({
@@ -15,27 +16,16 @@ export const bookmarkFilter = authenticatedProcedure
     }),
   )
   .handler(async ({ ctx, input }) => {
-    const existingBookmark = await db.query.bookmarks.findFirst({
-      where: and(
-        eq(bookmarks.filterId, input.filterId),
-        eq(bookmarks.authorId, ctx.userId),
-      ),
-    });
+    const existingBookmark = await findExistingBookmark(
+      input.filterId,
+      ctx.userId,
+    );
+
     if (existingBookmark) {
-      await db
-        .delete(bookmarks)
-        .where(
-          and(
-            eq(bookmarks.filterId, existingBookmark.filterId),
-            eq(bookmarks.authorId, ctx.userId),
-          ),
-        );
+      await unbookmarkFilter(input.filterId, ctx.userId);
       return { bookmarked: false };
     } else {
-      await db.insert(bookmarks).values({
-        filterId: input.filterId,
-        authorId: ctx.userId,
-      });
+      await bookmarkFilter(input.filterId, ctx.userId);
       return { bookmarked: true };
     }
   });

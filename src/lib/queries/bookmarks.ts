@@ -1,9 +1,10 @@
-import { db } from "@/db";
-import { and, eq } from "drizzle-orm";
+import {
+  getBookmarkedFilters as getBookmarkedFiltersDb,
+  getBookmarkStatus,
+} from "@/data";
 import { z } from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { bookmarks } from "@/db/schema";
 
 export const getBookmarkedStatus = authenticatedProcedure
   .createServerAction()
@@ -13,24 +14,12 @@ export const getBookmarkedStatus = authenticatedProcedure
     }),
   )
   .handler(async ({ ctx, input }) => {
-    const bookmarked = await db.query.bookmarks.findFirst({
-      where: and(
-        eq(bookmarks.filterId, input.filterId),
-        eq(bookmarks.authorId, ctx.userId),
-      ),
-    });
-    return { bookmarked: bookmarked ? true : false };
+    const bookmarked = await getBookmarkStatus(input.filterId, ctx.userId);
+    return { bookmarked };
   });
 
 export const getBookmarkedFilters = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
-    return await db.query.bookmarks.findMany({
-      where: eq(bookmarks.authorId, ctx.userId),
-      with: {
-        filter: {
-          with: { filterItems: { with: { item: true, category: true } } },
-        },
-      },
-    });
+    return await getBookmarkedFiltersDb(ctx.userId);
   });

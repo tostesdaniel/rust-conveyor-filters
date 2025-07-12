@@ -3,6 +3,7 @@
 import {
   createSubCategory,
   createUserCategory,
+  findExistingFilter,
   findExistingSubCategory,
   findExistingUserCategory,
   findParentCategoryById,
@@ -59,12 +60,11 @@ export const manageFilterCategory = authenticatedProcedure
 
     try {
       await txDb.transaction(async (tx) => {
-        const existingFilter = await tx.query.filters.findFirst({
-          where: and(
-            eq(filters.id, filterId),
-            eq(filters.authorId, ctx.userId),
-          ),
-        });
+        const existingFilter = await findExistingFilter(
+          filterId,
+          ctx.userId,
+          tx,
+        );
 
         if (!existingFilter) {
           throw new Error("Filter not found");

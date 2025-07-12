@@ -1,3 +1,5 @@
+"server-only";
+
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 

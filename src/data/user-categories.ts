@@ -59,6 +59,18 @@ export async function findParentCategoryById(parentId: number) {
   });
 }
 
+export async function findSubCategoryById(
+  subCategoryId: number,
+  userId: string,
+) {
+  return await db.query.subCategories.findFirst({
+    where: and(
+      eq(subCategories.id, subCategoryId),
+      eq(subCategories.userId, userId),
+    ),
+  });
+}
+
 export async function getUserCategoryHierarchy(userId: string) {
   return await db.query.userCategories.findMany({
     where: eq(userCategories.userId, userId),

@@ -7,6 +7,7 @@ import {
   findExistingSubCategory,
   findExistingUserCategory,
   findParentCategoryById,
+  findSubCategoryById,
 } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
@@ -71,12 +72,7 @@ export const manageFilterCategory = authenticatedProcedure
         }
 
         if (isSubCategory) {
-          const subCategory = await tx.query.subCategories.findFirst({
-            where: and(
-              eq(subCategories.id, categoryId),
-              eq(subCategories.userId, ctx.userId),
-            ),
-          });
+          const subCategory = await findSubCategoryById(categoryId, ctx.userId);
 
           if (!subCategory) {
             throw new Error("Subcategory not found");

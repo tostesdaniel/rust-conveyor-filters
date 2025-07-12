@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
 import { filters } from "@/db/schema";
@@ -51,4 +51,51 @@ export async function findUncategorizedFilters(authorId: string) {
     ),
     orderBy: filters.order,
   });
+}
+
+export async function getMaxOrderInCategory(
+  categoryId: number,
+  authorId: string,
+) {
+  const maxOrder = await db.query.filters.findFirst({
+    where: and(
+      eq(filters.authorId, authorId),
+      eq(filters.categoryId, categoryId),
+      isNull(filters.subCategoryId),
+    ),
+    orderBy: desc(filters.order),
+    columns: { order: true },
+  });
+
+  return maxOrder;
+}
+
+export async function getMaxOrderInSubCategory(
+  subCategoryId: number,
+  authorId: string,
+) {
+  const maxOrder = await db.query.filters.findFirst({
+    where: and(
+      eq(filters.authorId, authorId),
+      eq(filters.subCategoryId, subCategoryId),
+    ),
+    orderBy: desc(filters.order),
+    columns: { order: true },
+  });
+
+  return maxOrder;
+}
+
+export async function getMaxOrderInUncategorized(authorId: string) {
+  const maxOrder = await db.query.filters.findFirst({
+    where: and(
+      eq(filters.authorId, authorId),
+      isNull(filters.categoryId),
+      isNull(filters.subCategoryId),
+    ),
+    orderBy: desc(filters.order),
+    columns: { order: true },
+  });
+
+  return maxOrder;
 }

@@ -11,6 +11,8 @@ import {
   findParentCategoryById,
   findSubCategoryById,
   findUncategorizedFilters,
+  getMaxOrderInCategory,
+  getMaxOrderInSubCategory,
 } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
@@ -87,6 +89,7 @@ export const manageFilterCategory = authenticatedProcedure
               )
             : await findUncategorizedFilters(ctx.userId);
 
+        // Exclude the filter being moved from the source category
         const sourceUpdatePromises = sourceCategoryFilters
           .filter((f) => f.id !== filterId)
           .map((filter, index) =>
@@ -104,16 +107,11 @@ export const manageFilterCategory = authenticatedProcedure
           }
 
           // Get max order in destination category
-          const maxOrderResult = await tx.query.filters.findFirst({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              eq(filters.categoryId, subCategory.parentId),
-              eq(filters.subCategoryId, categoryId),
-            ),
-            orderBy: desc(filters.order),
-          });
-
-          const newOrder = maxOrderResult ? maxOrderResult.order + 1 : 0;
+          const maxOrder = await getMaxOrderInSubCategory(
+            subCategory.id,
+            ctx.userId,
+          );
+          const newOrder = maxOrder ? maxOrder.order + 1 : 0;
 
           // Update the filter's category and order
           await tx
@@ -130,17 +128,10 @@ export const manageFilterCategory = authenticatedProcedure
 
           await Promise.all(sourceUpdatePromises);
         } else {
-          // Root category
-          const maxOrderResult = await tx.query.filters.findFirst({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              eq(filters.categoryId, categoryId),
-              isNull(filters.subCategoryId),
-            ),
-            orderBy: desc(filters.order),
-          });
+          // Main category
+          const maxOrder = await getMaxOrderInCategory(categoryId, ctx.userId);
 
-          const newOrder = maxOrderResult ? maxOrderResult.order + 1 : 0;
+          const newOrder = maxOrder ? maxOrder.order + 1 : 0;
 
           await tx
             .update(filters)

@@ -1,5 +1,12 @@
 "use server";
 
+import {
+  createSubCategory,
+  createUserCategory,
+  findExistingSubCategory,
+  findExistingUserCategory,
+  findParentCategoryById,
+} from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
@@ -18,50 +25,24 @@ export const createCategory = authenticatedProcedure
   )
   .handler(async ({ ctx, input }) => {
     const existingCategory = input.parentId
-      ? await db.query.subCategories.findFirst({
-          where: and(
-            eq(subCategories.name, input.name),
-            eq(subCategories.parentId, input.parentId),
-            eq(subCategories.userId, ctx.userId),
-          ),
-        })
-      : await db.query.userCategories.findFirst({
-          where: and(
-            eq(userCategories.name, input.name),
-            eq(userCategories.userId, ctx.userId),
-          ),
-        });
+      ? await findExistingSubCategory(input.name, ctx.userId, input.parentId)
+      : await findExistingUserCategory(input.name, ctx.userId);
 
     if (existingCategory) {
       throw "Category with this name already exists at this level";
     }
 
     if (input.parentId) {
-      const parentCategory = await db.query.userCategories.findFirst({
-        where: eq(userCategories.id, input.parentId),
-      });
+      const parentCategory = await findParentCategoryById(input.parentId);
 
       if (!parentCategory) {
         throw "Parent category not found";
       }
 
-      return await db
-        .insert(subCategories)
-        .values({
-          name: input.name,
-          parentId: input.parentId,
-          userId: ctx.userId,
-        })
-        .returning();
+      return await createSubCategory(input.name, ctx.userId, input.parentId);
     }
 
-    return await db
-      .insert(userCategories)
-      .values({
-        name: input.name,
-        userId: ctx.userId,
-      })
-      .returning();
+    return await createUserCategory(input.name, ctx.userId);
   });
 
 export const getUserCategoryHierarchy = authenticatedProcedure

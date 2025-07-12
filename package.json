@@ -78,7 +78,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@hookform/devtools": "^4.4.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/eslint-plugin-query": "^5.73.3",
     "@tanstack/react-query-devtools": "^5.83.0",

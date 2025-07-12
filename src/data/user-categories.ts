@@ -1,9 +1,9 @@
 "server-only";
 
 import { db } from "@/db";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
-import { subCategories, userCategories } from "@/db/schema";
+import { filters, subCategories, userCategories } from "@/db/schema";
 
 export async function createUserCategory(name: string, userId: string) {
   return await db
@@ -56,5 +56,41 @@ export async function findExistingSubCategory(
 export async function findParentCategoryById(parentId: number) {
   return await db.query.userCategories.findFirst({
     where: eq(userCategories.id, parentId),
+  });
+}
+
+export async function getUserCategoryHierarchy(userId: string) {
+  return await db.query.userCategories.findMany({
+    where: eq(userCategories.userId, userId),
+    with: {
+      filters: {
+        where: isNull(filters.subCategoryId),
+        with: {
+          filterItems: {
+            with: { category: true, item: true },
+          },
+        },
+        orderBy: filters.order,
+      },
+      subCategories: {
+        with: {
+          filters: {
+            with: {
+              filterItems: {
+                with: { category: true, item: true },
+              },
+            },
+            orderBy: filters.order,
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function getUserCategories(userId: string) {
+  return await db.query.userCategories.findMany({
+    where: eq(userCategories.userId, userId),
+    with: { subCategories: true },
   });
 }

@@ -1,10 +1,8 @@
 import { db } from "@/db";
-import type { pooledDb } from "@/db/pooled-connection";
 import { and, eq } from "drizzle-orm";
 
+import type { DbTransaction } from "@/types/db-transaction";
 import { filters } from "@/db/schema";
-
-type DbTransaction = Parameters<Parameters<typeof pooledDb.transaction>[0]>[0];
 
 export async function findExistingFilter(
   filterId: number,

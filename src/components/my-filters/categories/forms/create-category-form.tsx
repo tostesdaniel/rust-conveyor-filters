@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { createCategory as createCategoryAction } from "@/actions/categoryActions";
+import { createCategory as createCategoryAction } from "@/actions/userCategoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { Button } from "@/components/ui/button";
 import {

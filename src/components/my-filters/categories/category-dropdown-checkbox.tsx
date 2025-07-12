@@ -7,7 +7,7 @@ import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-import { manageFilterCategory } from "@/actions/categoryActions";
+import { manageFilterCategory } from "@/actions/userCategoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import type { UserCategory } from "@/db/schema";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";

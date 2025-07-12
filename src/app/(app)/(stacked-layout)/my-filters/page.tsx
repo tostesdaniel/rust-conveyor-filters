@@ -5,12 +5,12 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
+import { getSharedFilters } from "@/actions/sharedFilters";
+import { getShareToken } from "@/actions/shareTokens";
 import {
   getUserCategories,
   getUserCategoryHierarchy,
-} from "@/actions/categoryActions";
-import { getSharedFilters } from "@/actions/sharedFilters";
-import { getShareToken } from "@/actions/shareTokens";
+} from "@/actions/userCategoryActions";
 import { getBookmarkedFilters, getUserFiltersByCategory } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/filters/saved-filters";

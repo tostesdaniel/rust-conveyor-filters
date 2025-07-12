@@ -1,3 +1,5 @@
+"use server";
+
 import {
   getUserCategories as getUserCategoriesDb,
   getUserCategoryHierarchy as getUserCategoryHierarchyDb,

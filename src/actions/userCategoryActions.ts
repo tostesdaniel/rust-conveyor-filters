@@ -125,8 +125,6 @@ export const manageFilterCategory = authenticatedProcedure
             .where(
               and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),
             );
-
-          await Promise.all(sourceUpdatePromises);
         } else {
           // Main category
           const maxOrder = await getMaxOrderInCategory(categoryId, ctx.userId);
@@ -144,9 +142,8 @@ export const manageFilterCategory = authenticatedProcedure
             .where(
               and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),
             );
-
-          await Promise.all(sourceUpdatePromises);
         }
+        await Promise.all(sourceUpdatePromises);
       });
     } catch (error) {
       console.error(error);

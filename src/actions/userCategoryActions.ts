@@ -6,8 +6,11 @@ import {
   findExistingFilter,
   findExistingSubCategory,
   findExistingUserCategory,
+  findFiltersInMainCategory,
+  findFiltersInSubCategory,
   findParentCategoryById,
   findSubCategoryById,
+  findUncategorizedFilters,
 } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
@@ -71,35 +74,34 @@ export const manageFilterCategory = authenticatedProcedure
           throw new Error("Filter not found");
         }
 
+        // Get current category filters for reordering
+        const sourceCategoryFilters = existingFilter.subCategoryId
+          ? await findFiltersInSubCategory(
+              existingFilter.subCategoryId,
+              ctx.userId,
+            )
+          : existingFilter.categoryId
+            ? await findFiltersInMainCategory(
+                existingFilter.categoryId,
+                ctx.userId,
+              )
+            : await findUncategorizedFilters(ctx.userId);
+
+        const sourceUpdatePromises = sourceCategoryFilters
+          .filter((f) => f.id !== filterId)
+          .map((filter, index) =>
+            tx
+              .update(filters)
+              .set({ order: index })
+              .where(eq(filters.id, filter.id)),
+          );
+
         if (isSubCategory) {
           const subCategory = await findSubCategoryById(categoryId, ctx.userId);
 
           if (!subCategory) {
             throw new Error("Subcategory not found");
           }
-
-          // Update orders in source category
-          const sourceFilters = await tx.query.filters.findMany({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              existingFilter.categoryId
-                ? eq(filters.categoryId, existingFilter.categoryId)
-                : isNull(filters.categoryId),
-              existingFilter.subCategoryId
-                ? eq(filters.subCategoryId, existingFilter.subCategoryId)
-                : isNull(filters.subCategoryId),
-            ),
-            orderBy: filters.order,
-          });
-
-          const sourceUpdatePromises = sourceFilters
-            .filter((f) => f.id !== filterId)
-            .map((filter, index) =>
-              tx
-                .update(filters)
-                .set({ order: index })
-                .where(eq(filters.id, filter.id)),
-            );
 
           // Get max order in destination category
           const maxOrderResult = await tx.query.filters.findFirst({
@@ -128,29 +130,7 @@ export const manageFilterCategory = authenticatedProcedure
 
           await Promise.all(sourceUpdatePromises);
         } else {
-          // Similar logic for root category
-          const sourceFilters = await tx.query.filters.findMany({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              existingFilter.categoryId
-                ? eq(filters.categoryId, existingFilter.categoryId)
-                : isNull(filters.categoryId),
-              existingFilter.subCategoryId
-                ? eq(filters.subCategoryId, existingFilter.subCategoryId)
-                : isNull(filters.subCategoryId),
-            ),
-            orderBy: filters.order,
-          });
-
-          const sourceUpdatePromises = sourceFilters
-            .filter((f) => f.id !== filterId)
-            .map((filter, index) =>
-              tx
-                .update(filters)
-                .set({ order: index })
-                .where(eq(filters.id, filter.id)),
-            );
-
+          // Root category
           const maxOrderResult = await tx.query.filters.findFirst({
             where: and(
               eq(filters.authorId, ctx.userId),

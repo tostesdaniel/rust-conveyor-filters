@@ -5,10 +5,10 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
-import { getSharedFilters } from "@/actions/sharedFilters";
 import { getShareToken } from "@/actions/shareTokens";
 import {
   getBookmarkedFilters,
+  getSharedFilters,
   getUserCategories,
   getUserCategoryHierarchy,
   getUserFiltersByCategory,

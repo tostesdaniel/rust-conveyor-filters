@@ -4,6 +4,7 @@ import {
   createShareToken,
   findShareToken,
   findTokenRevocationStatus,
+  revokeShareToken,
 } from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { eq } from "drizzle-orm";
@@ -11,8 +12,7 @@ import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { generateShareToken } from "@/lib/share-token";
-import { sharedFilters, shareTokens } from "@/db/schema";
+import { sharedFilters } from "@/db/schema";
 
 export const createShareTokenAction = authenticatedProcedure
   .createServerAction()
@@ -54,7 +54,7 @@ export const getShareToken = authenticatedProcedure
     }
   });
 
-export const revokeShareToken = authenticatedProcedure
+export const revokeShareTokenAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
@@ -65,20 +65,9 @@ export const revokeShareToken = authenticatedProcedure
       }
 
       await txDb.transaction(async (tx) => {
-        await tx
-          .update(shareTokens)
-          .set({
-            revoked: true,
-          })
-          .where(eq(shareTokens.token, existingToken.token));
+        await revokeShareToken(existingToken.token, tx);
 
-        const [newToken] = await tx
-          .insert(shareTokens)
-          .values({
-            userId: ctx.userId,
-            token: generateShareToken(),
-          })
-          .returning();
+        const [newToken] = await createShareToken(ctx.userId, tx);
 
         await tx
           .update(sharedFilters)

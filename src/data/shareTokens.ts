@@ -3,11 +3,14 @@
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 
+import type { DbTransaction } from "@/types/db-transaction";
 import { generateShareToken } from "@/lib/share-token";
 import { shareTokens } from "@/db/schema";
 
-export async function createShareToken(userId: string) {
-  return await db
+export async function createShareToken(userId: string, tx?: DbTransaction) {
+  const dbInstance = tx || db;
+
+  return await dbInstance
     .insert(shareTokens)
     .values({
       userId,
@@ -39,4 +42,15 @@ export async function findTokenRevocationStatus(token: string) {
       revoked: true,
     },
   });
+}
+
+export async function revokeShareToken(token: string, tx?: DbTransaction) {
+  const dbInstance = tx || db;
+
+  await dbInstance
+    .update(shareTokens)
+    .set({
+      revoked: true,
+    })
+    .where(eq(shareTokens.token, token));
 }

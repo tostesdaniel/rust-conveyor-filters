@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { and, eq, isNull } from "drizzle-orm";
 
+import type { DbTransaction } from "@/types/db-transaction";
 import { filters, subCategories, userCategories } from "@/db/schema";
 
 export async function createUserCategory(name: string, userId: string) {
@@ -143,6 +144,35 @@ export async function renameMainCategory({
   return await db
     .update(userCategories)
     .set({ name })
+    .where(
+      and(eq(userCategories.id, categoryId), eq(userCategories.userId, userId)),
+    );
+}
+
+export async function deleteSubCategory(
+  subCategoryId: number,
+  userId: string,
+  tx?: DbTransaction,
+) {
+  const dbInstance = tx || db;
+  return await dbInstance
+    .delete(subCategories)
+    .where(
+      and(
+        eq(subCategories.id, subCategoryId),
+        eq(subCategories.userId, userId),
+      ),
+    );
+}
+
+export async function deleteMainCategory(
+  categoryId: number,
+  userId: string,
+  tx?: DbTransaction,
+) {
+  const dbInstance = tx || db;
+  return await dbInstance
+    .delete(userCategories)
     .where(
       and(eq(userCategories.id, categoryId), eq(userCategories.userId, userId)),
     );

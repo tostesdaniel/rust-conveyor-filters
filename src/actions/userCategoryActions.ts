@@ -3,6 +3,8 @@
 import {
   createSubCategory,
   createUserCategory,
+  deleteMainCategory,
+  deleteSubCategory,
   findExistingFilter,
   findExistingSubCategory,
   findExistingUserCategory,
@@ -13,6 +15,7 @@ import {
   findUncategorizedFilters,
   getMaxOrderInCategory,
   getMaxOrderInSubCategory,
+  getMaxOrderInUncategorized,
   moveFilterToCategory,
   moveFilterToSubCategory,
   moveFilterToUncategorized,
@@ -20,11 +23,11 @@ import {
   renameSubCategory,
 } from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import * as z from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { filters, subCategories, userCategories } from "@/db/schema";
+import { filters } from "@/db/schema";
 
 export const createCategory = authenticatedProcedure
   .createServerAction()
@@ -291,66 +294,73 @@ export const deleteCategory = authenticatedProcedure
     }),
   )
   .handler(async ({ ctx, input }) => {
+    const { isSubCategory, categoryId } = input;
+    const { userId } = ctx;
+
     try {
       await txDb.transaction(async (tx) => {
-        const filtersInCategory = await tx.query.filters.findMany({
-          where: and(
-            eq(filters.authorId, ctx.userId),
-            input.isSubCategory
-              ? eq(filters.subCategoryId, input.categoryId)
-              : eq(filters.categoryId, input.categoryId),
-          ),
-        });
+        const sourceCategoryFilters = isSubCategory
+          ? await findFiltersInSubCategory(categoryId, ctx.userId)
+          : await findFiltersInMainCategory(categoryId, ctx.userId);
 
-        if (filtersInCategory.length > 0) {
-          const maxOrderAtDestination = await tx.query.filters.findFirst({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              input.isSubCategory
-                ? eq(filters.categoryId, filtersInCategory[0].categoryId!)
-                : isNull(filters.categoryId),
-            ),
-            orderBy: desc(filters.order),
-          });
+        // Relocate filters if any exist
+        if (sourceCategoryFilters.length > 0) {
+          if (isSubCategory) {
+            // Move filters from subcategory to parent category
+            const parentCategoryId = sourceCategoryFilters[0].categoryId;
+            if (!parentCategoryId) {
+              throw new Error(
+                "Invalid subcategory: missing parent category. Request support in Discord.",
+              );
+            }
+            const maxOrderInParent = await getMaxOrderInCategory(
+              parentCategoryId,
+              userId,
+            );
+            const startingOrder = maxOrderInParent
+              ? maxOrderInParent.order + 1
+              : 0;
 
-          let nextOrder = maxOrderAtDestination
-            ? maxOrderAtDestination.order + 1
-            : 0;
+            const movePromises = sourceCategoryFilters.map((filter, index) =>
+              moveFilterToCategory(
+                {
+                  filterId: filter.id,
+                  targetCategoryId: parentCategoryId,
+                  authorId: userId,
+                  newOrder: startingOrder + index,
+                },
+                tx,
+              ),
+            );
 
-          const filterUpdatePromises = filtersInCategory.map((filter) =>
-            tx
-              .update(filters)
-              .set({
-                ...(input.isSubCategory
-                  ? { subCategoryId: null }
-                  : { categoryId: null, subCategoryId: null }),
-                order: nextOrder++,
-                updatedAt: sql`now()`,
-              })
-              .where(eq(filters.id, filter.id)),
-          );
+            await Promise.all(movePromises);
+          } else {
+            // Move filters from main category to uncategorized
+            const maxOrderInUncategorized =
+              await getMaxOrderInUncategorized(userId);
+            const startingOrder = maxOrderInUncategorized
+              ? maxOrderInUncategorized.order + 1
+              : 0;
 
-          await Promise.all(filterUpdatePromises);
+            const movePromises = sourceCategoryFilters.map((filter, index) =>
+              moveFilterToUncategorized(
+                {
+                  filterId: filter.id,
+                  authorId: userId,
+                  newOrder: startingOrder + index,
+                },
+                tx,
+              ),
+            );
+
+            await Promise.all(movePromises);
+          }
         }
 
-        if (input.isSubCategory) {
-          await tx
-            .delete(subCategories)
-            .where(
-              and(
-                eq(subCategories.id, input.categoryId),
-                eq(subCategories.userId, ctx.userId),
-              ),
-            );
+        if (isSubCategory) {
+          await deleteSubCategory(categoryId, ctx.userId, tx);
         } else {
-          await tx
-            .delete(userCategories)
-            .where(
-              and(
-                eq(userCategories.id, input.categoryId),
-                eq(userCategories.userId, ctx.userId),
-              ),
-            );
+          await deleteMainCategory(categoryId, ctx.userId, tx);
         }
       });
     } catch (error) {

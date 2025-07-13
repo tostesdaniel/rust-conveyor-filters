@@ -1,27 +1,16 @@
 "use server";
 
-import { findSharedFilters } from "@/data";
-import { db } from "@/db";
+import { findSharedFilters, findShareTokenId } from "@/data";
 import { clerkClient } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
 import { ZSAError } from "zsa";
 
 import type { ConveyorFilter } from "@/types/filter";
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { shareTokens } from "@/db/schema";
 
 export const getSharedFilters = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
-    const userShareToken = await db.query.shareTokens.findFirst({
-      where: and(
-        eq(shareTokens.revoked, false),
-        eq(shareTokens.userId, ctx.userId),
-      ),
-      columns: {
-        id: true,
-      },
-    });
+    const userShareToken = await findShareTokenId(ctx.userId);
 
     if (!userShareToken) {
       throw new ZSAError("NOT_FOUND", "Token not found");

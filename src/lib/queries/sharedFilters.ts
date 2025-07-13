@@ -1,5 +1,6 @@
 "use server";
 
+import { findSharedFilters } from "@/data";
 import { db } from "@/db";
 import { clerkClient } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
@@ -7,7 +8,7 @@ import { ZSAError } from "zsa";
 
 import type { ConveyorFilter } from "@/types/filter";
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { sharedFilters, shareTokens } from "@/db/schema";
+import { shareTokens } from "@/db/schema";
 
 export const getSharedFilters = authenticatedProcedure
   .createServerAction()
@@ -26,35 +27,7 @@ export const getSharedFilters = authenticatedProcedure
       throw new ZSAError("NOT_FOUND", "Token not found");
     }
 
-    const sharedFiltersResult = await db.query.sharedFilters.findMany({
-      where: eq(sharedFilters.shareTokenId, userShareToken.id),
-      with: {
-        filter: {
-          with: {
-            filterItems: {
-              with: {
-                item: true,
-                category: true,
-              },
-            },
-            userCategory: {
-              columns: {
-                id: true,
-                name: true,
-              },
-              with: {
-                subCategories: {
-                  columns: {
-                    id: true,
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
+    const sharedFiltersResult = await findSharedFilters(userShareToken.id);
 
     const client = await clerkClient();
     const senderIds = [...new Set(sharedFiltersResult.map((f) => f.senderId))];

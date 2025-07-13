@@ -106,3 +106,44 @@ export async function getUserCategories(userId: string) {
     with: { subCategories: true },
   });
 }
+
+interface RenameSubCategoryParams {
+  subCategoryId: number;
+  name: string;
+  userId: string;
+}
+
+export async function renameSubCategory({
+  name,
+  subCategoryId,
+  userId,
+}: RenameSubCategoryParams) {
+  return await db
+    .update(subCategories)
+    .set({ name })
+    .where(
+      and(
+        eq(subCategories.id, subCategoryId),
+        eq(subCategories.userId, userId),
+      ),
+    );
+}
+
+interface RenameMainCategoryParams {
+  categoryId: number;
+  name: string;
+  userId: string;
+}
+
+export async function renameMainCategory({
+  categoryId,
+  name,
+  userId,
+}: RenameMainCategoryParams) {
+  return await db
+    .update(userCategories)
+    .set({ name })
+    .where(
+      and(eq(userCategories.id, categoryId), eq(userCategories.userId, userId)),
+    );
+}

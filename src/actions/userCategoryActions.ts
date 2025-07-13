@@ -16,8 +16,9 @@ import {
   moveFilterToCategory,
   moveFilterToSubCategory,
   moveFilterToUncategorized,
+  renameMainCategory,
+  renameSubCategory,
 } from "@/data";
-import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import * as z from "zod";
@@ -264,26 +265,20 @@ export const renameCategory = authenticatedProcedure
     }),
   )
   .handler(async ({ ctx, input }) => {
-    if (input.isSubCategory) {
-      await db
-        .update(subCategories)
-        .set({ name: input.name })
-        .where(
-          and(
-            eq(subCategories.id, input.categoryId),
-            eq(subCategories.userId, ctx.userId),
-          ),
-        );
+    const { categoryId, name, isSubCategory } = input;
+    const { userId } = ctx;
+    if (isSubCategory) {
+      await renameSubCategory({
+        subCategoryId: categoryId,
+        name,
+        userId,
+      });
     } else {
-      await db
-        .update(userCategories)
-        .set({ name: input.name })
-        .where(
-          and(
-            eq(userCategories.id, input.categoryId),
-            eq(userCategories.userId, ctx.userId),
-          ),
-        );
+      await renameMainCategory({
+        categoryId,
+        name,
+        userId,
+      });
     }
   });
 

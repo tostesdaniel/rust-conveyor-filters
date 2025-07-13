@@ -13,6 +13,8 @@ import {
   findUncategorizedFilters,
   getMaxOrderInCategory,
   getMaxOrderInSubCategory,
+  moveFilterToCategory,
+  moveFilterToSubCategory,
 } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
@@ -114,34 +116,31 @@ export const manageFilterCategory = authenticatedProcedure
           const newOrder = maxOrder ? maxOrder.order + 1 : 0;
 
           // Update the filter's category and order
-          await tx
-            .update(filters)
-            .set({
-              categoryId: subCategory.parentId,
-              subCategoryId: categoryId,
-              order: newOrder,
-              updatedAt: new Date(),
-            })
-            .where(
-              and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),
-            );
+          await moveFilterToSubCategory(
+            {
+              filterId,
+              targetSubCategoryId: subCategory.id,
+              parentCategoryId: subCategory.parentId,
+              authorId: ctx.userId,
+              newOrder,
+            },
+            tx,
+          );
         } else {
           // Main category
           const maxOrder = await getMaxOrderInCategory(categoryId, ctx.userId);
 
           const newOrder = maxOrder ? maxOrder.order + 1 : 0;
 
-          await tx
-            .update(filters)
-            .set({
-              categoryId,
-              subCategoryId: null,
-              order: newOrder,
-              updatedAt: new Date(),
-            })
-            .where(
-              and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),
-            );
+          await moveFilterToCategory(
+            {
+              filterId,
+              targetCategoryId: categoryId,
+              authorId: ctx.userId,
+              newOrder,
+            },
+            tx,
+          );
         }
         await Promise.all(sourceUpdatePromises);
       });

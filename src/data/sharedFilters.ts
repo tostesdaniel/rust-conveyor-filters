@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
 
+import type { DbTransaction } from "@/types/db-transaction";
 import { sharedFilters } from "@/db/schema";
 
 export async function findSharedFilters(shareTokenId: number) {
@@ -35,4 +36,23 @@ export async function findSharedFilters(shareTokenId: number) {
       },
     },
   });
+}
+
+interface ReassignSharedFiltersToTokenParams {
+  fromTokenId: number;
+  toTokenId: number;
+}
+
+export async function reassignSharedFiltersToToken(
+  { fromTokenId, toTokenId }: ReassignSharedFiltersToTokenParams,
+  tx?: DbTransaction,
+) {
+  const dbInstance = tx || db;
+
+  await dbInstance
+    .update(sharedFilters)
+    .set({
+      shareTokenId: toTokenId,
+    })
+    .where(eq(sharedFilters.shareTokenId, fromTokenId));
 }

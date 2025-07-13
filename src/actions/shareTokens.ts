@@ -4,15 +4,14 @@ import {
   createShareToken,
   findShareToken,
   findTokenRevocationStatus,
+  reassignSharedFiltersToToken,
   revokeShareToken,
 } from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { sharedFilters } from "@/db/schema";
 
 export const createShareTokenAction = authenticatedProcedure
   .createServerAction()
@@ -69,12 +68,13 @@ export const revokeShareTokenAction = authenticatedProcedure
 
         const [newToken] = await createShareToken(ctx.userId, tx);
 
-        await tx
-          .update(sharedFilters)
-          .set({
-            shareTokenId: newToken.id,
-          })
-          .where(eq(sharedFilters.shareTokenId, existingToken.id));
+        await reassignSharedFiltersToToken(
+          {
+            fromTokenId: existingToken.id,
+            toTokenId: newToken.id,
+          },
+          tx,
+        );
       });
     } catch (error) {
       throw new Error("Failed to revoke share token");

@@ -15,6 +15,7 @@ import {
   getMaxOrderInSubCategory,
   moveFilterToCategory,
   moveFilterToSubCategory,
+  moveFilterToUncategorized,
 } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
@@ -161,29 +162,27 @@ export const clearFilterCategory = authenticatedProcedure
   .handler(async ({ ctx, input }) => {
     try {
       await txDb.transaction(async (tx) => {
-        const currentFilter = await tx.query.filters.findFirst({
-          where: and(
-            eq(filters.id, input.filterId),
-            eq(filters.authorId, ctx.userId),
-          ),
-        });
+        const currentFilter = await findExistingFilter(
+          input.filterId,
+          ctx.userId,
+          tx,
+        );
 
         if (!currentFilter) {
           throw "Filter not found";
         }
 
-        const sourceFilters = await tx.query.filters.findMany({
-          where: and(
-            eq(filters.authorId, ctx.userId),
-            currentFilter.categoryId
-              ? eq(filters.categoryId, currentFilter.categoryId)
-              : isNull(filters.categoryId),
-            currentFilter.subCategoryId
-              ? eq(filters.subCategoryId, currentFilter.subCategoryId)
-              : isNull(filters.subCategoryId),
-          ),
-          orderBy: filters.order,
-        });
+        const sourceFilters = currentFilter.subCategoryId
+          ? await findFiltersInSubCategory(
+              currentFilter.subCategoryId,
+              ctx.userId,
+            )
+          : currentFilter.categoryId
+            ? await findFiltersInMainCategory(
+                currentFilter.categoryId,
+                ctx.userId,
+              )
+            : [];
 
         const sourceUpdatePromises = sourceFilters
           .filter((f) => f.id !== input.filterId)
@@ -194,50 +193,27 @@ export const clearFilterCategory = authenticatedProcedure
               .where(eq(filters.id, filter.id)),
           );
 
-        //   const maxOrderAtDestination = await tx.query.filters.findFirst({
-        //     where: and(
-        //       eq(filters.authorId, ctx.userId),
-        //       input.isSubCategory
-        //         ? eq(filters.categoryId, currentFilter.categoryId!)
-        //         : isNull(filters.subCategoryId),
-        //     ),
-        //     orderBy: desc(filters.order),
-        //   });
+        const isClearingFromSubCategory = !!currentFilter.subCategoryId;
+        const hasParentCategory = currentFilter.categoryId;
 
-        //   const newOrder = maxOrderAtDestination
-        //     ? maxOrderAtDestination.order + 1
-        //     : 0;
-
-        //   await tx
-        //     .update(filters)
-        //     .set({
-        //       ...(input.isSubCategory
-        //         ? { subCategoryId: null }
-        //         : { categoryId: null }),
-        //       order: newOrder,
-        //       updatedAt: sql`now()`,
-        //     })
-        //     .where(
-        //       and(
-        //         eq(filters.id, input.filterId),
-        //         eq(filters.authorId, ctx.userId),
-        //       ),
-        //     );
-
-        //   await Promise.all(sourceUpdatePromises);
-        // });
-        if (input.isSubCategory && currentFilter.categoryId) {
-          const parentFilters = await tx.query.filters.findMany({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              eq(filters.categoryId, currentFilter.categoryId),
-              isNull(filters.subCategoryId),
-            ),
-            orderBy: filters.order,
-          });
+        if (isClearingFromSubCategory && hasParentCategory) {
+          const parentFilters = await findFiltersInMainCategory(
+            currentFilter.categoryId!, // Asserted by hasParentCategory
+            ctx.userId,
+          );
 
           // Always set order to next available in parent category
           const newOrder = parentFilters.length;
+
+          await moveFilterToCategory(
+            {
+              filterId: input.filterId,
+              targetCategoryId: currentFilter.categoryId!,
+              newOrder,
+              authorId: ctx.userId,
+            },
+            tx,
+          );
 
           await tx
             .update(filters)
@@ -253,32 +229,21 @@ export const clearFilterCategory = authenticatedProcedure
               ),
             );
         } else {
-          // For root category clearing
-          const uncategorizedFilters = await tx.query.filters.findMany({
-            where: and(
-              eq(filters.authorId, ctx.userId),
-              isNull(filters.categoryId),
-              isNull(filters.subCategoryId),
-            ),
-            orderBy: filters.order,
-          });
+          // For main category clearing
+          const uncategorizedFilters = await findUncategorizedFilters(
+            ctx.userId,
+          );
 
           const newOrder = uncategorizedFilters.length;
 
-          await tx
-            .update(filters)
-            .set({
-              categoryId: null,
-              subCategoryId: null,
-              order: newOrder,
-              updatedAt: sql`now()`,
-            })
-            .where(
-              and(
-                eq(filters.id, input.filterId),
-                eq(filters.authorId, ctx.userId),
-              ),
-            );
+          await moveFilterToUncategorized(
+            {
+              filterId: input.filterId,
+              authorId: ctx.userId,
+              newOrder,
+            },
+            tx,
+          );
         }
 
         await Promise.all(sourceUpdatePromises);

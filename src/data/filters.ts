@@ -156,3 +156,27 @@ export async function moveFilterToSubCategory(
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
+
+interface MoveFilterToUncategorizedParams {
+  filterId: number;
+  authorId: string;
+  newOrder: number;
+}
+
+export async function moveFilterToUncategorized(
+  data: MoveFilterToUncategorizedParams,
+  tx?: DbTransaction,
+) {
+  const dbInstance = tx || db;
+  const { filterId, authorId, newOrder } = data;
+
+  await dbInstance
+    .update(filters)
+    .set({
+      categoryId: null,
+      subCategoryId: null,
+      order: newOrder,
+      updatedAt: sql`now()`,
+    })
+    .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
+}

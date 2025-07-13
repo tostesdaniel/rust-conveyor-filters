@@ -3,7 +3,19 @@
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 
+import { generateShareToken } from "@/lib/share-token";
 import { shareTokens } from "@/db/schema";
+
+export async function createShareToken(userId: string) {
+  return await db
+    .insert(shareTokens)
+    .values({
+      userId,
+      token: generateShareToken(),
+    })
+    .onConflictDoNothing()
+    .returning();
+}
 
 export async function findShareTokenId(userId: string) {
   return await db.query.shareTokens.findFirst({

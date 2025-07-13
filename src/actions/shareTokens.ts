@@ -1,7 +1,10 @@
 "use server";
 
-import { findShareToken, findTokenRevocationStatus } from "@/data";
-import { db } from "@/db";
+import {
+  createShareToken,
+  findShareToken,
+  findTokenRevocationStatus,
+} from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -11,18 +14,11 @@ import { authenticatedProcedure } from "@/lib/safe-action";
 import { generateShareToken } from "@/lib/share-token";
 import { sharedFilters, shareTokens } from "@/db/schema";
 
-export const createShareToken = authenticatedProcedure
+export const createShareTokenAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const [shareToken] = await db
-        .insert(shareTokens)
-        .values({
-          userId: ctx.userId,
-          token: generateShareToken(),
-        })
-        .onConflictDoNothing()
-        .returning();
+      const [shareToken] = await createShareToken(ctx.userId);
 
       return {
         token: shareToken.token,
@@ -40,7 +36,7 @@ export const getShareToken = authenticatedProcedure
       const shareToken = await findShareToken(ctx.userId);
 
       if (!shareToken) {
-        const [newToken, error] = await createShareToken();
+        const [newToken, error] = await createShareTokenAction();
 
         if (error) {
           throw new Error(error.message);

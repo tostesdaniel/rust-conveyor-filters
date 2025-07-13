@@ -19,3 +19,12 @@ export async function findShareToken(userId: string) {
     where: and(eq(shareTokens.userId, userId), eq(shareTokens.revoked, false)),
   });
 }
+
+export async function findTokenRevocationStatus(token: string) {
+  return await db.query.shareTokens.findFirst({
+    where: eq(shareTokens.token, token),
+    columns: {
+      revoked: true,
+    },
+  });
+}

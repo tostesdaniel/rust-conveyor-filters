@@ -1,6 +1,6 @@
 "use server";
 
-import { findShareToken } from "@/data";
+import { findShareToken, findTokenRevocationStatus } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { eq } from "drizzle-orm";
@@ -104,12 +104,7 @@ export const validateToken = createServerAction()
   )
   .handler(async ({ input }) => {
     try {
-      const token = await db.query.shareTokens.findFirst({
-        where: eq(shareTokens.token, input.token),
-        columns: {
-          revoked: true,
-        },
-      });
+      const token = await findTokenRevocationStatus(input.token);
 
       if (!token) {
         throw new ZSAError("NOT_FOUND", "Token invalid or does not exist");

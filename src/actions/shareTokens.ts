@@ -1,8 +1,9 @@
 "use server";
 
+import { findShareToken } from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 
@@ -36,12 +37,7 @@ export const getShareToken = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const shareToken = await db.query.shareTokens.findFirst({
-        where: and(
-          eq(shareTokens.userId, ctx.userId),
-          eq(shareTokens.revoked, false),
-        ),
-      });
+      const shareToken = await findShareToken(ctx.userId);
 
       if (!shareToken) {
         const [newToken, error] = await createShareToken();
@@ -66,12 +62,7 @@ export const revokeShareToken = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const existingToken = await db.query.shareTokens.findFirst({
-        where: and(
-          eq(shareTokens.userId, ctx.userId),
-          eq(shareTokens.revoked, false),
-        ),
-      });
+      const existingToken = await findShareToken(ctx.userId);
 
       if (!existingToken) {
         throw new Error("Share token not found");

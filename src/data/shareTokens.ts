@@ -13,3 +13,9 @@ export async function findShareTokenId(userId: string) {
     },
   });
 }
+
+export async function findShareToken(userId: string) {
+  return await db.query.shareTokens.findFirst({
+    where: and(eq(shareTokens.userId, userId), eq(shareTokens.revoked, false)),
+  });
+}

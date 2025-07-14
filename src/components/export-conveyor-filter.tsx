@@ -1,12 +1,12 @@
 "use client";
 
+import { exportConveyorFilter } from "@/utils/export-conveyor-filter";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
 import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
-import { exportConveyorFilter } from "@/lib/export-conveyor-filter";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./ui/button";

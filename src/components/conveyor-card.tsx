@@ -1,10 +1,10 @@
 "use client";
 
+import { normalizeFilterData } from "@/utils/normalize-filter-data";
 import { BoxIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { ItemWithFields, type NewConveyorItem } from "@/types/item";
-import { normalizeFilterData } from "@/lib/normalizeFilterData";
 import { ImportButton } from "@/components/import-button";
 
 import { ConveyorCombobox } from "./conveyor-combobox";

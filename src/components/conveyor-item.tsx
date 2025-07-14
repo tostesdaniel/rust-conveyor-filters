@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -10,7 +11,6 @@ import { FilterSettingsFieldDescription } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import { getCategoryIcon } from "@/components/category-icons";
 
-import { getR2ImageUrl } from "../utils/r2-images";
 import { FilterSettingsInput } from "./filter-settings-input";
 import { FormDescription, FormField } from "./ui/form";
 

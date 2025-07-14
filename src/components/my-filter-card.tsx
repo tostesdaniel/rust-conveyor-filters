@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import {
   CornerDownRight,
   Edit,
@@ -19,7 +20,6 @@ import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/cat
 import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
 import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
-import { getR2ImageUrl } from "../utils/r2-images";
 import { ExportConveyorFilter } from "./export-conveyor-filter";
 import { DeleteSharedFilterDialog } from "./my-filters/shared-filters/delete-shared-filter-dialog";
 import { PrivateShareDropdownItem } from "./my-filters/shared-filters/private-share-dropdown-item";

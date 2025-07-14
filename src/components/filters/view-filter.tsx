@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { EyeIcon } from "lucide-react";
 
 import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
@@ -36,8 +37,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getCategoryIcon } from "@/components/category-icons";
-
-import { getR2ImageUrl } from "../../utils/r2-images";
 
 interface ViewFilterProps {
   filter: ConveyorFilter;

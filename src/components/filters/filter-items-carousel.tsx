@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import Autoplay from "embla-carousel-autoplay";
 import { useInView } from "react-intersection-observer";
 
@@ -17,8 +18,6 @@ import {
   type CarouselOptions,
 } from "@/components/ui/carousel";
 import { getCategoryIcon } from "@/components/category-icons";
-
-import { getR2ImageUrl } from "../../utils/r2-images";
 
 export function FilterItemsCarousel({
   filterItems,

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -31,8 +32,6 @@ import {
 import { getCategoryIcon } from "@/components/category-icons";
 import { ClearInputButton } from "@/components/my-filters/new-filter/clear-input-button";
 import { SearchTipTooltip } from "@/components/search-tip-tooltip";
-
-import { getR2ImageUrl } from "../utils/r2-images";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { CirclePlusIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 
@@ -33,8 +34,6 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-
-import { getR2ImageUrl } from "../../../utils/r2-images";
 
 export function ItemsSelection() {
   const { data: itemsData, isLoading: itemsLoading } = useGetItems();

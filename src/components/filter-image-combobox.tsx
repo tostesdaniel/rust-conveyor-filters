@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { ChevronsUpDown } from "lucide-react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +12,6 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { type Item } from "@/db/schema";
 
-import { getR2ImageUrl } from "../utils/r2-images";
 import { FilterImage } from "./filter-image";
 import { Button } from "./ui/button";
 import {

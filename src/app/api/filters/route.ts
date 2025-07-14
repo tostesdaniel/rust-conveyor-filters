@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { and, desc, eq, exists, gt, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { loadSearchParams } from "@/lib/search-params";
+import { loadSearchParams } from "@/config/search-params";
 import {
   categories as categoriesTable,
   filterItems,

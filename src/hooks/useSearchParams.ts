@@ -1,6 +1,6 @@
 import { useQueryStates, type UseQueryStatesOptions } from "nuqs";
 
-import { searchParams, urlKeys } from "@/lib/search-params";
+import { searchParams, urlKeys } from "@/config/search-params";
 
 export const useSearchParams = (
   opts?: Partial<UseQueryStatesOptions<typeof searchParams>>,

@@ -4,8 +4,8 @@ import { useTransition } from "react";
 import type { inferParserType } from "nuqs";
 
 import { filterSortOptions } from "@/types/filter-sorting";
+import { searchParams as searchParamsDef } from "@/config/search-params";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { searchParams as searchParamsDef } from "@/lib/search-params";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function FilterSortTabs() {

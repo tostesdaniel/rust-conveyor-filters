@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { clerkClient } from "@clerk/nextjs/server";
-
-import { setDonatorStatus } from "@/lib/badges";
 import {
   verifyKofiWebhook,
   type KoFiWebhookPayload,
-} from "@/lib/donations/kofi";
+} from "@/services/donations/kofi";
+import { clerkClient } from "@clerk/nextjs/server";
+
+import { setDonatorStatus } from "@/lib/badges";
 import { donations } from "@/db/schema";
 
 export async function POST(request: Request) {

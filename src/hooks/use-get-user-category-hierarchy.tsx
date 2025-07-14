@@ -1,5 +1,5 @@
-import { getUserCategoryHierarchy } from "@/actions/categoryActions";
 import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { getUserCategoryHierarchy } from "@/lib/queries";
 
 export function useGetUserCategoryHierarchy() {
   return useServerActionQuery(getUserCategoryHierarchy, {

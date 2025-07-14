@@ -1,8 +1,8 @@
 "use server";
 
-import { db } from "@/db";
+import { getCategories as getCategoriesDb } from "@/data";
 import { createServerAction } from "zsa";
 
 export const getCategories = createServerAction().handler(
-  async () => await db.query.categories.findMany(),
+  async () => await getCategoriesDb(),
 );

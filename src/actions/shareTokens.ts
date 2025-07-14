@@ -1,27 +1,23 @@
 "use server";
 
-import { db } from "@/db";
+import {
+  createShareToken,
+  findShareToken,
+  findTokenRevocationStatus,
+  reassignSharedFiltersToToken,
+  revokeShareToken,
+} from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
-import { generateShareToken } from "@/lib/share-token";
-import { sharedFilters, shareTokens } from "@/db/schema";
 
-export const createShareToken = authenticatedProcedure
+export const createShareTokenAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const [shareToken] = await db
-        .insert(shareTokens)
-        .values({
-          userId: ctx.userId,
-          token: generateShareToken(),
-        })
-        .onConflictDoNothing()
-        .returning();
+      const [shareToken] = await createShareToken(ctx.userId);
 
       return {
         token: shareToken.token,
@@ -36,15 +32,10 @@ export const getShareToken = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const shareToken = await db.query.shareTokens.findFirst({
-        where: and(
-          eq(shareTokens.userId, ctx.userId),
-          eq(shareTokens.revoked, false),
-        ),
-      });
+      const shareToken = await findShareToken(ctx.userId);
 
       if (!shareToken) {
-        const [newToken, error] = await createShareToken();
+        const [newToken, error] = await createShareTokenAction();
 
         if (error) {
           throw new Error(error.message);
@@ -62,43 +53,28 @@ export const getShareToken = authenticatedProcedure
     }
   });
 
-export const revokeShareToken = authenticatedProcedure
+export const revokeShareTokenAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     try {
-      const existingToken = await db.query.shareTokens.findFirst({
-        where: and(
-          eq(shareTokens.userId, ctx.userId),
-          eq(shareTokens.revoked, false),
-        ),
-      });
+      const existingToken = await findShareToken(ctx.userId);
 
       if (!existingToken) {
         throw new Error("Share token not found");
       }
 
       await txDb.transaction(async (tx) => {
-        await tx
-          .update(shareTokens)
-          .set({
-            revoked: true,
-          })
-          .where(eq(shareTokens.token, existingToken.token));
+        await revokeShareToken(existingToken.token, tx);
 
-        const [newToken] = await tx
-          .insert(shareTokens)
-          .values({
-            userId: ctx.userId,
-            token: generateShareToken(),
-          })
-          .returning();
+        const [newToken] = await createShareToken(ctx.userId, tx);
 
-        await tx
-          .update(sharedFilters)
-          .set({
-            shareTokenId: newToken.id,
-          })
-          .where(eq(sharedFilters.shareTokenId, existingToken.id));
+        await reassignSharedFiltersToToken(
+          {
+            fromTokenId: existingToken.id,
+            toTokenId: newToken.id,
+          },
+          tx,
+        );
       });
     } catch (error) {
       throw new Error("Failed to revoke share token");
@@ -113,12 +89,7 @@ export const validateToken = createServerAction()
   )
   .handler(async ({ input }) => {
     try {
-      const token = await db.query.shareTokens.findFirst({
-        where: eq(shareTokens.token, input.token),
-        columns: {
-          revoked: true,
-        },
-      });
+      const token = await findTokenRevocationStatus(input.token);
 
       if (!token) {
         throw new ZSAError("NOT_FOUND", "Token invalid or does not exist");

@@ -1,5 +1,5 @@
-import { getUserCategories } from "@/actions/categoryActions";
 import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { getUserCategories } from "@/lib/queries";
 
 export function useGetUserCategories() {
   return useServerActionQuery(getUserCategories, {

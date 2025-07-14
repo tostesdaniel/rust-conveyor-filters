@@ -3,7 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { deleteCategory } from "@/actions/categoryActions";
+import { deleteCategory } from "@/actions/userCategoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialogAction,

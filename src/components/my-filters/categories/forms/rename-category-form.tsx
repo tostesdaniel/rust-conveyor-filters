@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { renameCategory } from "@/actions/categoryActions";
+import { renameCategory } from "@/actions/userCategoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";

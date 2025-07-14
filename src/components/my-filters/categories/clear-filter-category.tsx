@@ -5,7 +5,7 @@ import { ListXIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-import { clearFilterCategory } from "@/actions/categoryActions";
+import { clearFilterCategory } from "@/actions/userCategoryActions";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 

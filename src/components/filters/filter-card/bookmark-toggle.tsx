@@ -7,11 +7,12 @@ import { BookmarkIcon, Loader2Icon } from "lucide-react";
 import { Toggle as TogglePrimitive } from "radix-ui";
 import { toast } from "sonner";
 
-import { bookmarkFilter, getBookmarkedStatus } from "@/actions/bookmark-filter";
+import { bookmarkFilterAction } from "@/actions/bookmark-filter";
 import {
   useServerActionMutation,
   useServerActionQuery,
 } from "@/hooks/server-action-hooks";
+import { getBookmarkedStatus } from "@/lib/queries";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps
@@ -38,7 +39,7 @@ export function BookmarkToggle({
     },
   );
 
-  const mutation = useServerActionMutation(bookmarkFilter, {
+  const mutation = useServerActionMutation(bookmarkFilterAction, {
     onSuccess: (data) => {
       setIsBookmarked(data.bookmarked);
       toast.success(

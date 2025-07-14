@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Copy, Eye, EyeOff, Loader } from "lucide-react";
 import { toast } from "sonner";
 
-import { revokeShareToken } from "@/actions/shareTokens";
+import { revokeShareTokenAction } from "@/actions/shareTokens";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useGetShareToken } from "@/hooks/use-get-share-token";
@@ -21,7 +21,7 @@ export function ShareTokenDisplay() {
   const [_, copy] = useCopyToClipboard();
   const { data: shareToken, isLoading } = useGetShareToken();
   const { mutate: revokeTokenMutation, isPending } = useServerActionMutation(
-    revokeShareToken,
+    revokeShareTokenAction,
     {
       onSuccess: () => {
         toast.success("New token generated");

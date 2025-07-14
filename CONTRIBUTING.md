@@ -81,7 +81,7 @@ The following services are optional for development. The application will either
 ```text
 rust-conveyor-filters/
 ├── src/
-│   ├── actions/               # Server actions
+│   ├── actions/               # Server actions that mutate data
 │   ├── app/                   # Next.js app router pages and layouts
 │   │   ├── (app)/             # Main application pages
 │   │   ├── (legal)/           # Terms and privacy pages
@@ -98,12 +98,13 @@ rust-conveyor-filters/
 │   │   ├── steam-guide/       # Steam guide components
 │   │   └── ui/                # Shared UI components
 │   ├── config/                # App metadata & config
+│   ├── data/                  # Database data access functions
 │   ├── db/                    # Database schema & setup
 │   │   └── seed-data/         # Seed data for the database
 │   ├── hooks/                 # Custom React hooks
 │   ├── lib/                   # Utility functions and constants
 │   │   ├── donation/          # Donation webhook validation
-│   │   ├── queries/           # Database queries
+│   │   ├── queries/           # Server functions that fetch data
 │   │   ├── stats/             # Cron jobs
 │   │   └── utils/             # Utility functions
 │   ├── providers/             # React context providers

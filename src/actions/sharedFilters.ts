@@ -1,5 +1,12 @@
 "use server";
 
+import {
+  createSharedFilter,
+  findExistingFilter,
+  findSharedFilter,
+  findShareToken,
+  findShareTokenByToken,
+} from "@/data";
 import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
@@ -21,9 +28,10 @@ export const shareFilter = ownsFilterProcedure
     const { filterId } = input;
     try {
       await txDb.transaction(async (tx) => {
-        const filter = await tx.query.filters.findFirst({
-          where: eq(filters.id, filterId),
-        });
+        const filter = await findExistingFilter(
+          filterId,
+          ctx.ownsFilter.authorId,
+        );
 
         if (!filter) {
           throw new ZSAError("NOT_FOUND", {
@@ -33,15 +41,7 @@ export const shareFilter = ownsFilterProcedure
           });
         }
 
-        const ownToken = await tx.query.shareTokens.findFirst({
-          where: and(
-            eq(shareTokens.revoked, false),
-            eq(shareTokens.userId, ctx.ownsFilter.authorId),
-          ),
-          columns: {
-            token: true,
-          },
-        });
+        const ownToken = await findShareToken(ctx.ownsFilter.authorId);
 
         if (!ownToken) {
           throw new ZSAError("NOT_FOUND", {
@@ -59,15 +59,7 @@ export const shareFilter = ownsFilterProcedure
           });
         }
 
-        const shareToken = await tx.query.shareTokens.findFirst({
-          where: and(
-            eq(shareTokens.revoked, false),
-            eq(shareTokens.token, input.token),
-          ),
-          columns: {
-            id: true,
-          },
-        });
+        const shareToken = await findShareTokenByToken(input.token);
 
         if (!shareToken) {
           throw new ZSAError("NOT_FOUND", {
@@ -77,12 +69,9 @@ export const shareFilter = ownsFilterProcedure
           });
         }
 
-        const existingSharedFilter = await tx.query.sharedFilters.findFirst({
-          where: and(
-            eq(sharedFilters.filterId, filterId),
-            eq(sharedFilters.senderId, ctx.ownsFilter.authorId),
-            eq(sharedFilters.shareTokenId, shareToken.id),
-          ),
+        const existingSharedFilter = await findSharedFilter({
+          filterId,
+          shareTokenId: shareToken.id,
         });
 
         if (existingSharedFilter) {
@@ -93,11 +82,14 @@ export const shareFilter = ownsFilterProcedure
           });
         }
 
-        await tx.insert(sharedFilters).values({
-          senderId: ctx.ownsFilter.authorId,
-          filterId,
-          shareTokenId: shareToken.id,
-        });
+        await createSharedFilter(
+          {
+            filterId,
+            shareTokenId: shareToken.id,
+            senderId: ctx.ownsFilter.authorId,
+          },
+          tx,
+        );
       });
     } catch (error) {
       if (error instanceof ZSAError) throw error;

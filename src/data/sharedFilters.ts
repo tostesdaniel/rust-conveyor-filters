@@ -1,10 +1,25 @@
 "server-only";
 
 import { db } from "@/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
 import { sharedFilters } from "@/db/schema";
+
+export async function findSharedFilter({
+  filterId,
+  shareTokenId,
+}: {
+  filterId: number;
+  shareTokenId: number;
+}) {
+  return await db.query.sharedFilters.findFirst({
+    where: and(
+      eq(sharedFilters.filterId, filterId),
+      eq(sharedFilters.shareTokenId, shareTokenId),
+    ),
+  });
+}
 
 export async function findSharedFilters(shareTokenId: number) {
   return await db.query.sharedFilters.findMany({
@@ -35,6 +50,27 @@ export async function findSharedFilters(shareTokenId: number) {
         },
       },
     },
+  });
+}
+
+export async function createSharedFilter(
+  {
+    filterId,
+    shareTokenId,
+    senderId,
+  }: {
+    filterId: number;
+    shareTokenId: number;
+    senderId: string;
+  },
+  tx?: DbTransaction,
+) {
+  const dbInstance = tx || db;
+
+  await dbInstance.insert(sharedFilters).values({
+    filterId,
+    shareTokenId,
+    senderId,
   });
 }
 

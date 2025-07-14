@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import Autoplay from "embla-carousel-autoplay";
 import { useInView } from "react-intersection-observer";
 
 import type { ConveyorFilterItem } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { categoryMapping } from "@/lib/categoryMapping";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,

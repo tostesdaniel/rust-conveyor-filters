@@ -1,4 +1,4 @@
-import { steamConfig } from "@/lib/constants";
+import { steamConfig } from "@/config/constants";
 import { getRedisClient } from "@/lib/redis";
 
 interface SteamGame {

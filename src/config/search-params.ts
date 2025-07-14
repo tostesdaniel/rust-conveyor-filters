@@ -7,7 +7,7 @@ import {
   parseAsStringLiteral,
 } from "nuqs/server";
 
-import { ITEM_CATEGORIES } from "@/lib/constants";
+import { ITEM_CATEGORIES } from "@/config/constants";
 
 export const searchParams = {
   search: parseAsString.withDefault(""),

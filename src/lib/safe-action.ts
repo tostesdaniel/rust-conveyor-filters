@@ -1,8 +1,8 @@
+import { checkUserOwnsFilter } from "@/services/filters";
 import { z } from "zod";
 import { createServerActionProcedure } from "zsa";
 
 import { getAuthenticatedUser } from "@/lib/auth";
-import { checkUserOwnsFilter } from "@/lib/filters";
 
 export const authenticatedProcedure = createServerActionProcedure().handler(
   async () => {

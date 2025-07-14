@@ -1,10 +1,10 @@
 import "server-only";
 
 import { db } from "@/db";
+import { generateShareToken } from "@/utils/share-token";
 import { and, eq } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
-import { generateShareToken } from "@/lib/share-token";
 import { shareTokens } from "@/db/schema";
 
 export async function createShareToken(userId: string, tx?: DbTransaction) {

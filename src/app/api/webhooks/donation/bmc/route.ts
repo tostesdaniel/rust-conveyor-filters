@@ -1,14 +1,14 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { clerkClient } from "@clerk/nextjs/server";
-
-import { setDonatorStatus } from "@/lib/badges";
+import { setDonatorStatus } from "@/services/badges";
 import {
   getTransactionId,
   verifyBMCWebhook,
   type BuyMeACoffeeWebhookPayload,
-} from "@/lib/donations/bmc";
+} from "@/services/donations/bmc";
+import { clerkClient } from "@clerk/nextjs/server";
+
 import { donations } from "@/db/schema";
 
 export async function POST(request: Request) {

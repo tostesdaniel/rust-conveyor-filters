@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getBookmarkedStatus } from "@/services/queries";
 import { useUser } from "@clerk/nextjs";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
@@ -12,7 +13,6 @@ import {
   useServerActionMutation,
   useServerActionQuery,
 } from "@/hooks/server-action-hooks";
-import { getBookmarkedStatus } from "@/lib/queries";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps

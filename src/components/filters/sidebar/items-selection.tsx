@@ -2,13 +2,13 @@
 
 import React, { useCallback, useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { CirclePlusIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { useGetItems } from "@/hooks/use-get-items";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { cn } from "@/lib/utils";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { items } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {

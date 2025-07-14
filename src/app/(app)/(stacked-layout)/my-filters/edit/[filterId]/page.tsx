@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getUserFilterById } from "@/services/queries";
 import {
   dehydrate,
   HydrationBoundary,
@@ -6,7 +7,6 @@ import {
 } from "@tanstack/react-query";
 
 import { getItems } from "@/actions/itemActions";
-import { getUserFilterById } from "@/lib/queries";
 import { Typography } from "@/components/ui/typography";
 import { EditFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 

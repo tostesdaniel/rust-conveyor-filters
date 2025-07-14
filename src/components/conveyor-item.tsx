@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { categoryMapping } from "@/utils/category-mapping";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
-import { categoryMapping } from "@/lib/categoryMapping";
-import { FilterSettingsFieldDescription } from "@/lib/constants";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
+import { FilterSettingsFieldDescription } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import { getCategoryIcon } from "@/components/category-icons";
 

@@ -1,11 +1,11 @@
 import Image from "next/image";
+import { parseDescription } from "@/utils/parse-steam-guide";
 import { ArrowRightIcon, BookHeartIcon, EyeIcon, StarIcon } from "lucide-react";
 import millify from "millify";
 
 import type { SteamGuideResponse } from "@/types/steam";
-import { getApiUrl } from "@/lib/api";
-import { steamConfig } from "@/lib/constants";
-import { parseDescription } from "@/lib/parseSteamGuide";
+import { getApiUrl } from "@/config/api";
+import { steamConfig } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import {
   Card,

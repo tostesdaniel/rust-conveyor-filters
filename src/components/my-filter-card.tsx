@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getR2ImageUrl } from "@/utils/r2-images";
 import {
   CornerDownRight,
   Edit,
@@ -14,7 +15,6 @@ import {
 
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import ViewFilter from "@/components/filters/view-filter";
 import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";

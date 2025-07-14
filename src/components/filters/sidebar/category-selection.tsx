@@ -2,8 +2,8 @@
 
 import { toast } from "sonner";
 
+import { ITEM_CATEGORIES } from "@/config/constants";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { ITEM_CATEGORIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

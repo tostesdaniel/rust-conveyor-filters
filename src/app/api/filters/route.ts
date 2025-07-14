@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
+import { enrichWithAuthor } from "@/utils/enrich-filter";
+import { createTsQuery } from "@/utils/text-search";
 import { and, desc, eq, exists, gt, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { loadSearchParams } from "@/lib/search-params";
-import { enrichWithAuthor } from "@/lib/utils/enrich-filter";
-import { createTsQuery } from "@/lib/utils/text-search";
+import { loadSearchParams } from "@/config/search-params";
 import {
   categories as categoriesTable,
   filterItems,

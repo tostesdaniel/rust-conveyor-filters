@@ -1,5 +1,6 @@
+import { getUserFilterById } from "@/services/queries";
+
 import { useServerActionQuery } from "@/hooks/server-action-hooks";
-import { getUserFilterById } from "@/lib/queries";
 
 export function useGetUserFilter(filterId: number) {
   return useServerActionQuery(getUserFilterById, {

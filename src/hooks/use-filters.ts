@@ -3,7 +3,10 @@ import type { inferParserType } from "nuqs";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import type { FilterSortOption } from "@/types/filter-sorting";
-import { serializeSearchParams, type searchParams } from "@/lib/search-params";
+import {
+  serializeSearchParams,
+  type searchParams,
+} from "@/config/search-params";
 
 interface FiltersResponse {
   data: ConveyorFilterWithAuthor[];

@@ -92,3 +92,20 @@ export async function reassignSharedFiltersToToken(
     })
     .where(eq(sharedFilters.shareTokenId, fromTokenId));
 }
+
+export async function deleteSharedFilter({
+  filterId,
+  shareTokenId,
+}: {
+  filterId: number;
+  shareTokenId: number;
+}) {
+  await db
+    .delete(sharedFilters)
+    .where(
+      and(
+        eq(sharedFilters.filterId, filterId),
+        eq(sharedFilters.shareTokenId, shareTokenId),
+      ),
+    );
+}

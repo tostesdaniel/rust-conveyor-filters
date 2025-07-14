@@ -2,19 +2,19 @@
 
 import {
   createSharedFilter,
+  deleteSharedFilter,
   findExistingFilter,
   findSharedFilter,
   findShareToken,
   findShareTokenByToken,
 } from "@/data";
-import { db } from "@/db";
 import { pooledDb as txDb } from "@/db/pooled-connection";
 import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 import { ZSAError } from "zsa";
 
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
-import { filters, sharedFilters, shareTokens } from "@/db/schema";
+import { filters, sharedFilters } from "@/db/schema";
 
 export const shareFilter = ownsFilterProcedure
   .createServerAction()
@@ -133,15 +133,7 @@ export const shareFilterCategory = authenticatedProcedure
 
     try {
       return await txDb.transaction(async (tx) => {
-        const ownToken = await tx.query.shareTokens.findFirst({
-          where: and(
-            eq(shareTokens.revoked, false),
-            eq(shareTokens.userId, ctx.userId),
-          ),
-          columns: {
-            token: true,
-          },
-        });
+        const ownToken = await findShareToken(ctx.userId);
 
         if (!ownToken) {
           throw new ZSAError("NOT_FOUND", {
@@ -178,12 +170,7 @@ export const shareFilterCategory = authenticatedProcedure
                     ),
             ),
           }),
-          tx.query.shareTokens.findFirst({
-            where: and(
-              eq(shareTokens.revoked, false),
-              eq(shareTokens.token, token),
-            ),
-          }),
+          findShareTokenByToken(token),
         ]);
 
         if (!shareToken) {
@@ -253,32 +240,23 @@ export const shareFilterCategory = authenticatedProcedure
     }
   });
 
-export const deleteSharedFilter = authenticatedProcedure
+export const deleteSharedFilterAction = authenticatedProcedure
   .createServerAction()
   .input(z.object({ filterId: z.number() }))
   .handler(async ({ ctx, input }) => {
     const { filterId } = input;
 
-    const ownShareToken = await db.query.shareTokens.findFirst({
-      where: and(
-        eq(shareTokens.revoked, false),
-        eq(shareTokens.userId, ctx.userId),
-      ),
-    });
+    const ownShareToken = await findShareToken(ctx.userId);
 
     if (!ownShareToken) {
       throw new ZSAError("NOT_FOUND", "Generate a new share token");
     }
 
     try {
-      await db
-        .delete(sharedFilters)
-        .where(
-          and(
-            eq(sharedFilters.filterId, filterId),
-            eq(sharedFilters.shareTokenId, ownShareToken.id),
-          ),
-        );
+      await deleteSharedFilter({
+        filterId,
+        shareTokenId: ownShareToken.id,
+      });
     } catch (error) {
       if (error instanceof ZSAError) throw error;
 

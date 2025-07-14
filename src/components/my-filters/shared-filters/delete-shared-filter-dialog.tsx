@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { deleteSharedFilter } from "@/actions/sharedFilters";
+import { deleteSharedFilterAction } from "@/actions/sharedFilters";
 import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialog,
@@ -35,7 +35,7 @@ export function DeleteSharedFilterDialog({
   onOpenChange,
 }: DeleteSharedFilterDialogProps) {
   const queryClient = useQueryClient();
-  const mutation = useServerActionMutation(deleteSharedFilter, {
+  const mutation = useServerActionMutation(deleteSharedFilterAction, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["shared-filters"] });
       toast.success("Filter removed from shared filters");

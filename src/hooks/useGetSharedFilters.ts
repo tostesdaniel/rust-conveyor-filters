@@ -1,4 +1,4 @@
-import { getSharedFilters } from "@/lib/queries";
+import { getSharedFilters } from "@/services/queries";
 
 import { useServerActionQuery } from "./server-action-hooks";
 

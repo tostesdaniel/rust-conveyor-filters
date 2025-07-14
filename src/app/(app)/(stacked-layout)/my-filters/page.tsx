@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import {
+  getBookmarkedFilters,
+  getSharedFilters,
+  getUserCategories,
+  getUserCategoryHierarchy,
+  getUserFiltersByCategory,
+} from "@/services/queries";
+import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 
 import { getShareToken } from "@/actions/shareTokens";
-import {
-  getBookmarkedFilters,
-  getSharedFilters,
-  getUserCategories,
-  getUserCategoryHierarchy,
-  getUserFiltersByCategory,
-} from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/filters/saved-filters";
 import { MyFilters } from "@/components/my-filters";

@@ -1,5 +1,6 @@
+import { getBookmarkedFilters } from "@/services/queries";
+
 import { useServerActionQuery } from "@/hooks/server-action-hooks";
-import { getBookmarkedFilters } from "@/lib/queries";
 
 export function useGetBookmarkedFilters() {
   return useServerActionQuery(getBookmarkedFilters, {

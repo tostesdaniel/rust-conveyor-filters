@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { categoryMapping } from "@/utils/category-mapping";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -11,7 +12,6 @@ import { type NewConveyorItem } from "@/types/item";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { categoryMapping } from "@/lib/categoryMapping";
 import { Item, type Category } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {

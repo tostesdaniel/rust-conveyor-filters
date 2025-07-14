@@ -1,4 +1,4 @@
-import { categoryMapping } from "@/lib/categoryMapping";
+import { categoryMapping } from "@/utils/category-mapping";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 

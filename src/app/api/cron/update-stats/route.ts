@@ -1,8 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-
-import { updateGameHours } from "@/lib/stats/updateGameHours";
-import { updateRepoStars } from "@/lib/stats/updateRepoStars";
+import { updateRepoStars } from "@/services/github-api";
+import { updateGameHours } from "@/services/steam-api";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

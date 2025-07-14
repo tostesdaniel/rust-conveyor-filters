@@ -6,7 +6,7 @@ import type {
   SteamGuideDetails,
   SteamUserDetails,
 } from "@/types/steam";
-import { steamConfig } from "@/lib/constants";
+import { steamConfig } from "@/config/constants";
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 

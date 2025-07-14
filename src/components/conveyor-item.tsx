@@ -6,7 +6,7 @@ import { Control, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
-import { FilterSettingsFieldDescription } from "@/lib/constants";
+import { FilterSettingsFieldDescription } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import { getCategoryIcon } from "@/components/category-icons";
 

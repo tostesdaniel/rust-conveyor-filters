@@ -5,7 +5,7 @@ import millify from "millify";
 
 import type { SteamGuideResponse } from "@/types/steam";
 import { getApiUrl } from "@/config/api";
-import { steamConfig } from "@/lib/constants";
+import { steamConfig } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import {
   Card,

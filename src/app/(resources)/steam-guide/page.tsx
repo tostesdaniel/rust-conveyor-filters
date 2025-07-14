@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "lucide-react";
 
-import { steamConfig } from "@/lib/constants";
+import { steamConfig } from "@/config/constants";
 import { Typography } from "@/components/ui/typography";
 import { SteamGuideCard } from "@/components/steam-guide/steam-guide-card";
 

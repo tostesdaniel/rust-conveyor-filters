@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
-import { FilterSettingsFieldDescription } from "@/lib/constants";
+import { FilterSettingsFieldDescription } from "@/config/constants";
 
 import { FilterSettingsTooltip } from "./filter-settings-tooltip";
 import { Button } from "./ui/button";

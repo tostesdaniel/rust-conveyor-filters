@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 
-import { enrichWithAuthor } from "@/lib/utils/enrich-filter";
 import { filters } from "@/db/schema";
+
+import { enrichWithAuthor } from "../../../../utils/enrich-filter";
 
 export async function GET(
   _request: Request,

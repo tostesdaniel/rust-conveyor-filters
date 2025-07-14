@@ -4,14 +4,15 @@ import { and, desc, eq, exists, gt, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { loadSearchParams } from "@/lib/search-params";
-import { enrichWithAuthor } from "@/lib/utils/enrich-filter";
-import { createTsQuery } from "@/lib/utils/text-search";
 import {
   categories as categoriesTable,
   filterItems,
   filters,
   items as itemsTable,
 } from "@/db/schema";
+
+import { enrichWithAuthor } from "../../../utils/enrich-filter";
+import { createTsQuery } from "../../../utils/text-search";
 
 const cursorSchema = z.object({
   id: z.number(),

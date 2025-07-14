@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
+import { getR2ImageUrl } from "../utils/r2-images";
 
 interface FilterImageProps {
   imagePath: string;

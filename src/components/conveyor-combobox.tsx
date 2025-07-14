@@ -12,7 +12,6 @@ import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Item, type Category } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +31,8 @@ import {
 import { getCategoryIcon } from "@/components/category-icons";
 import { ClearInputButton } from "@/components/my-filters/new-filter/clear-input-button";
 import { SearchTipTooltip } from "@/components/search-tip-tooltip";
+
+import { getR2ImageUrl } from "../utils/r2-images";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;

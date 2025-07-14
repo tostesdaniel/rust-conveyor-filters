@@ -1,10 +1,11 @@
 import Image from "next/image";
 
 import { ConveyorFilter } from "@/types/filter";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
 import { BookmarkToggle } from "@/components/filters/filter-card/bookmark-toggle";
 import ViewFilter from "@/components/filters/view-filter";
+
+import { getR2ImageUrl } from "../../utils/r2-images";
 
 interface BookmarkedFilterCardProps {
   filter: ConveyorFilter;

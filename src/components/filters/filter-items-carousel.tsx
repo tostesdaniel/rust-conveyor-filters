@@ -8,7 +8,6 @@ import { useInView } from "react-intersection-observer";
 import type { ConveyorFilterItem } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { categoryMapping } from "@/lib/categoryMapping";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -18,6 +17,8 @@ import {
   type CarouselOptions,
 } from "@/components/ui/carousel";
 import { getCategoryIcon } from "@/components/category-icons";
+
+import { getR2ImageUrl } from "../../utils/r2-images";
 
 export function FilterItemsCarousel({
   filterItems,

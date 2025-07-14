@@ -7,10 +7,10 @@ import { z } from "zod";
 import { type ItemWithFields } from "@/types/item";
 import { categoryMapping } from "@/lib/categoryMapping";
 import { FilterSettingsFieldDescription } from "@/lib/constants";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { Button } from "@/components/ui/button";
 import { getCategoryIcon } from "@/components/category-icons";
 
+import { getR2ImageUrl } from "../utils/r2-images";
 import { FilterSettingsInput } from "./filter-settings-input";
 import { FormDescription, FormField } from "./ui/form";
 

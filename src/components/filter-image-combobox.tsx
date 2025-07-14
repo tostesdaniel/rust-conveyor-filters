@@ -9,9 +9,9 @@ import { z } from "zod";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import { getR2ImageUrl } from "@/lib/utils/r2-images";
 import { type Item } from "@/db/schema";
 
+import { getR2ImageUrl } from "../utils/r2-images";
 import { FilterImage } from "./filter-image";
 import { Button } from "./ui/button";
 import {

@@ -8,6 +8,11 @@ import { searchParams as searchParamsDef } from "@/config/search-params";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+/**
+ * Renders a tab-based UI for selecting and applying sort options to a filtered list.
+ *
+ * Updates the URL search parameters and manages UI transitions when a sort option is selected. Disables interaction during transitions to prevent multiple updates.
+ */
 export function FilterSortTabs() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, startTransition] = useTransition();

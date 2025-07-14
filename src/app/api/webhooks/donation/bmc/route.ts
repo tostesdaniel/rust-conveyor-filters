@@ -11,6 +11,11 @@ import { clerkClient } from "@clerk/nextjs/server";
 
 import { donations } from "@/db/schema";
 
+/**
+ * Handles Buy Me A Coffee webhook POST requests for donation and membership events.
+ *
+ * Verifies the webhook signature, processes donation or membership events, records the transaction in the database, and updates the user's donator status if applicable. Returns a JSON response indicating success, ignored event, unauthorized access, or internal server error.
+ */
 export async function POST(request: Request) {
   try {
     const rawBody = await request.text();

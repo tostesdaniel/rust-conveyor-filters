@@ -9,6 +9,11 @@ import { clerkClient } from "@clerk/nextjs/server";
 
 import { donations } from "@/db/schema";
 
+/**
+ * Handles incoming Ko-fi webhook POST requests, verifies the payload, records the donation, and updates user badge status if applicable.
+ *
+ * Expects a form-encoded "data" field containing a JSON string of the Ko-fi webhook payload. Validates the webhook signature, associates the donation with a user if the email matches, and updates the user's donator badge. Returns a JSON response indicating success or an error status.
+ */
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();

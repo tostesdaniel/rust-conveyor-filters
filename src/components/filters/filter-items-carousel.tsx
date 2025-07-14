@@ -20,6 +20,13 @@ import { getCategoryIcon } from "@/components/category-icons";
 
 import { getR2ImageUrl } from "../../utils/r2-images";
 
+/**
+ * Renders a responsive, autoplaying carousel of filter items, displaying either categories or individual items with images or icons.
+ *
+ * The carousel adapts the number of visible items per page based on viewport width and only autoplays when at least half visible in the viewport. Below the carousel, it displays the current range of visible items out of the total.
+ *
+ * @param filterItems - Array of filter items to display in the carousel, each representing either a category or an individual item.
+ */
 export function FilterItemsCarousel({
   filterItems,
 }: {

@@ -7,6 +7,14 @@ import { and, eq } from "drizzle-orm";
 import type { DbTransaction } from "@/types/db-transaction";
 import { shareTokens } from "@/db/schema";
 
+/**
+ * Creates a new share token for the specified user and inserts it into the database.
+ *
+ * If a token for the user already exists, the operation does nothing. Optionally supports execution within a database transaction.
+ *
+ * @param userId - The ID of the user for whom the share token is created
+ * @returns The inserted share token record(s), or an empty array if no new record was created
+ */
 export async function createShareToken(userId: string, tx?: DbTransaction) {
   const dbInstance = tx || db;
 

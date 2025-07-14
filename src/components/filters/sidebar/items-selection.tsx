@@ -36,6 +36,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { getR2ImageUrl } from "../../../utils/r2-images";
 
+/**
+ * Displays and manages a selectable list of up to five items, allowing users to add or remove items from the selection.
+ *
+ * Renders a sidebar group with a menu showing the current count of selected items, a combobox for adding new items, and a list of selected items with options to remove them. Handles loading states and disables interactions while updates are in progress.
+ */
 export function ItemsSelection() {
   const { data: itemsData, isLoading: itemsLoading } = useGetItems();
   const [{ items }, setSearchParams] = useSearchParams();

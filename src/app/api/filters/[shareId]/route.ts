@@ -6,6 +6,11 @@ import { filters } from "@/db/schema";
 
 import { enrichWithAuthor } from "../../../../utils/enrich-filter";
 
+/**
+ * Handles GET requests to retrieve a public filter by its share ID.
+ *
+ * Parses the share ID from the request parameters, validates it, and fetches the corresponding public filter from the database along with its related items and categories. If found, enriches the filter with author information and returns it as JSON. Returns appropriate error responses if the ID is invalid, the filter is not found or private, or if an internal error occurs.
+ */
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ shareId: string }> },

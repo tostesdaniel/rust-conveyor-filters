@@ -23,7 +23,7 @@ import {
   renameSubCategory,
 } from "@/data";
 import { pooledDb as txDb } from "@/db/pooled-connection";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import * as z from "zod";
 
 import { authenticatedProcedure } from "@/lib/safe-action";
@@ -224,6 +224,7 @@ export const clearFilterCategory = authenticatedProcedure
             .set({
               subCategoryId: null,
               order: newOrder,
+              updatedAt: sql`now()`,
             })
             .where(
               and(

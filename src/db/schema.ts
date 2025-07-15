@@ -51,11 +51,12 @@ export const filters = pgTable(
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
     searchVector: tsVector("search_vector"),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp("created_at")
+      .notNull()
+      .default(sql`now()`),
     updatedAt: timestamp("updated_at")
       .notNull()
-      .defaultNow()
-      .$onUpdate(() => sql`now()`),
+      .default(sql`now()`),
   },
   (t) => [
     uniqueIndex("filters_id_idx").on(t.id),
@@ -98,11 +99,12 @@ export const filterItems = pgTable(
     max: integer("max").notNull().default(0),
     buffer: integer("buffer").notNull().default(0),
     min: integer("min").notNull().default(0),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp("created_at")
+      .notNull()
+      .default(sql`now()`),
     updatedAt: timestamp("updated_at")
       .notNull()
-      .defaultNow()
-      .$onUpdate(() => sql`now()`),
+      .default(sql`now()`),
   },
   (t) => ({
     uniqueIndex: uniqueIndex("unique_idx").on(t.itemId, t.filterId),

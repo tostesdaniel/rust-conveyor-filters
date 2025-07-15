@@ -6,7 +6,7 @@ import {
   updateFilterInputSchema,
   validatePublicFilterLatinChars,
 } from "@/schemas/filterFormSchema";
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure, ownsFilterProcedure } from "@/lib/safe-action";
@@ -130,6 +130,7 @@ export const updateFilter = ownsFilterProcedure
       categoryId: number | null;
       subCategoryId: number | null;
       isPublic: boolean | undefined;
+      updatedAt: Date;
     }> = {};
     if (data.name) updateData.name = data.name;
     if (data.description !== undefined)
@@ -140,6 +141,7 @@ export const updateFilter = ownsFilterProcedure
       updateData.subCategoryId = data.category.subCategoryId;
     }
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
+    updateData.updatedAt = new Date();
 
     try {
       if (Object.keys(updateData).length > 0) {
@@ -158,6 +160,7 @@ export const updateFilter = ownsFilterProcedure
             max: item.max,
             buffer: item.buffer,
             min: item.min,
+            updatedAt: new Date(),
           };
         });
 
@@ -290,6 +293,7 @@ export const updateFilterOrder = authenticatedProcedure
             .update(filters)
             .set({
               order,
+              updatedAt: sql`now()`,
             })
             .where(
               and(

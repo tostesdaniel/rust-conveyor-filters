@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
 import { filters } from "@/db/schema";
@@ -120,6 +120,7 @@ export async function moveFilterToCategory(
       categoryId: targetCategoryId,
       subCategoryId: null, // Clear subcategory
       order: newOrder,
+      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
@@ -151,6 +152,7 @@ export async function moveFilterToSubCategory(
       subCategoryId: targetSubCategoryId,
       categoryId: parentCategoryId,
       order: newOrder,
+      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
@@ -174,6 +176,7 @@ export async function moveFilterToUncategorized(
       categoryId: null,
       subCategoryId: null,
       order: newOrder,
+      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }

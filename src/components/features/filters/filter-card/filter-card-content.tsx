@@ -1,6 +1,6 @@
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { CardContent } from "@/components/ui/card";
-import { FilterItemsCarousel } from "@/components/filters/filter-items-carousel";
+import { FilterItemsCarousel } from "@/components/features/filters/components/filter-items-carousel";
 
 export function FilterCardContent({
   filter,

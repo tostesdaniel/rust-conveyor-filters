@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { FilterCard } from "@/components/filters/filter-card/filter-card";
+import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
 
 interface SharedFilterDialogProps {
   filter: ConveyorFilterWithAuthor;

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { useGetPublicFilter } from "@/hooks/use-get-public-filter";
-import { SharedFilterDialog } from "@/components/filters/shared-filter-dialog";
+import { SharedFilterDialog } from "@/components/features/filters/components/shared-filter-dialog";
 
 interface SharedFilterInfo {
   filter: ConveyorFilterWithAuthor;

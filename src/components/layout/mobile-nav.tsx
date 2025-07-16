@@ -25,7 +25,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { MobileFiltersSidebar } from "@/components/filters/sidebar/mobile-filters-sidebar";
+import { MobileFiltersSidebar } from "@/components/features/filters/sidebar/mobile-filters-sidebar";
 import { SITE_NAV_ITEMS, type Navigation } from "@/components/layout/header";
 
 type MobileNavigation = Navigation & {

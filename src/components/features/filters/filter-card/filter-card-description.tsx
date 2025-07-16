@@ -1,14 +1,13 @@
 import { InfoIcon } from "lucide-react";
 
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
-import { CardDescription } from "@/components/ui/card";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../ui/accordion";
+} from "@/components/ui/accordion";
+import { CardDescription } from "@/components/ui/card";
 
 export function FilterCardDescription({
   filter,

@@ -6,8 +6,8 @@ import {
 
 import { getItems } from "@/actions/itemActions";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { FiltersPageHeader } from "@/components/filters/filters-page-header";
-import { FiltersSidebar } from "@/components/filters/sidebar/filters-sidebar";
+import { FiltersPageHeader } from "@/components/features/filters/components/filters-page-header";
+import { FiltersSidebar } from "@/components/features/filters/sidebar/filters-sidebar";
 import { BannerWrapper } from "@/components/layout/banner-wrapper";
 
 export default async function FiltersLayout({

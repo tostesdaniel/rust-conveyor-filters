@@ -7,13 +7,12 @@ import { useInView } from "react-intersection-observer";
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { useFilters } from "@/hooks/use-filters";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { FilterSortTabs } from "@/components/filters/filter-sort-tabs";
+import { FilterSortTabs } from "@/components/features/filters/components/filter-sort-tabs";
+import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
+import { FilterCardSkeleton } from "@/components/features/filters/filter-card/filter-card-skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Typography } from "@/components/shared/typography";
 import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
-
-import { FilterCard } from "./filter-card/filter-card";
-import { FilterCardSkeleton } from "./filter-card/filter-card-skeleton";
 
 export function FilterGrid() {
   const { ref, inView } = useInView({

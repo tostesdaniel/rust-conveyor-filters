@@ -8,9 +8,9 @@ import {
   SidebarHeader,
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
-import { FiltersSidebarContent } from "@/components/filters/sidebar/filters-sidebar-content";
-import { FiltersSidebarHeader } from "@/components/filters/sidebar/filters-sidebar-header";
-import { SearchBar } from "@/components/filters/sidebar/search-bar";
+import { FiltersSidebarContent } from "@/components/features/filters/sidebar/filters-sidebar-content";
+import { FiltersSidebarHeader } from "@/components/features/filters/sidebar/filters-sidebar-header";
+import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
 
 export function FiltersSidebar() {
   return (

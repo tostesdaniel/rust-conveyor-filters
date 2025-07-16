@@ -1,4 +1,4 @@
-import { FilterCardSkeleton } from "@/components/filters/filter-card/filter-card-skeleton";
+import { FilterCardSkeleton } from "@/components/features/filters/filter-card/filter-card-skeleton";
 
 export default function FiltersLoading() {
   return (

@@ -15,7 +15,7 @@ import {
 
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
-import ViewFilter from "@/components/filters/view-filter";
+import ViewFilter from "@/components/features/filters/components/view-filter";
 import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
 import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";

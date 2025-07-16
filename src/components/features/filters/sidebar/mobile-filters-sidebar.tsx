@@ -8,10 +8,10 @@ import {
   SidebarMenuItem,
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
-import { CategorySelection } from "@/components/filters/sidebar/category-selection";
-import { ClearFiltersButton } from "@/components/filters/sidebar/clear-filters-button";
-import { ItemsSelection } from "@/components/filters/sidebar/items-selection";
-import { SearchBar } from "@/components/filters/sidebar/search-bar";
+import { CategorySelection } from "@/components/features/filters/sidebar/category-selection";
+import { ClearFiltersButton } from "@/components/features/filters/sidebar/clear-filters-button";
+import { ItemsSelection } from "@/components/features/filters/sidebar/items-selection";
+import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
 
 export function MobileFiltersSidebar() {
   return (

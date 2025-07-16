@@ -3,8 +3,8 @@ import { getR2ImageUrl } from "@/utils/r2-images";
 
 import { ConveyorFilter } from "@/types/filter";
 import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
-import { BookmarkToggle } from "@/components/filters/filter-card/bookmark-toggle";
-import ViewFilter from "@/components/filters/view-filter";
+import ViewFilter from "@/components/features/filters/components/view-filter";
+import { BookmarkToggle } from "@/components/features/filters/filter-card/bookmark-toggle";
 
 interface BookmarkedFilterCardProps {
   filter: ConveyorFilter;

@@ -1,9 +1,9 @@
 import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { FilterCardContent } from "@/components/filters/filter-card/filter-card-content";
-import { FilterCardFooter } from "@/components/filters/filter-card/filter-card-footer";
-import { FilterCardHeader } from "@/components/filters/filter-card/filter-card-header";
+import { FilterCardContent } from "@/components/features/filters/filter-card/filter-card-content";
+import { FilterCardFooter } from "@/components/features/filters/filter-card/filter-card-footer";
+import { FilterCardHeader } from "@/components/features/filters/filter-card/filter-card-header";
 
 export function FilterCard({
   filter,

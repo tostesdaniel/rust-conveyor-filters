@@ -3,9 +3,8 @@
 import { BookmarkPlusIcon, GlobeIcon } from "lucide-react";
 
 import { useGetBookmarkedFilters } from "@/hooks/use-get-bookmarked-filters";
+import { BookmarkedFilterCard } from "@/components/my-filters/bookmarked-filter-card";
 import { EmptyState } from "@/components/shared/empty-state";
-
-import { BookmarkedFilterCard } from "../my-filters/bookmarked-filter-card";
 
 export function SavedFilters() {
   const { data: bookmarkedFilters } = useGetBookmarkedFilters();

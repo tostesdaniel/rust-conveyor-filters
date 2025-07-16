@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ExportConveyorFilter } from "@/components/export-conveyor-filter";
-import ViewFilter from "@/components/filters/view-filter";
+import ViewFilter from "@/components/features/filters/components/view-filter";
 
 export function FilterCardFooter({
   filter,

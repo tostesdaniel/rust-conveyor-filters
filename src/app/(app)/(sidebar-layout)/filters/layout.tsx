@@ -6,9 +6,9 @@ import {
 
 import { getItems } from "@/actions/itemActions";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { BannerWrapper } from "@/components/banner-wrapper";
 import { FiltersPageHeader } from "@/components/filters/filters-page-header";
 import { FiltersSidebar } from "@/components/filters/sidebar/filters-sidebar";
+import { BannerWrapper } from "@/components/layout/banner-wrapper";
 
 export default async function FiltersLayout({
   children,

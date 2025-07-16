@@ -9,7 +9,7 @@ import {
   HeaderSectionContent,
   HeaderSectionDescription,
   HeaderSectionTitle,
-} from "@/components/header-sections";
+} from "@/components/layout/header-sections";
 import { TextEffect } from "@/components/shared/text-effect";
 
 export function CTA() {

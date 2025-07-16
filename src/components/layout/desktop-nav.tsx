@@ -6,8 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-import { SITE_NAV_ITEMS } from "./header";
+import { SITE_NAV_ITEMS } from "@/components/layout/header";
 
 export function DesktopNav({
   className,

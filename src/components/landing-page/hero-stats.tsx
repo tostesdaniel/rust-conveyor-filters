@@ -7,7 +7,7 @@ import {
   HeaderSectionDescription,
   HeaderSectionEyebrow,
   HeaderSectionTitle,
-} from "../header-sections";
+} from "../layout/header-sections";
 import { StatsGrid } from "./stats-grid";
 
 export async function HeroStats() {

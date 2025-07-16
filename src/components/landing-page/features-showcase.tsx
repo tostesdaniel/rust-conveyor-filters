@@ -5,8 +5,7 @@ import filterSharingImage from "@/../public/images/features/filter-sharing.webp"
 import * as motion from "motion/react-client";
 
 import { cn } from "@/lib/utils";
-
-import { HeaderSectionContainer } from "../header-sections";
+import { HeaderSectionContainer } from "@/components/layout/header-sections";
 
 interface Feature {
   title: string;

@@ -4,8 +4,7 @@ import { HeartIcon } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-
-import { Icons } from "./shared/icons";
+import { Icons } from "@/components/shared/icons";
 
 const navigation = [
   { name: "Privacy Policy", href: "/privacy-policy" },

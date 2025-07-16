@@ -16,18 +16,17 @@ import {
 import { VisuallyHidden } from "radix-ui";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { MobileFiltersSidebar } from "@/components/filters/sidebar/mobile-filters-sidebar";
-
-import { SITE_NAV_ITEMS, type Navigation } from "./header";
-import { Button } from "./ui/button";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from "@/components/ui/sheet";
+import { MobileFiltersSidebar } from "@/components/filters/sidebar/mobile-filters-sidebar";
+import { SITE_NAV_ITEMS, type Navigation } from "@/components/layout/header";
 
 type MobileNavigation = Navigation & {
   readonly icon: LucideIcon;

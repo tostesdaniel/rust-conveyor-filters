@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
-import { SignInToast } from "@/components/feedback/feeback-toast";
-import { FeedbackForm } from "@/components/feedback/feedback-form";
+import { FeedbackForm } from "@/components/pages/feedback/feedback-form";
+import { SignInToast } from "@/components/pages/feedback/feedback-toast";
 import { Typography } from "@/components/shared/typography";
 
 export default function FeedbackPage() {

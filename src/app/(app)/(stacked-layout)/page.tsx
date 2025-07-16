@@ -1,9 +1,9 @@
-import { CTA } from "@/components/landing-page/cta";
-import { FeaturesShowcase } from "@/components/landing-page/features-showcase";
-import { HeroBackground } from "@/components/landing-page/hero-background";
-import { HeroContent } from "@/components/landing-page/hero-content";
-import { HeroImage } from "@/components/landing-page/hero-image";
-import { HeroStats } from "@/components/landing-page/hero-stats";
+import { CTA } from "@/components/pages/landing/cta";
+import { FeaturesShowcase } from "@/components/pages/landing/features-showcase";
+import { HeroBackground } from "@/components/pages/landing/hero-background";
+import { HeroContent } from "@/components/pages/landing/hero-content";
+import { HeroImage } from "@/components/pages/landing/hero-image";
+import { HeroStats } from "@/components/pages/landing/hero-stats";
 
 export default function HomePage() {
   return (

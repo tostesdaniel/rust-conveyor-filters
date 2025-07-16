@@ -7,8 +7,8 @@ import {
   HeaderSectionDescription,
   HeaderSectionEyebrow,
   HeaderSectionTitle,
-} from "../layout/header-sections";
-import { StatsGrid } from "./stats-grid";
+} from "@/components/layout/header-sections";
+import { StatsGrid } from "@/components/pages/landing/stats-grid";
 
 export async function HeroStats() {
   const stats = await getHeroStats();

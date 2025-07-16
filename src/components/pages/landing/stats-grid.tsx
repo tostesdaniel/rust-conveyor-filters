@@ -2,8 +2,7 @@ import * as motion from "motion/react-client";
 
 import { iconMap, type Stat } from "@/types/stats";
 import { cn } from "@/lib/utils";
-
-import { StatValueClient } from "./stat-value-client";
+import { StatValueClient } from "@/components/pages/landing/stat-value-client";
 
 interface StatsGridProps {
   stats: Stat[];

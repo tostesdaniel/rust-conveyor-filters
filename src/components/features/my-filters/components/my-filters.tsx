@@ -6,9 +6,8 @@ import type { ConveyorFilter } from "@/types/filter";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
 import { CategoryHeading } from "@/components/features/my-filters/categories/category-heading";
+import { MyFilterCard as FilterCard } from "@/components/features/my-filters/components/my-filter-card";
 import { EmptyState } from "@/components/shared/empty-state";
-
-import { MyFilterCard as FilterCard } from "./my-filter-card";
 
 export function MyFilters() {
   const { data: uncategorizedFilters } = useGetUserFiltersByCategory(null);

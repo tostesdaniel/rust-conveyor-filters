@@ -11,9 +11,7 @@ import { z } from "zod";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { type Item } from "@/db/schema";
-
-import { FilterImage } from "./filter-image";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -21,10 +19,15 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./ui/command";
-import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
-import { FormControl } from "./ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+} from "@/components/ui/command";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { FormControl } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { FilterImage } from "@/components/features/my-filters/components/filter-image";
 
 type SelectedImage = string;
 

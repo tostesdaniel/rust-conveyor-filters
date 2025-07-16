@@ -10,8 +10,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { CategoryHeading } from "@/components/features/my-filters/categories/category-heading";
+import { MyFilterCard as FilterCard } from "@/components/features/my-filters/components/my-filter-card";
 import { ShareTokenDisplay } from "@/components/features/my-filters/shared-filters/share-token-display";
-import { MyFilterCard as FilterCard } from "@/components/my-filter-card";
 
 export function SharedFilters() {
   const { data: sharedFilters } = useGetSharedFilters();

@@ -32,8 +32,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
+import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
-import { FilterImageCombobox } from "@/components/filter-image-combobox";
 
 interface FilterItemBase {
   name: string;

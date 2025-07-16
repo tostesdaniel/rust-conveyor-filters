@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { DonateAlert } from "@/components/donate/donate-alert";
+import { DonateAlert } from "@/components/features/donation/donate-alert";
 
 interface DonateButtonProps extends ComponentProps<typeof Button> {
   icon?: React.ReactNode;

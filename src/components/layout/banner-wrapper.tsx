@@ -1,7 +1,7 @@
 "use client";
 
 import { useDonateBannerState } from "@/hooks/use-donate-banner-state";
-import { DonateBannerDialog } from "@/components/donate/donate-banner-dialog";
+import { DonateBannerDialog } from "@/components/features/donation/donate-banner-dialog";
 
 export function BannerWrapper() {
   const { isVisible, dismiss } = useDonateBannerState();

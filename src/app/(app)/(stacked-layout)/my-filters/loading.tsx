@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FilterCardSkeleton } from "@/components/my-filters/filter-card-skeleton";
+import { FilterCardSkeleton } from "@/components/features/my-filters/components/filter-card-skeleton";
 import { Typography } from "@/components/shared/typography";
 
 function CategoryHeadingSkeleton({ withAction = false }) {

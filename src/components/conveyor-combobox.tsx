@@ -30,7 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getCategoryIcon } from "@/components/category-icons";
-import { ClearInputButton } from "@/components/my-filters/new-filter/clear-input-button";
+import { ClearInputButton } from "@/components/features/my-filters/new-filter/clear-input-button";
 import { SearchTipTooltip } from "@/components/shared/search-tip-tooltip";
 
 interface ConveyorComboboxProps {

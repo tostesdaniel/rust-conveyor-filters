@@ -15,10 +15,10 @@ import {
 import { getShareToken } from "@/actions/shareTokens";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SavedFilters } from "@/components/features/filters/components/saved-filters";
+import { MyFiltersHeading } from "@/components/features/my-filters/components/my-filters-heading";
+import { ShareHelpDialog } from "@/components/features/my-filters/shared-filters/share-help-dialog";
+import { SharedFiltersTab } from "@/components/features/my-filters/shared-filters/shared-filters-tab";
 import { MyFilters } from "@/components/my-filters";
-import { MyFiltersHeading } from "@/components/my-filters/my-filters-heading";
-import { ShareHelpDialog } from "@/components/my-filters/shared-filters/share-help-dialog";
-import { SharedFiltersTab } from "@/components/my-filters/shared-filters/shared-filters-tab";
 
 export const metadata: Metadata = {
   title: "My Filters",

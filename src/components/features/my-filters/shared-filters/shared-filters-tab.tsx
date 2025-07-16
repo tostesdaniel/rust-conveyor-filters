@@ -1,10 +1,9 @@
 "use client";
 
 import { useGetSharedFilters } from "@/hooks/useGetSharedFilters";
+import { SharedFiltersEmptyState } from "@/components/features/my-filters/shared-filters/empty-state";
+import { SharedFilters } from "@/components/features/my-filters/shared-filters/shared-filters";
 import { FiltersTreeSkeleton } from "@/app/(app)/(stacked-layout)/my-filters/loading";
-
-import { SharedFiltersEmptyState } from "./empty-state";
-import { SharedFilters } from "./shared-filters";
 
 export function SharedFiltersTab() {
   const { data: sharedFilters, isPending } = useGetSharedFilters();

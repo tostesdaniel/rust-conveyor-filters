@@ -11,8 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { ShareWithUserDialog } from "../shared-filters/share-with-user-dialog";
+import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 
 interface UncategorizedHeadingDropdownProps {
   categoryId: number | null;

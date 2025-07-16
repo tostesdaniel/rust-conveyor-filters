@@ -9,10 +9,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { CategoryHeading } from "@/components/features/my-filters/categories/category-heading";
+import { ShareTokenDisplay } from "@/components/features/my-filters/shared-filters/share-token-display";
 import { MyFilterCard as FilterCard } from "@/components/my-filter-card";
-
-import { CategoryHeading } from "../categories/category-heading";
-import { ShareTokenDisplay } from "./share-token-display";
 
 export function SharedFilters() {
   const { data: sharedFilters } = useGetSharedFilters();

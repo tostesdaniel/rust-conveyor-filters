@@ -3,7 +3,7 @@
 import { BookmarkPlusIcon, GlobeIcon } from "lucide-react";
 
 import { useGetBookmarkedFilters } from "@/hooks/use-get-bookmarked-filters";
-import { BookmarkedFilterCard } from "@/components/my-filters/bookmarked-filter-card";
+import { BookmarkedFilterCard } from "@/components/features/my-filters/components/bookmarked-filter-card";
 import { EmptyState } from "@/components/shared/empty-state";
 
 export function SavedFilters() {

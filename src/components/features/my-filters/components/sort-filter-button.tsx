@@ -2,7 +2,7 @@ import { ArrowDownUpIcon } from "lucide-react";
 
 import { filterSortTypes, type FilterSortType } from "@/hooks/use-filter-sort";
 
-import { Button } from "../ui/button";
+import { Button } from "../../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../../ui/dropdown-menu";
 
 interface SortFilterButtonProps {
   value: FilterSortType["value"];

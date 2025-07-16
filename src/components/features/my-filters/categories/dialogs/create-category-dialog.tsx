@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CreateCategoryForm } from "@/components/my-filters/categories/forms/create-category-form";
+import { CreateCategoryForm } from "@/components/features/my-filters/categories/forms/create-category-form";
 
 interface CreateCategoryDialogProps {
   children: React.ReactNode;

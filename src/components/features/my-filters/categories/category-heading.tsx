@@ -6,11 +6,10 @@ import type { ConveyorFilter } from "@/types/filter";
 import { useFilterSort } from "@/hooks/use-filter-sort";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CategoryHeadingDropdown } from "@/components/my-filters/categories/category-heading-dropdown";
-import { CreateCategoryDialog } from "@/components/my-filters/categories/dialogs/create-category-dialog";
-
-import { SortFilterButton } from "../sort-filter-button";
-import { UncategorizedHeadingDropdown } from "./uncategorized-heading-dropdown";
+import { CategoryHeadingDropdown } from "@/components/features/my-filters/categories/category-heading-dropdown";
+import { CreateCategoryDialog } from "@/components/features/my-filters/categories/dialogs/create-category-dialog";
+import { UncategorizedHeadingDropdown } from "@/components/features/my-filters/categories/uncategorized-heading-dropdown";
+import { SortFilterButton } from "@/components/features/my-filters/components/sort-filter-button";
 
 interface CategoryHeadingProps {
   title: string;

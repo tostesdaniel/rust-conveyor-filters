@@ -29,7 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { CreateCategoryDialog } from "@/components/my-filters/categories/dialogs/create-category-dialog";
+import { CreateCategoryDialog } from "@/components/features/my-filters/categories/dialogs/create-category-dialog";
 
 export interface FilterCategoryComboboxProps {
   field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "category">;

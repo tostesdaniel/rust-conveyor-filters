@@ -3,7 +3,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { RenameCategoryForm } from "@/components/my-filters/categories/forms/rename-category-form";
+import { RenameCategoryForm } from "@/components/features/my-filters/categories/forms/rename-category-form";
 
 export interface RenameCategoryDialogProps {
   categoryId: number;

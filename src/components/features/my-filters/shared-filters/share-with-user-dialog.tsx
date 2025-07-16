@@ -18,17 +18,15 @@ import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hiera
 import { useShareFilterCategoryMutation } from "@/hooks/use-share-filter-category-mutation";
 import { useShareFilterMutation } from "@/hooks/use-share-filter-mutation";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Typography } from "@/components/shared/typography";
-
-import { Button } from "../../ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "../../ui/command";
+} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -36,7 +34,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -45,8 +43,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Typography } from "@/components/shared/typography";
 
 type RecentToken = {
   token: string;

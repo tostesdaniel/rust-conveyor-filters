@@ -15,10 +15,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DeleteCategoryDialog } from "@/components/my-filters/categories/dialogs/delete-category-dialog";
-import { RenameCategoryDialog } from "@/components/my-filters/categories/dialogs/rename-category-dialog";
-
-import { ShareWithUserDialog } from "../shared-filters/share-with-user-dialog";
+import { DeleteCategoryDialog } from "@/components/features/my-filters/categories/dialogs/delete-category-dialog";
+import { RenameCategoryDialog } from "@/components/features/my-filters/categories/dialogs/rename-category-dialog";
+import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 
 interface CategoryHeadingDropdownProps {
   categoryId: number;

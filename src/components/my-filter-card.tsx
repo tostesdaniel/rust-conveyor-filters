@@ -16,14 +16,14 @@ import {
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import ViewFilter from "@/components/features/filters/components/view-filter";
-import { CategoryDropdownCheckbox } from "@/components/my-filters/categories/category-dropdown-checkbox";
-import { ClearFilterCategory } from "@/components/my-filters/categories/clear-filter-category";
+import { CategoryDropdownCheckbox } from "@/components/features/my-filters/categories/category-dropdown-checkbox";
+import { ClearFilterCategory } from "@/components/features/my-filters/categories/clear-filter-category";
 import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
 import { ExportConveyorFilter } from "./export-conveyor-filter";
-import { DeleteSharedFilterDialog } from "./my-filters/shared-filters/delete-shared-filter-dialog";
-import { PrivateShareDropdownItem } from "./my-filters/shared-filters/private-share-dropdown-item";
-import { ShareWithUserDialog } from "./my-filters/shared-filters/share-with-user-dialog";
+import { DeleteSharedFilterDialog } from "./features/my-filters/shared-filters/delete-shared-filter-dialog";
+import { PrivateShareDropdownItem } from "./features/my-filters/shared-filters/private-share-dropdown-item";
+import { ShareWithUserDialog } from "./features/my-filters/shared-filters/share-with-user-dialog";
 import {
   AlertDialog,
   AlertDialogContent,

@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 interface ShareHelpDialogProps {
   className?: string;

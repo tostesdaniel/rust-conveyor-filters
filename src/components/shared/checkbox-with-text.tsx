@@ -2,8 +2,13 @@
 
 import * as React from "react";
 
-import { Checkbox } from "./checkbox";
-import { FormControl, FormDescription, FormItem, FormLabel } from "./form";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  FormControl,
+  FormDescription,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 
 interface CheckBoxWithDescriptionProps {
   checked: boolean;
@@ -19,7 +24,7 @@ export function CheckboxWithDescription({
   description,
 }: CheckBoxWithDescriptionProps) {
   return (
-    <FormItem className='flex items-center space-y-0 '>
+    <FormItem className='flex items-center space-y-0'>
       <FormControl>
         <Checkbox checked={checked} onCheckedChange={onCheckedChange} />
       </FormControl>

@@ -5,8 +5,8 @@ import { FolderPlusIcon, PlusIcon } from "lucide-react";
 import type { ConveyorFilter } from "@/types/filter";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
-import { EmptyState } from "@/components/empty-state";
 import { CategoryHeading } from "@/components/my-filters/categories/category-heading";
+import { EmptyState } from "@/components/shared/empty-state";
 
 import { MyFilterCard as FilterCard } from "./my-filter-card";
 

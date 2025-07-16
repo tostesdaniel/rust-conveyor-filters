@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LoadingButton } from "@/components/loading-button";
+import { LoadingButton } from "@/components/shared/loading-button";
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),

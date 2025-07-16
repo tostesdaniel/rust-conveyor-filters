@@ -6,13 +6,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { BadgeType } from "@/types/badges";
 import { siteConfig } from "@/config/site";
 import { useDonateBannerState } from "@/hooks/use-donate-banner-state";
-import {
-  Banner,
-  BannerDescription,
-  BannerDismiss,
-} from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
-import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import {
   Dialog,
   DialogClose,
@@ -23,7 +17,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { UserBadge } from "@/components/ui/user-badge";
+import {
+  Banner,
+  BannerDescription,
+  BannerDismiss,
+} from "@/components/shared/banner";
+import { ButtonWithIcon } from "@/components/shared/button-with-icon";
+import { UserBadge } from "@/components/shared/user-badge";
 
 interface DonateBannerProps {
   onDismiss: () => void;

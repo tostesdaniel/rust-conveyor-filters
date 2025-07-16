@@ -6,6 +6,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { ItemWithFields, type NewConveyorItem } from "@/types/item";
 import { ImportButton } from "@/components/import-button";
+import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
 
 import { ConveyorCombobox } from "./conveyor-combobox";
 import { ConveyorItemGrid } from "./conveyor-item-grid";
@@ -17,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { CheckboxWithDescription } from "./ui/checkbox-with-text";
 import { FormField } from "./ui/form";
 
 export function ConveyorCard() {

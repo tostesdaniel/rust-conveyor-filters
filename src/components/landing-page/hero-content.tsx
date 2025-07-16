@@ -3,8 +3,8 @@ import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Typography } from "@/components/ui/typography";
 import { DonateCTA } from "@/components/donate/donate-cta";
+import { Typography } from "@/components/shared/typography";
 
 export function HeroContent() {
   return (

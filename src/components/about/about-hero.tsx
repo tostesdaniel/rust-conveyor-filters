@@ -4,8 +4,8 @@ import { LinkedinIcon } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { getRedisClient } from "@/lib/redis";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons";
-import { Typography } from "@/components/ui/typography";
+import { Icons } from "@/components/shared/icons";
+import { Typography } from "@/components/shared/typography";
 
 const { links } = siteConfig;
 

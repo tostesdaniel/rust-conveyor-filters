@@ -1,10 +1,10 @@
 import { BadgeType } from "@/types/badges";
-import { Typography } from "@/components/ui/typography";
-import { UserBadge } from "@/components/ui/user-badge";
+import { Typography } from "@/components/shared/typography";
+import { UserBadge } from "@/components/shared/user-badge";
 
 export function DonateBadgeShowcase() {
   return (
-    <div className='mt-10 flex flex-col items-center space-y-4 rounded-lg border bg-transparent p-6 text-center ring-1 shadow-[0_0_50px_-12px] shadow-[#4cc9f0]/30 ring-foreground/10'>
+    <div className='mt-10 flex flex-col items-center space-y-4 rounded-lg border bg-transparent p-6 text-center shadow-[0_0_50px_-12px] ring-1 shadow-[#4cc9f0]/30 ring-foreground/10'>
       <Typography variant='h3' className='text-xl font-semibold'>
         Get Your Special Badge
       </Typography>

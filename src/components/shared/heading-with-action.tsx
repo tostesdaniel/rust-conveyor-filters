@@ -3,8 +3,8 @@ import Link from "next/link";
 import { VariantProps } from "class-variance-authority";
 import { LucideIcon } from "lucide-react";
 
-import { Button } from "./button";
-import { Typography, typographyVariants } from "./typography";
+import { Button } from "@/components/ui/button";
+import { Typography, typographyVariants } from "@/components/shared/typography";
 
 interface HeadingWithActionProps {
   as?: string;

@@ -8,7 +8,6 @@ import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
-import { ButtonWithIcon } from "@/components/ui/button-with-icon";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
@@ -37,6 +36,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getCategoryIcon } from "@/components/category-icons";
+import { ButtonWithIcon } from "@/components/shared/button-with-icon";
 
 interface ViewFilterProps {
   filter: ConveyorFilter;

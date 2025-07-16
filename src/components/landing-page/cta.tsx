@@ -3,14 +3,14 @@ import { SignUpButton } from "@clerk/nextjs";
 import { ArrowRightIcon } from "lucide-react";
 import * as motion from "motion/react-client";
 
+import { Button } from "@/components/ui/button";
 import {
   HeaderSectionContainer,
   HeaderSectionContent,
   HeaderSectionDescription,
   HeaderSectionTitle,
-} from "../header-sections";
-import { TextEffect } from "../text-effect";
-import { Button } from "../ui/button";
+} from "@/components/header-sections";
+import { TextEffect } from "@/components/shared/text-effect";
 
 export function CTA() {
   return (

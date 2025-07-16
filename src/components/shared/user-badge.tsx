@@ -1,5 +1,10 @@
 import type { JSX } from "react";
-import { Clapperboard, CodeXmlIcon, HeartHandshake, Verified } from "lucide-react";
+import {
+  Clapperboard,
+  CodeXmlIcon,
+  HeartHandshake,
+  Verified,
+} from "lucide-react";
 
 import { BadgeType } from "@/types/badges";
 import { cn } from "@/lib/utils";
@@ -42,7 +47,7 @@ interface UserBadgeProps {
 
 export function UserBadge({ type, className }: UserBadgeProps) {
   const config = badgeConfig[type];
-  
+
   return (
     <Badge
       variant='outline'

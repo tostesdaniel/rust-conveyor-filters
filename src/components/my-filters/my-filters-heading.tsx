@@ -4,8 +4,8 @@ import { PlusIcon } from "lucide-react";
 
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserFilters } from "@/hooks/use-get-user-filters";
-import { HeadingWithAction } from "@/components/ui/heading-with-action";
-import { Typography } from "@/components/ui/typography";
+import { HeadingWithAction } from "@/components/shared/heading-with-action";
+import { Typography } from "@/components/shared/typography";
 
 export function MyFiltersHeading() {
   const { data: filters } = useGetUserFilters();

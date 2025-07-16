@@ -19,7 +19,7 @@ import { useShareFilterCategoryMutation } from "@/hooks/use-share-filter-categor
 import { useShareFilterMutation } from "@/hooks/use-share-filter-mutation";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 import { Button } from "../../ui/button";
 import {

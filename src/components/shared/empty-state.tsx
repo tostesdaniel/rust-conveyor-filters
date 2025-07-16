@@ -2,7 +2,7 @@ import { UrlObject } from "url";
 import Link from "next/link";
 import { type LucideIcon } from "lucide-react";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 interface EmptyStateProps {
   Icon: LucideIcon;

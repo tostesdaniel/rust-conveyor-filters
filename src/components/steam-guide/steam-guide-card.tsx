@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 export async function SteamGuideCard() {
   const { guide, user }: SteamGuideResponse = await fetch(

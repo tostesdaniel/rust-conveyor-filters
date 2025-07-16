@@ -6,8 +6,8 @@ import { siteConfig } from "@/config/site";
 import { getRedisClient } from "@/lib/redis";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Icons } from "@/components/shared/icons";
 
 interface RepoStarsButton {
   className?: string;

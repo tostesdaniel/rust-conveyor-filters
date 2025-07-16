@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 
 import { BadgeType } from "@/types/badges";
 import { Button } from "@/components/ui/button";
-import { UserBadge } from "@/components/ui/user-badge";
+import { UserBadge } from "@/components/shared/user-badge";
 
 export function DonateCTA() {
   return (

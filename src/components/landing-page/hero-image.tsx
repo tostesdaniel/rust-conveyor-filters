@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ThemeImage } from "@/components/theme-image";
+import { ThemeImage } from "@/components/shared/theme-image";
 
 export function HeroImage() {
   const [mounted, setMounted] = React.useState(false);

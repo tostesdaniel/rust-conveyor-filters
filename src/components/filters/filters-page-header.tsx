@@ -11,12 +11,12 @@ import { Loader2Icon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons";
-import { Typography } from "@/components/ui/typography";
 import { DesktopNav } from "@/components/desktop-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { ModeToggle } from "@/components/mode-toggle";
-import { RepoStarsButton } from "@/components/repo-stars-button";
+import { Icons } from "@/components/shared/icons";
+import { ModeToggle } from "@/components/shared/mode-toggle";
+import { RepoStarsButton } from "@/components/shared/repo-stars-button";
+import { Typography } from "@/components/shared/typography";
 
 export function FiltersPageHeader() {
   return (

@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 
 import { getItems } from "@/actions/itemActions";
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 import NewFilterForm from "./new-filter-form";
 

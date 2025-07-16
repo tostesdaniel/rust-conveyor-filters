@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { AnimatedNumber } from "../animated-number";
+import { AnimatedNumber } from "@/components/shared/animated-number";
 
 export function StatValueClient({ statValue }: { statValue: number }) {
   const [value, setValue] = useState(0);

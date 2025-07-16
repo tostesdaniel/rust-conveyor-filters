@@ -1,8 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 
 interface Props extends React.ComponentProps<typeof Button> {
   icon: LucideIcon;

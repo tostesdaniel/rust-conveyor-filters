@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/popover";
 import { getCategoryIcon } from "@/components/category-icons";
 import { ClearInputButton } from "@/components/my-filters/new-filter/clear-input-button";
-import { SearchTipTooltip } from "@/components/search-tip-tooltip";
+import { SearchTipTooltip } from "@/components/shared/search-tip-tooltip";
 
 interface ConveyorComboboxProps {
   onInsertItem: (item: NewConveyorItem) => void;

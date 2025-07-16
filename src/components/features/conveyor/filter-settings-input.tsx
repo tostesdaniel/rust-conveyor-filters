@@ -2,11 +2,10 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 import { FilterSettingsFieldDescription } from "@/config/constants";
-
-import { FilterSettingsTooltip } from "./filter-settings-tooltip";
-import { Button } from "./ui/button";
-import { FormControl, FormItem, FormLabel } from "./ui/form";
-import { Input } from "./ui/input";
+import { Button } from "@/components/ui/button";
+import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { FilterSettingsTooltip } from "@/components/features/conveyor/filter-settings-tooltip";
 
 interface FilterSettingsInputProps {
   label: string;

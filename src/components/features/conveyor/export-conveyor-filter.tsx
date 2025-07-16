@@ -8,9 +8,8 @@ import { type ConveyorFilterItem } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { cn } from "@/lib/utils";
-
-import { Button } from "./ui/button";
-import { DropdownMenuItem } from "./ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown" | "icon";

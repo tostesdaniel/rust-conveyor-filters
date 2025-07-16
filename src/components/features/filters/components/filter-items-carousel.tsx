@@ -17,7 +17,7 @@ import {
   type CarouselApi,
   type CarouselOptions,
 } from "@/components/ui/carousel";
-import { getCategoryIcon } from "@/components/category-icons";
+import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 
 export function FilterItemsCarousel({
   filterItems,

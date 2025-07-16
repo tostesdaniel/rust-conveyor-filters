@@ -3,8 +3,7 @@ import { useFormContext } from "react-hook-form";
 import type { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
-
-import { ConveyorItem } from "./conveyor-item";
+import { ConveyorItem } from "@/components/features/conveyor/conveyor-item";
 
 interface ConveyorItemGridProps {
   items: ItemWithFields[];

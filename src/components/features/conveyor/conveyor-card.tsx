@@ -5,20 +5,19 @@ import { BoxIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { ItemWithFields, type NewConveyorItem } from "@/types/item";
-import { ImportButton } from "@/components/import-button";
-import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
-
-import { ConveyorCombobox } from "./conveyor-combobox";
-import { ConveyorItemGrid } from "./conveyor-item-grid";
-import { ExportConveyorFilter } from "./export-conveyor-filter";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { FormField } from "./ui/form";
+} from "@/components/ui/card";
+import { FormField } from "@/components/ui/form";
+import { ConveyorCombobox } from "@/components/features/conveyor/conveyor-combobox";
+import { ConveyorItemGrid } from "@/components/features/conveyor/conveyor-item-grid";
+import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
+import { ImportButton } from "@/components/features/conveyor/import-button";
+import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
 
 export function ConveyorCard() {
   const { control, watch, trigger } = useFormContext();

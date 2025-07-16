@@ -9,10 +9,9 @@ import { z } from "zod";
 import { type ItemWithFields } from "@/types/item";
 import { FilterSettingsFieldDescription } from "@/config/constants";
 import { Button } from "@/components/ui/button";
-import { getCategoryIcon } from "@/components/category-icons";
-
-import { FilterSettingsInput } from "./filter-settings-input";
-import { FormDescription, FormField } from "./ui/form";
+import { FormDescription, FormField } from "@/components/ui/form";
+import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
+import { FilterSettingsInput } from "@/components/features/conveyor/filter-settings-input";
 
 interface ConveyorItemProps {
   item: ItemWithFields;

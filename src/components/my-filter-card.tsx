@@ -15,23 +15,14 @@ import {
 
 import { type ConveyorFilter } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
-import ViewFilter from "@/components/features/filters/components/view-filter";
-import { CategoryDropdownCheckbox } from "@/components/features/my-filters/categories/category-dropdown-checkbox";
-import { ClearFilterCategory } from "@/components/features/my-filters/categories/clear-filter-category";
-import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
-
-import { ExportConveyorFilter } from "./export-conveyor-filter";
-import { DeleteSharedFilterDialog } from "./features/my-filters/shared-filters/delete-shared-filter-dialog";
-import { PrivateShareDropdownItem } from "./features/my-filters/shared-filters/private-share-dropdown-item";
-import { ShareWithUserDialog } from "./features/my-filters/shared-filters/share-with-user-dialog";
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,7 +34,15 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
+import ViewFilter from "@/components/features/filters/components/view-filter";
+import { CategoryDropdownCheckbox } from "@/components/features/my-filters/categories/category-dropdown-checkbox";
+import { ClearFilterCategory } from "@/components/features/my-filters/categories/clear-filter-category";
+import { DeleteSharedFilterDialog } from "@/components/features/my-filters/shared-filters/delete-shared-filter-dialog";
+import { PrivateShareDropdownItem } from "@/components/features/my-filters/shared-filters/private-share-dropdown-item";
+import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
+import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
 interface MyFilterCardProps {
   filter: ConveyorFilter;

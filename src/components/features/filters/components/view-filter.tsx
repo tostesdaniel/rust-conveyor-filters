@@ -35,7 +35,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getCategoryIcon } from "@/components/category-icons";
+import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { ButtonWithIcon } from "@/components/shared/button-with-icon";
 
 interface ViewFilterProps {

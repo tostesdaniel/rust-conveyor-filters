@@ -29,7 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { getCategoryIcon } from "@/components/category-icons";
+import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { ClearInputButton } from "@/components/features/my-filters/new-filter/clear-input-button";
 import { SearchTipTooltip } from "@/components/shared/search-tip-tooltip";
 

@@ -4,6 +4,8 @@ export enum FilterSettingsFieldDescription {
   MIN = "Only transfer if there is this amount in the input container.",
 }
 
+export const MAX_FILTER_ITEMS = 30;
+
 const STEAM_GUIDE_ID = "3308184949";
 export const steamConfig = {
   GUIDE_ID: STEAM_GUIDE_ID,

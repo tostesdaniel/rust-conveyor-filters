@@ -10,6 +10,7 @@ import { toast } from "sonner";
 
 import type { ConveyorFilterItem } from "@/types/filter";
 import { type NewConveyorItem } from "@/types/item";
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -135,8 +136,10 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
         return toast.error("Item already exists in conveyor");
       }
 
-      if (items.length >= 30) {
-        return toast.error("You cannot have more than 30 items");
+      if (items.length >= MAX_FILTER_ITEMS) {
+        return toast.error(
+          `You cannot have more than ${MAX_FILTER_ITEMS} items`,
+        );
       }
 
       onInsertItem(newItem);

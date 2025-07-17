@@ -5,6 +5,7 @@ import { BoxIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { ItemWithFields, type NewConveyorItem } from "@/types/item";
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import {
   Card,
   CardContent,
@@ -42,7 +43,7 @@ export function ConveyorCard() {
         <ConveyorCombobox onInsertItem={handleAppend} />
 
         <p className='font-semibold tracking-tight whitespace-nowrap tabular-nums min-[400px]:absolute min-[400px]:top-2 min-[400px]:right-6 min-[400px]:m-0 sm:static'>
-          {fields.length}/30 filters
+          {fields.length}/{MAX_FILTER_ITEMS} filters
         </p>
       </CardHeader>
       <CardContent className='min-h-40 py-3'>

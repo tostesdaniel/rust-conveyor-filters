@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { MAX_FILTER_ITEMS } from "@/config/constants";
+
 // Base schema without superRefine - used for partial updates
 const baseFilterSchema = z.object({
   name: z
@@ -38,8 +40,8 @@ const baseFilterSchema = z.object({
         }),
       ]),
     )
-    .refine((data) => data.length <= 30, {
-      message: "You cannot have more than 30 items",
+    .refine((data) => data.length <= MAX_FILTER_ITEMS, {
+      message: `You cannot have more than ${MAX_FILTER_ITEMS} items`,
     })
     .refine((data) => data.length > 0, {
       message: "You must have at least 1 item",

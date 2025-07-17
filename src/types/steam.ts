@@ -26,3 +26,16 @@ export interface SteamGuideResponse {
   guide: SteamGuideDetails;
   user: SteamUserDetails;
 }
+
+interface SteamGame {
+  appid: number;
+  playtime_forever: number;
+  name?: string;
+}
+
+export interface SteamApiResponse {
+  response: {
+    games: SteamGame[];
+    game_count?: number;
+  };
+}

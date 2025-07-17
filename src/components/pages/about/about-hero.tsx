@@ -1,17 +1,29 @@
 import Image from "next/image";
 import { LinkedinIcon } from "lucide-react";
 
+import type { SteamApiResponse } from "@/types/steam";
+import { steamConfig } from "@/config/constants";
 import { siteConfig } from "@/config/site";
-import { getRedisClient } from "@/lib/redis";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
 import { Typography } from "@/components/shared/typography";
 
 const { links } = siteConfig;
 
+const STEAM_API_KEY = process.env.STEAM_API_KEY;
+const STEAM_ID = steamConfig.STEAM_ID;
+const RUST_APP_ID = 252490;
+const STEAM_OWNED_GAMES_URL = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`;
+
 export async function AboutHero() {
-  const redis = await getRedisClient();
-  const gameHours = await redis.get<number>("gameHours");
+  const data = await fetch(STEAM_OWNED_GAMES_URL, {
+    next: { revalidate: 86400 }, // Cache for 1 day
+  });
+  const json: SteamApiResponse = await data.json();
+  const gameHours = Math.floor(
+    (json.response.games.find((game) => game.appid === RUST_APP_ID)
+      ?.playtime_forever ?? 0) / 60,
+  );
 
   return (
     <div className='py-16 lg:py-24'>

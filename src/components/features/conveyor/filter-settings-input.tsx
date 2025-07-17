@@ -76,6 +76,7 @@ export function FilterSettingsInput({
           <Button
             type='button'
             size='icon'
+            aria-label={`Increment ${label}`}
             className='h-4.5 w-4.5 rounded-none rounded-tr-md'
             onClick={() => handleValueChange(index, "increment", property)}
           >
@@ -84,6 +85,7 @@ export function FilterSettingsInput({
           <Button
             type='button'
             size='icon'
+            aria-label={`Decrement ${label}`}
             className='h-4.5 w-4.5 rounded-none rounded-br-md'
             onClick={() => handleValueChange(index, "decrement", property)}
           >

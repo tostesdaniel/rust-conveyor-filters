@@ -1,8 +1,8 @@
 import { ExternalLinkIcon } from "lucide-react";
 
 import { steamConfig } from "@/config/constants";
-import { Typography } from "@/components/ui/typography";
-import { SteamGuideCard } from "@/components/steam-guide/steam-guide-card";
+import { SteamGuideCard } from "@/components/pages/steam-guide/steam-guide-card";
+import { Typography } from "@/components/shared/typography";
 
 export const dynamic = "force-dynamic";
 

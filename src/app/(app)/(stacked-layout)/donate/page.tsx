@@ -2,14 +2,14 @@ import { Metadata } from "next";
 import { Handshake, Trophy } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { ButtonWithIcon } from "@/components/ui/button-with-icon";
-import { Icons } from "@/components/ui/icons";
 import { Separator } from "@/components/ui/separator";
-import { Typography } from "@/components/ui/typography";
-import { DonateBadgeShowcase } from "@/components/donate/donate-badge-showcase";
-import { DonateButton } from "@/components/donate/donate-button";
-import { DonateEmailReminder } from "@/components/donate/donate-email-reminder";
-import { DonateFeature } from "@/components/donate/donate-feature";
+import { DonateBadgeShowcase } from "@/components/features/donation/donate-badge-showcase";
+import { DonateButton } from "@/components/features/donation/donate-button";
+import { DonateEmailReminder } from "@/components/features/donation/donate-email-reminder";
+import { DonateFeature } from "@/components/features/donation/donate-feature";
+import { ButtonWithIcon } from "@/components/shared/button-with-icon";
+import { Icons } from "@/components/shared/icons";
+import { Typography } from "@/components/shared/typography";
 
 export const metadata: Metadata = {
   title: "Donate",

@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 
 import { getItems } from "@/actions/itemActions";
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 import { EditFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 
 export async function generateMetadata(props: {

@@ -1,0 +1,85 @@
+"use client";
+
+import { normalizeFilterData } from "@/utils/normalize-filter-data";
+import { BoxIcon } from "lucide-react";
+import { useFieldArray, useFormContext } from "react-hook-form";
+
+import { ItemWithFields, type NewConveyorItem } from "@/types/item";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { FormField } from "@/components/ui/form";
+import { ConveyorCombobox } from "@/components/features/conveyor/conveyor-combobox";
+import { ConveyorItemGrid } from "@/components/features/conveyor/conveyor-item-grid";
+import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
+import { ImportButton } from "@/components/features/conveyor/import-button";
+import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
+
+export function ConveyorCard() {
+  const { control, watch, trigger } = useFormContext();
+  const { fields, append, remove, replace } = useFieldArray({
+    control,
+    name: "items",
+  });
+  const filter: ItemWithFields[] = watch("items");
+
+  const handleAppend = (item: NewConveyorItem) => {
+    append(item, { shouldFocus: false });
+  };
+
+  return (
+    <Card className='gap-3 divide-y py-3'>
+      <CardHeader className='relative pb-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
+        <div className='flex items-center gap-x-2 pr-10'>
+          <BoxIcon className='h-5 w-5 shrink-0 text-muted-foreground' />
+          <CardTitle className='shrink-0 text-xl'>Conveyor Filter</CardTitle>
+        </div>
+
+        <ConveyorCombobox onInsertItem={handleAppend} />
+
+        <p className='font-semibold tracking-tight whitespace-nowrap tabular-nums min-[400px]:absolute min-[400px]:top-2 min-[400px]:right-6 min-[400px]:m-0 sm:static'>
+          {fields.length}/30 filters
+        </p>
+      </CardHeader>
+      <CardContent className='min-h-40 py-3'>
+        <ConveyorItemGrid
+          items={fields as ItemWithFields[]}
+          onRemove={remove}
+        />
+      </CardContent>
+      <CardFooter className='flex-col gap-x-4 gap-y-3 min-[550px]:flex-row sm:justify-end'>
+        <div className='order-last flex-1 self-start min-[550px]:order-none min-[550px]:self-auto sm:flex-none'>
+          <FormField
+            control={control}
+            name='isPublic'
+            render={({ field }) => (
+              <CheckboxWithDescription
+                label='I want to make this filter public'
+                checked={field.value}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked);
+                  trigger(["name", "description"]);
+                }}
+              />
+            )}
+          />
+        </div>
+        <div className='grid w-full grid-cols-2 gap-x-4 min-[550px]:flex min-[550px]:w-auto min-[550px]:items-center'>
+          <ImportButton
+            onImport={replace}
+            className='w-full min-[550px]:w-auto'
+          />
+          <ExportConveyorFilter
+            type='button'
+            filter={normalizeFilterData(filter)}
+            className='w-full min-[550px]:w-auto'
+          />
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}

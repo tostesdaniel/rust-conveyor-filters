@@ -24,9 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ConveyorCard } from "@/components/conveyor-card";
-import { FilterImageCombobox } from "@/components/filter-image-combobox";
-import { FilterCategoryCombobox } from "@/components/my-filters/filter-category-combobox";
+import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
+import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
+import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),

@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

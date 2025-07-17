@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Typography } from "@/components/ui/typography";
+import { Typography } from "@/components/shared/typography";
 
 export function parseDescription(description: string): React.ReactNode {
   const lines = description.split(/\r?\n/);

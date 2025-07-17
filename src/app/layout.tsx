@@ -7,13 +7,13 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/shared/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
 
 import { siteConfig } from "@/config/site";
-import { OutboundLinkTracker } from "@/components/analytics/outbound-link-tracker";
+import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });

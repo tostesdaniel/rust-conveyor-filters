@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { FilterGrid } from "@/components/filters/filter-grid";
+import { FilterGrid } from "@/components/features/filters/components/filter-grid";
 import { FilterShareProvider } from "@/providers/filter-share-provider";
 
 export const metadata: Metadata = {

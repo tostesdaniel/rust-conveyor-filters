@@ -3,7 +3,6 @@ import { StarIcon } from "lucide-react";
 import millify from "millify";
 
 import { siteConfig } from "@/config/site";
-import { getRedisClient } from "@/lib/redis";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,8 +16,12 @@ async function StargazersCount({
   className,
   ...props
 }: React.ComponentProps<"span">) {
-  const redis = await getRedisClient();
-  const stars = await redis.get<number>("repo-stars");
+  const data = await fetch(
+    "https://api.github.com/repos/tostesdaniel/rust-conveyor-filters",
+    { next: { revalidate: 86400 } }, // 1 day
+  );
+  const json = await data.json();
+  const stars = json.stargazers_count;
 
   return (
     <span

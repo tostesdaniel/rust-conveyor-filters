@@ -45,9 +45,9 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
     const data = e.clipboardData.getData("text/plain");
 
     try {
-      const MAX_FILTER_ITEMS_JSON_SIZE = 16 * 1024; // 16KB
+      const MAX_JSON_SIZE_BYTES = 16 * 1024; // 16KB
       const jsonSize = new TextEncoder().encode(data).length;
-      if (jsonSize > MAX_FILTER_ITEMS_JSON_SIZE) {
+      if (jsonSize > MAX_JSON_SIZE_BYTES) {
         setError(
           `JSON data too large (${Math.round(jsonSize / 1024)}KB). Maximum allowed: 16KB`,
         );

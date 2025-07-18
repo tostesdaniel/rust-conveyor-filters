@@ -6,6 +6,7 @@ import { Upload } from "lucide-react";
 import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { type Category, type Item } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
@@ -21,17 +22,19 @@ interface ImportButtonProps extends React.ComponentProps<typeof Button> {
   onImport: UseFieldArrayReplace<FieldValues, "items">;
 }
 
-const GameConveyorFilterItemSchema = z.array(
-  z.object({
-    TargetCategory: z.union([z.number(), z.null()]),
-    MaxAmountInOutput: z.number(),
-    BufferAmount: z.number(),
-    MinAmountInInput: z.number(),
-    IsBlueprint: z.boolean(),
-    BufferTransferRemaining: z.number(),
-    TargetItemName: z.string(),
-  }),
-);
+const GameConveyorFilterItemSchema = z
+  .array(
+    z.object({
+      TargetCategory: z.union([z.number(), z.null()]),
+      MaxAmountInOutput: z.number(),
+      BufferAmount: z.number(),
+      MinAmountInInput: z.number(),
+      IsBlueprint: z.boolean(),
+      BufferTransferRemaining: z.number(),
+      TargetItemName: z.string(),
+    }),
+  )
+  .max(MAX_FILTER_ITEMS, "Too many items");
 
 export function ImportButton({ onImport, ...props }: ImportButtonProps) {
   const queryClient = useQueryClient();
@@ -40,60 +43,91 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const data = e.clipboardData.getData("text/plain");
-    let parsedData;
+
     try {
-      parsedData = JSON.parse(data);
-    } catch (err) {
-      setError("Invalid JSON format");
-      return;
-    }
-    const result = GameConveyorFilterItemSchema.safeParse(parsedData);
-    if (result.success) {
-      const { data: items } = queryClient.getQueryData<{ data: Item[] }>([
-        "items",
-      ]) || { data: [] };
-      const categories =
-        queryClient.getQueryData<Category[]>(["categories"]) || [];
-
-      const conveyorItems = result.data.map((item) => {
-        const matchedItem = items.find(
-          (i) => i.shortname === item.TargetItemName,
+      const MAX_FILTER_ITEMS_JSON_SIZE = 16 * 1024; // 16KB
+      const jsonSize = new TextEncoder().encode(data).length;
+      if (jsonSize > MAX_FILTER_ITEMS_JSON_SIZE) {
+        setError(
+          `JSON data too large (${Math.round(jsonSize / 1024)}KB). Maximum allowed: 16KB`,
         );
-        const matchedCategory = categories.find(
-          (c) => c.id === item.TargetCategory,
-        );
+        return;
+      }
 
-        if (matchedItem) {
-          return {
-            itemId: matchedItem.id,
-            categoryId: null,
-            name: matchedItem.name,
-            shortname: matchedItem.shortname,
-            category: matchedItem.category,
-            imagePath: matchedItem.imagePath,
-            max: item.MaxAmountInOutput,
-            buffer: item.BufferAmount,
-            min: item.MinAmountInInput,
-          };
-        } else if (matchedCategory) {
-          return {
-            itemId: null,
-            categoryId: matchedCategory.id,
-            name: matchedCategory.name,
-            max: item.MaxAmountInOutput,
-            buffer: item.BufferAmount,
-            min: item.MinAmountInInput,
-          };
+      let parsedData;
+      try {
+        parsedData = JSON.parse(data);
+      } catch (parseError) {
+        setError("Invalid JSON format. Please check your JSON syntax.");
+        return;
+      }
+      const result = GameConveyorFilterItemSchema.safeParse(parsedData);
+      if (!result.success) {
+        // Extract the most relevant error message
+        const firstError = result.error.errors[0];
+        if (firstError.message.includes("Too many items")) {
+          setError(
+            `Cannot import: Maximum ${MAX_FILTER_ITEMS} items allowed, got ${parsedData?.length || "unknown"} items`,
+          );
+        } else {
+          setError(
+            "Invalid JSON format: Please use a valid JSON exported from the game",
+          );
         }
-      });
-      setError(null);
-      onImport(conveyorItems);
-      setOpen(false);
-    } else {
-      setError(
-        `Invalid JSON format: Please use a valid JSON exported in the game`,
-      );
+        return;
+      }
+
+      processValidatedData(result.data);
+    } catch (error) {
+      setError("An unexpected error occurred while processing the JSON");
+      console.error("Import error:", error);
     }
+  };
+
+  const processValidatedData = (
+    validatedData: z.infer<typeof GameConveyorFilterItemSchema>,
+  ) => {
+    const { data: items } = queryClient.getQueryData<{ data: Item[] }>([
+      "items",
+    ]) || { data: [] };
+    const categories =
+      queryClient.getQueryData<Category[]>(["categories"]) || [];
+
+    const conveyorItems = validatedData.map((item) => {
+      const matchedItem = items.find(
+        (i) => i.shortname === item.TargetItemName,
+      );
+      const matchedCategory = categories.find(
+        (c) => c.id === item.TargetCategory,
+      );
+
+      if (matchedItem) {
+        return {
+          itemId: matchedItem.id,
+          categoryId: null,
+          name: matchedItem.name,
+          shortname: matchedItem.shortname,
+          category: matchedItem.category,
+          imagePath: matchedItem.imagePath,
+          max: item.MaxAmountInOutput,
+          buffer: item.BufferAmount,
+          min: item.MinAmountInInput,
+        };
+      } else if (matchedCategory) {
+        return {
+          itemId: null,
+          categoryId: matchedCategory.id,
+          name: matchedCategory.name,
+          max: item.MaxAmountInOutput,
+          buffer: item.BufferAmount,
+          min: item.MinAmountInInput,
+        };
+      }
+    });
+
+    setError(null);
+    onImport(conveyorItems);
+    setOpen(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

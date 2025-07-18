@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
+export const runtime = "edge";
+
 const s3Client = new S3Client({
   region: "auto",
   endpoint: `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,

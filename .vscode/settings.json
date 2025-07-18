@@ -18,5 +18,6 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  }
+  },
+  "json.schemaDownload.enable": true
 }

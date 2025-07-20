@@ -15,10 +15,11 @@ export function FiltersSidebarHeader() {
           <Link href='/' aria-label='Go to home page'>
             <div className='flex items-center gap-2'>
               <Image
-                src='/logo.png'
+                src='/logo.webp'
                 alt='Rust Conveyor Filters logo'
                 width={36}
                 height={36}
+                priority
               />
               <div className='text-left font-brand font-bold'>
                 <span className='sr-only'>Rust Conveyor Filters</span>

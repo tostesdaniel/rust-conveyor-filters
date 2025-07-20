@@ -77,7 +77,7 @@ export function MobileNav() {
         </VisuallyHidden.Root>
         <div className='flex h-16 shrink-0 items-center'>
           <Image
-            src='/logo.png'
+            src='/logo.webp'
             width={40}
             height={40}
             alt='Logo'

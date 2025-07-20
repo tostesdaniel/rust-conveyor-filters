@@ -24,11 +24,12 @@ export function FiltersPageHeader() {
       <div className='flex flex-1 items-center justify-between'>
         <div className='flex shrink-0 items-center gap-2'>
           <Image
-            src='/logo.png'
+            src='/logo.webp'
             alt='Conveyor'
             width={40}
             height={40}
             className='md:hidden'
+            priority
           />
           <Typography variant='h3' as='h1' className='hidden flex-1 sm:block'>
             Browse Filters

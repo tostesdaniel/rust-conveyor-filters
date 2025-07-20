@@ -36,7 +36,13 @@ export function Header() {
       <div className='mx-auto flex h-16 max-w-(--breakpoint-2xl) items-center px-4 sm:px-6 lg:px-8'>
         <div className='mr-6 shrink-0'>
           <Link href='/' className='flex items-center space-x-2'>
-            <Image src='/logo.png' width={40} height={40} alt='Logo' />
+            <Image
+              src='/logo.webp'
+              width={40}
+              height={40}
+              alt='Logo'
+              priority
+            />
             <span className='hidden font-semibold tracking-tighter min-[414px]:inline-block'>
               {siteConfig.name}
             </span>

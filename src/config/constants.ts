@@ -13,6 +13,8 @@ export const steamConfig = {
   STEAM_ID: process.env.STEAM_ID,
 };
 
+export const DISCORD_GUILD_ID = "1272807564693995520";
+
 export const ITEM_CATEGORIES = [
   "Weapons",
   "Construction",

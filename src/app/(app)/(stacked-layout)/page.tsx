@@ -4,6 +4,7 @@ import { HeroBackground } from "@/components/pages/landing/hero-background";
 import { HeroContent } from "@/components/pages/landing/hero-content";
 import { HeroImage } from "@/components/pages/landing/hero-image";
 import { HeroStats } from "@/components/pages/landing/hero-stats";
+import { Testimonials } from "@/components/pages/landing/testimonials";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,8 @@ export default function HomePage() {
       <HeroStats />
 
       <FeaturesShowcase />
+
+      <Testimonials />
 
       <CTA />
     </>

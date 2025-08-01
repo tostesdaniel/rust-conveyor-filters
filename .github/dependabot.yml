@@ -15,3 +15,29 @@ updates:
           - "next"
           - "@next/*"
           - "eslint-config-next"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      embla-carousel:
+        patterns:
+          - "embla-carousel-*"
+      upstash:
+        patterns:
+          - "@upstash/*"
+      react-hook-form:
+        patterns:
+          - "react-hook-form"
+          - "@hookform/*"
+      drizzle:
+        patterns:
+          - "drizzle-orm"
+          - "drizzle-kit"
+      tailwindcss:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "prettier-plugin-tailwindcss"
+      mdx:
+        patterns:
+          - "@mdx-js/*"
+          - "@types/mdx"

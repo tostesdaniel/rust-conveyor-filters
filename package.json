@@ -50,7 +50,7 @@
     "drizzle-orm": "^0.44.2",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
-    "lucide-react": "^0.525.0",
+    "lucide-react": "^0.536.0",
     "millify": "^6.1.0",
     "motion": "^12.23.5",
     "nanoid": "^5.1.5",

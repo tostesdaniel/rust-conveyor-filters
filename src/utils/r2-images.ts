@@ -10,5 +10,5 @@ export function getR2ImageUrl(imageName: string, size: ImageSize): string {
   if (process.env.NODE_ENV === "development") {
     return `/items/${size}/${imageName}`;
   }
-  return `/api/images/items/${size}/${imageName}`;
+  return `https://cdn.rustconveyorfilters.com/items/${size}/${imageName}`;
 }

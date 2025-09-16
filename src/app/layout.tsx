@@ -14,6 +14,7 @@ import "./globals.css";
 
 import { siteConfig } from "@/config/site";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
+import { UmamiAnalytics } from "@/components/features/analytics/umami-analytics";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });
@@ -87,11 +88,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en' suppressHydrationWarning>
         <head>
-          <script
-            defer
-            src='https://umami.rustconveyorfilters.com/script.js'
-            data-website-id='0c163345-6b1c-45ed-ab99-f8411b8fa1cb'
-          />
+          <UmamiAnalytics />
           <GoogleAnalytics gaId='G-BGERZ3ES1R' />
         </head>
         <body

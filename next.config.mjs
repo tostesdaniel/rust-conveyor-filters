@@ -10,16 +10,6 @@ const nextConfig = {
     ],
     minimumCacheTTL: 2678400, // 31 days
   },
-  rewrites: async () => [
-    {
-      source: "/script.js",
-      destination: "https://umami.rustconveyorfilters.com/script.js",
-    },
-    {
-      source: "/api/send",
-      destination: "https://umami.rustconveyorfilters.com/api/send",
-    },
-  ],
 };
 
 const withMDX = createMDX();

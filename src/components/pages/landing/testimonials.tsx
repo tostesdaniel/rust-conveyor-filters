@@ -37,9 +37,11 @@ export async function Testimonials() {
       </HeaderSectionContent>
 
       <div className='mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-muted sm:mt-20 lg:flex lg:max-w-4xl'>
-        {enrichedTestimonials.map((testimonial) => (
-          <TestimonialCard key={testimonial.name} testimonial={testimonial} />
-        ))}
+        <div>
+          {enrichedTestimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.name} testimonial={testimonial} />
+          ))}
+        </div>
 
         <LeaveYourReviewCard />
       </div>
@@ -77,8 +79,8 @@ function TestimonialCard({
           <h4 className='mt-6 -mb-6 bg-gradient-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-center text-3xl font-semibold tracking-tight text-balance text-transparent sm:text-4xl'>
             {testimonial.title}
           </h4>
-          <p className='p-6 text-lg font-semibold tracking-tight sm:p-12 sm:text-xl/8'>
-            {`“${testimonial.quote}”`}
+          <p className='mt-3 p-6 text-lg font-semibold tracking-tight whitespace-pre-line sm:p-12 sm:text-xl/8'>
+            {`"${testimonial.quote}"`}
           </p>
         </blockquote>
       </figure>

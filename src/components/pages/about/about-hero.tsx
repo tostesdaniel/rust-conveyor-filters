@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { SiSteam } from "@icons-pack/react-simple-icons";
 import { LinkedinIcon } from "lucide-react";
 
 import type { SteamApiResponse } from "@/types/steam";
@@ -66,17 +67,22 @@ export async function AboutHero() {
 
           <div className='mt-10 flex items-center gap-x-6'>
             <Button asChild variant='outline'>
+              <a href={links.steam} target='_blank' rel='noopener noreferrer'>
+                <SiSteam /> Steam Profile
+              </a>
+            </Button>
+            <Button asChild variant='outline'>
+              <a href={links.gitHub} target='_blank' rel='noopener noreferrer'>
+                <Icons.gitHub /> Follow me
+              </a>
+            </Button>
+            <Button asChild variant='outline'>
               <a
                 href={links.linkedIn}
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <LinkedinIcon /> Connect with me
-              </a>
-            </Button>
-            <Button asChild variant='outline'>
-              <a href={links.gitHub} target='_blank' rel='noopener noreferrer'>
-                <Icons.gitHub /> Follow me
               </a>
             </Button>
           </div>

@@ -37,8 +37,8 @@ export async function AboutHero() {
         </Typography>
         <div className='mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1'>
           <Typography variant='p' className='text-lg leading-8'>
-            Hey there! I&apos;m Daniel, also known as in{" "}
-            <strong>ohTostt</strong> in the gaming world. With over{" "}
+            Hey there! I&apos;m Daniel, also known as <strong>ohTostt</strong>{" "}
+            in the gaming world. With over{" "}
             <strong>{gameHours || "too many"}</strong> hours in Rust, I came to
             a conclusion that I&apos;ve spent too much time setting up filters
             than actually playing the game. That&apos;s when the idea of{" "}

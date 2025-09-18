@@ -36,14 +36,34 @@ export async function AboutHero() {
         </Typography>
         <div className='mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1'>
           <Typography variant='p' className='text-lg leading-8'>
-            Hi, I&apos;m <strong>Daniel</strong>, also known as{" "}
-            <strong>ohTostt</strong> in the gaming world. I&apos;m a passionate{" "}
-            <strong>software developer</strong> with a love for games, specially{" "}
-            <strong>Rust</strong>, which I&apos;ve accumulated{" "}
-            <strong>{gameHours ?? "many"} hours</strong>. Whether I&apos;m
-            working on a new feature, fixing a bug, or just playing around with
-            something new, I&apos;m always looking for the next challenge.
+            Hey there! I&apos;m Daniel, also known as in{" "}
+            <strong>ohTostt</strong> in the gaming world. With over{" "}
+            <strong>{gameHours || "too many"}</strong> hours in Rust, I came to
+            a conclusion that I&apos;ve spent too much time setting up filters
+            than actually playing the game. That&apos;s when the idea of{" "}
+            <strong>Rust Conveyor Filters</strong> was born.
           </Typography>
+          <Typography variant='p' className='text-lg leading-8'>
+            What started as an idea to help myself save time, quickly turned
+            into something greater. I shared it with my friends and they loved
+            it! With their feedback, I was able to improve the app and make it
+            better before sharing it with the community.
+          </Typography>
+          <Typography variant='p' className='text-lg leading-8'>
+            My favorite part about this project is the community. I&apos;ve
+            received so much support and it&apos;s been a great experience to be
+            a part of it. Also, the idea of turning this idea into a reality is
+            something that I&apos;m really proud of, and it reignited my passion
+            for programming.
+          </Typography>
+          <Typography variant='p' className='text-lg leading-8'>
+            As for Rust, I still play it, but not as much as I used to. Usually
+            I hop on for a day to snowball with my friends and have a good time.
+            As a developer, my goal is to make this app better each day, with
+            the help of this community that supported it from the start. Thank
+            you all! ❤️
+          </Typography>
+
           <div className='mt-10 flex items-center gap-x-6'>
             <Button asChild variant='outline'>
               <a

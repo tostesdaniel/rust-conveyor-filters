@@ -91,13 +91,13 @@ export function Footer() {
             />
             by
             <a
-              href={siteConfig.links.gitHub}
+              href={siteConfig.links.steam}
               target='_blank'
               rel='noopener noreferrer'
-              aria-label='GitHub profile of tostesdaniel'
+              aria-label='Steam profile of ohTostt'
               className='underline-offset-4 hover:underline'
             >
-              <strong>tostesdaniel</strong>
+              <strong>ohTostt</strong>
             </a>
           </p>
         </div>

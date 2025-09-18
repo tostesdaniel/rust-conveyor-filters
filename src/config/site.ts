@@ -9,6 +9,7 @@ export const siteConfig = {
     repo: "https://github.com/tostesdaniel/rust-conveyor-filters",
     linkedIn: "https://www.linkedin.com/in/danieltostes/",
     discord: "https://discord.gg/DGzAHXvU93",
+    steam: "https://steamcommunity.com/id/ohtostt/",
   },
   donate: {
     buyMeACoffee: "https://buymeacoffee.com/danieltostes",

@@ -42,6 +42,15 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+            NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=${{ vars.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL }}
+            NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=${{ vars.NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL }}
+            NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ vars.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
+            NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=${{ vars.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL }}
+            NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=${{ vars.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL }}
+            NEXT_PUBLIC_R2_BUCKET_URL=${{ vars.NEXT_PUBLIC_R2_BUCKET_URL }}
+            NEXT_PUBLIC_TRADE_URL=${{ vars.NEXT_PUBLIC_TRADE_URL }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

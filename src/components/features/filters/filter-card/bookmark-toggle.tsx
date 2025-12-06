@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getBookmarkedStatus } from "@/services/queries";
+import { useMemo } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
@@ -13,6 +12,7 @@ import {
   useServerActionMutation,
   useServerActionQuery,
 } from "@/hooks/server-action-hooks";
+import { getBookmarkedFilters } from "@/services/queries";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps
@@ -27,21 +27,32 @@ export function BookmarkToggle({
   ...props
 }: BookmarkToggleProps) {
   const { isLoaded, isSignedIn } = useUser();
-  const [isBookmarked, setIsBookmarked] = useState<boolean>(initialBookmarked);
   const queryClient = useQueryClient();
 
-  const { data: bookmarkedData, isLoading } = useServerActionQuery(
-    getBookmarkedStatus,
+  const { data: bookmarkedFilters, isLoading } = useServerActionQuery(
+    getBookmarkedFilters,
     {
-      input: { filterId },
-      queryKey: ["bookmarked", filterId],
+      input: undefined,
+      queryKey: ["bookmarked-filters"],
       enabled: isLoaded && isSignedIn && !initialBookmarked,
     },
   );
 
+  // Create a Set of bookmarked filter IDs for efficient lookup
+  const bookmarkedFilterIds = useMemo(() => {
+    if (!bookmarkedFilters) return new Set<number>();
+    return new Set(bookmarkedFilters.map((bookmark) => bookmark.filterId));
+  }, [bookmarkedFilters]);
+
+  // Determine bookmark status: use initialBookmarked if provided, otherwise check the fetched list
+  const isBookmarked = useMemo(() => {
+    if (initialBookmarked) return true;
+    if (!isLoaded || !isSignedIn) return false;
+    return bookmarkedFilterIds.has(filterId);
+  }, [initialBookmarked, isLoaded, isSignedIn, bookmarkedFilterIds, filterId]);
+
   const mutation = useServerActionMutation(bookmarkFilterAction, {
     onSuccess: (data) => {
-      setIsBookmarked(data.bookmarked);
       toast.success(
         data.bookmarked ? "Filter bookmarked" : "Filter unbookmarked",
       );
@@ -54,22 +65,9 @@ export function BookmarkToggle({
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookmarked", filterId] });
       queryClient.invalidateQueries({ queryKey: ["bookmarked-filters"] });
     },
   });
-
-  useEffect(() => {
-    if (bookmarkedData) {
-      setIsBookmarked(bookmarkedData.bookmarked);
-    }
-  }, [bookmarkedData]);
-
-  useEffect(() => {
-    if (initialBookmarked) {
-      setIsBookmarked(true);
-    }
-  }, [initialBookmarked]);
 
   return (
     <Toggle

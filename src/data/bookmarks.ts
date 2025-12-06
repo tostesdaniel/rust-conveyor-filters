@@ -21,16 +21,6 @@ export async function findExistingBookmark(filterId: number, authorId: string) {
   });
 }
 
-export async function getBookmarkStatus(filterId: number, authorId: string) {
-  const bookmark = await db.query.bookmarks.findFirst({
-    where: and(
-      eq(bookmarks.filterId, filterId),
-      eq(bookmarks.authorId, authorId),
-    ),
-  });
-  return !!bookmark;
-}
-
 export async function getBookmarkedFilters(authorId: string) {
   return await db.query.bookmarks.findMany({
     where: eq(bookmarks.authorId, authorId),

@@ -40,7 +40,9 @@ export async function GET(
 
     const imageBuffer = await response.Body.transformToByteArray();
 
-    return new NextResponse(imageBuffer, {
+    const arrayBuffer = new Uint8Array(imageBuffer).buffer;
+
+    return new NextResponse(arrayBuffer, {
       headers: {
         "Content-Type": response.ContentType || "image/webp",
         "Cache-Control": "public, max-age=31536000, immutable",

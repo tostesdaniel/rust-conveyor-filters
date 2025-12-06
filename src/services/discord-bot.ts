@@ -8,6 +8,11 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const USER_COUNT_CHANNEL_ID = process.env.DISCORD_USER_COUNT_CHANNEL_ID;
 
 export async function updateUserCountChannel() {
+  if (!DISCORD_TOKEN || !USER_COUNT_CHANNEL_ID) {
+    console.warn("Discord credentials not configured, skipping channel update");
+    return;
+  }
+
   try {
     const clerk = await clerkClient();
     const userCount = await clerk.users.getCount();
@@ -35,6 +40,11 @@ export async function updateUserCountChannel() {
 }
 
 export async function getGuildMember(userId: string) {
+  if (!DISCORD_TOKEN) {
+    console.warn("DISCORD_TOKEN not configured, skipping guild member fetch");
+    return null;
+  }
+
   try {
     const response = await fetch(
       `https://discord.com/api/v10/guilds/${DISCORD_GUILD_ID}/members/${userId}`,

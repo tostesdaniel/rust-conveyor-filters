@@ -1,11 +1,11 @@
 FROM oven/bun:latest AS base
 
-# Install dependencies only when needed
-FROM base AS deps
 WORKDIR /app
 
+# Install dependencies
+FROM base AS deps
 COPY package.json bun.lock ./
-RUN bun ci
+RUN bun ci --no-save
 
 
 # Rebuild the source code only when needed
@@ -14,9 +14,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
+# Disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
 ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
@@ -32,11 +30,13 @@ RUN --mount=type=secret,id=STEAM_API_KEY \
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME="0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
@@ -53,8 +53,4 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT=3000
-
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["sh", "-c", "HOSTNAME=0.0.0.0 bun server.js"]
+CMD ["bun", "./server.js"]

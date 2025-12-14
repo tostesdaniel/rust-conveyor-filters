@@ -11,7 +11,7 @@ const nextConfig = {
     ],
     minimumCacheTTL: 2678400, // 31 days
   },
-  redirects: async () => {
+  rewrites: async () => {
     return [
       {
         source: "/api/script.js",

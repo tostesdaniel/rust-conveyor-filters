@@ -13,8 +13,8 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
 
 import { siteConfig } from "@/config/site";
+import { Analytics } from "@/components/features/analytics/analytics";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
-import { UmamiAnalytics } from "@/components/features/analytics/umami-analytics";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });
@@ -88,7 +88,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en' suppressHydrationWarning>
         <head>
-          <UmamiAnalytics />
+          <Analytics />
           <GoogleAnalytics gaId='G-BGERZ3ES1R' />
         </head>
         <body

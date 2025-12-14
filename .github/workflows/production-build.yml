@@ -50,18 +50,3 @@ jobs:
             STEAM_ID=${{ secrets.STEAM_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  notify-coolify:
-    name: Trigger Coolify deploy
-    runs-on: ubuntu-24.04
-    needs: build-and-push
-    permissions:
-      contents: read
-    steps:
-      - name: Call Coolify hook
-        env:
-          COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
-          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-        run: |
-          curl --request GET "${COOLIFY_WEBHOOK}" \
-            --header "Authorization: Bearer ${COOLIFY_TOKEN}"

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
 import { getR2ImageUrl } from "@/utils/r2-images";
+import { trackEvent } from "@/utils/rybbit";
 import { EyeIcon } from "lucide-react";
 
 import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
@@ -53,11 +54,14 @@ export default function ViewFilter({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { logEvent } = useLogFilterEvent();
 
-  const handleOpenChange = () => {
-    if (log) {
-      logEvent("view", filter.id);
+  const handleOpenChange = (newOpen: boolean) => {
+    if (newOpen && !open) {
+      trackEvent("filter_viewed", { filterId: filter.id });
+      if (log) {
+        logEvent("view", filter.id);
+      }
     }
-    setOpen(!open);
+    setOpen(newOpen);
   };
 
   const TriggerButton = ({ ...props }) => {

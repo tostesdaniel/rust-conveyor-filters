@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
@@ -57,6 +58,7 @@ export default function NewFilterForm() {
 
   const mutation = useServerActionMutation(createFilter, {
     onSuccess: () => {
+      trackEvent("filter_created");
       toast.success("Filter created successfully");
       router.push("/my-filters");
     },

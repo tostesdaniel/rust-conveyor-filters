@@ -1,6 +1,7 @@
 "use client";
 
 import { exportConveyorFilter } from "@/utils/export-conveyor-filter";
+import { trackEvent } from "@/utils/rybbit";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
@@ -39,6 +40,11 @@ export function ExportConveyorFilter({
         toast.success("Exported to clipboard", {
           description: "Paste it while holding SHIFT key to import in game",
         });
+        if (filterId) {
+          trackEvent("filter_exported", { filterId });
+        } else {
+          trackEvent("filter_exported");
+        }
         if (log && filterId) {
           await logEvent("export", filterId);
         }

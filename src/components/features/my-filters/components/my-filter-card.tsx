@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getR2ImageUrl } from "@/utils/r2-images";
+import { trackEvent } from "@/utils/rybbit";
 import {
   CornerDownRight,
   Edit,
@@ -79,6 +80,9 @@ export function MyFilterCard({
             <Link
               href={`/my-filters/edit/${filter.id}`}
               className='block overflow-hidden font-medium text-ellipsis text-foreground/85 transition-colors hover:text-foreground'
+              onClick={() => {
+                trackEvent("my_filter_edit_clicked", { filterId: filter.id });
+              }}
             >
               {filter.name}
             </Link>
@@ -165,7 +169,14 @@ export function MyFilterCard({
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                      <Link href={`/my-filters/edit/${filter.id}`}>
+                      <Link
+                        href={`/my-filters/edit/${filter.id}`}
+                        onClick={() => {
+                          trackEvent("my_filter_edit_clicked", {
+                            filterId: filter.id,
+                          });
+                        }}
+                      >
                         <Edit />
                         Edit
                       </Link>
@@ -240,7 +251,12 @@ export function MyFilterCard({
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onSelect={() => setIsDeleteOpen(true)}
+                    onSelect={() => {
+                      trackEvent("my_filter_delete_opened", {
+                        filterId: filter.id,
+                      });
+                      setIsDeleteOpen(true);
+                    }}
                     className='text-destructive'
                   >
                     <Trash2 />

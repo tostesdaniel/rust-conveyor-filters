@@ -4,6 +4,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -87,6 +88,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
 
   const mutation = useServerActionMutation(updateFilter, {
     onSuccess: () => {
+      trackEvent("filter_updated", { filterId });
       toast.success("Filter updated successfully");
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
       refetch();

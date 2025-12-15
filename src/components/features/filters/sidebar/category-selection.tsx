@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/utils/rybbit";
 import { toast } from "sonner";
 
 import { ITEM_CATEGORIES } from "@/config/constants";
@@ -24,6 +25,10 @@ export function CategorySelection() {
     const isCurrentlySelected = currentCategories.includes(category);
 
     if (isCurrentlySelected) {
+      trackEvent("filter_category_toggled", {
+        category,
+        selected: false,
+      });
       setSearchParams({
         categories: currentCategories.filter((c) => c !== category),
       });
@@ -37,6 +42,10 @@ export function CategorySelection() {
       return;
     }
 
+    trackEvent("filter_category_toggled", {
+      category,
+      selected: true,
+    });
     setSearchParams({
       categories: [...currentCategories, category],
     });

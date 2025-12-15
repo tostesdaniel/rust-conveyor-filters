@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
+import { getBookmarkedFilters } from "@/services/queries";
+import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
@@ -12,7 +14,6 @@ import {
   useServerActionMutation,
   useServerActionQuery,
 } from "@/hooks/server-action-hooks";
-import { getBookmarkedFilters } from "@/services/queries";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps
@@ -53,6 +54,10 @@ export function BookmarkToggle({
 
   const mutation = useServerActionMutation(bookmarkFilterAction, {
     onSuccess: (data) => {
+      trackEvent("filter_bookmark_toggled", {
+        filterId,
+        bookmarked: data.bookmarked,
+      });
       toast.success(
         data.bookmarked ? "Filter bookmarked" : "Filter unbookmarked",
       );

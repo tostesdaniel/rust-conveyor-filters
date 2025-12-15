@@ -1,6 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
+import { trackEvent } from "@/utils/rybbit";
 import { InfoIcon, SearchIcon } from "lucide-react";
 
 import { useSearchParams } from "@/hooks/useSearchParams";
@@ -22,6 +23,17 @@ export function SearchBar() {
     startTransition,
     shallow: false,
   });
+
+  const previousSearchRef = useRef<string | undefined>(search);
+
+  useEffect(() => {
+    if (search !== previousSearchRef.current && search !== undefined) {
+      if (search.trim().length > 0) {
+        trackEvent("filter_search", { query: search });
+      }
+      previousSearchRef.current = search;
+    }
+  }, [search]);
 
   return (
     <Tooltip>

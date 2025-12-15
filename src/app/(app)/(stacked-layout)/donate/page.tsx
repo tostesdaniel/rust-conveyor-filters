@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { Handshake, Trophy } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { Separator } from "@/components/ui/separator";
@@ -7,7 +6,7 @@ import { DonateBadgeShowcase } from "@/components/features/donation/donate-badge
 import { DonateButton } from "@/components/features/donation/donate-button";
 import { DonateEmailReminder } from "@/components/features/donation/donate-email-reminder";
 import { DonateFeature } from "@/components/features/donation/donate-feature";
-import { ButtonWithIcon } from "@/components/shared/button-with-icon";
+import { DonateOtherLinks } from "@/components/features/donation/donate-other-links";
 import { Icons } from "@/components/shared/icons";
 import { Typography } from "@/components/shared/typography";
 
@@ -76,29 +75,7 @@ export default function DonatePage() {
             Other ways to support the creator
           </Typography>
 
-          <ul
-            role='list'
-            className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'
-          >
-            <ButtonWithIcon icon={Handshake}>
-              <a
-                href={siteConfig.donate.steamTradeOffer}
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                Send a trade offer
-              </a>
-            </ButtonWithIcon>
-            <ButtonWithIcon icon={Trophy}>
-              <a
-                href={siteConfig.donate.steamAwardsPost}
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                Give a Steam Award
-              </a>
-            </ButtonWithIcon>
-          </ul>
+          <DonateOtherLinks />
         </div>
         <div
           aria-hidden='true'

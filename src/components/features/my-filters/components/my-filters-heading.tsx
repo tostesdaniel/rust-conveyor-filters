@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import { trackEvent } from "@/utils/rybbit";
 import { PlusIcon } from "lucide-react";
 
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserFilters } from "@/hooks/use-get-user-filters";
-import { HeadingWithAction } from "@/components/shared/heading-with-action";
+import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/shared/typography";
 
 export function MyFiltersHeading() {
@@ -16,12 +18,24 @@ export function MyFiltersHeading() {
   }
 
   return (
-    <HeadingWithAction
-      buttonLabel='New Filter'
-      label='My Filters'
-      redirectUrl='/my-filters/new-filter'
-      variant='h1'
-      ActionIcon={PlusIcon}
-    />
+    <div className='md:flex md:items-center md:justify-between'>
+      <div className='min-w-0 flex-1'>
+        <Typography variant='h1'>My Filters</Typography>
+      </div>
+      <div className='mt-4 flex md:mt-0 md:ml-4'>
+        <Button
+          type='button'
+          asChild
+          onClick={() => {
+            trackEvent("new_filter_clicked");
+          }}
+        >
+          <Link href='/my-filters/new-filter'>
+            <PlusIcon aria-hidden='true' />
+            New Filter
+          </Link>
+        </Button>
+      </div>
+    </div>
   );
 }

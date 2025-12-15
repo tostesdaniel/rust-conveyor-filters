@@ -1,15 +1,9 @@
 import Image from "next/image";
-import { SiSteam } from "@icons-pack/react-simple-icons";
-import { LinkedinIcon } from "lucide-react";
 
 import type { SteamApiResponse } from "@/types/steam";
 import { steamConfig } from "@/config/constants";
-import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/shared/icons";
+import { AboutSocialLinks } from "@/components/pages/about/about-social-links";
 import { Typography } from "@/components/shared/typography";
-
-const { links } = siteConfig;
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = steamConfig.STEAM_ID;
@@ -65,27 +59,7 @@ export async function AboutHero() {
             you all! ❤️
           </Typography>
 
-          <div className='mt-10 flex items-center gap-x-6'>
-            <Button asChild variant='outline'>
-              <a href={links.steam} target='_blank' rel='noopener noreferrer'>
-                <SiSteam /> Steam Profile
-              </a>
-            </Button>
-            <Button asChild variant='outline'>
-              <a href={links.gitHub} target='_blank' rel='noopener noreferrer'>
-                <Icons.gitHub /> Follow me
-              </a>
-            </Button>
-            <Button asChild variant='outline'>
-              <a
-                href={links.linkedIn}
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <LinkedinIcon /> Connect with me
-              </a>
-            </Button>
-          </div>
+          <AboutSocialLinks />
         </div>
         <Image
           src='/images/about-hero.webp'

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { trackEvent } from "@/utils/rybbit";
 import type { inferParserType } from "nuqs";
 
 import { filterSortOptions } from "@/types/filter-sorting";
@@ -13,6 +14,7 @@ export function FilterSortTabs() {
   const [isLoading, startTransition] = useTransition();
 
   const handleTabChange = (value: string) => {
+    trackEvent("filter_sort_changed", { sort: value });
     setSearchParams(
       { sort: value as inferParserType<typeof searchParamsDef.sort> },
       { startTransition, shallow: false, scroll: true },

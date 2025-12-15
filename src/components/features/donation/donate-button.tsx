@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ComponentProps } from "react";
+import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 
@@ -32,6 +33,7 @@ export function DonateButton({
 
   const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    trackEvent("donate_button_clicked", { platform });
     if (!user) {
       const REDIRECT_DELAY = 3000;
       const toastId = toast.info("You must be signed in to donate", {

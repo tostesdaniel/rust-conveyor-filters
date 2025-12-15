@@ -3,6 +3,7 @@
 import React, { useCallback, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { getR2ImageUrl } from "@/utils/r2-images";
+import { trackEvent } from "@/utils/rybbit";
 import { CirclePlusIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 
@@ -42,6 +43,7 @@ export function ItemsSelection() {
 
   const handleRemoveItem = useCallback(
     (item: string) => {
+      trackEvent("filter_item_removed", { item });
       const newItems =
         items && items.length > 1 ? items.filter((i) => i !== item) : null;
       setSearchParams(
@@ -176,6 +178,7 @@ function ItemsCombobox({
         });
       }
 
+      trackEvent("filter_item_added", { item: item.name });
       setInputValue("");
       setSearchParams(
         { items: [...(items || []), item.name] },

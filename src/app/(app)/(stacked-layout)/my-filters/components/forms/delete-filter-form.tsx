@@ -1,6 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
+import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,7 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
 
   const mutation = useServerActionMutation(deleteFilter, {
     onSuccess: () => {
+      trackEvent("my_filter_deleted", { filterId: cardId });
       toast.success("Filter deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
       queryClient.invalidateQueries({ queryKey: ["user-filters"] });

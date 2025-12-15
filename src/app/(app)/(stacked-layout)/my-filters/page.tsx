@@ -13,12 +13,8 @@ import {
 } from "@tanstack/react-query";
 
 import { getShareToken } from "@/actions/shareTokens";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SavedFilters } from "@/components/features/filters/components/saved-filters";
-import { MyFilters } from "@/components/features/my-filters/components/my-filters";
 import { MyFiltersHeading } from "@/components/features/my-filters/components/my-filters-heading";
-import { ShareHelpDialog } from "@/components/features/my-filters/shared-filters/share-help-dialog";
-import { SharedFiltersTab } from "@/components/features/my-filters/shared-filters/shared-filters-tab";
+import { MyFiltersTabs } from "@/components/features/my-filters/components/my-filters-tabs";
 
 export const metadata: Metadata = {
   title: "My Filters",
@@ -77,27 +73,7 @@ export default async function MyFiltersPage() {
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <MyFiltersHeading />
-        <Tabs defaultValue='your-filters' className='mt-4'>
-          <div className='inline-flex flex-col items-end gap-2 min-[412px]:items-start min-[600px]:flex-row sm:items-center sm:justify-between'>
-            <TabsList>
-              <TabsTrigger value='your-filters'>Your Filters</TabsTrigger>
-              <TabsTrigger value='saved-filters'>Saved Filters</TabsTrigger>
-              <TabsTrigger value='shared-filters'>Shared With You</TabsTrigger>
-            </TabsList>
-
-            <ShareHelpDialog />
-          </div>
-
-          <TabsContent value='your-filters'>
-            <MyFilters />
-          </TabsContent>
-          <TabsContent value='saved-filters'>
-            <SavedFilters />
-          </TabsContent>
-          <TabsContent value='shared-filters'>
-            <SharedFiltersTab />
-          </TabsContent>
-        </Tabs>
+        <MyFiltersTabs />
       </HydrationBoundary>
     </>
   );

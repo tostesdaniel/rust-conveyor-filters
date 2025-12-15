@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
@@ -78,7 +79,11 @@ export function FeedbackForm() {
   const feedbackLength = feedbackValue.replace(/\s+/g, " ").trim().length;
 
   const { mutate, isPending } = useServerActionMutation(createFeedbackAction, {
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      trackEvent("feedback_submitted", {
+        type: variables.feedbackType,
+        rating: variables.rating,
+      });
       toast.success("Feedback submitted successfully!");
       form.reset();
     },

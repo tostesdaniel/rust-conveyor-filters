@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import { ChevronsDown } from "lucide-react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-import { manageFilterCategory } from "@/actions/userCategoryActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import type { UserCategory } from "@/db/schema";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 
@@ -34,24 +32,18 @@ export function CategoryDropdownCheckbox({
       ? category.id === filter.subCategoryId
       : category.id === filter.categoryId,
   );
-  const queryClient = useQueryClient();
-  const { mutate: manageFilterCategoryMutation } = useServerActionMutation(
-    manageFilterCategory,
-    {
+  const utils = api.useUtils();
+  const { mutate: manageFilterCategoryMutation } =
+    api.category.manageFilterCategory.useMutation({
       onSuccess: () => {
         toast.success(`Added to ${category.name}`);
-        queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category", null],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
+        utils.filter.getByCategory.invalidate({ categoryId: null });
+        utils.category.getHierarchy.invalidate();
       },
       onError: () => {
         toast.error("Failed to update category");
       },
-    },
-  );
+    });
 
   const isDisabled = isSubCategory && category.id === filter.subCategoryId;
   const showChevron = !isSubCategory && filter.subCategoryId;

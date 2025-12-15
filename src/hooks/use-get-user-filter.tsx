@@ -1,10 +1,5 @@
-import { getUserFilterById } from "@/services/queries";
-
-import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetUserFilter(filterId: number) {
-  return useServerActionQuery(getUserFilterById, {
-    input: { filterId },
-    queryKey: ["user-filter", filterId],
-  });
+  return api.filter.getById.useQuery({ filterId });
 }

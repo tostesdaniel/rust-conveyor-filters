@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import {
-  getBookmarkedFilters,
-  getSharedFilters,
-  getUserCategories,
-  getUserCategoryHierarchy,
-  getUserFiltersByCategory,
-} from "@/services/queries";
+import { api } from "@/trpc/server";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 
-import { getShareToken } from "@/actions/shareTokens";
 import { MyFiltersHeading } from "@/components/features/my-filters/components/my-filters-heading";
 import { MyFiltersTabs } from "@/components/features/my-filters/components/my-filters-tabs";
 
@@ -26,46 +19,31 @@ export default async function MyFiltersPage() {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: ["bookmarked-filters"],
-      queryFn: async () => {
-        const [data] = await getBookmarkedFilters();
-        return data;
-      },
+      queryKey: [["bookmark", "getAll"], { type: "query" }],
+      queryFn: async () => await api.bookmark.getAll(),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["user-filters-by-category", null],
-      queryFn: async () => {
-        const [data] = await getUserFiltersByCategory({ categoryId: null });
-        return data;
-      },
+      queryKey: [
+        ["filter", "getByCategory"],
+        { input: { categoryId: null }, type: "query" },
+      ],
+      queryFn: async () => await api.filter.getByCategory({ categoryId: null }),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["user-categories"],
-      queryFn: async () => {
-        const [data] = await getUserCategories();
-        return data;
-      },
+      queryKey: [["category", "getAll"], { type: "query" }],
+      queryFn: async () => await api.category.getAll(),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["user-category-hierarchy"],
-      queryFn: async () => {
-        const [data] = await getUserCategoryHierarchy();
-        return data;
-      },
+      queryKey: [["category", "getHierarchy"], { type: "query" }],
+      queryFn: async () => await api.category.getHierarchy(),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["share-token"],
-      queryFn: async () => {
-        const [data] = await getShareToken();
-        return data;
-      },
+      queryKey: [["shareToken", "get"], { type: "query" }],
+      queryFn: async () => await api.shareToken.get(),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["shared-filters"],
-      queryFn: async () => {
-        const [data] = await getSharedFilters();
-        return data;
-      },
+      queryKey: [["sharedFilter", "getAll"], { type: "query" }],
+      queryFn: async () => await api.sharedFilter.getAll(),
     }),
   ]);
 

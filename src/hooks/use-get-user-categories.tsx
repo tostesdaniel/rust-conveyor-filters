@@ -1,10 +1,5 @@
-import { getUserCategories } from "@/services/queries";
-
-import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetUserCategories() {
-  return useServerActionQuery(getUserCategories, {
-    input: undefined,
-    queryKey: ["user-categories"],
-  });
+  return api.category.getAll.useQuery();
 }

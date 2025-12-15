@@ -1,13 +1,11 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { deleteSharedFilterAction } from "@/actions/sharedFilters";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -34,10 +32,10 @@ export function DeleteSharedFilterDialog({
   open,
   onOpenChange,
 }: DeleteSharedFilterDialogProps) {
-  const queryClient = useQueryClient();
-  const mutation = useServerActionMutation(deleteSharedFilterAction, {
+  const utils = api.useUtils();
+  const mutation = api.sharedFilter.delete.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shared-filters"] });
+      utils.sharedFilter.getAll.invalidate();
       toast.success("Filter removed from shared filters");
     },
     onError: (error) => {

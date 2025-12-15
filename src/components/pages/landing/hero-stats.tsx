@@ -1,4 +1,4 @@
-import { getHeroStats } from "@/services/queries/stats";
+import { getHeroStats } from "@/data/stats";
 import * as motion from "motion/react-client";
 
 import {

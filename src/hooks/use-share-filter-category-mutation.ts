@@ -1,9 +1,5 @@
+import { api } from "@/trpc/react";
 import { toast } from "sonner";
-
-import { shareFilterCategory } from "@/actions/sharedFilters";
-import { validateToken } from "@/actions/shareTokens";
-
-import { useServerActionMutation } from "./server-action-hooks";
 
 interface ShareMutationContext {
   isTokenValid: boolean;
@@ -18,15 +14,23 @@ export function useShareFilterCategoryMutation({
   onShareSuccess,
   onTokenInvalid,
 }: UseShareFilterCategoryMutationProps) {
-  return useServerActionMutation(shareFilterCategory, {
+  const utils = api.useUtils();
+
+  return api.sharedFilter.shareCategory.useMutation({
     onMutate: async (variables) => {
-      const [data, error] = await validateToken({ token: variables.token });
-      if (error || !data) throw error;
-      return { isTokenValid: data.valid };
+      try {
+        const result = await utils.shareToken.validate.fetch({
+          token: variables.token,
+        });
+        if (!result.valid) throw new Error("Invalid token");
+        return { isTokenValid: result.valid };
+      } catch (error) {
+        throw error;
+      }
     },
     onSuccess: (result, variables, context) => {
       const mutationContext = context as ShareMutationContext;
-      if (mutationContext.isTokenValid) {
+      if (mutationContext?.isTokenValid) {
         onShareSuccess(variables.token);
         toast.success(
           `Shared ${result.sharedCount} filters (${result.alreadySharedCount} already shared)`,
@@ -34,41 +38,40 @@ export function useShareFilterCategoryMutation({
       }
     },
     onError: (error, variables) => {
-      const errorData = JSON.parse(error.data);
-      switch (error.code) {
-        case "INPUT_PARSE_ERROR":
-          toast.warning(errorData.name, {
-            description: errorData.message,
+      switch (error.data?.code) {
+        case "BAD_REQUEST":
+          toast.warning("Invalid Input", {
+            description: error.message,
           });
           break;
         case "NOT_FOUND":
-          toast.warning(errorData.name, {
-            description: errorData.message,
+          toast.warning("Not Found", {
+            description: error.message,
           });
-          if (errorData.name === "Invalid Share Token") {
+          if (error.message.includes("token")) {
             onTokenInvalid(variables.token);
           }
           break;
         case "FORBIDDEN":
-          toast.warning(errorData.name, {
-            description: errorData.message,
+          toast.warning("Forbidden", {
+            description: error.message,
           });
           onTokenInvalid(variables.token);
           break;
         case "CONFLICT":
-          toast.warning(errorData.name, {
-            description: errorData.message,
+          toast.warning("Conflict", {
+            description: error.message,
           });
           break;
         case "INTERNAL_SERVER_ERROR":
-          toast.error(errorData.name, {
-            description: errorData.message,
+          toast.error("Server Error", {
+            description: error.message,
           });
           break;
         default:
           toast.error("Something Went Wrong", {
             description:
-              "We encountered an unexpected error while sharing your filter. If the problem persists, please contact ohTostt on Discord.  ",
+              "We encountered an unexpected error while sharing your filter. If the problem persists, please contact ohTostt on Discord.",
           });
       }
     },

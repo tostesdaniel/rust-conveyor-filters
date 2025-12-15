@@ -1,11 +1,11 @@
 import { Metadata } from "next";
+import { api } from "@/trpc/server";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 
-import { getItems } from "@/actions/itemActions";
 import { Typography } from "@/components/shared/typography";
 
 import NewFilterForm from "./new-filter-form";
@@ -19,8 +19,8 @@ export default async function NewFilterPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
+    queryKey: [["stats", "getItems"], { type: "query" }],
+    queryFn: async () => await api.stats.getItems(),
   });
 
   return (

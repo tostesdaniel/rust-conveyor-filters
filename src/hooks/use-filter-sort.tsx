@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import {
   ArrowDownAZ,
   ArrowUpAZ,
@@ -11,9 +11,6 @@ import {
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-import { updateFilterOrder } from "@/actions/filterActions";
-
-import { useServerActionMutation } from "./server-action-hooks";
 
 const SORT_PREFERENCE_KEY = "filter-sort-preferences";
 
@@ -85,20 +82,16 @@ export function useFilterSort({
     const preferences = getSavedSortPreferences();
     return preferences[preferenceKey] || "nameAsc";
   });
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
 
-  const { mutate: updateOrders } = useServerActionMutation(updateFilterOrder, {
+  const { mutate: updateOrders } = api.filter.updateOrder.useMutation({
     onSuccess() {
       if (!categoryId && !subCategoryId) {
-        queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category", categoryId],
-        });
+        utils.filter.getByCategory.invalidate({ categoryId });
       }
 
       if (categoryId || subCategoryId) {
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
+        utils.category.getHierarchy.invalidate();
       }
 
       toast.success("Filter order updated");

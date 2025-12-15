@@ -1,10 +1,9 @@
 import Image from "next/image";
+import { api } from "@/trpc/server";
 import { parseDescription } from "@/utils/parse-steam-guide";
 import { ArrowRightIcon, BookHeartIcon, EyeIcon, StarIcon } from "lucide-react";
 import millify from "millify";
 
-import type { SteamGuideResponse } from "@/types/steam";
-import { getApiUrl } from "@/config/api";
 import { steamConfig } from "@/config/constants";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { Typography } from "@/components/shared/typography";
 
 export async function SteamGuideCard() {
-  const { guide, user }: SteamGuideResponse = await fetch(
-    getApiUrl("steam-guide"),
-    {
-      next: { revalidate: 3600 },
-    },
-  ).then((res) => res.json());
+  const { guide, user } = await api.stats.getSteamGuide();
 
   const previewUrl =
     guide.preview_url ||

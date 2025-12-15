@@ -1,10 +1,5 @@
-import { getSharedFilters } from "@/services/queries";
-
-import { useServerActionQuery } from "./server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetSharedFilters() {
-  return useServerActionQuery(getSharedFilters, {
-    queryKey: ["shared-filters"],
-    input: undefined,
-  });
+  return api.sharedFilter.getAll.useQuery();
 }

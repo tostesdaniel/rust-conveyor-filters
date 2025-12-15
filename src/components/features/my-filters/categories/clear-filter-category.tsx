@@ -1,12 +1,10 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import { ListXIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-import { clearFilterCategory } from "@/actions/userCategoryActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ClearFilterCategoryProps {
@@ -18,24 +16,18 @@ export function ClearFilterCategory({
   filter,
   isSubCategory = false,
 }: ClearFilterCategoryProps) {
-  const queryClient = useQueryClient();
-  const { mutate: clearCategory } = useServerActionMutation(
-    clearFilterCategory,
-    {
+  const utils = api.useUtils();
+  const { mutate: clearCategory } =
+    api.category.clearFilterCategory.useMutation({
       onSuccess: () => {
         toast.success("Filter category cleared");
-        queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category", null],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
+        utils.filter.getByCategory.invalidate({ categoryId: null });
+        utils.category.getHierarchy.invalidate();
       },
       onError: () => {
         toast.error("Failed to clear filter category");
       },
-    },
-  );
+    });
 
   const handleClearCategory = () => {
     clearCategory({ filterId: filter.id, isSubCategory });

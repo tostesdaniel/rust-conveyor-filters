@@ -3,15 +3,13 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { createFilter } from "@/actions/filterActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { Button } from "@/components/ui/button";
@@ -54,9 +52,9 @@ export default function NewFilterForm() {
     },
   });
 
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
 
-  const mutation = useServerActionMutation(createFilter, {
+  const mutation = api.filter.create.useMutation({
     onSuccess: () => {
       trackEvent("filter_created");
       toast.success("Filter created successfully");
@@ -66,10 +64,8 @@ export default function NewFilterForm() {
       toast.error(err.message);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-filters-by-category", null],
-      });
-      queryClient.invalidateQueries({ queryKey: ["user-category-hierarchy"] });
+      utils.filter.getByCategory.invalidate({ categoryId: null });
+      utils.category.getHierarchy.invalidate();
     },
   });
 
@@ -125,9 +121,7 @@ export default function NewFilterForm() {
                 <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
                   Cover Image
                 </FormLabel>
-                {items?.success && items.data && (
-                  <FilterImageCombobox field={field} items={items.data} />
-                )}
+                {items && <FilterImageCombobox field={field} items={items} />}
                 <FormDescription>
                   Select an in-game item to represent your filter.
                 </FormDescription>

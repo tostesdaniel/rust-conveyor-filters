@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { getUserFilterById } from "@/services/queries";
+import { api } from "@/trpc/server";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 
-import { getItems } from "@/actions/itemActions";
 import { Typography } from "@/components/shared/typography";
 import { EditFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 
@@ -14,7 +13,7 @@ export async function generateMetadata(props: {
   params: Promise<{ filterId: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const [filter] = await getUserFilterById({
+  const filter = await api.filter.getById({
     filterId: Number(params.filterId),
   });
 
@@ -37,8 +36,8 @@ export default async function EditFilterPage(props: {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
+    queryKey: [["stats", "getItems"], { type: "query" }],
+    queryFn: async () => await api.stats.getItems(),
   });
 
   return (

@@ -1,19 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
-import { getBookmarkedFilters } from "@/services/queries";
+import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
-import { useQueryClient } from "@tanstack/react-query";
 import { BookmarkIcon, Loader2Icon } from "lucide-react";
 import { Toggle as TogglePrimitive } from "radix-ui";
 import { toast } from "sonner";
 
-import { bookmarkFilterAction } from "@/actions/bookmark-filter";
-import {
-  useServerActionMutation,
-  useServerActionQuery,
-} from "@/hooks/server-action-hooks";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps
@@ -28,13 +22,10 @@ export function BookmarkToggle({
   ...props
 }: BookmarkToggleProps) {
   const { isLoaded, isSignedIn } = useUser();
-  const queryClient = useQueryClient();
 
-  const { data: bookmarkedFilters, isLoading } = useServerActionQuery(
-    getBookmarkedFilters,
+  const { data: bookmarkedFilters, isLoading } = api.bookmark.getAll.useQuery(
+    undefined,
     {
-      input: undefined,
-      queryKey: ["bookmarked-filters"],
       enabled: isLoaded && isSignedIn && !initialBookmarked,
     },
   );
@@ -52,7 +43,8 @@ export function BookmarkToggle({
     return bookmarkedFilterIds.has(filterId);
   }, [initialBookmarked, isLoaded, isSignedIn, bookmarkedFilterIds, filterId]);
 
-  const mutation = useServerActionMutation(bookmarkFilterAction, {
+  const utils = api.useUtils();
+  const mutation = api.bookmark.toggle.useMutation({
     onSuccess: (data) => {
       trackEvent("filter_bookmark_toggled", {
         filterId,
@@ -63,14 +55,14 @@ export function BookmarkToggle({
       );
     },
     onError: (err) => {
-      if (err.code === "NOT_AUTHORIZED") {
+      if (err.data?.code === "UNAUTHORIZED") {
         toast.error("You must be signed in to bookmark a filter");
       } else {
         toast.error("An error occurred while bookmarking the filter");
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookmarked-filters"] });
+      utils.bookmark.getAll.invalidate();
     },
   });
 
@@ -78,7 +70,7 @@ export function BookmarkToggle({
     <Toggle
       aria-label='Bookmark filter'
       className='group -my-3 hover:bg-transparent data-[state=on]:bg-transparent data-[state=on]:hover:text-muted-foreground'
-      onPressedChange={() => mutation.mutate({ filterId })}
+      onPressedChange={() => mutation.mutate({ filterId: filterId })}
       pressed={isBookmarked}
       {...props}
     >

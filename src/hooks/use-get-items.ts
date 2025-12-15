@@ -1,11 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getItems } from "@/actions/itemActions";
+import { api } from "@/trpc/react";
 
 export function useGetItems() {
-  return useQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
+  return api.stats.getItems.useQuery(undefined, {
     staleTime: 4 * 60 * 60 * 1000,
     gcTime: 24 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,

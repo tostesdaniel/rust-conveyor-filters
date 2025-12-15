@@ -1,10 +1,5 @@
-import { getBookmarkedFilters } from "@/services/queries";
-
-import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetBookmarkedFilters() {
-  return useServerActionQuery(getBookmarkedFilters, {
-    input: undefined,
-    queryKey: ["bookmarked-filters"],
-  });
+  return api.bookmark.getAll.useQuery();
 }

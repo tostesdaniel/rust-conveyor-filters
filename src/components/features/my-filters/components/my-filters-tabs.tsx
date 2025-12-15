@@ -39,5 +39,3 @@ export function MyFiltersTabs() {
     </Tabs>
   );
 }
-
-

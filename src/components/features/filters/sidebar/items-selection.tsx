@@ -84,7 +84,7 @@ export function ItemsSelection() {
           </SidebarMenuButton>
         </SidebarMenuItem>
 
-        {itemsLoading || !itemsData?.data ? (
+        {itemsLoading || !itemsData ? (
           <SidebarMenuItem className='px-2'>
             <Skeleton className='h-8 w-full' />
           </SidebarMenuItem>
@@ -95,7 +95,7 @@ export function ItemsSelection() {
             </SidebarMenuItem>
             <SidebarMenuSub className='mr-0' hidden={!items?.length}>
               {items?.map((item) => {
-                const foundItem = itemsData?.data?.find((i) => i.name === item);
+                const foundItem = itemsData?.find((i) => i.name === item);
                 return foundItem ? (
                   <SidebarMenuSubItem key={item}>
                     <SidebarMenuSubButton className='h-8' asChild>
@@ -197,11 +197,9 @@ function ItemsCombobox({
     [items, setSearchParams],
   );
 
-  if (!itemsData || !itemsData.data) return null;
+  if (!itemsData) return null;
 
-  const selectables = itemsData.data.filter(
-    (item) => !items?.includes(item.name),
-  );
+  const selectables = itemsData.filter((item) => !items?.includes(item.name));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

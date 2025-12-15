@@ -1,10 +1,10 @@
+import { api } from "@/trpc/server";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 
-import { getItems } from "@/actions/itemActions";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { FiltersPageHeader } from "@/components/features/filters/components/filters-page-header";
 import { FiltersSidebar } from "@/components/features/filters/sidebar/filters-sidebar";
@@ -19,8 +19,8 @@ export default async function FiltersLayout({
 
   // Prefetch items data to eliminate loading state
   await queryClient.prefetchQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
+    queryKey: [["stats", "getItems"], { type: "query" }],
+    queryFn: async () => await api.stats.getItems(),
   });
 
   return (

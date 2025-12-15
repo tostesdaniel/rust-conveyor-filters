@@ -1,8 +1,6 @@
 import Script from "next/script";
 
 export function Analytics() {
-  const siteId = "1";
-
   if (process.env.NODE_ENV !== "production") {
     return null;
   }
@@ -10,7 +8,8 @@ export function Analytics() {
   return (
     <Script
       src={`${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`}
-      data-site-id={siteId}
+      data-site-id='1'
+      data-track-errors='true'
       strategy='afterInteractive'
     />
   );

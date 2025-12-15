@@ -9,7 +9,7 @@ export function Analytics() {
 
   return (
     <Script
-      src='/api/script.js'
+      src={`${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`}
       data-site-id={siteId}
       strategy='afterInteractive'
     />

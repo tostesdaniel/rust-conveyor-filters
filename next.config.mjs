@@ -11,18 +11,18 @@ const nextConfig = {
     ],
     minimumCacheTTL: 2678400, // 31 days
   },
-  rewrites: async () => {
-    return [
-      {
-        source: "/api/script.js",
-        destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`,
-      },
-      {
-        source: "/api/track",
-        destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/track`,
-      },
-    ];
-  },
+  // rewrites: async () => {
+  //   return [
+  //     {
+  //       source: "/api/script.js",
+  //       destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`,
+  //     },
+  //     {
+  //       source: "/api/track",
+  //       destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/track`,
+  //     },
+  //   ];
+  // },
 };
 
 const withMDX = createMDX();

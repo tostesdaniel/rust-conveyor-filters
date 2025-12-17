@@ -11,33 +11,15 @@ import {
 import { toast } from "sonner";
 
 import type { ConveyorFilter } from "@/types/filter";
-
-const SORT_PREFERENCE_KEY = "filter-sort-preferences";
-
-function getSortPreferenceKey(
-  categoryId: number | null,
-  subCategoryId: number | null,
-): string {
-  if (subCategoryId) return `sub-${subCategoryId}`;
-  if (categoryId) return `cat-${categoryId}`;
-  return "uncategorized";
-}
-
-function getSavedSortPreferences(): Record<string, FilterSortType["value"]> {
-  if (typeof window === "undefined") return {};
-
-  const stored = localStorage.getItem(SORT_PREFERENCE_KEY);
-  return stored ? JSON.parse(stored) : {};
-}
-
-function saveSortPreference(key: string, value: FilterSortType["value"]) {
-  const preferences = getSavedSortPreferences();
-  preferences[key] = value;
-  localStorage.setItem(SORT_PREFERENCE_KEY, JSON.stringify(preferences));
-}
+import {
+  getSavedSortPreference,
+  saveSortPreference,
+  sortFiltersByPreference,
+  type FilterSortTypeValue,
+} from "@/lib/utils/filter-sorting";
 
 export type FilterSortType = {
-  value: "nameAsc" | "nameDesc" | "dateAsc" | "dateDesc";
+  value: FilterSortTypeValue;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
 };
@@ -76,11 +58,8 @@ export function useFilterSort({
   categoryId,
   subCategoryId,
 }: UseFilterSortProps) {
-  const preferenceKey = getSortPreferenceKey(categoryId, subCategoryId);
-
   const [sortType, setSortType] = useState<FilterSortType["value"]>(() => {
-    const preferences = getSavedSortPreferences();
-    return preferences[preferenceKey] || "nameAsc";
+    return getSavedSortPreference(categoryId, subCategoryId);
   });
   const utils = api.useUtils();
 
@@ -104,20 +83,9 @@ export function useFilterSort({
   const handleSortChange = useCallback(
     (newSortType: FilterSortType["value"]) => {
       setSortType(newSortType);
-      saveSortPreference(preferenceKey, newSortType);
+      saveSortPreference(categoryId, subCategoryId, newSortType);
 
-      const sorted = [...filters].sort((a, b) => {
-        switch (newSortType) {
-          case "nameAsc":
-            return a.name.localeCompare(b.name);
-          case "nameDesc":
-            return b.name.localeCompare(a.name);
-          case "dateAsc":
-            return a.createdAt.getTime() - b.createdAt.getTime();
-          case "dateDesc":
-            return b.createdAt.getTime() - a.createdAt.getTime();
-        }
-      });
+      const sorted = sortFiltersByPreference(filters, newSortType);
 
       const filterUpdates = sorted.map((filter, index) => ({
         filterId: filter.id,
@@ -130,22 +98,11 @@ export function useFilterSort({
         subCategoryId,
       });
     },
-    [categoryId, filters, preferenceKey, subCategoryId, updateOrders],
+    [categoryId, filters, subCategoryId, updateOrders],
   );
 
   const sortedFilters = useMemo(() => {
-    return [...filters].sort((a, b) => {
-      switch (sortType) {
-        case "nameAsc":
-          return a.name.localeCompare(b.name);
-        case "nameDesc":
-          return b.name.localeCompare(a.name);
-        case "dateAsc":
-          return a.createdAt.getTime() - b.createdAt.getTime();
-        case "dateDesc":
-          return b.createdAt.getTime() - a.createdAt.getTime();
-      }
-    });
+    return sortFiltersByPreference(filters, sortType);
   }, [filters, sortType]);
 
   return {

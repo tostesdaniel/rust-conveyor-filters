@@ -1,7 +1,7 @@
 import { format, formatDistanceToNowStrict } from "date-fns";
 import { ArrowBigUpDashIcon, ClockFadingIcon } from "lucide-react";
 
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { cn } from "@/lib/utils";
 import { CardDescription, CardFooter } from "@/components/ui/card";
 import {
@@ -15,7 +15,7 @@ import ViewFilter from "@/components/features/filters/components/view-filter";
 export function FilterCardFooter({
   filter,
 }: {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
 }) {
   return (
     <CardFooter

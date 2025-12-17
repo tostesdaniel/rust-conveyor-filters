@@ -1,4 +1,4 @@
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { FilterCardContent } from "@/components/features/filters/filter-card/filter-card-content";
@@ -9,7 +9,7 @@ export function FilterCard({
   filter,
   className,
 }: {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
   className?: string;
 }) {
   return (

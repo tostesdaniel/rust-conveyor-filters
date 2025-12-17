@@ -1,9 +1,4 @@
-import { api } from "@/trpc/server";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { api, HydrateClient } from "@/trpc/server";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { FiltersPageHeader } from "@/components/features/filters/components/filters-page-header";
@@ -15,16 +10,11 @@ export default async function FiltersLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
-
   // Prefetch items data to eliminate loading state
-  await queryClient.prefetchQuery({
-    queryKey: [["stats", "getItems"], { type: "query" }],
-    queryFn: async () => await api.stats.getItems(),
-  });
+  await api.stats.getItems.prefetch();
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <HydrateClient>
       <SidebarProvider className='mx-auto max-w-[1400px] px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
         <FiltersSidebar />
         <SidebarInset>
@@ -33,6 +23,6 @@ export default async function FiltersLayout({
           {children}
         </SidebarInset>
       </SidebarProvider>
-    </HydrationBoundary>
+    </HydrateClient>
   );
 }

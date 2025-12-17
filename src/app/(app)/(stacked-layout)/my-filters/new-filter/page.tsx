@@ -1,10 +1,5 @@
 import { Metadata } from "next";
-import { api } from "@/trpc/server";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { api, HydrateClient } from "@/trpc/server";
 
 import { Typography } from "@/components/shared/typography";
 
@@ -16,19 +11,14 @@ export const metadata: Metadata = {
 };
 
 export default async function NewFilterPage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: [["stats", "getItems"], { type: "query" }],
-    queryFn: async () => await api.stats.getItems(),
-  });
+  await api.stats.getItems.prefetch();
 
   return (
     <>
       <Typography variant='h1'>New Filter</Typography>
-      <HydrationBoundary state={dehydrate(queryClient)}>
+      <HydrateClient>
         <NewFilterForm />
-      </HydrationBoundary>
+      </HydrateClient>
     </>
   );
 }

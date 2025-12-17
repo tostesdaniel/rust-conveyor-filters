@@ -1,11 +1,14 @@
 import "server-only";
 
 import { db } from "@/db";
+import type { CursorData } from "@/utils/cursor";
+import { encodeCursor } from "@/utils/cursor";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { createTsQuery } from "@/utils/text-search";
 import { and, desc, eq, exists, gt, isNull, lt, or, sql } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
+import type { PublicFilterListDTO } from "@/types/dto/public-filter";
 import {
   categories as categoriesTable,
   filterItems,
@@ -231,22 +234,52 @@ export async function getPublicFilter(filterId: number) {
   }
 
   const enriched = await enrichWithAuthor([filter]);
-  return enriched[0] ?? null;
+  return toPublicFilterDTO(enriched[0]);
 }
 
 export interface GetPublicFiltersOptions {
   sort: "popular" | "new" | "updated" | "mostUsed";
-  cursor?: {
-    id: number;
-    popularityScore?: number;
-    createdAt?: Date;
-    updatedAt?: Date;
-    exportCount?: number;
-  };
+  cursor?: CursorData;
   pageSize?: number;
   search?: string;
   categories?: string[];
   items?: string[];
+}
+
+/**
+ * Convert enriched filter to public DTO, stripping internal fields
+ */
+export function toPublicFilterDTO(
+  filter: Awaited<ReturnType<typeof enrichWithAuthor>>[0],
+): PublicFilterListDTO {
+  return {
+    id: filter.id,
+    name: filter.name,
+    description: filter.description,
+    imagePath: filter.imagePath,
+    createdAt: filter.createdAt,
+    updatedAt: filter.updatedAt,
+    filterItems: filter.filterItems.map((item) => ({
+      item: item.item
+        ? {
+            name: item.item.name,
+            imagePath: item.item.imagePath,
+            shortname: item.item.shortname,
+          }
+        : null,
+      category: item.category
+        ? {
+            name: item.category.name,
+            id: item.category.id,
+          }
+        : null,
+      max: item.max,
+      buffer: item.buffer,
+      min: item.min,
+    })),
+    author: filter.author,
+    badges: filter.badges,
+  };
 }
 
 export async function getPublicFilters(options: GetPublicFiltersOptions) {
@@ -296,46 +329,56 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
 
   let whereClause = and(...searchConditions);
   if (cursor) {
-    let cursorCondition;
-    switch (sort) {
-      case "popular":
-        cursorCondition = or(
-          lt(filters.popularityScore, cursor.popularityScore ?? 0),
-          and(
-            eq(filters.popularityScore, cursor.popularityScore ?? 0),
-            gt(filters.id, cursor.id),
-          ),
-        );
-        break;
-      case "new":
-        cursorCondition = or(
-          lt(filters.createdAt, cursor.createdAt ?? new Date()),
-          and(
-            eq(filters.createdAt, cursor.createdAt ?? new Date()),
-            gt(filters.id, cursor.id),
-          ),
-        );
-        break;
-      case "updated":
-        cursorCondition = or(
-          lt(filters.updatedAt, cursor.updatedAt ?? new Date()),
-          and(
-            eq(filters.updatedAt, cursor.updatedAt ?? new Date()),
-            gt(filters.id, cursor.id),
-          ),
-        );
-        break;
-      case "mostUsed":
-        cursorCondition = or(
-          lt(filters.exportCount, cursor.exportCount ?? 0),
-          and(
-            eq(filters.exportCount, cursor.exportCount ?? 0),
-            gt(filters.id, cursor.id),
-          ),
-        );
-        break;
+    // Validate cursor sort type matches current sort
+    const sortMap: Record<string, "p" | "n" | "u" | "m"> = {
+      popular: "p",
+      new: "n",
+      updated: "u",
+      mostUsed: "m",
+    };
+    if (cursor.s === sortMap[sort]) {
+      let cursorCondition;
+      switch (sort) {
+        case "popular":
+          cursorCondition = or(
+            lt(filters.popularityScore, cursor.v as number),
+            and(
+              eq(filters.popularityScore, cursor.v as number),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "new":
+          cursorCondition = or(
+            lt(filters.createdAt, new Date(cursor.v as string)),
+            and(
+              eq(filters.createdAt, new Date(cursor.v as string)),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "updated":
+          cursorCondition = or(
+            lt(filters.updatedAt, new Date(cursor.v as string)),
+            and(
+              eq(filters.updatedAt, new Date(cursor.v as string)),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "mostUsed":
+          cursorCondition = or(
+            lt(filters.exportCount, cursor.v as number),
+            and(
+              eq(filters.exportCount, cursor.v as number),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+      }
+      whereClause = and(...searchConditions, cursorCondition);
     }
-    whereClause = and(...searchConditions, cursorCondition);
+    // If cursor doesn't match sort type, ignore it (whereClause remains unchanged)
   }
 
   let orderBy;
@@ -370,19 +413,47 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
 
   const enrichedFilters = await enrichWithAuthor(result);
 
+  // Convert to DTOs
+  const dtoFilters = enrichedFilters.map(toPublicFilterDTO);
+
+  // Generate minimal, sort-specific cursor
   const lastItem = result[result.length - 1];
-  const nextCursor = lastItem
-    ? {
-        id: lastItem.id,
-        popularityScore: lastItem.popularityScore,
-        createdAt: lastItem.createdAt,
-        updatedAt: lastItem.updatedAt,
-        exportCount: lastItem.exportCount,
-      }
-    : undefined;
+  let nextCursor: string | undefined;
+  if (lastItem) {
+    const sortMap: Record<string, "p" | "n" | "u" | "m"> = {
+      popular: "p",
+      new: "n",
+      updated: "u",
+      mostUsed: "m",
+    };
+
+    let cursorValue: number | string;
+    switch (sort) {
+      case "popular":
+        cursorValue = lastItem.popularityScore ?? 0;
+        break;
+      case "new":
+        cursorValue = lastItem.createdAt.toISOString();
+        break;
+      case "updated":
+        cursorValue = lastItem.updatedAt.toISOString();
+        break;
+      case "mostUsed":
+        cursorValue = lastItem.exportCount ?? 0;
+        break;
+    }
+
+    const cursorData: CursorData = {
+      id: lastItem.id,
+      v: cursorValue,
+      s: sortMap[sort],
+    };
+
+    nextCursor = encodeCursor(cursorData);
+  }
 
   return {
-    data: enrichedFilters,
+    data: dtoFilters,
     nextCursor,
   };
 }

@@ -12,6 +12,7 @@ import {
   updateFilterInputSchema,
   validatePublicFilterLatinChars,
 } from "@/schemas/filterFormSchema";
+import { decodeCursor } from "@/utils/cursor";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -48,15 +49,7 @@ export const filterRouter = createTRPCRouter({
     .input(
       z.object({
         sort: z.enum(["popular", "new", "updated", "mostUsed"]),
-        cursor: z
-          .object({
-            id: z.number(),
-            popularityScore: z.number().optional(),
-            createdAt: z.date().optional(),
-            updatedAt: z.date().optional(),
-            exportCount: z.number().optional(),
-          })
-          .optional(),
+        cursor: z.string().optional(),
         pageSize: z.number().default(6),
         search: z.string().optional(),
         categories: z.array(z.string()).optional(),
@@ -64,7 +57,13 @@ export const filterRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      return getPublicFilters(input);
+      const decodedCursor = input.cursor
+        ? decodeCursor(input.cursor)
+        : undefined;
+      return getPublicFilters({
+        ...input,
+        cursor: decodedCursor ?? undefined,
+      });
     }),
 
   getByCategory: protectedProcedure
@@ -81,15 +80,7 @@ export const filterRouter = createTRPCRouter({
     .input(
       z.object({
         sort: z.enum(["popular", "new", "updated", "mostUsed"]),
-        cursor: z
-          .object({
-            id: z.number(),
-            popularityScore: z.number().optional(),
-            createdAt: z.date().optional(),
-            updatedAt: z.date().optional(),
-            exportCount: z.number().optional(),
-          })
-          .optional(),
+        cursor: z.string().optional(),
         pageSize: z.number().default(6),
         search: z.string().optional(),
         categories: z.array(z.string()).optional(),
@@ -97,7 +88,13 @@ export const filterRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      return getPublicFilters(input);
+      const decodedCursor = input.cursor
+        ? decodeCursor(input.cursor)
+        : undefined;
+      return getPublicFilters({
+        ...input,
+        cursor: decodedCursor ?? undefined,
+      });
     }),
 
   create: protectedProcedure

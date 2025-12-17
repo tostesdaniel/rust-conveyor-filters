@@ -9,6 +9,14 @@ import {
 } from "@/components/ui/accordion";
 import { CardDescription } from "@/components/ui/card";
 
+/**
+ * Renders a filter's description or a placeholder when none is provided.
+ *
+ * Displays an italic, muted "No description provided" message with an info icon when `filter.description` is missing. If a description exists and its length exceeds 60 characters, renders an expandable accordion that shows a clipped preview; otherwise renders the full description inline.
+ *
+ * @param filter - The public filter object whose `description` will be displayed.
+ * @returns A React element that presents the filter description or a placeholder based on presence and length.
+ */
 export function FilterCardDescription({
   filter,
 }: {

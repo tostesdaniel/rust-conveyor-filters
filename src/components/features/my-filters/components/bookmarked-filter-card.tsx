@@ -10,6 +10,12 @@ interface BookmarkedFilterCardProps {
   filter: PublicFilterListDTO;
 }
 
+/**
+ * Render a bookmarked filter as a list item showing its image, name, item count, and action controls.
+ *
+ * @param filter - PublicFilterListDTO containing the filter's metadata, imagePath, id, and filterItems used to populate the card
+ * @returns A JSX list item element containing the filter image, name, item count, and action buttons (view, export, bookmark)
+ */
 export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
   return (
     <li className='col-span-1 flex min-w-[300px] rounded-md shadow-xs'>

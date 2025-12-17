@@ -6,7 +6,10 @@ export interface CursorData {
 }
 
 /**
- * Encode cursor to opaque base64 string for URL safety
+ * Convert a CursorData object into a URL-safe opaque string.
+ *
+ * @param cursor - CursorData containing `id`, `v`, and `s` used to build the cursor
+ * @returns The base64url-encoded representation of the cursor
  */
 export function encodeCursor(cursor: CursorData): string {
   const json = JSON.stringify(cursor);
@@ -14,8 +17,10 @@ export function encodeCursor(cursor: CursorData): string {
 }
 
 /**
- * Decode cursor from base64 string
- * Returns null if decoding fails or data is invalid
+ * Decode a base64url-encoded cursor string into a CursorData object.
+ *
+ * @param encoded - The base64url-encoded cursor string
+ * @returns `CursorData` if decoding and validation succeed, `null` otherwise
  */
 export function decodeCursor(encoded: string): CursorData | null {
   try {
@@ -36,4 +41,3 @@ export function decodeCursor(encoded: string): CursorData | null {
     return null;
   }
 }
-

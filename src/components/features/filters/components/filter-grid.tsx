@@ -13,6 +13,15 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Typography } from "@/components/shared/typography";
 import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
 
+/**
+ * Render a responsive grid of filter cards that supports sorting, searching, and infinite scroll.
+ *
+ * The component displays one of: a loading state, an error state with retry, a paginated list of filters,
+ * or an empty state with an action to clear filters. It scrolls the window to the top when the sort
+ * parameter changes and automatically fetches the next page when the scroll sentinel becomes visible.
+ *
+ * @returns The rendered React element for the filter grid, including cards, skeletons for loading pages, or an empty/error view.
+ */
 export function FilterGrid() {
   const { ref, inView } = useInView({
     delay: 100,

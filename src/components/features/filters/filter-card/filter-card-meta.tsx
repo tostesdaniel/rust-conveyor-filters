@@ -4,6 +4,12 @@ import { CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { UserBadge } from "@/components/shared/user-badge";
 
+/**
+ * Render metadata for a public filter including item count and, when available, author and badges.
+ *
+ * @param filter - The public filter object whose metadata (description length, items, author, badges) is displayed.
+ * @returns A JSX element containing the filter's item count and, if present, the author and badge list.
+ */
 export function FilterCardMeta({
   filter,
 }: {

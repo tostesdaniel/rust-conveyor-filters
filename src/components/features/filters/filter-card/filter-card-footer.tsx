@@ -12,6 +12,12 @@ import {
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import ViewFilter from "@/components/features/filters/components/view-filter";
 
+/**
+ * Render the footer for a filter card, showing creation and update timestamps with tooltips and action controls.
+ *
+ * @param filter - Public filter metadata and contents used to populate the footer. Must contain `createdAt`, `updatedAt`, `id`, and `filterItems`.
+ * @returns The card footer JSX element containing timestamp displays (with hoverable full timestamps) and action buttons for viewing and exporting the filter.
+ */
 export function FilterCardFooter({
   filter,
 }: {

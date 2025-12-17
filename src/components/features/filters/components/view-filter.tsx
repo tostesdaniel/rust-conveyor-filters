@@ -45,6 +45,16 @@ interface ViewFilterProps {
   variant?: "button" | "dropdown" | "icon";
 }
 
+/**
+ * Render a control that opens a dialog (desktop) or drawer (mobile) to visualize a filter's items.
+ *
+ * Renders a trigger (button, dropdown item, or icon) that, when opened, tracks a view event and optionally logs a filter view. The opened panel displays the filter's name, description, and a grid of its items.
+ *
+ * @param filter - The public filter list to visualize, including its metadata and items.
+ * @param log - When true, emit an additional "view" log event for the filter.
+ * @param variant - The trigger presentation: `"button"`, `"dropdown"`, or `"icon"`.
+ * @returns A React element that provides the visualize trigger and the corresponding dialog or drawer containing the filter's items.
+ */
 export default function ViewFilter({
   filter,
   log = false,

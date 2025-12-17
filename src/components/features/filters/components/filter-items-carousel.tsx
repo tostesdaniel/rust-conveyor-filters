@@ -19,6 +19,14 @@ import {
 } from "@/components/ui/carousel";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 
+/**
+ * Renders a responsive, autoplaying carousel of filter items and category tiles with a current item range indicator.
+ *
+ * Displays each entry from `filterItems` as either a category tile (when the entry lacks an `item`) or an image card for an item. The carousel adjusts visible items per viewport width and automatically plays while the component is in view; it updates the displayed page and range indicator as the carousel selection changes.
+ *
+ * @param filterItems - Array of filter item DTOs; each entry may contain either an `item` (to render an image card) or a `category` (to render a category tile).
+ * @returns The React element containing the configured carousel and the "Showing X–Y of Z items" range text.
+ */
 export function FilterItemsCarousel({
   filterItems,
 }: {

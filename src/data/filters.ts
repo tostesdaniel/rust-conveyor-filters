@@ -219,6 +219,12 @@ export async function getFilterById(filterId: number, userId: string) {
   });
 }
 
+/**
+ * Retrieve a public filter by id, enrich it with author information, and return it as a public DTO.
+ *
+ * @param filterId - The identifier of the filter to retrieve
+ * @returns A `PublicFilterListDTO` for the matching public filter, or `null` if no public filter with the given id exists
+ */
 export async function getPublicFilter(filterId: number) {
   const filter = await db.query.filters.findFirst({
     where: and(eq(filters.id, filterId), eq(filters.isPublic, true)),
@@ -247,7 +253,16 @@ export interface GetPublicFiltersOptions {
 }
 
 /**
- * Convert enriched filter to public DTO, stripping internal fields
+ * Map an enriched filter record to the public-facing filter DTO.
+ *
+ * Converts the enriched filter (including author and related filterItems) into a
+ * PublicFilterListDTO by selecting public fields and mapping nested items and
+ * categories; internal or sensitive fields are excluded.
+ *
+ * @param filter - An enriched filter row that includes `author` and `filterItems`
+ * @returns A PublicFilterListDTO containing id, name, description, imagePath,
+ * createdAt, updatedAt, author, badges, and mapped `filterItems` (with `item`,
+ * `category`, `max`, `buffer`, and `min`)
  */
 export function toPublicFilterDTO(
   filter: Awaited<ReturnType<typeof enrichWithAuthor>>[0],
@@ -282,6 +297,20 @@ export function toPublicFilterDTO(
   };
 }
 
+/**
+ * Fetches public filters applying text search, category/item filters, sorting, and cursor-based pagination.
+ *
+ * @param options - Query options including:
+ *   - sort: one of "popular" | "new" | "updated" | "mostUsed" to determine ordering and cursor semantics
+ *   - cursor: optional cursor for pagination (must match the selected `sort` to be applied)
+ *   - pageSize: maximum number of filters to return (defaults to 6)
+ *   - search: optional free-text search string
+ *   - categories: optional list of category names to filter by presence on a filter's items
+ *   - items: optional list of item names to filter by presence on a filter's items
+ * @returns An object with:
+ *   - `data`: an array of public filter DTOs mapped for client consumption
+ *   - `nextCursor`: a minimal, sort-specific cursor string for fetching the next page, or `undefined` if there is no next page
+ */
 export async function getPublicFilters(options: GetPublicFiltersOptions) {
   const { sort, cursor, pageSize = 6, search, categories, items } = options;
 

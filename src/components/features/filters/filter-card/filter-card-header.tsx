@@ -5,6 +5,12 @@ import { FilterCardDescription } from "@/components/features/filters/filter-card
 import { FilterCardMeta } from "@/components/features/filters/filter-card/filter-card-meta";
 import { ShareButton } from "@/components/features/filters/filter-card/share-button";
 
+/**
+ * Renders the header section for a filter card, including the title, share and bookmark actions, description, and metadata.
+ *
+ * @param filter - Public filter data used to populate the card title, action buttons, description, and metadata
+ * @returns The CardHeader element for the provided filter
+ */
 export function FilterCardHeader({
   filter,
 }: {

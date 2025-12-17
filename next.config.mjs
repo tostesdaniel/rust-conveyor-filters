@@ -10,6 +10,7 @@ const nextConfig = {
       { protocol: "https", hostname: "images.steamusercontent.com" },
     ],
     minimumCacheTTL: 2678400, // 31 days
+    qualities: [75, 90, 100],
   },
   // rewrites: async () => {
   //   return [

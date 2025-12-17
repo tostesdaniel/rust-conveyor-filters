@@ -1,4 +1,4 @@
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { cn } from "@/lib/utils";
 import { CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -7,7 +7,7 @@ import { UserBadge } from "@/components/shared/user-badge";
 export function FilterCardMeta({
   filter,
 }: {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
 }) {
   const isDescriptionLong = filter.description
     ? filter.description.length > 60

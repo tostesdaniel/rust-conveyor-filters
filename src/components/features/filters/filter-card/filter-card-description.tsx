@@ -1,6 +1,6 @@
 import { InfoIcon } from "lucide-react";
 
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +12,7 @@ import { CardDescription } from "@/components/ui/card";
 export function FilterCardDescription({
   filter,
 }: {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
 }) {
   if (!filter.description) {
     return (

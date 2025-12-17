@@ -5,7 +5,7 @@ import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { EyeIcon } from "lucide-react";
 
-import type { ConveyorFilter, ConveyorFilterItem } from "@/types/filter";
+import type { PublicFilterListDTO, PublicFilterItemDTO } from "@/types/filter";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { ButtonWithIcon } from "@/components/shared/button-with-icon";
 
 interface ViewFilterProps {
-  filter: ConveyorFilter;
+  filter: PublicFilterListDTO;
   log?: boolean;
   variant?: "button" | "dropdown" | "icon";
 }
@@ -162,7 +162,7 @@ export default function ViewFilter({
   );
 }
 
-const FilterItem = ({ filterItem }: { filterItem: ConveyorFilterItem }) => {
+const FilterItem = ({ filterItem }: { filterItem: PublicFilterItemDTO }) => {
   const { item, category } = filterItem;
   const categoryKey = Object.keys(categoryMapping).find(
     (key) => categoryMapping[key] === category?.name,

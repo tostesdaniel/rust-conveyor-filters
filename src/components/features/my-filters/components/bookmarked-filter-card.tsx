@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { getR2ImageUrl } from "@/utils/r2-images";
 
-import { ConveyorFilter } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import ViewFilter from "@/components/features/filters/components/view-filter";
 import { BookmarkToggle } from "@/components/features/filters/filter-card/bookmark-toggle";
 
 interface BookmarkedFilterCardProps {
-  filter: ConveyorFilter;
+  filter: PublicFilterListDTO;
 }
 
 export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {

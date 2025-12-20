@@ -2,7 +2,7 @@
 
 import { ShareIcon } from "lucide-react";
 
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
 
 interface SharedFilterDialogProps {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
   sharedBy: string | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;

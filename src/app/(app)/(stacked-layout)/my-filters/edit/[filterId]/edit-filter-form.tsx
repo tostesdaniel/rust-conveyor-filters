@@ -102,22 +102,22 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     if (data) {
       const initialItemsData = data.filterItems
         .map((filterItem): FilterItem | null => {
-          if (filterItem.item) {
+          if (filterItem.item && filterItem.itemId) {
             const { item } = filterItem;
             return {
               name: item.name,
               shortname: item.shortname ?? "",
               imagePath: item.imagePath,
-              itemId: item.id,
+              itemId: filterItem.itemId,
               max: filterItem.max,
               buffer: filterItem.buffer,
               min: filterItem.min,
               createdAt: filterItem.createdAt,
             };
-          } else if (filterItem.category) {
+          } else if (filterItem.category && filterItem.categoryId) {
             return {
               name: filterItem.category.name,
-              categoryId: filterItem.category.id,
+              categoryId: filterItem.categoryId,
               max: filterItem.max,
               buffer: filterItem.buffer,
               min: filterItem.min,

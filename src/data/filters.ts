@@ -4,11 +4,11 @@ import { db } from "@/db";
 import type { CursorData } from "@/utils/cursor";
 import { encodeCursor } from "@/utils/cursor";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
+import { toOwnerFilterDTO, toPublicFilterDTO } from "@/utils/filter-mappers";
 import { createTsQuery } from "@/utils/text-search";
 import { and, desc, eq, exists, gt, isNull, lt, or, sql } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
-import type { PublicFilterListDTO } from "@/types/dto/public-filter";
 import {
   categories as categoriesTable,
   filterItems,
@@ -196,7 +196,7 @@ export async function moveFilterToUncategorized(
 // Query functions
 
 export async function getFiltersWithItems(userId: string) {
-  return await db.query.filters.findMany({
+  const result = await db.query.filters.findMany({
     where: eq(filters.authorId, userId),
     with: {
       filterItems: {
@@ -205,10 +205,12 @@ export async function getFiltersWithItems(userId: string) {
       },
     },
   });
+
+  return result.map(toOwnerFilterDTO);
 }
 
 export async function getFilterById(filterId: number, userId: string) {
-  return await db.query.filters.findFirst({
+  const result = await db.query.filters.findFirst({
     where: and(eq(filters.id, filterId), eq(filters.authorId, userId)),
     with: {
       filterItems: {
@@ -217,6 +219,12 @@ export async function getFilterById(filterId: number, userId: string) {
       },
     },
   });
+
+  if (!result) {
+    return null;
+  }
+
+  return toOwnerFilterDTO(result);
 }
 
 export async function getPublicFilter(filterId: number) {
@@ -244,42 +252,6 @@ export interface GetPublicFiltersOptions {
   search?: string;
   categories?: string[];
   items?: string[];
-}
-
-/**
- * Convert enriched filter to public DTO, stripping internal fields
- */
-export function toPublicFilterDTO(
-  filter: Awaited<ReturnType<typeof enrichWithAuthor>>[0],
-): PublicFilterListDTO {
-  return {
-    id: filter.id,
-    name: filter.name,
-    description: filter.description,
-    imagePath: filter.imagePath,
-    createdAt: filter.createdAt,
-    updatedAt: filter.updatedAt,
-    filterItems: filter.filterItems.map((item) => ({
-      item: item.item
-        ? {
-            name: item.item.name,
-            imagePath: item.item.imagePath,
-            shortname: item.item.shortname,
-          }
-        : null,
-      category: item.category
-        ? {
-            name: item.category.name,
-            id: item.category.id,
-          }
-        : null,
-      max: item.max,
-      buffer: item.buffer,
-      min: item.min,
-    })),
-    author: filter.author,
-    badges: filter.badges,
-  };
 }
 
 export async function getPublicFilters(options: GetPublicFiltersOptions) {
@@ -467,7 +439,7 @@ export async function getUserFiltersByCategory(
       ? and(eq(filters.categoryId, categoryId), eq(filters.authorId, userId))
       : and(isNull(filters.categoryId), eq(filters.authorId, userId));
 
-  return await db.query.filters.findMany({
+  const result = await db.query.filters.findMany({
     where: whereClause,
     with: {
       filterItems: {
@@ -477,4 +449,6 @@ export async function getUserFiltersByCategory(
     },
     orderBy: filters.order,
   });
+
+  return result.map(toOwnerFilterDTO);
 }

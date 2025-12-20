@@ -1,4 +1,4 @@
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 
 export type FilterSortTypeValue =
   | "nameAsc"
@@ -60,9 +60,9 @@ export function saveSortPreference(
  * Sort an array of filters according to a sort type
  */
 export function sortFiltersByPreference(
-  filters: ConveyorFilter[],
+  filters: (OwnerFilterDTO | SharedFilterDTO)[],
   sortType: FilterSortTypeValue,
-): ConveyorFilter[] {
+): (OwnerFilterDTO | SharedFilterDTO)[] {
   return [...filters].sort((a, b) => {
     switch (sortType) {
       case "nameAsc":

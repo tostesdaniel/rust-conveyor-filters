@@ -4,20 +4,17 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
+import type { PublicFilterListDTO } from "@/types/filter";
 import { useGetPublicFilter } from "@/hooks/use-get-public-filter";
 import { SharedFilterDialog } from "@/components/features/filters/components/shared-filter-dialog";
 
 interface SharedFilterInfo {
-  filter: ConveyorFilterWithAuthor;
+  filter: PublicFilterListDTO;
   sharedBy: string | null;
 }
 
 interface FilterShareContextType {
-  openFilter: (
-    filter: ConveyorFilterWithAuthor,
-    sharedBy?: string | null,
-  ) => void;
+  openFilter: (filter: PublicFilterListDTO, sharedBy?: string | null) => void;
   closeFilter: () => void;
 }
 
@@ -52,7 +49,7 @@ export function FilterShareProvider({
   }, [filter, sharedBy]);
 
   const openFilter = (
-    filter: ConveyorFilterWithAuthor,
+    filter: PublicFilterListDTO,
     sharedBy: string | null = null,
   ) => {
     setSharedFilter({

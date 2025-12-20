@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/db";
+import { toOwnerFilterDTO } from "@/utils/filter-mappers";
 import { and, eq, isNull } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
@@ -73,7 +74,7 @@ export async function findSubCategoryById(
 }
 
 export async function getUserCategoryHierarchy(userId: string) {
-  return await db.query.userCategories.findMany({
+  const result = await db.query.userCategories.findMany({
     where: eq(userCategories.userId, userId),
     with: {
       filters: {
@@ -99,6 +100,15 @@ export async function getUserCategoryHierarchy(userId: string) {
       },
     },
   });
+
+  return result.map((category) => ({
+    ...category,
+    filters: category.filters.map(toOwnerFilterDTO),
+    subCategories: category.subCategories.map((subCategory) => ({
+      ...subCategory,
+      filters: subCategory.filters.map(toOwnerFilterDTO),
+    })),
+  }));
 }
 
 export async function getUserCategories(userId: string) {

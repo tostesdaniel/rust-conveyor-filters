@@ -17,6 +17,8 @@ export interface ConveyorFilterItem extends FilterItem {
 
 export type {
   PublicFilterListDTO,
-  PublicFilterItemDTO,
+  FilterItemDTO,
+  OwnerFilterDTO,
+  SharedFilterDTO,
 } from "@/types/dto/public-filter";
 export type { BookmarkDTO } from "@/types/dto/bookmark";

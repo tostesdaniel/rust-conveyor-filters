@@ -1,12 +1,12 @@
 import "server-only";
 
 import { db } from "@/db";
+import { enrichWithAuthor } from "@/utils/enrich-filter";
+import { toPublicFilterDTO } from "@/utils/filter-mappers";
 import { and, eq } from "drizzle-orm";
 
-import { bookmarks } from "@/db/schema";
-import { toPublicFilterDTO } from "@/data/filters";
-import { enrichWithAuthor } from "@/utils/enrich-filter";
 import type { BookmarkDTO } from "@/types/dto/bookmark";
+import { bookmarks } from "@/db/schema";
 
 export async function bookmarkFilter(filterId: number, authorId: string) {
   await db.insert(bookmarks).values({
@@ -24,7 +24,9 @@ export async function findExistingBookmark(filterId: number, authorId: string) {
   });
 }
 
-export async function getBookmarkedFilters(authorId: string): Promise<BookmarkDTO[]> {
+export async function getBookmarkedFilters(
+  authorId: string,
+): Promise<BookmarkDTO[]> {
   const bookmarkedFilters = await db.query.bookmarks.findMany({
     where: eq(bookmarks.authorId, authorId),
     with: {

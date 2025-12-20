@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import { Upload } from "lucide-react";
 import { type FieldValues, type UseFieldArrayReplace } from "react-hook-form";
 import { z } from "zod";
 
 import { MAX_FILTER_ITEMS } from "@/config/constants";
-import { type Category, type Item } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -37,7 +36,7 @@ const GameConveyorFilterItemSchema = z
   .max(MAX_FILTER_ITEMS, "Too many items");
 
 export function ImportButton({ onImport, ...props }: ImportButtonProps) {
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -87,43 +86,43 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
   const processValidatedData = (
     validatedData: z.infer<typeof GameConveyorFilterItemSchema>,
   ) => {
-    const { data: items } = queryClient.getQueryData<{ data: Item[] }>([
-      "items",
-    ]) || { data: [] };
-    const categories =
-      queryClient.getQueryData<Category[]>(["categories"]) || [];
+    const items = utils.stats.getItems.getData() || [];
+    const categories = utils.stats.getCategories.getData() || [];
 
-    const conveyorItems = validatedData.map((item) => {
-      const matchedItem = items.find(
-        (i) => i.shortname === item.TargetItemName,
-      );
-      const matchedCategory = categories.find(
-        (c) => c.id === item.TargetCategory,
-      );
+    const conveyorItems = validatedData
+      .map((item) => {
+        const matchedItem = items.find(
+          (i) => i.shortname === item.TargetItemName,
+        );
+        const matchedCategory = categories.find(
+          (c) => c.id === item.TargetCategory,
+        );
 
-      if (matchedItem) {
-        return {
-          itemId: matchedItem.id,
-          categoryId: null,
-          name: matchedItem.name,
-          shortname: matchedItem.shortname,
-          category: matchedItem.category,
-          imagePath: matchedItem.imagePath,
-          max: item.MaxAmountInOutput,
-          buffer: item.BufferAmount,
-          min: item.MinAmountInInput,
-        };
-      } else if (matchedCategory) {
-        return {
-          itemId: null,
-          categoryId: matchedCategory.id,
-          name: matchedCategory.name,
-          max: item.MaxAmountInOutput,
-          buffer: item.BufferAmount,
-          min: item.MinAmountInInput,
-        };
-      }
-    });
+        if (matchedItem) {
+          return {
+            itemId: matchedItem.id,
+            categoryId: null,
+            name: matchedItem.name,
+            shortname: matchedItem.shortname,
+            category: matchedItem.category,
+            imagePath: matchedItem.imagePath,
+            max: item.MaxAmountInOutput,
+            buffer: item.BufferAmount,
+            min: item.MinAmountInInput,
+          };
+        } else if (matchedCategory) {
+          return {
+            itemId: null,
+            categoryId: matchedCategory.id,
+            name: matchedCategory.name,
+            max: item.MaxAmountInOutput,
+            buffer: item.BufferAmount,
+            min: item.MinAmountInInput,
+          };
+        }
+        return null;
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
 
     setError(null);
     onImport(conveyorItems);

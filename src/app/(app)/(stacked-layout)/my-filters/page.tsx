@@ -1,18 +1,6 @@
 import type { Metadata } from "next";
-import {
-  getBookmarkedFilters,
-  getSharedFilters,
-  getUserCategories,
-  getUserCategoryHierarchy,
-  getUserFiltersByCategory,
-} from "@/services/queries";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { api, HydrateClient } from "@/trpc/server";
 
-import { getShareToken } from "@/actions/shareTokens";
 import { MyFiltersHeading } from "@/components/features/my-filters/components/my-filters-heading";
 import { MyFiltersTabs } from "@/components/features/my-filters/components/my-filters-tabs";
 
@@ -22,59 +10,21 @@ export const metadata: Metadata = {
 };
 
 export default async function MyFiltersPage() {
-  const queryClient = new QueryClient();
-
   await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: ["bookmarked-filters"],
-      queryFn: async () => {
-        const [data] = await getBookmarkedFilters();
-        return data;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["user-filters-by-category", null],
-      queryFn: async () => {
-        const [data] = await getUserFiltersByCategory({ categoryId: null });
-        return data;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["user-categories"],
-      queryFn: async () => {
-        const [data] = await getUserCategories();
-        return data;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["user-category-hierarchy"],
-      queryFn: async () => {
-        const [data] = await getUserCategoryHierarchy();
-        return data;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["share-token"],
-      queryFn: async () => {
-        const [data] = await getShareToken();
-        return data;
-      },
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["shared-filters"],
-      queryFn: async () => {
-        const [data] = await getSharedFilters();
-        return data;
-      },
-    }),
+    api.bookmark.getAll.prefetch(),
+    api.filter.getByCategory.prefetch({ categoryId: null }),
+    api.category.getAll.prefetch(),
+    api.category.getHierarchy.prefetch(),
+    api.shareToken.get.prefetch(),
+    api.sharedFilter.getAll.prefetch(),
   ]);
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
+      <HydrateClient>
         <MyFiltersHeading />
         <MyFiltersTabs />
-      </HydrationBoundary>
+      </HydrateClient>
     </>
   );
 }

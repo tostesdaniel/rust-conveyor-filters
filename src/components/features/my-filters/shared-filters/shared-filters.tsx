@@ -1,6 +1,6 @@
 import { ChevronsUpDownIcon } from "lucide-react";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { SharedFilterDTO } from "@/types/filter";
 import { useGetSharedFilters } from "@/hooks/useGetSharedFilters";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -102,7 +102,7 @@ export function SharedFilters() {
   );
 }
 
-function FilterGrid({ filters }: { filters: ConveyorFilter[] }) {
+function FilterGrid({ filters }: { filters: SharedFilterDTO[] }) {
   return (
     <ul
       role='list'

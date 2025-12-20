@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+import { getCategories } from "@/data/categories";
+import { getItems } from "@/data/items";
+import { getHeroStats } from "@/data/stats";
 
 import type {
   GetPlayerSummaries,
@@ -7,6 +9,8 @@ import type {
   SteamUserDetails,
 } from "@/types/steam";
 import { steamConfig } from "@/config/constants";
+
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 
@@ -42,19 +46,28 @@ async function fetchGuideDetails(): Promise<SteamGuideDetails> {
   return data.response.publishedfiledetails[0];
 }
 
-export async function GET() {
-  if (!STEAM_API_KEY) {
-    return NextResponse.json(
-      { error: "Steam API key is not set" },
-      { status: 500 },
-    );
-  }
+export const statsRouter = createTRPCRouter({
+  getHero: publicProcedure.query(async () => {
+    return getHeroStats();
+  }),
 
-  if (!process.env.STEAM_ID) {
-    return NextResponse.json({ error: "Steam ID is not set" }, { status: 500 });
-  }
+  getCategories: publicProcedure.query(async () => {
+    return getCategories();
+  }),
 
-  try {
+  getItems: publicProcedure.query(async () => {
+    return getItems();
+  }),
+
+  getSteamGuide: publicProcedure.query(async () => {
+    if (!STEAM_API_KEY) {
+      throw new Error("Steam API key is not set");
+    }
+
+    if (!process.env.STEAM_ID) {
+      throw new Error("Steam ID is not set");
+    }
+
     const [guideResponse, userDetailsResponse] = await Promise.all([
       fetchGuideDetails(),
       fetchSteamUserDetails(),
@@ -71,11 +84,6 @@ export async function GET() {
       personaname: userDetailsResponse.personaname,
     };
 
-    return NextResponse.json({ guide, user }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Data currently unavailable" },
-      { status: 500 },
-    );
-  }
-}
+    return { guide, user };
+  }),
+});

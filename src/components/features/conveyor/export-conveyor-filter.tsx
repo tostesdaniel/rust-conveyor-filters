@@ -5,7 +5,7 @@ import { trackEvent } from "@/utils/rybbit";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
-import { type ConveyorFilterItem } from "@/types/filter";
+import type { FilterItemDTO } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown" | "icon";
-  filter: ConveyorFilterItem[];
+  filter: FilterItemDTO[];
   filterId?: number;
   log?: boolean;
   className?: string;

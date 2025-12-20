@@ -7,7 +7,7 @@ import { getR2ImageUrl } from "@/utils/r2-images";
 import Autoplay from "embla-carousel-autoplay";
 import { useInView } from "react-intersection-observer";
 
-import type { ConveyorFilterItem } from "@/types/filter";
+import type { FilterItemDTO } from "@/types/filter";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -22,7 +22,7 @@ import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 export function FilterItemsCarousel({
   filterItems,
 }: {
-  filterItems: ConveyorFilterItem[];
+  filterItems: FilterItemDTO[];
 }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [currentPage, setCurrentPage] = React.useState(1);

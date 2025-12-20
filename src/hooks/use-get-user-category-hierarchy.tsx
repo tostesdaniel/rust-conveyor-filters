@@ -1,10 +1,5 @@
-import { getUserCategoryHierarchy } from "@/services/queries";
-
-import { useServerActionQuery } from "@/hooks/server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetUserCategoryHierarchy() {
-  return useServerActionQuery(getUserCategoryHierarchy, {
-    input: undefined,
-    queryKey: ["user-category-hierarchy"],
-  });
+  return api.category.getHierarchy.useQuery();
 }

@@ -1,15 +1,13 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
+import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { deleteFilter } from "@/actions/filterActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialogCancel,
   AlertDialogFooter,
@@ -27,7 +25,7 @@ const formSchema = z.object({
 });
 
 export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,13 +33,13 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
     },
   });
 
-  const mutation = useServerActionMutation(deleteFilter, {
+  const mutation = api.filter.delete.useMutation({
     onSuccess: () => {
       trackEvent("my_filter_deleted", { filterId: cardId });
       toast.success("Filter deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
-      queryClient.invalidateQueries({ queryKey: ["user-filters"] });
-      queryClient.invalidateQueries({ queryKey: ["user-category-hierarchy"] });
+      utils.filter.getByCategory.invalidate();
+      utils.filter.getAll.invalidate();
+      utils.category.getHierarchy.invalidate();
       setOpen(false);
     },
     onError: () => {

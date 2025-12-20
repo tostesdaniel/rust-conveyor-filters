@@ -1,8 +1,7 @@
-import { logFilterEvent } from "@/actions/filterMetrics";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
+import { api } from "@/trpc/react";
 
 export const useLogFilterEvent = () => {
-  const { mutateAsync, isPending } = useServerActionMutation(logFilterEvent);
+  const { mutateAsync, isPending } = api.filter.logEvent.useMutation();
 
   const logEvent = async (eventType: "view" | "export", filterId: number) => {
     try {
@@ -12,8 +11,8 @@ export const useLogFilterEvent = () => {
       });
       const { success, userId, ip } = (await rateLimitResponse.json()) as {
         success: boolean;
-        userId: string;
-        ip: string;
+        userId: string | null;
+        ip: string | null;
       };
 
       const result = await mutateAsync({

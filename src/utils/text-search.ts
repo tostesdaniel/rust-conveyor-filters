@@ -7,7 +7,11 @@ import { sql } from "drizzle-orm";
  * @returns A SQL template literal for the tsquery
  */
 export function createTsQuery(query: string) {
-  const cleanQuery = query.trim().replace(/\s+/g, " & ");
+  const cleanQuery = query.trim();
 
-  return sql`to_tsquery('english', ${cleanQuery})`;
+  if (!cleanQuery) {
+    return sql`to_tsquery('english', '')`;
+  }
+
+  return sql`plainto_tsquery('english', ${cleanQuery})`;
 }

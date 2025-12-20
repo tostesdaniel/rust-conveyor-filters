@@ -2,7 +2,7 @@
 
 import { FolderPlusIcon, PlusIcon } from "lucide-react";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO } from "@/types/filter";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
 import { CategoryHeading } from "@/components/features/my-filters/categories/category-heading";
@@ -87,7 +87,7 @@ export function MyFilters() {
   );
 }
 
-function FilterGrid({ filters }: { filters: ConveyorFilter[] }) {
+function FilterGrid({ filters }: { filters: OwnerFilterDTO[] }) {
   return (
     <ul
       role='list'

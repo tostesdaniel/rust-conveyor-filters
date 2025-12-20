@@ -148,9 +148,9 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
     [getValues, onInsertItem, trigger],
   );
 
-  if (items?.data && categoriesSuccess) {
-    const categorizedItems = items.data.reduce(
-      (acc, item) => {
+  if (items && categoriesSuccess) {
+    const categorizedItems = items.reduce(
+      (acc: Record<string, Item[]>, item: Item) => {
         const category = categoryMapping[item.category];
         if (!acc[category]) {
           acc[category] = [];
@@ -225,10 +225,10 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
 
                   {(isCategoryMatch
                     ? categorizedItems[category.name]
-                    : categorizedItems[category.name].filter((item) =>
+                    : categorizedItems[category.name].filter((item: Item) =>
                         item.name.toLowerCase().includes(searchLower),
                       )
-                  ).map((item) => (
+                  ).map((item: Item) => (
                     <CommandItem
                       key={item.id}
                       className='flex items-center gap-x-2'

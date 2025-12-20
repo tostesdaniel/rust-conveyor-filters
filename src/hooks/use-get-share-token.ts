@@ -1,10 +1,5 @@
-import { getShareToken } from "@/actions/shareTokens";
-
-import { useServerActionQuery } from "./server-action-hooks";
+import { api } from "@/trpc/react";
 
 export function useGetShareToken() {
-  return useServerActionQuery(getShareToken, {
-    queryKey: ["share-token"],
-    input: undefined,
-  });
+  return api.shareToken.get.useQuery();
 }

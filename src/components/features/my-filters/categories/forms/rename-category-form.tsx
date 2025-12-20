@@ -1,13 +1,11 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { renameCategory } from "@/actions/userCategoryActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
 import { Button } from "@/components/ui/button";
@@ -56,18 +54,14 @@ export function RenameCategoryForm({
     },
   });
 
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
 
   const { mutateAsync: renameCategoryMutation, isPending } =
-    useServerActionMutation(renameCategory, {
+    api.category.rename.useMutation({
       onSuccess: () => {
         toast.success("Category renamed successfully");
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-categories"],
-        });
+        utils.category.getHierarchy.invalidate();
+        utils.category.getAll.invalidate();
       },
       onError: () => {
         toast.error("Failed to rename category");

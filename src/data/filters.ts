@@ -1,8 +1,20 @@
+import "server-only";
+
 import { db } from "@/db";
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import type { CursorData } from "@/utils/cursor";
+import { encodeCursor } from "@/utils/cursor";
+import { enrichWithAuthor } from "@/utils/enrich-filter";
+import { toOwnerFilterDTO, toPublicFilterDTO } from "@/utils/filter-mappers";
+import { createTsQuery } from "@/utils/text-search";
+import { and, desc, eq, exists, gt, isNull, lt, or, sql } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
-import { filters } from "@/db/schema";
+import {
+  categories as categoriesTable,
+  filterItems,
+  filters,
+  items as itemsTable,
+} from "@/db/schema";
 
 export async function findExistingFilter(
   filterId: number,
@@ -179,4 +191,264 @@ export async function moveFilterToUncategorized(
       updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
+}
+
+// Query functions
+
+export async function getFiltersWithItems(userId: string) {
+  const result = await db.query.filters.findMany({
+    where: eq(filters.authorId, userId),
+    with: {
+      filterItems: {
+        with: { item: true, category: true },
+        orderBy: ({ createdAt, id }) => [id, createdAt],
+      },
+    },
+  });
+
+  return result.map(toOwnerFilterDTO);
+}
+
+export async function getFilterById(filterId: number, userId: string) {
+  const result = await db.query.filters.findFirst({
+    where: and(eq(filters.id, filterId), eq(filters.authorId, userId)),
+    with: {
+      filterItems: {
+        with: { item: true, category: true },
+        orderBy: ({ createdAt, id }) => [id, createdAt],
+      },
+    },
+  });
+
+  if (!result) {
+    return null;
+  }
+
+  return toOwnerFilterDTO(result);
+}
+
+export async function getPublicFilter(filterId: number) {
+  const filter = await db.query.filters.findFirst({
+    where: and(eq(filters.id, filterId), eq(filters.isPublic, true)),
+    with: {
+      filterItems: {
+        with: { item: true, category: true },
+      },
+    },
+  });
+
+  if (!filter) {
+    return null;
+  }
+
+  const enriched = await enrichWithAuthor([filter]);
+  return toPublicFilterDTO(enriched[0]);
+}
+
+export interface GetPublicFiltersOptions {
+  sort: "popular" | "new" | "updated" | "mostUsed";
+  cursor?: CursorData;
+  pageSize?: number;
+  search?: string;
+  categories?: string[];
+  items?: string[];
+}
+
+export async function getPublicFilters(options: GetPublicFiltersOptions) {
+  const { sort, cursor, pageSize = 6, search, categories, items } = options;
+
+  const searchConditions = [
+    eq(filters.isPublic, true),
+    ...(search && search !== ""
+      ? [sql`${filters.searchVector} @@ ${createTsQuery(search)}`]
+      : []),
+    ...(categories && categories.length > 0
+      ? categories.map((categoryName) =>
+          exists(
+            db
+              .select()
+              .from(filterItems)
+              .innerJoin(
+                categoriesTable,
+                eq(filterItems.categoryId, categoriesTable.id),
+              )
+              .where(
+                and(
+                  eq(filterItems.filterId, filters.id),
+                  eq(categoriesTable.name, categoryName),
+                ),
+              ),
+          ),
+        )
+      : []),
+    ...(items && items.length > 0
+      ? items.map((itemName) =>
+          exists(
+            db
+              .select()
+              .from(filterItems)
+              .innerJoin(itemsTable, eq(filterItems.itemId, itemsTable.id))
+              .where(
+                and(
+                  eq(filterItems.filterId, filters.id),
+                  eq(itemsTable.name, itemName),
+                ),
+              ),
+          ),
+        )
+      : []),
+  ];
+
+  let whereClause = and(...searchConditions);
+  if (cursor) {
+    // Validate cursor sort type matches current sort
+    const sortMap: Record<string, "p" | "n" | "u" | "m"> = {
+      popular: "p",
+      new: "n",
+      updated: "u",
+      mostUsed: "m",
+    };
+    if (cursor.s === sortMap[sort]) {
+      let cursorCondition;
+      switch (sort) {
+        case "popular":
+          cursorCondition = or(
+            lt(filters.popularityScore, cursor.v as number),
+            and(
+              eq(filters.popularityScore, cursor.v as number),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "new":
+          cursorCondition = or(
+            lt(filters.createdAt, new Date(cursor.v as string)),
+            and(
+              eq(filters.createdAt, new Date(cursor.v as string)),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "updated":
+          cursorCondition = or(
+            lt(filters.updatedAt, new Date(cursor.v as string)),
+            and(
+              eq(filters.updatedAt, new Date(cursor.v as string)),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+        case "mostUsed":
+          cursorCondition = or(
+            lt(filters.exportCount, cursor.v as number),
+            and(
+              eq(filters.exportCount, cursor.v as number),
+              gt(filters.id, cursor.id),
+            ),
+          );
+          break;
+      }
+      whereClause = and(...searchConditions, cursorCondition);
+    }
+    // If cursor doesn't match sort type, ignore it (whereClause remains unchanged)
+  }
+
+  let orderBy;
+  switch (sort) {
+    case "popular":
+      orderBy = [desc(filters.popularityScore), filters.id];
+      break;
+    case "new":
+      orderBy = [desc(filters.createdAt), filters.id];
+      break;
+    case "updated":
+      orderBy = [desc(filters.updatedAt), filters.id];
+      break;
+    case "mostUsed":
+      orderBy = [desc(filters.exportCount), filters.id];
+      break;
+    default:
+      orderBy = [desc(filters.popularityScore), filters.id];
+  }
+
+  const result = await db.query.filters.findMany({
+    where: whereClause,
+    limit: pageSize,
+    with: {
+      filterItems: {
+        with: { item: true, category: true },
+        orderBy: ({ createdAt, id }) => [id, createdAt],
+      },
+    },
+    orderBy,
+  });
+
+  const enrichedFilters = await enrichWithAuthor(result);
+
+  // Convert to DTOs
+  const dtoFilters = enrichedFilters.map(toPublicFilterDTO);
+
+  // Generate minimal, sort-specific cursor
+  const lastItem = result[result.length - 1];
+  let nextCursor: string | undefined;
+  if (lastItem) {
+    const sortMap: Record<string, "p" | "n" | "u" | "m"> = {
+      popular: "p",
+      new: "n",
+      updated: "u",
+      mostUsed: "m",
+    };
+
+    let cursorValue: number | string;
+    switch (sort) {
+      case "popular":
+        cursorValue = lastItem.popularityScore ?? 0;
+        break;
+      case "new":
+        cursorValue = lastItem.createdAt.toISOString();
+        break;
+      case "updated":
+        cursorValue = lastItem.updatedAt.toISOString();
+        break;
+      case "mostUsed":
+        cursorValue = lastItem.exportCount ?? 0;
+        break;
+    }
+
+    const cursorData: CursorData = {
+      id: lastItem.id,
+      v: cursorValue,
+      s: sortMap[sort],
+    };
+
+    nextCursor = encodeCursor(cursorData);
+  }
+
+  return {
+    data: dtoFilters,
+    nextCursor,
+  };
+}
+
+export async function getUserFiltersByCategory(
+  userId: string,
+  categoryId: number | null,
+) {
+  const whereClause =
+    categoryId !== null
+      ? and(eq(filters.categoryId, categoryId), eq(filters.authorId, userId))
+      : and(isNull(filters.categoryId), eq(filters.authorId, userId));
+
+  const result = await db.query.filters.findMany({
+    where: whereClause,
+    with: {
+      filterItems: {
+        with: { item: true, category: true },
+        orderBy: ({ createdAt, id }) => [id, createdAt],
+      },
+    },
+    orderBy: filters.order,
+  });
+
+  return result.map(toOwnerFilterDTO);
 }

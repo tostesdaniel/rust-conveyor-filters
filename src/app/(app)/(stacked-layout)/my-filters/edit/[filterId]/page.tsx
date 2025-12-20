@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { getUserFilterById } from "@/services/queries";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import { api, HydrateClient } from "@/trpc/server";
 
-import { getItems } from "@/actions/itemActions";
 import { Typography } from "@/components/shared/typography";
 import { EditFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 
@@ -14,7 +8,7 @@ export async function generateMetadata(props: {
   params: Promise<{ filterId: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const [filter] = await getUserFilterById({
+  const filter = await api.filter.getById({
     filterId: Number(params.filterId),
   });
 
@@ -34,19 +28,15 @@ export default async function EditFilterPage(props: {
   params: Promise<{ filterId: string }>;
 }) {
   const params = await props.params;
-  const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
-  });
+  await api.stats.getItems.prefetch();
 
   return (
     <>
       <Typography variant='h1'>Edit Filter</Typography>
-      <HydrationBoundary state={dehydrate(queryClient)}>
+      <HydrateClient>
         <EditFilterForm filterId={Number(params.filterId)} />
-      </HydrationBoundary>
+      </HydrateClient>
     </>
   );
 }

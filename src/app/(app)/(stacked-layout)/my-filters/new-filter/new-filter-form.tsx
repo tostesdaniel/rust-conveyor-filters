@@ -3,17 +3,20 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { createFilter } from "@/actions/filterActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
+import type { OwnerFilterDTO } from "@/types/filter";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
+import {
+  getSavedSortPreference,
+  sortFiltersByPreference,
+} from "@/lib/utils/filter-sorting";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -54,22 +57,84 @@ export default function NewFilterForm() {
     },
   });
 
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
+  const updateOrderMutation = api.filter.updateOrder.useMutation();
 
-  const mutation = useServerActionMutation(createFilter, {
-    onSuccess: () => {
+  const mutation = api.filter.create.useMutation({
+    onSuccess: async (_, variables) => {
       trackEvent("filter_created");
-      toast.success("Filter created successfully");
-      router.push("/my-filters");
+
+      const { categoryId, subCategoryId } = variables.category;
+      // Normalize undefined to null for type safety
+      const normalizedCategoryId = categoryId ?? null;
+      const normalizedSubCategoryId = subCategoryId ?? null;
+
+      // Invalidate queries first to ensure fresh data
+      await Promise.all([
+        utils.filter.getByCategory.invalidate({
+          categoryId: normalizedCategoryId,
+        }),
+        utils.category.getHierarchy.invalidate(),
+      ]);
+
+      // Get the sort preference for this category/subcategory
+      const sortPreference = getSavedSortPreference(
+        normalizedCategoryId,
+        normalizedSubCategoryId,
+      );
+
+      try {
+        let filtersToSort: OwnerFilterDTO[] = [];
+
+        if (normalizedSubCategoryId) {
+          // For subcategories, fetch the hierarchy and extract filters
+          const hierarchy = await utils.category.getHierarchy.fetch();
+          const subCategory = hierarchy
+            ?.flatMap((cat) => cat.subCategories)
+            .find((sub) => sub.id === normalizedSubCategoryId);
+          filtersToSort = subCategory?.filters || [];
+        } else {
+          // For uncategorized and main categories, use getByCategory
+          filtersToSort = await utils.filter.getByCategory.fetch({
+            categoryId: normalizedCategoryId,
+          });
+        }
+
+        // Only sort if there are 2+ filters
+        if (filtersToSort.length >= 2) {
+          const sortedFilters = sortFiltersByPreference(
+            filtersToSort,
+            sortPreference,
+          );
+
+          const filterUpdates = sortedFilters.map((filter, index) => ({
+            filterId: filter.id,
+            order: index,
+          }));
+
+          await updateOrderMutation.mutateAsync({
+            filters: filterUpdates,
+            categoryId: normalizedCategoryId,
+            subCategoryId: normalizedSubCategoryId,
+          });
+        }
+
+        toast.success("Filter created successfully");
+        router.push("/my-filters");
+      } catch (error) {
+        // If sorting fails, still show success but log the error
+        console.error("Failed to sort filters after creation:", error);
+        toast.success("Filter created successfully");
+        router.push("/my-filters");
+      }
     },
     onError: (err) => {
       toast.error(err.message);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-filters-by-category", null],
-      });
-      queryClient.invalidateQueries({ queryKey: ["user-category-hierarchy"] });
+    onSettled: (_, __, variables) => {
+      const { categoryId } = variables.category;
+      utils.filter.getByCategory.invalidate({ categoryId: categoryId ?? null });
+      utils.category.getHierarchy.invalidate();
     },
   });
 
@@ -125,9 +190,7 @@ export default function NewFilterForm() {
                 <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
                   Cover Image
                 </FormLabel>
-                {items?.success && items.data && (
-                  <FilterImageCombobox field={field} items={items.data} />
-                )}
+                {items && <FilterImageCombobox field={field} items={items} />}
                 <FormDescription>
                   Select an in-game item to represent your filter.
                 </FormDescription>

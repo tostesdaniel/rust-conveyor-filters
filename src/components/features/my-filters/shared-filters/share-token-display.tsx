@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import { Copy, Eye, EyeOff, Loader } from "lucide-react";
 import { toast } from "sonner";
 
-import { revokeShareTokenAction } from "@/actions/shareTokens";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useGetShareToken } from "@/hooks/use-get-share-token";
 import { cn } from "@/lib/utils";
@@ -16,25 +14,21 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ShareTokenDisplay() {
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
   const [isVisible, setIsVisible] = useState(false);
   const [_, copy] = useCopyToClipboard();
   const { data: shareToken, isLoading } = useGetShareToken();
-  const { mutate: revokeTokenMutation, isPending } = useServerActionMutation(
-    revokeShareTokenAction,
-    {
+  const { mutate: revokeTokenMutation, isPending } =
+    api.shareToken.revoke.useMutation({
       onSuccess: () => {
         toast.success("New token generated");
-        queryClient.invalidateQueries({
-          queryKey: ["share-token"],
-        });
+        utils.shareToken.get.invalidate();
         setIsVisible(true);
       },
       onError: () => {
         toast.error("Failed to generate new token");
       },
-    },
-  );
+    });
 
   const handleCopy = (text: string) => () => {
     copy(text)
@@ -120,7 +114,7 @@ export function ShareTokenDisplay() {
           variant='link'
           className='text-xs'
           disabled={isPending}
-          onClick={() => revokeTokenMutation(undefined)}
+          onClick={() => revokeTokenMutation()}
         >
           Regenerate
         </Button>

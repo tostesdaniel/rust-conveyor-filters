@@ -14,7 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { type ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import {
   AlertDialog,
@@ -45,8 +45,15 @@ import { PrivateShareDropdownItem } from "@/components/features/my-filters/share
 import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
+// Type guard to check if filter is owned
+function isOwnerFilterDTO(
+  filter: OwnerFilterDTO | SharedFilterDTO,
+): filter is OwnerFilterDTO {
+  return "isPublic" in filter && "order" in filter;
+}
+
 interface MyFilterCardProps {
-  filter: ConveyorFilter;
+  filter: OwnerFilterDTO | SharedFilterDTO;
   isFilterShared?: boolean;
 }
 
@@ -183,61 +190,65 @@ export function MyFilterCard({
                     </DropdownMenuItem>
                     <ViewFilter filter={filter} variant='dropdown' />
                     <DropdownMenuSeparator />
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger
-                        disabled={categories?.length === 0}
-                        className='data-disabled:pointer-events-none data-disabled:opacity-50'
-                      >
-                        <ListPlusIcon />
-                        Assign to category
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent>
-                          {categories?.map((category) => (
-                            <DropdownMenuGroup key={category.id}>
-                              {/*  Main Categories */}
-                              <CategoryDropdownCheckbox
-                                key={category.id}
-                                category={category}
-                                filter={filter}
-                              />
+                    {isOwnerFilterDTO(filter) && (
+                      <>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger
+                            disabled={categories?.length === 0}
+                            className='data-disabled:pointer-events-none data-disabled:opacity-50'
+                          >
+                            <ListPlusIcon />
+                            Assign to category
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              {categories?.map((category) => (
+                                <DropdownMenuGroup key={category.id}>
+                                  {/*  Main Categories */}
+                                  <CategoryDropdownCheckbox
+                                    key={category.id}
+                                    category={category}
+                                    filter={filter}
+                                  />
 
-                              {/* Subcategories Submenu */}
-                              {category.subCategories.length > 0 && (
-                                <DropdownMenuSub defaultOpen>
-                                  <DropdownMenuSubTrigger className='pl-8'>
-                                    <CornerDownRight />
-                                    <span>Subcategories</span>
-                                  </DropdownMenuSubTrigger>
-                                  <DropdownMenuSubContent>
-                                    {category.subCategories.map(
-                                      (subCategory) => (
-                                        <CategoryDropdownCheckbox
-                                          key={subCategory.id}
-                                          category={subCategory}
-                                          filter={filter}
-                                          isSubCategory
-                                        />
-                                      ),
-                                    )}
-                                  </DropdownMenuSubContent>
-                                </DropdownMenuSub>
-                              )}
-                              {category !==
-                                categories[categories.length - 1] && (
-                                <DropdownMenuSeparator />
-                              )}
-                            </DropdownMenuGroup>
-                          ))}
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
+                                  {/* Subcategories Submenu */}
+                                  {category.subCategories.length > 0 && (
+                                    <DropdownMenuSub defaultOpen>
+                                      <DropdownMenuSubTrigger className='pl-8'>
+                                        <CornerDownRight />
+                                        <span>Subcategories</span>
+                                      </DropdownMenuSubTrigger>
+                                      <DropdownMenuSubContent>
+                                        {category.subCategories.map(
+                                          (subCategory) => (
+                                            <CategoryDropdownCheckbox
+                                              key={subCategory.id}
+                                              category={subCategory}
+                                              filter={filter}
+                                              isSubCategory
+                                            />
+                                          ),
+                                        )}
+                                      </DropdownMenuSubContent>
+                                    </DropdownMenuSub>
+                                  )}
+                                  {category !==
+                                    categories[categories.length - 1] && (
+                                    <DropdownMenuSeparator />
+                                  )}
+                                </DropdownMenuGroup>
+                              ))}
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
 
-                    {/* Clear Category */}
-                    <ClearFilterCategory
-                      filter={filter}
-                      isSubCategory={!!filter.subCategoryId}
-                    />
+                        {/* Clear Category */}
+                        <ClearFilterCategory
+                          filter={filter}
+                          isSubCategory={!!filter.subCategoryId}
+                        />
+                      </>
+                    )}
 
                     <DropdownMenuSeparator />
                     <PrivateShareDropdownItem

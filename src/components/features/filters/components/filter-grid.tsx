@@ -4,7 +4,6 @@ import * as React from "react";
 import { RotateCcw, Search } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
-import type { ConveyorFilterWithAuthor } from "@/types/filter";
 import { useFilters } from "@/hooks/use-filters";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { FilterSortTabs } from "@/components/features/filters/components/filter-sort-tabs";
@@ -76,7 +75,7 @@ export function FilterGrid() {
         <FiltersLoading />
       ) : hasFilters ? (
         <div className='grid grid-cols-1 gap-4 py-6 lg:grid-cols-2 lg:pb-16'>
-          {allFilters.map((filter: ConveyorFilterWithAuthor) => (
+          {allFilters.map((filter) => (
             <div
               key={filter.id}
               className={`transition-opacity duration-300 ${

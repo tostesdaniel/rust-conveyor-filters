@@ -4,9 +4,9 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
+import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   useForm,
   useFormState,
@@ -16,8 +16,6 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { updateFilter } from "@/actions/filterActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
 import { Button } from "@/components/ui/button";
@@ -84,13 +82,13 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const { dirtyFields } = useFormState({ control: form.control });
   const [initialItems, setInitialItems] = React.useState<FilterItem[]>([]);
 
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
 
-  const mutation = useServerActionMutation(updateFilter, {
+  const mutation = api.filter.update.useMutation({
     onSuccess: () => {
       trackEvent("filter_updated", { filterId });
       toast.success("Filter updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["user-filters-by-category"] });
+      utils.filter.getByCategory.invalidate();
       refetch();
       router.push("/my-filters");
     },
@@ -104,22 +102,22 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     if (data) {
       const initialItemsData = data.filterItems
         .map((filterItem): FilterItem | null => {
-          if (filterItem.item) {
+          if (filterItem.item && filterItem.itemId) {
             const { item } = filterItem;
             return {
               name: item.name,
               shortname: item.shortname ?? "",
               imagePath: item.imagePath,
-              itemId: item.id,
+              itemId: filterItem.itemId,
               max: filterItem.max,
               buffer: filterItem.buffer,
               min: filterItem.min,
               createdAt: filterItem.createdAt,
             };
-          } else if (filterItem.category) {
+          } else if (filterItem.category && filterItem.categoryId) {
             return {
               name: filterItem.category.name,
-              categoryId: filterItem.category.id,
+              categoryId: filterItem.categoryId,
               max: filterItem.max,
               buffer: filterItem.buffer,
               min: filterItem.min,
@@ -276,9 +274,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
                 <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
                   Cover Image
                 </FormLabel>
-                {items?.success && items.data && (
-                  <FilterImageCombobox field={field} items={items.data} />
-                )}
+                {items && <FilterImageCombobox field={field} items={items} />}
                 <FormDescription>
                   Select an in-game item to represent your filter.
                 </FormDescription>

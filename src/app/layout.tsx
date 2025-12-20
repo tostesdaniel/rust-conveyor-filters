@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Teko } from "next/font/google";
+import { TRPCReactProvider } from "@/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -8,7 +9,6 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/shared/theme-provider";
-import { QueryProvider } from "@/providers/QueryProvider";
 
 import "./globals.css";
 
@@ -98,7 +98,7 @@ export default function RootLayout({
             teko.variable,
           )}
         >
-          <QueryProvider>
+          <TRPCReactProvider>
             <ThemeProvider
               attribute='class'
               defaultTheme='system'
@@ -111,7 +111,7 @@ export default function RootLayout({
               <Toaster richColors />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
-          </QueryProvider>
+          </TRPCReactProvider>
           <OutboundLinkTracker />
         </body>
       </html>

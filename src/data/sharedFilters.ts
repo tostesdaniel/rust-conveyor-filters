@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/db";
+import { toSharedFilterDTO } from "@/utils/filter-mappers";
 import { and, eq } from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
@@ -22,7 +23,7 @@ export async function findSharedFilter({
 }
 
 export async function findSharedFilters(shareTokenId: number) {
-  return await db.query.sharedFilters.findMany({
+  const result = await db.query.sharedFilters.findMany({
     where: eq(sharedFilters.shareTokenId, shareTokenId),
     with: {
       filter: {
@@ -51,6 +52,30 @@ export async function findSharedFilters(shareTokenId: number) {
       },
     },
   });
+
+  // Map filters to DTOs while preserving userCategory structure
+  return result.map((sharedFilter) => ({
+    id: sharedFilter.id,
+    filterId: sharedFilter.filterId,
+    shareTokenId: sharedFilter.shareTokenId,
+    senderId: sharedFilter.senderId,
+    filter: sharedFilter.filter
+      ? {
+          ...toSharedFilterDTO(sharedFilter.filter),
+          userCategory: sharedFilter.filter.userCategory
+            ? {
+                id: sharedFilter.filter.userCategory.id,
+                name: sharedFilter.filter.userCategory.name,
+                subCategories:
+                  sharedFilter.filter.userCategory.subCategories?.map((sc) => ({
+                    id: sc.id,
+                    name: sc.name,
+                  })) ?? [],
+              }
+            : null,
+        }
+      : null,
+  }));
 }
 
 export async function createSharedFilter(

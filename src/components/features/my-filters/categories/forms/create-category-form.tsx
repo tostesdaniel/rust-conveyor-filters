@@ -1,13 +1,11 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { createCategory as createCategoryAction } from "@/actions/userCategoryActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -43,10 +41,9 @@ export function CreateCategoryForm({
     },
   });
 
-  const queryClient = useQueryClient();
+  const utils = api.useUtils();
 
-  const { mutate: createCategory, isPending } = useServerActionMutation(
-    createCategoryAction,
+  const { mutate: createCategory, isPending } = api.category.create.useMutation(
     {
       onSuccess: () => {
         toast.success(
@@ -55,12 +52,8 @@ export function CreateCategoryForm({
             : "Category created successfully",
         );
         setOpen(false);
-        queryClient.invalidateQueries({
-          queryKey: ["user-categories"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
+        utils.category.getAll.invalidate();
+        utils.category.getHierarchy.invalidate();
       },
       onError: (error) => {
         toast.error(error.message);

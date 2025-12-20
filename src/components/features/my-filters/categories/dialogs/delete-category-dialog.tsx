@@ -1,10 +1,8 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/trpc/react";
 import { toast } from "sonner";
 
-import { deleteCategory } from "@/actions/userCategoryActions";
-import { useServerActionMutation } from "@/hooks/server-action-hooks";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -24,35 +22,26 @@ export function DeleteCategoryDialog({
   categoryId,
   isSubCategory = false,
 }: DeleteCategoryDialogProps) {
-  const queryClient = useQueryClient();
-  const { mutate: deleteCategoryMutate } = useServerActionMutation(
-    deleteCategory,
-    {
-      onSuccess: () => {
-        toast.success(
-          isSubCategory
-            ? "Subcategory deleted successfully"
-            : "Category deleted successfully",
-        );
-        queryClient.invalidateQueries({
-          queryKey: ["user-filters-by-category", null],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-categories"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["user-category-hierarchy"],
-        });
-      },
-      onError: () => {
-        toast.error(
-          isSubCategory
-            ? "Failed to delete subcategory"
-            : "Failed to delete category",
-        );
-      },
+  const utils = api.useUtils();
+  const { mutate: deleteCategoryMutate } = api.category.delete.useMutation({
+    onSuccess: () => {
+      toast.success(
+        isSubCategory
+          ? "Subcategory deleted successfully"
+          : "Category deleted successfully",
+      );
+      utils.filter.getByCategory.invalidate({ categoryId: null });
+      utils.category.getAll.invalidate();
+      utils.category.getHierarchy.invalidate();
     },
-  );
+    onError: () => {
+      toast.error(
+        isSubCategory
+          ? "Failed to delete subcategory"
+          : "Failed to delete category",
+      );
+    },
+  });
 
   return (
     <AlertDialogContent>

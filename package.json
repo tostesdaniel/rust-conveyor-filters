@@ -22,6 +22,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "db:start": "docker run --name pg-conveyor-filters -h 127.0.1.1 -e POSTGRES_PASSWORD=rcfisawesome -p 5433:5432 -v postgres-data:/var/lib/postgresql/data -d postgres:16",
     "db:stop": "docker stop pg-conveyor-filters && docker rm pg-conveyor-filters",
     "db:push": "drizzle-kit push",

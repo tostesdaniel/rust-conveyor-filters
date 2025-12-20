@@ -6,7 +6,7 @@ import { ChevronsDown } from "lucide-react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { toast } from "sonner";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO } from "@/types/filter";
 import type { UserCategory } from "@/db/schema";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 
@@ -16,7 +16,7 @@ type DropdownMenuCheckboxItemProps = React.ComponentProps<
 
 interface CategoryDropdownCheckboxProps {
   category: UserCategory;
-  filter: ConveyorFilter;
+  filter: OwnerFilterDTO;
   isSubCategory?: boolean;
 }
 

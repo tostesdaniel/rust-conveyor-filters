@@ -2,7 +2,7 @@
 
 import { PlusIcon } from "lucide-react";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 import { useFilterSort } from "@/hooks/use-filter-sort";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ interface CategoryHeadingProps {
   categoryId?: number;
   isSubCategory?: boolean;
   canCreateSubcategory?: boolean;
-  filters: ConveyorFilter[];
+  filters: (OwnerFilterDTO | SharedFilterDTO)[];
 }
 
 export function CategoryHeading({

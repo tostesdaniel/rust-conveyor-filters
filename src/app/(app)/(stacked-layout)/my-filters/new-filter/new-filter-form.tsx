@@ -10,7 +10,7 @@ import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO } from "@/types/filter";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import {
@@ -84,7 +84,7 @@ export default function NewFilterForm() {
       );
 
       try {
-        let filtersToSort: ConveyorFilter[] = [];
+        let filtersToSort: OwnerFilterDTO[] = [];
 
         if (normalizedSubCategoryId) {
           // For subcategories, fetch the hierarchy and extract filters

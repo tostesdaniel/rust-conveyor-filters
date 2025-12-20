@@ -4,11 +4,11 @@ import { api } from "@/trpc/react";
 import { ListXIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO } from "@/types/filter";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ClearFilterCategoryProps {
-  filter: ConveyorFilter;
+  filter: OwnerFilterDTO;
   isSubCategory?: boolean;
 }
 

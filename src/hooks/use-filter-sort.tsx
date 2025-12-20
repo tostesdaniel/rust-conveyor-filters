@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 import {
   getSavedSortPreference,
   saveSortPreference,
@@ -48,7 +48,7 @@ export const filterSortTypes: FilterSortType[] = [
 ];
 
 interface UseFilterSortProps {
-  filters: ConveyorFilter[];
+  filters: (OwnerFilterDTO | SharedFilterDTO)[];
   categoryId: number | null;
   subCategoryId: number | null;
 }

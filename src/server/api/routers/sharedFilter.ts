@@ -14,7 +14,7 @@ import { TRPCError } from "@trpc/server";
 import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 
-import type { ConveyorFilter } from "@/types/filter";
+import type { SharedFilterDTO } from "@/types/filter";
 import { filters, sharedFilters } from "@/db/schema";
 
 import {
@@ -22,6 +22,14 @@ import {
   ownsFilterProcedure,
   protectedProcedure,
 } from "../trpc";
+
+type SharedFilterWithCategory = SharedFilterDTO & {
+  userCategory: {
+    id: number;
+    name: string;
+    subCategories: Array<{ id: number; name: string }>;
+  } | null;
+};
 
 export const sharedFilterRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -116,15 +124,15 @@ export const sharedFilterRouter = createTRPCRouter({
         string,
         {
           senderUsername: string;
-          uncategorizedFilters: ConveyorFilter[];
+          uncategorizedFilters: SharedFilterWithCategory[];
           categories: {
             id: number;
             name: string;
-            filters: ConveyorFilter[];
+            filters: SharedFilterWithCategory[];
             subCategories: {
               id: number;
               name: string;
-              filters: ConveyorFilter[];
+              filters: SharedFilterWithCategory[];
             }[];
           }[];
         }

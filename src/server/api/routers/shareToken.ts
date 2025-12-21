@@ -5,7 +5,7 @@ import {
   findTokenRevocationStatus,
   revokeShareToken,
 } from "@/data/shareTokens";
-import { pooledDb as txDb } from "@/db/pooled-connection";
+import { db } from "@/db";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -41,7 +41,7 @@ export const shareTokenRouter = createTRPCRouter({
         });
       }
 
-      await txDb.transaction(async (tx) => {
+      await db.transaction(async (tx) => {
         await revokeShareToken(existingToken.token, tx);
 
         const [newToken] = await createShareToken(ctx.userId, tx);

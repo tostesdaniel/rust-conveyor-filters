@@ -6,7 +6,6 @@ import {
   getUserFiltersByCategory,
 } from "@/data/filters";
 import { db } from "@/db";
-import { pooledDb as txDb } from "@/db/pooled-connection";
 import {
   createFilterSchema,
   updateFilterInputSchema,
@@ -330,7 +329,7 @@ export const filterRouter = createTRPCRouter({
   delete: ownsFilterProcedure.mutation(async ({ ctx }) => {
     const filterId = ctx.filterId;
     try {
-      await txDb.transaction(async (tx) => {
+      await db.transaction(async (tx) => {
         const [deletedFilter] = await tx
           .delete(filters)
           .where(eq(filters.id, filterId))
@@ -395,7 +394,7 @@ export const filterRouter = createTRPCRouter({
       const { filters: filterUpdates, categoryId, subCategoryId } = input;
 
       try {
-        await txDb.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           const updatePromises = filterUpdates.map(({ filterId, order }) =>
             tx
               .update(filters)

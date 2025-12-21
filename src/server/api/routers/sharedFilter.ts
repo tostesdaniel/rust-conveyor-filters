@@ -8,7 +8,7 @@ import {
   findShareTokenByToken,
   findShareTokenId,
 } from "@/data";
-import { pooledDb as txDb } from "@/db/pooled-connection";
+import { db } from "@/db";
 import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
@@ -152,7 +152,7 @@ export const sharedFilterRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { filterId } = input;
       try {
-        await txDb.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           const filter = await findExistingFilter(filterId, ctx.userId);
 
           if (!filter) {
@@ -257,7 +257,7 @@ export const sharedFilterRouter = createTRPCRouter({
       }
 
       try {
-        return await txDb.transaction(async (tx) => {
+        return await db.transaction(async (tx) => {
           const ownToken = await findShareToken(ctx.userId);
 
           if (!ownToken) {

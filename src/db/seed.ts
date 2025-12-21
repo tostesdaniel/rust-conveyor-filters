@@ -4,7 +4,6 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { sql } from "drizzle-orm";
 
 import { db } from ".";
-import { pooledDb as dbTx } from "./pooled-connection";
 import {
   categories,
   filterItems,
@@ -77,7 +76,7 @@ const seed = async () => {
 
 const clearDatabase = async () => {
   try {
-    await dbTx.transaction(async (tx) => {
+    await db.transaction(async (tx) => {
       const tables = await tx.execute(sql`
         SELECT tablename 
         FROM pg_tables 

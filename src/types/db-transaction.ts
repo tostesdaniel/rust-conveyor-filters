@@ -1,5 +1,5 @@
-import type { pooledDb } from "@/db/pooled-connection";
+import type { db } from "@/db";
 
 export type DbTransaction = Parameters<
-  Parameters<typeof pooledDb.transaction>[0]
+  Parameters<typeof db.transaction>[0]
 >[0];

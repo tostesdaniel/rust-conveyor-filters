@@ -24,7 +24,7 @@ import {
   getUserCategories,
   getUserCategoryHierarchy,
 } from "@/data/user-categories";
-import { pooledDb as txDb } from "@/db/pooled-connection";
+import { db } from "@/db";
 import { TRPCError } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -116,7 +116,7 @@ export const categoryRouter = createTRPCRouter({
       const { userId } = ctx;
 
       try {
-        await txDb.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           const sourceCategoryFilters = isSubCategory
             ? await findFiltersInSubCategory(categoryId, ctx.userId)
             : await findFiltersInMainCategory(categoryId, ctx.userId);
@@ -209,7 +209,7 @@ export const categoryRouter = createTRPCRouter({
       const { isSubCategory, filterId, categoryId } = input;
 
       try {
-        await txDb.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           const existingFilter = await findExistingFilter(
             filterId,
             ctx.userId,
@@ -321,7 +321,7 @@ export const categoryRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        await txDb.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           const currentFilter = await findExistingFilter(
             input.filterId,
             ctx.userId,

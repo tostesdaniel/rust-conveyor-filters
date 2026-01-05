@@ -68,7 +68,7 @@
     "radix-ui": "^1.4.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-hook-form": "^7.68.0",
+    "react-hook-form": "^7.70.0",
     "react-intersection-observer": "^9.16.0",
     "server-only": "^0.0.1",
     "sharp": "^0.34.5",

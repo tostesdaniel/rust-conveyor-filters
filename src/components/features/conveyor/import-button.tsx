@@ -29,7 +29,7 @@ const GameConveyorFilterItemSchema = z
       BufferAmount: z.number(),
       MinAmountInInput: z.number(),
       IsBlueprint: z.boolean(),
-      BufferTransferRemaining: z.number(),
+      BufferTransferRemaining: z.number().optional(),
       TargetItemName: z.string(),
     }),
   )

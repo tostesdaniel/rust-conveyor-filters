@@ -13,6 +13,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 import "./globals.css";
 
 import { siteConfig } from "@/config/site";
+import { Nitro } from "@/lib/nitro";
 import { Analytics } from "@/components/features/analytics/analytics";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
 
@@ -90,6 +91,7 @@ export default function RootLayout({
         <head>
           <Analytics />
           <GoogleAnalytics gaId='G-BGERZ3ES1R' />
+          <Nitro />
         </head>
         <body
           className={cn(

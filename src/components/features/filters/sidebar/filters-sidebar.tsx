@@ -15,7 +15,7 @@ import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
 export function FiltersSidebar() {
   return (
     <Sidebar
-      className='sticky top-0 hidden bg-transparent md:flex'
+      className='sticky top-0 hidden h-svh bg-transparent md:flex'
       collapsible='none'
     >
       <SidebarHeader>
@@ -29,7 +29,7 @@ export function FiltersSidebar() {
         </SidebarGroup>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className='*:data-[slot=sidebar-group]:py-0'>
         <FiltersSidebarContent />
       </SidebarContent>
     </Sidebar>

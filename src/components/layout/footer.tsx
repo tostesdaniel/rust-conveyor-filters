@@ -9,14 +9,13 @@ import { Icons } from "@/components/shared/icons";
 const navigation = [
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Steam Guide", href: "/steam-guide" },
-  { name: "Contact", href: "/contact" },
   { name: "Donate", href: "/donate" },
 ];
 
 export function Footer() {
   return (
     <footer>
-      <div className='mx-auto max-w-(--breakpoint-2xl) overflow-hidden px-6 py-12 min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between min-[800px]:gap-x-6 lg:px-8'>
+      <div className='mx-auto max-w-(--breakpoint-xl) overflow-hidden px-6 py-12 min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between min-[800px]:gap-x-6 lg:px-8'>
         <nav
           aria-label='Footer'
           className='columns-2 min-[800px]:order-2 sm:flex sm:justify-center sm:space-x-2 lg:space-x-12'
@@ -103,11 +102,39 @@ export function Footer() {
         </div>
       </div>
       <div className='border-t border-border/40'>
-        <p className='mx-auto max-w-(--breakpoint-2xl) px-6 py-4 text-center text-xs leading-5 text-muted-foreground lg:px-8'>
-          This app is not affiliated with, endorsed, sponsored, or specifically
-          approved by Facepunch Studios. It is an unofficial fan-made tool.
-        </p>
+        <div className='mx-auto max-w-(--breakpoint-2xl) px-6 py-4 lg:px-8'>
+          <div className='mb-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center'>
+            <ConsentButtons />
+          </div>
+          <p className='text-center text-xs leading-5 text-muted-foreground'>
+            This app is not affiliated with, endorsed, sponsored, or
+            specifically approved by Facepunch Studios. It is an unofficial
+            fan-made tool.
+          </p>
+        </div>
       </div>
     </footer>
+  );
+}
+
+const consentLinkClassName =
+  "h-auto min-h-0 min-w-0 max-w-full whitespace-normal px-0 py-0 text-xs font-normal leading-snug text-muted-foreground underline-offset-4 hover:text-foreground hover:underline";
+
+function ConsentButtons() {
+  return (
+    <>
+      <Button
+        id='ncmp-consent-link'
+        type='button'
+        variant='link'
+        className={consentLinkClassName}
+      />
+      <Button
+        data-ccpa-link='1'
+        type='button'
+        variant='link'
+        className={consentLinkClassName}
+      />
+    </>
   );
 }

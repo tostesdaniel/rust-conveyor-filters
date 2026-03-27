@@ -62,7 +62,7 @@ export function ItemsSelection() {
   );
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className='pt-2!'>
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton className='font-semibold hover:bg-transparent active:bg-transparent'>

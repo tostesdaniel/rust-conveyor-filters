@@ -74,7 +74,7 @@ export function CategorySelection() {
           </SidebarMenuButton>
         </SidebarMenuItem>
 
-        <SidebarMenuSub>
+        <SidebarMenuSub className='gap-0.5'>
           {ITEM_CATEGORIES.map((category) => (
             <SidebarMenuSubItem key={category}>
               <SidebarMenuSubButton

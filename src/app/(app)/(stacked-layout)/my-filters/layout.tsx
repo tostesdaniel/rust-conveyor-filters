@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 
+import { MyFiltersFloatingVideo } from "@/components/nitro/my-filters-floating-video";
+import { MyFiltersRailLeft } from "@/components/nitro/my-filters-rail-left";
+import { MyFiltersRailRight } from "@/components/nitro/my-filters-rail-right";
+
 export const metadata: Metadata = {
   robots: {
     index: false,
@@ -12,5 +16,12 @@ type MyFiltersLayoutProps = {
 };
 
 export default function MyFiltersLayout({ children }: MyFiltersLayoutProps) {
-  return <div className='container'>{children}</div>;
+  return (
+    <>
+      <MyFiltersRailLeft />
+      <MyFiltersRailRight />
+      <MyFiltersFloatingVideo />
+      <div className='container 2xl:max-w-[1280px]'>{children}</div>
+    </>
+  );
 }

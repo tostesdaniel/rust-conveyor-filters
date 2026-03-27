@@ -12,7 +12,7 @@ const DESKTOP_QUERY = "(min-width: 1460px)";
 const OPTIONS: NitroAdOptions = {
   format: "floating",
   floating: {
-    position: "bottom-right",
+    position: "bottom-left",
   },
   mediaQuery: DESKTOP_QUERY,
   report: {

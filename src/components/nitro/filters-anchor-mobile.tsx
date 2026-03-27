@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
+import { useIsDonator } from "@/hooks/use-is-donator";
 
 const ANCHOR_MOBILE_ID = "filters-anchor-mobile";
 const MOBILE_QUERY = "(max-width: 767px)";
@@ -22,13 +23,19 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function FiltersAnchorMobile() {
+  const isDonator = useIsDonator();
+
   useEffect(() => {
-    if (typeof window === "undefined" || !window.nitroAds?.createAd) {
+    if (
+      isDonator ||
+      typeof window === "undefined" ||
+      !window.nitroAds?.createAd
+    ) {
       return;
     }
 
     window.nitroAds.createAd(ANCHOR_MOBILE_ID, OPTIONS);
-  }, []);
+  }, [isDonator]);
 
   return null;
 }

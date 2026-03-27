@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Teko } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -80,18 +81,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { sessionClaims } = await auth();
+  const isDonator = !!(
+    sessionClaims?.metadata as UserPublicMetadata | undefined
+  )?.isDonator;
+
   return (
     <ClerkProvider>
       <html lang='en' suppressHydrationWarning>
         <head>
           <Analytics />
           <GoogleAnalytics gaId='G-BGERZ3ES1R' />
-          <Nitro />
+          {!isDonator && <Nitro />}
         </head>
         <body
           className={cn(

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
+import { useIsDonator } from "@/hooks/use-is-donator";
 
 const RIGHT_RAIL_ID = "my-filters-rail-right";
 const DESKTOP_QUERY = "(min-width: 1280px)";
@@ -26,13 +27,19 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function MyFiltersRailRight() {
+  const isDonator = useIsDonator();
+
   useEffect(() => {
-    if (typeof window === "undefined" || !window.nitroAds?.createAd) {
+    if (
+      isDonator ||
+      typeof window === "undefined" ||
+      !window.nitroAds?.createAd
+    ) {
       return;
     }
 
     window.nitroAds.createAd(RIGHT_RAIL_ID, OPTIONS);
-  }, []);
+  }, [isDonator]);
 
   return null;
 }

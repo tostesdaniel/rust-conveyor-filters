@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
+import { useIsDonator } from "@/hooks/use-is-donator";
 
 const FLOATING_LEFT_ID = "filters-floating-left";
 const DESKTOP_QUERY = "(min-width: 1460px)";
@@ -23,13 +24,19 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function FiltersFloatingLeft() {
+  const isDonator = useIsDonator();
+
   useEffect(() => {
-    if (typeof window === "undefined" || !window.nitroAds?.createAd) {
+    if (
+      isDonator ||
+      typeof window === "undefined" ||
+      !window.nitroAds?.createAd
+    ) {
       return;
     }
 
     window.nitroAds.createAd(FLOATING_LEFT_ID, OPTIONS);
-  }, []);
+  }, [isDonator]);
 
   return null;
 }

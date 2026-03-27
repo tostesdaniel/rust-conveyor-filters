@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - feat/nitro
+      - feat-nitro
 
 env:
   REGISTRY: ghcr.io

@@ -1,11 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { Heart } from "lucide-react";
 
 import { BadgeType } from "@/types/badges";
+import { useIsDonator } from "@/hooks/use-is-donator";
 import { Button } from "@/components/ui/button";
 import { UserBadge } from "@/components/shared/user-badge";
 
 export function DonateCTA() {
+  const isDonator = useIsDonator();
+  if (isDonator) return null;
+
   return (
     <div className='flex items-center gap-x-2 rounded-lg border bg-card p-4'>
       <div className='flex-1'>

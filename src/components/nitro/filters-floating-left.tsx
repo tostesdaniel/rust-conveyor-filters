@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
-import { useIsDonator } from "@/hooks/use-is-donator";
+import { useIsAdFree } from "@/hooks/use-is-ad-free";
 
 const FLOATING_LEFT_ID = "filters-floating-left";
 const DESKTOP_QUERY = "(min-width: 1460px)";
@@ -24,11 +24,11 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function FiltersFloatingLeft() {
-  const isDonator = useIsDonator();
+  const isAdFree = useIsAdFree();
 
   useEffect(() => {
     if (
-      isDonator ||
+      isAdFree ||
       typeof window === "undefined" ||
       !window.nitroAds?.createAd
     ) {
@@ -36,7 +36,7 @@ export function FiltersFloatingLeft() {
     }
 
     window.nitroAds.createAd(FLOATING_LEFT_ID, OPTIONS);
-  }, [isDonator]);
+  }, [isAdFree]);
 
   return null;
 }

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
-import { useIsDonator } from "@/hooks/use-is-donator";
+import { useIsAdFree } from "@/hooks/use-is-ad-free";
 
 const RIGHT_RAIL_ID = "filters-rail-right";
 const DESKTOP_QUERY = "(min-width: 1860px)";
@@ -25,11 +25,11 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function FiltersStickyStackRight() {
-  const isDonator = useIsDonator();
+  const isAdFree = useIsAdFree();
 
   useEffect(() => {
     if (
-      isDonator ||
+      isAdFree ||
       typeof window === "undefined" ||
       !window.nitroAds?.createAd
     ) {
@@ -37,9 +37,14 @@ export function FiltersStickyStackRight() {
     }
 
     window.nitroAds.createAd(RIGHT_RAIL_ID, OPTIONS);
-  }, [isDonator]);
+  }, [isAdFree]);
 
-  if (isDonator) return null;
+  if (isAdFree) return null;
 
-  return <div id={RIGHT_RAIL_ID} className='max-[1860px]:hidden' />;
+  return (
+    <div
+      className='min-w-[1860px]:block hidden min-h-full w-40'
+      id={RIGHT_RAIL_ID}
+    />
+  );
 }

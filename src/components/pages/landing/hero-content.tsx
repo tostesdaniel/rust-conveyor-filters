@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
+import { Show, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,17 +20,17 @@ export function HeroContent() {
               🎉
             </span>{" "}
             Filters Search is here!
-            <span className='ml-1 bg-gradient-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
+            <span className='ml-1 bg-linear-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
               Finally!
             </span>
           </p>
         </div>
         <Typography
           variant='h1'
-          className='bg-clip-text font-extrabold [text-wrap:balance] sm:text-5xl'
+          className='bg-clip-text font-extrabold text-balance sm:text-5xl'
         >
           Streamline Your{" "}
-          <span className='bg-gradient-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
+          <span className='bg-linear-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
             Rust Base Automation
           </span>{" "}
           with Ease
@@ -44,16 +44,16 @@ export function HeroContent() {
           reclaim your time!
         </p>
         <div className='mt-10 flex items-center gap-x-6'>
-          <SignedIn>
+          <Show when='signed-in'>
             <Button type='button' asChild>
               <Link href='/my-filters'>Go to My Filters</Link>
             </Button>
-          </SignedIn>
-          <SignedOut>
+          </Show>
+          <Show when='signed-out'>
             <Button type='button' asChild>
               <SignUpButton>Get Started Now</SignUpButton>
             </Button>
-          </SignedOut>
+          </Show>
           <Button type='button' variant='link' className='group' asChild>
             <Link href='/filters'>
               Browse Filters

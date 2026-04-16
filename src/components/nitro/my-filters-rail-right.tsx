@@ -3,20 +3,17 @@
 import { useEffect } from "react";
 
 import type { NitroAdOptions } from "@/types/nitro";
-import { useIsDonator } from "@/hooks/use-is-donator";
+import { useIsAdFree } from "@/hooks/use-is-ad-free";
 
 const RIGHT_RAIL_ID = "my-filters-rail-right";
-const DESKTOP_QUERY = "(min-width: 1280px)";
+const DESKTOP_QUERY = "(min-width: 1640px)";
 
 const OPTIONS: NitroAdOptions = {
   format: "rail",
   rail: "right",
   railVerticalAlign: "top",
   railStickyTop: 108,
-  sizes: [
-    ["160", "600"],
-    ["300", "600"],
-  ],
+  sizes: [["160", "600"]],
   report: {
     enabled: true,
     icon: true,
@@ -27,11 +24,11 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function MyFiltersRailRight() {
-  const isDonator = useIsDonator();
+  const isAdFree = useIsAdFree();
 
   useEffect(() => {
     if (
-      isDonator ||
+      isAdFree ||
       typeof window === "undefined" ||
       !window.nitroAds?.createAd
     ) {
@@ -39,7 +36,7 @@ export function MyFiltersRailRight() {
     }
 
     window.nitroAds.createAd(RIGHT_RAIL_ID, OPTIONS);
-  }, [isDonator]);
+  }, [isAdFree]);
 
   return null;
 }

@@ -1,12 +1,5 @@
 import Image from "next/image";
-import {
-  ClerkLoaded,
-  ClerkLoading,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, Show, SignInButton, UserButton } from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -57,7 +50,7 @@ export function FiltersPageHeader() {
               <Loader2Icon className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>
             <ClerkLoaded>
-              <SignedOut>
+              <Show when="signed-out">
                 <Button
                   variant='default'
                   className='hidden min-[800px]:block'
@@ -68,10 +61,10 @@ export function FiltersPageHeader() {
                     signUpFallbackRedirectUrl='/my-filters'
                   />
                 </Button>
-              </SignedOut>
-              <SignedIn>
+              </Show>
+              <Show when="signed-in">
                 <UserButton />
-              </SignedIn>
+              </Show>
             </ClerkLoaded>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { FiltersPageHeader } from "@/components/features/filters/components/filters-page-header";
 import { FiltersSidebar } from "@/components/features/filters/sidebar/filters-sidebar";
 import { BannerWrapper } from "@/components/layout/banner-wrapper";
-import { FiltersAnchorMobile } from "@/components/nitro/filters-anchor-mobile";
 import { FiltersFloatingLeft } from "@/components/nitro/filters-floating-left";
 import { FiltersStickyStackLeft } from "@/components/nitro/filters-sticky-stack-left";
 import { FiltersStickyStackRight } from "@/components/nitro/filters-sticky-stack-right";
@@ -19,11 +18,10 @@ export default async function FiltersLayout({
 
   return (
     <HydrateClient>
-      <div className='flex items-stretch'>
-        <FiltersAnchorMobile />
+      <div className='flex items-stretch justify-center'>
         <FiltersFloatingLeft />
         <FiltersStickyStackLeft />
-        <SidebarProvider className='mx-auto max-w-[1400px] flex-1 px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
+        <SidebarProvider className='max-w-[1400px] flex-1 px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
           <FiltersSidebar />
           <SidebarInset>
             <BannerWrapper />

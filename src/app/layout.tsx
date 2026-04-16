@@ -86,26 +86,28 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { sessionClaims } = await auth();
-  const isDonator = !!(
-    sessionClaims?.metadata as UserPublicMetadata | undefined
-  )?.isDonator;
+  const { has, sessionClaims } = await auth();
+  const hasAdFreeFeature = has({ feature: "ad_free" });
+  const meta = sessionClaims?.metadata as UserPublicMetadata | undefined;
+  const isLegacyDonator = !!meta?.isLegacyDonator;
+  const isNitroBooster = !!meta?.isNitroBooster;
+  const isAdFree = hasAdFreeFeature || isLegacyDonator || isNitroBooster;
 
   return (
-    <ClerkProvider>
-      <html lang='en' suppressHydrationWarning>
-        <head>
-          <Analytics />
-          <GoogleAnalytics gaId='G-BGERZ3ES1R' />
-          {!isDonator && <Nitro />}
-        </head>
-        <body
-          className={cn(
-            "min-h-svh bg-background font-sans antialiased",
-            inter.variable,
-            teko.variable,
-          )}
-        >
+    <html lang='en' suppressHydrationWarning>
+      <head>
+        <Analytics />
+        <GoogleAnalytics gaId='G-BGERZ3ES1R' />
+        {!isAdFree && <Nitro />}
+      </head>
+      <body
+        className={cn(
+          "min-h-svh bg-background font-sans antialiased",
+          inter.variable,
+          teko.variable,
+        )}
+      >
+        <ClerkProvider>
           <TRPCReactProvider>
             <ThemeProvider
               attribute='class'
@@ -121,8 +123,8 @@ export default async function RootLayout({
             <ReactQueryDevtools initialIsOpen={false} />
           </TRPCReactProvider>
           <OutboundLinkTracker />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

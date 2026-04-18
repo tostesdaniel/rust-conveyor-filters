@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
 import type { NitroAdOptions } from "@/types/nitro";
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
+import { useNitroPlacement } from "@/components/nitro/use-nitro-placement";
 
 const RIGHT_RAIL_ID = "filters-rail-right";
 const DESKTOP_QUERY = "(min-width: 1860px)";
@@ -27,17 +26,12 @@ const OPTIONS: NitroAdOptions = {
 export function FiltersStickyStackRight() {
   const isAdFree = useIsAdFree();
 
-  useEffect(() => {
-    if (
-      isAdFree ||
-      typeof window === "undefined" ||
-      !window.nitroAds?.createAd
-    ) {
-      return;
-    }
-
-    window.nitroAds.createAd(RIGHT_RAIL_ID, OPTIONS);
-  }, [isAdFree]);
+  useNitroPlacement({
+    id: RIGHT_RAIL_ID,
+    options: OPTIONS,
+    enabled: !isAdFree,
+    preserveContainer: true,
+  });
 
   if (isAdFree) return null;
 

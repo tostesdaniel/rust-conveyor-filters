@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
 import type { NitroAdOptions } from "@/types/nitro";
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
+import { useNitroPlacement } from "@/components/nitro/use-nitro-placement";
 
 const LEFT_RAIL_ID = "my-filters-rail-left";
 const DESKTOP_QUERY = "(min-width: 1640px)";
@@ -26,17 +25,11 @@ const OPTIONS: NitroAdOptions = {
 export function MyFiltersRailLeft() {
   const isAdFree = useIsAdFree();
 
-  useEffect(() => {
-    if (
-      isAdFree ||
-      typeof window === "undefined" ||
-      !window.nitroAds?.createAd
-    ) {
-      return;
-    }
-
-    window.nitroAds.createAd(LEFT_RAIL_ID, OPTIONS);
-  }, [isAdFree]);
+  useNitroPlacement({
+    id: LEFT_RAIL_ID,
+    options: OPTIONS,
+    enabled: !isAdFree,
+  });
 
   return null;
 }

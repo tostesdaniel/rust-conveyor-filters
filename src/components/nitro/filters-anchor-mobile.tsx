@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
 import type { NitroAdOptions } from "@/types/nitro";
 import { useIsDonator } from "@/hooks/use-is-donator";
+import { useNitroPlacement } from "@/components/nitro/use-nitro-placement";
 
 const ANCHOR_MOBILE_ID = "filters-anchor-mobile";
 const MOBILE_QUERY = "(max-width: 767px)";
@@ -25,17 +24,11 @@ const OPTIONS: NitroAdOptions = {
 export function FiltersAnchorMobile() {
   const isDonator = useIsDonator();
 
-  useEffect(() => {
-    if (
-      isDonator ||
-      typeof window === "undefined" ||
-      !window.nitroAds?.createAd
-    ) {
-      return;
-    }
-
-    window.nitroAds.createAd(ANCHOR_MOBILE_ID, OPTIONS);
-  }, [isDonator]);
+  useNitroPlacement({
+    id: ANCHOR_MOBILE_ID,
+    options: OPTIONS,
+    enabled: !isDonator,
+  });
 
   return null;
 }

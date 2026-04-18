@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
 import type { NitroAdOptions } from "@/types/nitro";
-import { useIsDonator } from "@/hooks/use-is-donator";
+import { useIsAdFree } from "@/hooks/use-is-ad-free";
+import { useNitroPlacement } from "@/components/nitro/use-nitro-placement";
 
 const FLOATING_VIDEO_ID = "my-filters-floating-video";
 const DESKTOP_QUERY = "(min-width: 1280px)";
@@ -24,19 +23,13 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function MyFiltersFloatingVideo() {
-  const isDonator = useIsDonator();
+  const isAdFree = useIsAdFree();
 
-  useEffect(() => {
-    if (
-      isDonator ||
-      typeof window === "undefined" ||
-      !window.nitroAds?.createAd
-    ) {
-      return;
-    }
-
-    window.nitroAds.createAd(FLOATING_VIDEO_ID, OPTIONS);
-  }, [isDonator]);
+  useNitroPlacement({
+    id: FLOATING_VIDEO_ID,
+    options: OPTIONS,
+    enabled: !isAdFree,
+  });
 
   return null;
 }

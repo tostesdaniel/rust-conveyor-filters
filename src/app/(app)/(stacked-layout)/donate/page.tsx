@@ -3,12 +3,15 @@ import { PricingTable } from "@clerk/nextjs";
 
 import { siteConfig } from "@/config/site";
 import { Separator } from "@/components/ui/separator";
+import { PricingCards } from "@/components/donate/pricing-cards";
 import { DonateButton } from "@/components/features/donation/donate-button";
 import { DonateFeature } from "@/components/features/donation/donate-feature";
 import { DonateOtherLinks } from "@/components/features/donation/donate-other-links";
 import { DonateSupporterPerks } from "@/components/features/donation/donate-supporter-perks";
 import { Icons } from "@/components/shared/icons";
 import { Typography } from "@/components/shared/typography";
+
+const paynowEnabled = process.env.NEXT_PUBLIC_PAYNOW_ENABLED === "true";
 
 export const metadata: Metadata = {
   title: "Support the Project and Go Ad-Free",
@@ -46,7 +49,7 @@ export default function DonatePage() {
             Subscribe to browse ad-free, pick up the Supporter badge, and help
             fund continued updates.
           </Typography>
-          <PricingTable />
+          {paynowEnabled ? <PricingCards /> : <PricingTable />}
         </div>
 
         <div className='mt-6 max-w-2xl'>

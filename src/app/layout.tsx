@@ -86,12 +86,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { has, sessionClaims } = await auth();
-  const hasAdFreeFeature = has({ feature: "ad_free" });
+  const { sessionClaims } = await auth();
   const meta = sessionClaims?.metadata as UserPublicMetadata | undefined;
+  const isSubscriber = !!meta?.isSubscriber;
   const isLegacyDonator = !!meta?.isLegacyDonator;
   const isNitroBooster = !!meta?.isNitroBooster;
-  const isAdFree = hasAdFreeFeature || isLegacyDonator || isNitroBooster;
+  const isAdFree = isSubscriber || isLegacyDonator || isNitroBooster;
 
   return (
     <html lang='en' suppressHydrationWarning>

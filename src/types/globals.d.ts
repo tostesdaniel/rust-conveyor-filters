@@ -11,5 +11,7 @@ declare global {
     isSubscriber?: boolean;
     /** Discord Nitro Boosters - ad-free as community thank-you */
     isNitroBooster?: boolean;
+    /** PayNow customer id linked to this Clerk user */
+    paynowCustomerId?: string;
   }
 }

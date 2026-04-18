@@ -43,7 +43,7 @@ export function FiltersStickyStackRight() {
 
   return (
     <div
-      className='min-w-[1860px]:block hidden min-h-full w-40'
+      className='hidden min-h-full w-40 min-[1860px]:block'
       id={RIGHT_RAIL_ID}
     />
   );

@@ -66,7 +66,7 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent
         side='right'
-        className='grow gap-y-5 overflow-y-auto px-6 pb-4'
+        className='z-99999 grow gap-y-5 overflow-y-auto px-6 pb-4'
       >
         <VisuallyHidden.Root>
           <SheetTitle>Navigation Menu</SheetTitle>

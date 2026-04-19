@@ -305,3 +305,55 @@ export const sharedFiltersRelations = relations(sharedFilters, ({ one }) => ({
 
 export type SharedFilter = typeof sharedFilters.$inferSelect;
 export type NewSharedFilter = typeof sharedFilters.$inferInsert;
+
+export const paynowCustomers = pgTable("paynow_customers", {
+  clerkUserId: varchar("clerk_user_id", { length: 255 }).primaryKey(),
+  paynowCustomerId: varchar("paynow_customer_id", { length: 255 })
+    .notNull()
+    .unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export type PaynowCustomer = typeof paynowCustomers.$inferSelect;
+export type NewPaynowCustomer = typeof paynowCustomers.$inferInsert;
+
+export const subscriptionIntervalEnum = pgEnum("subscription_interval_enum", [
+  "monthly",
+  "yearly",
+]);
+
+export const subscriptionStatusEnum = pgEnum("subscription_status_enum", [
+  "active",
+  "canceled",
+  "refunded",
+  "chargeback",
+]);
+
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: serial("id").primaryKey(),
+    paynowSubscriptionId: varchar("paynow_subscription_id", { length: 255 })
+      .notNull()
+      .unique(),
+    clerkUserId: varchar("clerk_user_id", { length: 255 }).notNull(),
+    paynowCustomerId: varchar("paynow_customer_id", { length: 255 }).notNull(),
+    productId: varchar("product_id", { length: 255 }).notNull(),
+    interval: subscriptionIntervalEnum("interval").notNull(),
+    status: subscriptionStatusEnum("status").notNull(),
+    currentPeriodStart: timestamp("current_period_start"),
+    currentPeriodEnd: timestamp("current_period_end"),
+    canceledAt: timestamp("canceled_at"),
+    benefitsRevoked: boolean("benefits_revoked").notNull().default(false),
+    pendingSwitch: subscriptionIntervalEnum("pending_switch"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("subscriptions_clerk_user_idx").on(t.clerkUserId),
+    index("subscriptions_status_idx").on(t.status),
+  ],
+);
+
+export type Subscription = typeof subscriptions.$inferSelect;
+export type NewSubscription = typeof subscriptions.$inferInsert;

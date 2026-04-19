@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Teko } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -13,6 +14,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 import "./globals.css";
 
 import { siteConfig } from "@/config/site";
+import { Nitro } from "@/lib/nitro";
 import { Analytics } from "@/components/features/analytics/analytics";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
 
@@ -79,25 +81,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { sessionClaims } = await auth();
+  const meta = sessionClaims?.metadata as UserPublicMetadata | undefined;
+  const isSubscriber = !!meta?.isSubscriber;
+  const isLegacyDonator = !!meta?.isLegacyDonator;
+  const isNitroBooster = !!meta?.isNitroBooster;
+  const isAdFree = isSubscriber || isLegacyDonator || isNitroBooster;
+
   return (
-    <ClerkProvider>
-      <html lang='en' suppressHydrationWarning>
-        <head>
-          <Analytics />
-          <GoogleAnalytics gaId='G-BGERZ3ES1R' />
-        </head>
-        <body
-          className={cn(
-            "min-h-svh bg-background font-sans antialiased",
-            inter.variable,
-            teko.variable,
-          )}
-        >
+    <html lang='en' suppressHydrationWarning>
+      <head>
+        <Analytics />
+        <GoogleAnalytics gaId='G-BGERZ3ES1R' />
+        {!isAdFree && <Nitro />}
+      </head>
+      <body
+        className={cn(
+          "min-h-svh bg-background font-sans antialiased",
+          inter.variable,
+          teko.variable,
+        )}
+      >
+        <ClerkProvider>
           <TRPCReactProvider>
             <ThemeProvider
               attribute='class'
@@ -113,8 +123,8 @@ export default function RootLayout({
             <ReactQueryDevtools initialIsOpen={false} />
           </TRPCReactProvider>
           <OutboundLinkTracker />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

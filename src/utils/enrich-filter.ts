@@ -43,7 +43,10 @@ export async function enrichWithAuthor(
         if (verifiedType) {
           badges.push(verifiedType);
         }
-        if (user.publicMetadata?.isDonator) {
+        const meta = user.publicMetadata as UserPublicMetadata | undefined;
+        if (meta?.isSubscriber) {
+          badges.push(BadgeType.SUPPORTER);
+        } else if (meta?.isDonator || meta?.isLegacyDonator) {
           badges.push(BadgeType.DONATOR);
         }
 

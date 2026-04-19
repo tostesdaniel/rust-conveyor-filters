@@ -3,9 +3,12 @@ export enum BadgeType {
   DONATOR = "donator",
   OFFICIAL = "official",
   CONTRIBUTOR = "contributor",
+  SUPPORTER = "supporter",
 }
 
 export interface UserBadge {
   verifiedType?: BadgeType.OFFICIAL | BadgeType.CONTENT_CREATOR;
   isDonator?: boolean;
+  isSubscriber?: boolean;
+  isNitroBooster?: boolean;
 }

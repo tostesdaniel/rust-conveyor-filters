@@ -83,6 +83,46 @@
   --sidebar-ring: oklch(0.446 0.043 257.281);
 }
 
+:root {
+  --clerk-color-primary: oklch(0.208 0.042 265.755);
+  --clerk-color-primary-foreground: oklch(0.984 0.003 247.858);
+  --clerk-color-danger: oklch(0.577 0.245 27.325);
+  --clerk-color-success: #22c543;
+  --clerk-color-warning: #f36b16;
+  --clerk-color-neutral: oklch(0.129 0.042 264.695);
+  --clerk-color-foreground: oklch(0.129 0.042 264.695);
+  --clerk-color-muted-foreground: oklch(0.554 0.046 257.417);
+  --clerk-color-background: oklch(1 0 0);
+  --clerk-color-input: oklch(0.929 0.013 255.508);
+  --clerk-color-input-foreground: oklch(0.129 0.042 264.695);
+  --clerk-color-ring: oklch(0.869 0.022 252.894);
+  --clerk-color-shimmer: oklch(1 0 0);
+  --clerk-color-modal-backdrop: #000000;
+  --clerk-border-radius: 0.5rem;
+  --clerk-spacing: 1rem;
+  --clerk-color-muted: oklch(0.968 0.007 247.896);
+}
+
+.dark {
+  --clerk-color-primary: oklch(0.984 0.003 247.858);
+  --clerk-color-primary-foreground: oklch(0.208 0.042 265.755);
+  --clerk-color-danger: oklch(0.637 0.237 25.331);
+  --clerk-color-success: #22c543;
+  --clerk-color-warning: #f36b16;
+  --clerk-color-neutral: oklch(0.984 0.003 247.858);
+  --clerk-color-foreground: oklch(0.984 0.003 247.858);
+  --clerk-color-muted-foreground: oklch(0.704 0.04 256.788);
+  --clerk-color-background: oklch(0.129 0.042 264.695);
+  --clerk-color-input: oklch(0.279 0.041 260.031);
+  --clerk-color-input-foreground: oklch(0.984 0.003 247.858);
+  --clerk-color-ring: oklch(0.446 0.043 257.281);
+  --clerk-color-shimmer: oklch(1 0 0);
+  --clerk-color-modal-backdrop: #000000;
+  --clerk-border-radius: 0.5rem;
+  --clerk-spacing: 1rem;
+  --clerk-color-muted: oklch(0.279 0.041 260.031);
+}
+
 @theme inline {
   --color-border: var(--border);
   --color-input: var(--input);

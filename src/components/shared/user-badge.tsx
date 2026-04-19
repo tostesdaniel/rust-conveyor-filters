@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import {
   Clapperboard,
   CodeXmlIcon,
+  Crown,
   HeartHandshake,
   Verified,
 } from "lucide-react";
@@ -37,6 +38,11 @@ const badgeConfig: Record<
     icon: <CodeXmlIcon className='h-3 w-3' />,
     className: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20",
     label: "Contributor",
+  },
+  [BadgeType.SUPPORTER]: {
+    icon: <Crown className='h-3 w-3' />,
+    className: "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20",
+    label: "Supporter",
   },
 };
 

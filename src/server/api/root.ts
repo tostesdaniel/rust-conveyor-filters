@@ -1,5 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
+import { billingRouter } from "./routers/billing";
 import { bookmarkRouter } from "./routers/bookmark";
 import { categoryRouter } from "./routers/category";
 import { feedbackRouter } from "./routers/feedback";
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   shareToken: shareTokenRouter,
   sharedFilter: sharedFilterRouter,
   feedback: feedbackRouter,
+  billing: billingRouter,
 });
 
 // export type definition of API

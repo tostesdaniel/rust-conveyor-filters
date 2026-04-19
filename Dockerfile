@@ -52,8 +52,14 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/drizzle.config.ts ./
 
+# Database migrations are applied at container start; ship the scripts + SQL files.
+COPY --from=builder --chown=nextjs:nodejs /app/src/scripts/db ./src/scripts/db
+COPY --from=builder --chown=nextjs:nodejs /app/src/db/migrations ./src/db/migrations
+COPY --chown=nextjs:nodejs docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["bun", "./server.js"]
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

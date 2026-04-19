@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import type { OwnerFilterDTO } from "@/types/filter";
+import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import {
@@ -59,10 +60,12 @@ export default function NewFilterForm() {
 
   const utils = api.useUtils();
   const updateOrderMutation = api.filter.updateOrder.useMutation();
+  const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.create.useMutation({
     onSuccess: async (_, variables) => {
       trackEvent("filter_created");
+      trackAction("filterCreate");
 
       const { categoryId, subCategoryId } = variables.category;
       // Normalize undefined to null for type safety

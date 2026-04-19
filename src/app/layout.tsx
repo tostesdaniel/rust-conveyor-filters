@@ -17,6 +17,8 @@ import { siteConfig } from "@/config/site";
 import { Nitro } from "@/lib/nitro";
 import { Analytics } from "@/components/features/analytics/analytics";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
+import { SessionTick } from "@/components/features/donation/session-tick";
+import { BannerWrapper } from "@/components/layout/banner-wrapper";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });
@@ -118,6 +120,12 @@ export default async function RootLayout({
               <NuqsAdapter>
                 <div className='flex min-h-svh flex-col'>{children}</div>
               </NuqsAdapter>
+              {!isAdFree && (
+                <>
+                  <SessionTick />
+                  <BannerWrapper />
+                </>
+              )}
               <Toaster richColors />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />

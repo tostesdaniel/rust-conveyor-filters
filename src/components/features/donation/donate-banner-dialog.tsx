@@ -1,10 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { HeartHandshake } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { useDonateBannerState } from "@/hooks/use-donate-banner-state";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,14 +22,25 @@ import {
 } from "@/components/shared/banner";
 
 interface DonateBannerProps {
+  open: boolean;
+  onShown: () => void;
   onDismiss: () => void;
 }
 
-export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
-  const { dialogOpen, dismiss } = useDonateBannerState();
+export function DonateBannerDialog({
+  open,
+  onShown,
+  onDismiss,
+}: DonateBannerProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)", {
     initializeWithValue: false,
   });
+
+  useEffect(() => {
+    if (open) onShown();
+  }, [open, onShown]);
+
+  if (!open) return null;
 
   if (isDesktop) {
     return (
@@ -50,7 +61,12 @@ export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
   }
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={dismiss}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) onDismiss();
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Go Ad-Free</DialogTitle>
@@ -62,11 +78,11 @@ export function DonateBannerDialog({ onDismiss }: DonateBannerProps) {
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type='button' variant='secondary'>
+            <Button type='button' variant='secondary' onClick={onDismiss}>
               Maybe later
             </Button>
           </DialogClose>
-          <Button asChild>
+          <Button asChild onClick={onDismiss}>
             <Link href='/donate'>
               <HeartHandshake />
               Subscribe for $3/mo

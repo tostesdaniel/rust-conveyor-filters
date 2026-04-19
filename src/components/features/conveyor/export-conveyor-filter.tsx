@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import type { FilterItemDTO } from "@/types/filter";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useLogFilterEvent } from "@/hooks/use-log-filter-event";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export function ExportConveyorFilter({
 }: ExportConveyorFilterProps) {
   const [_copiedText, copy] = useCopyToClipboard();
   const { logEvent } = useLogFilterEvent();
+  const { trackAction } = useEngagementScore();
 
   if (log && !filterId) {
     throw new Error("Filter ID is required to log events");
@@ -45,6 +47,7 @@ export function ExportConveyorFilter({
         } else {
           trackEvent("filter_exported");
         }
+        trackAction("filterCopy");
         if (log && filterId) {
           await logEvent("export", filterId);
         }

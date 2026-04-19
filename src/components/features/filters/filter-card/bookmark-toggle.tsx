@@ -8,6 +8,7 @@ import { BookmarkIcon, Loader2Icon } from "lucide-react";
 import { Toggle as TogglePrimitive } from "radix-ui";
 import { toast } from "sonner";
 
+import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { Toggle } from "@/components/ui/toggle";
 
 interface BookmarkToggleProps
@@ -44,12 +45,16 @@ export function BookmarkToggle({
   }, [initialBookmarked, isLoaded, isSignedIn, bookmarkedFilterIds, filterId]);
 
   const utils = api.useUtils();
+  const { trackAction } = useEngagementScore();
   const mutation = api.bookmark.toggle.useMutation({
     onSuccess: (data) => {
       trackEvent("filter_bookmark_toggled", {
         filterId,
         bookmarked: data.bookmarked,
       });
+      if (data.bookmarked) {
+        trackAction("bookmarkOn");
+      }
       toast.success(
         data.bookmarked ? "Filter bookmarked" : "Filter unbookmarked",
       );

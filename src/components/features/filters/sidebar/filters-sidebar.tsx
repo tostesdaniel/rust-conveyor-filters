@@ -11,6 +11,7 @@ import {
 import { FiltersSidebarContent } from "@/components/features/filters/sidebar/filters-sidebar-content";
 import { FiltersSidebarHeader } from "@/components/features/filters/sidebar/filters-sidebar-header";
 import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
+import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar-donate-card";
 
 export function FiltersSidebar() {
   return (
@@ -31,6 +32,11 @@ export function FiltersSidebar() {
 
       <SidebarContent className='*:data-[slot=sidebar-group]:py-0'>
         <FiltersSidebarContent />
+        <SidebarGroup className='px-3 pt-2'>
+          <SidebarGroupContent>
+            <SidebarDonateCard />
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   );

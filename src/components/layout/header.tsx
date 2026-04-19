@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ClerkLoaded, ClerkLoading, Show, SignInButton, UserButton } from "@clerk/nextjs";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  Show,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
+import { EngagementPill } from "@/components/features/donation/engagement-pill";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Icons } from "@/components/shared/icons";
@@ -43,6 +50,7 @@ export function Header() {
         </div>
         <DesktopNav className='hidden lg:ml-6 lg:flex lg:gap-x-8' />
         <div className='flex flex-1 items-center justify-end gap-2'>
+          <EngagementPill className='hidden min-[800px]:inline-flex' />
           <div className='flex items-center gap-0.5'>
             <nav className='flex items-center gap-0.5'>
               <RepoStarsButton />
@@ -64,7 +72,7 @@ export function Header() {
               <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>
             <ClerkLoaded>
-              <Show when="signed-out">
+              <Show when='signed-out'>
                 <Button
                   variant='default'
                   className='hidden min-[800px]:block'
@@ -76,7 +84,7 @@ export function Header() {
                   />
                 </Button>
               </Show>
-              <Show when="signed-in">
+              <Show when='signed-in'>
                 <UserButton />
               </Show>
             </ClerkLoaded>

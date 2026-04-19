@@ -25,6 +25,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { EngagementPill } from "@/components/features/donation/engagement-pill";
 import { MobileFiltersSidebar } from "@/components/features/filters/sidebar/mobile-filters-sidebar";
 import { SITE_NAV_ITEMS, type Navigation } from "@/components/layout/header";
 
@@ -121,6 +122,9 @@ export function MobileNav() {
               </>
             )}
           </ul>
+          <div className='mt-auto pt-4'>
+            <EngagementPill className='w-full justify-center' />
+          </div>
         </nav>
       </SheetContent>
     </Sheet>

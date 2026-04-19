@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
 import { Button } from "@/components/ui/button";
@@ -83,10 +84,12 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const [initialItems, setInitialItems] = React.useState<FilterItem[]>([]);
 
   const utils = api.useUtils();
+  const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.update.useMutation({
     onSuccess: () => {
       trackEvent("filter_updated", { filterId });
+      trackAction("filterEdit");
       toast.success("Filter updated successfully");
       utils.filter.getByCategory.invalidate();
       refetch();

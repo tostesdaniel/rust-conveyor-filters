@@ -2,7 +2,6 @@
 
 import { trackEvent } from "@/utils/rybbit";
 import { SiSteam } from "@icons-pack/react-simple-icons";
-import { LinkedinIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
@@ -46,7 +45,7 @@ export function AboutSocialLinks() {
             trackEvent("social_link_clicked", { platform: "linkedin" });
           }}
         >
-          <LinkedinIcon /> Connect with me
+          Connect with me
         </a>
       </Button>
     </div>

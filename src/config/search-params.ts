@@ -19,6 +19,7 @@ export const searchParams = {
   ]).withDefault("popular"),
   items: parseAsArrayOf(parseAsString),
   categories: parseAsArrayOf(parseAsStringLiteral(ITEM_CATEGORIES)),
+  tags: parseAsArrayOf(parseAsString),
 };
 
 export const urlKeys = {
@@ -26,6 +27,7 @@ export const urlKeys = {
   sort: "sort",
   items: "items",
   categories: "categories",
+  tags: "tags",
 };
 
 export const loadSearchParams = createLoader(searchParams, { urlKeys });

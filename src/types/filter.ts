@@ -18,6 +18,7 @@ export interface ConveyorFilterItem extends FilterItem {
 export type {
   PublicFilterListDTO,
   FilterItemDTO,
+  FilterTagDTO,
   OwnerFilterDTO,
   SharedFilterDTO,
 } from "@/types/dto/public-filter";

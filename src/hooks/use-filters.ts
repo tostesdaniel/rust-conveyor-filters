@@ -9,6 +9,7 @@ export function useFilters(
   search: inferParserType<typeof searchParams>["search"],
   categories: inferParserType<typeof searchParams>["categories"],
   items: inferParserType<typeof searchParams>["items"],
+  tags: inferParserType<typeof searchParams>["tags"],
 ) {
   return api.filter.getPublicListInfinite.useInfiniteQuery(
     {
@@ -17,6 +18,7 @@ export function useFilters(
       search: search || undefined,
       categories: categories || undefined,
       items: items || undefined,
+      tags: tags || undefined,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,

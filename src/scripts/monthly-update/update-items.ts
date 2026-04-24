@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import { glob } from "node:fs/promises";
 import path from "node:path";
-import { db } from "@/db";
+import { db } from "@/db/client";
 import { eq } from "drizzle-orm";
 
 import { GameItem } from "@/types/gameItem";

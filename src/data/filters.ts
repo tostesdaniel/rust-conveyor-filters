@@ -6,13 +6,27 @@ import { encodeCursor } from "@/utils/cursor";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toOwnerFilterDTO, toPublicFilterDTO } from "@/utils/filter-mappers";
 import { createTsQuery } from "@/utils/text-search";
-import { and, desc, eq, exists, gt, isNull, lt, or, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  exists,
+  gt,
+  inArray,
+  isNull,
+  lt,
+  or,
+  sql,
+} from "drizzle-orm";
 
 import type { DbTransaction } from "@/types/db-transaction";
 import {
   categories as categoriesTable,
   filterItems,
   filters,
+  filterTagAssignments,
+  filterTags,
   items as itemsTable,
 } from "@/db/schema";
 
@@ -242,7 +256,11 @@ export async function getPublicFilter(filterId: number) {
   }
 
   const enriched = await enrichWithAuthor([filter]);
-  return toPublicFilterDTO(enriched[0]);
+  const tagsByFilter = await loadTagsForFilters([filter.id]);
+  return {
+    ...toPublicFilterDTO(enriched[0]),
+    tags: tagsByFilter.get(filter.id) ?? [],
+  };
 }
 
 export interface GetPublicFiltersOptions {
@@ -252,10 +270,57 @@ export interface GetPublicFiltersOptions {
   search?: string;
   categories?: string[];
   items?: string[];
+  tags?: string[];
+}
+
+/**
+ * Load tags for a set of filter ids, grouped by filterId. Keeps rank order.
+ */
+async function loadTagsForFilters(filterIds: number[]) {
+  if (filterIds.length === 0)
+    return new Map<
+      number,
+      Array<{ slug: string; label: string; rank: number }>
+    >();
+  const rows = await db
+    .select({
+      filterId: filterTagAssignments.filterId,
+      rank: filterTagAssignments.rank,
+      slug: filterTags.slug,
+      label: filterTags.label,
+    })
+    .from(filterTagAssignments)
+    .innerJoin(filterTags, eq(filterTagAssignments.tagId, filterTags.id))
+    .where(
+      and(
+        inArray(filterTagAssignments.filterId, filterIds),
+        eq(filterTags.status, "active"),
+      ),
+    )
+    .orderBy(filterTagAssignments.filterId, asc(filterTagAssignments.rank));
+
+  const byFilter = new Map<
+    number,
+    Array<{ slug: string; label: string; rank: number }>
+  >();
+  for (const row of rows) {
+    const list = byFilter.get(row.filterId) ?? [];
+    list.push({ slug: row.slug, label: row.label, rank: row.rank });
+    byFilter.set(row.filterId, list);
+  }
+  return byFilter;
 }
 
 export async function getPublicFilters(options: GetPublicFiltersOptions) {
-  const { sort, cursor, pageSize = 6, search, categories, items } = options;
+  const {
+    sort,
+    cursor,
+    pageSize = 6,
+    search,
+    categories,
+    items,
+    tags,
+  } = options;
 
   const searchConditions = [
     eq(filters.isPublic, true),
@@ -296,6 +361,26 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
               ),
           ),
         )
+      : []),
+    ...(tags && tags.length > 0
+      ? [
+          exists(
+            db
+              .select()
+              .from(filterTagAssignments)
+              .innerJoin(
+                filterTags,
+                eq(filterTagAssignments.tagId, filterTags.id),
+              )
+              .where(
+                and(
+                  eq(filterTagAssignments.filterId, filters.id),
+                  inArray(filterTags.slug, tags),
+                  eq(filterTags.status, "active"),
+                ),
+              ),
+          ),
+        ]
       : []),
   ];
 
@@ -384,9 +469,12 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
   });
 
   const enrichedFilters = await enrichWithAuthor(result);
+  const tagsByFilter = await loadTagsForFilters(result.map((r) => r.id));
 
-  // Convert to DTOs
-  const dtoFilters = enrichedFilters.map(toPublicFilterDTO);
+  const dtoFilters = enrichedFilters.map((f) => ({
+    ...toPublicFilterDTO(f),
+    tags: tagsByFilter.get(f.id) ?? [],
+  }));
 
   // Generate minimal, sort-specific cursor
   const lastItem = result[result.length - 1];

@@ -83,6 +83,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   });
   const { dirtyFields } = useFormState({ control: form.control });
   const [initialItems, setInitialItems] = React.useState<FilterItem[]>([]);
+  const hydratedForFilterIdRef = React.useRef<number | null>(null);
 
   const utils = api.useUtils();
   const { trackAction } = useEngagementScore();
@@ -103,51 +104,58 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   });
 
   React.useEffect(() => {
-    if (data) {
-      const initialItemsData = data.filterItems
-        .map((filterItem): FilterItem | null => {
-          if (filterItem.item && filterItem.itemId) {
-            const { item } = filterItem;
-            return {
-              name: item.name,
-              shortname: item.shortname ?? "",
-              imagePath: item.imagePath,
-              itemId: filterItem.itemId,
-              max: filterItem.max,
-              buffer: filterItem.buffer,
-              min: filterItem.min,
-              createdAt: filterItem.createdAt,
-            };
-          } else if (filterItem.category && filterItem.categoryId) {
-            return {
-              name: filterItem.category.name,
-              categoryId: filterItem.categoryId,
-              max: filterItem.max,
-              buffer: filterItem.buffer,
-              min: filterItem.min,
-              createdAt: filterItem.createdAt,
-            };
-          }
-          return null;
-        })
-        .filter((item): item is FilterItem => item !== null);
+    hydratedForFilterIdRef.current = null;
+  }, [filterId]);
 
-      setInitialItems(initialItemsData);
-      form.reset({
-        name: data.name,
-        description: data.description ?? "",
-        imagePath: data.imagePath,
-        category: {
-          categoryId: data.categoryId,
-          subCategoryId: data.subCategoryId,
-        },
-        isPublic: data.isPublic,
-        items: initialItemsData,
-      });
+  React.useEffect(() => {
+    if (!data || data.id !== filterId) return;
+    if (hydratedForFilterIdRef.current === filterId) return;
 
-      form.trigger();
-    }
-  }, [data, form]);
+    hydratedForFilterIdRef.current = filterId;
+
+    const initialItemsData = data.filterItems
+      .map((filterItem): FilterItem | null => {
+        if (filterItem.item && filterItem.itemId) {
+          const { item } = filterItem;
+          return {
+            name: item.name,
+            shortname: item.shortname ?? "",
+            imagePath: item.imagePath,
+            itemId: filterItem.itemId,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+            createdAt: filterItem.createdAt,
+          };
+        } else if (filterItem.category && filterItem.categoryId) {
+          return {
+            name: filterItem.category.name,
+            categoryId: filterItem.categoryId,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+            createdAt: filterItem.createdAt,
+          };
+        }
+        return null;
+      })
+      .filter((item): item is FilterItem => item !== null);
+
+    setInitialItems(initialItemsData);
+    form.reset({
+      name: data.name,
+      description: data.description ?? "",
+      imagePath: data.imagePath,
+      category: {
+        categoryId: data.categoryId,
+        subCategoryId: data.subCategoryId,
+      },
+      isPublic: data.isPublic,
+      items: initialItemsData,
+    });
+
+    void form.trigger();
+  }, [data, filterId, form]);
 
   const getDirtyData = <T extends FieldValues>(
     allFields: T,

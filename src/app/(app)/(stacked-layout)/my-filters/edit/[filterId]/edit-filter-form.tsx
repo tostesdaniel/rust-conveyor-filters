@@ -25,6 +25,7 @@ import {
   FormControl,
   FormDescription,
   FormField,
+  FormFieldScope,
   FormItem,
   FormLabel,
   FormMessage,
@@ -301,22 +302,18 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name='items'
-          render={() => (
-            <FormItem>
-              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
-                Items
-              </FormLabel>
-              <FormDescription>
-                Compose your conveyor by selecting items from the list.
-              </FormDescription>
-              <ConveyorCard />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormFieldScope name='items'>
+          <FormItem>
+            <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+              Items
+            </FormLabel>
+            <FormDescription>
+              Compose your conveyor by selecting items from the list.
+            </FormDescription>
+            <ConveyorCard />
+            <FormMessage />
+          </FormItem>
+        </FormFieldScope>
         <Button
           type='submit'
           disabled={mutation.isPending || !form.formState.isDirty}

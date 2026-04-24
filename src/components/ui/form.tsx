@@ -42,6 +42,21 @@ const FormField = <
   )
 }
 
+/**
+ * Sets {@link FormFieldContext} for nested components (e.g. FormLabel, FormMessage)
+ * without registering the name via Controller. Use for field-array roots managed by
+ * useFieldArray so the same name is not registered twice (RHF ≥7.72 can throw
+ * when updating the array).
+ */
+function FormFieldScope<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({ name, children }: { name: TName; children: React.ReactNode }) {
+  return (
+    <FormFieldContext.Provider value={{ name }}>{children}</FormFieldContext.Provider>
+  )
+}
+
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
@@ -164,4 +179,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  FormFieldScope,
 }

@@ -8,6 +8,7 @@ import { filterRouter } from "./routers/filter";
 import { sharedFilterRouter } from "./routers/sharedFilter";
 import { shareTokenRouter } from "./routers/shareToken";
 import { statsRouter } from "./routers/stats";
+import { tagRouter } from "./routers/tag";
 
 /**
  * Primary router for the server.
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   sharedFilter: sharedFilterRouter,
   feedback: feedbackRouter,
   billing: billingRouter,
+  tag: tagRouter,
 });
 
 // export type definition of API

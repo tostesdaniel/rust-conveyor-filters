@@ -30,6 +30,11 @@ export const itemsRelations = relations(items, ({ many }) => ({
   filterItems: many(filterItems),
 }));
 
+export const aiCategorizationStatusEnum = pgEnum(
+  "ai_categorization_status_enum",
+  ["idle", "pending", "processing", "ok", "failed"],
+);
+
 export const filters = pgTable(
   "filters",
   {
@@ -51,6 +56,19 @@ export const filters = pgTable(
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
     searchVector: tsVector("search_vector"),
+    aiCategorizationStatus: aiCategorizationStatusEnum(
+      "ai_categorization_status",
+    )
+      .notNull()
+      .default("idle"),
+    aiCategorizationContentHash: varchar("ai_categorization_content_hash", {
+      length: 64,
+    }),
+    aiCategorizedAt: timestamp("ai_categorized_at"),
+    aiCategorizationAttempts: integer("ai_categorization_attempts")
+      .notNull()
+      .default(0),
+    aiCategorizationError: varchar("ai_categorization_error", { length: 500 }),
     createdAt: timestamp("created_at")
       .notNull()
       .default(sql`now()`),
@@ -65,6 +83,7 @@ export const filters = pgTable(
     index("filters_updated_at_idx").on(t.updatedAt.desc(), t.id.asc()),
     index("filters_export_count_idx").on(t.exportCount.desc(), t.id.asc()),
     index("filters_search_idx").using("gin", t.searchVector),
+    index("filters_ai_status_idx").on(t.aiCategorizationStatus),
   ],
 );
 
@@ -81,6 +100,7 @@ export const filtersRelations = relations(filters, ({ many, one }) => ({
     fields: [filters.subCategoryId],
     references: [subCategories.id],
   }),
+  tagAssignments: many(filterTagAssignments),
 }));
 
 export const filterItems = pgTable(
@@ -357,3 +377,101 @@ export const subscriptions = pgTable(
 
 export type Subscription = typeof subscriptions.$inferSelect;
 export type NewSubscription = typeof subscriptions.$inferInsert;
+
+export const tagStatusEnum = pgEnum("tag_status_enum", ["active", "archived"]);
+
+export const tagProposalStatusEnum = pgEnum("tag_proposal_status_enum", [
+  "pending",
+  "approved",
+  "rejected",
+  "merged",
+]);
+
+export const filterTags = pgTable(
+  "filter_tags",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 64 }).notNull().unique(),
+    label: varchar("label", { length: 64 }).notNull(),
+    description: varchar("description", { length: 255 }),
+    status: tagStatusEnum("status").notNull().default("active"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [index("filter_tags_status_idx").on(t.status)],
+);
+
+export type FilterTag = typeof filterTags.$inferSelect;
+export type NewFilterTag = typeof filterTags.$inferInsert;
+
+export const filterTagAssignments = pgTable(
+  "filter_tag_assignments",
+  {
+    id: serial("id").primaryKey(),
+    filterId: integer("filter_id")
+      .notNull()
+      .references(() => filters.id, { onDelete: "cascade" }),
+    tagId: integer("tag_id")
+      .notNull()
+      .references(() => filterTags.id, { onDelete: "cascade" }),
+    rank: integer("rank").notNull(),
+    confidence: numeric("confidence", { precision: 3, scale: 2 }),
+    modelVersion: varchar("model_version", { length: 64 }).notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("filter_tag_unique").on(t.filterId, t.tagId),
+    index("filter_tag_filter_idx").on(t.filterId, t.rank),
+    index("filter_tag_tag_idx").on(t.tagId),
+  ],
+);
+
+export type FilterTagAssignment = typeof filterTagAssignments.$inferSelect;
+export type NewFilterTagAssignment = typeof filterTagAssignments.$inferInsert;
+
+export const filterTagAssignmentsRelations = relations(
+  filterTagAssignments,
+  ({ one }) => ({
+    filter: one(filters, {
+      fields: [filterTagAssignments.filterId],
+      references: [filters.id],
+    }),
+    tag: one(filterTags, {
+      fields: [filterTagAssignments.tagId],
+      references: [filterTags.id],
+    }),
+  }),
+);
+
+export const filterTagsRelations = relations(filterTags, ({ many }) => ({
+  assignments: many(filterTagAssignments),
+}));
+
+export const filterTagProposals = pgTable(
+  "filter_tag_proposals",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 64 }).notNull(),
+    label: varchar("label", { length: 64 }).notNull(),
+    rationale: varchar("rationale", { length: 500 }),
+    exampleFilterId: integer("example_filter_id").references(() => filters.id, {
+      onDelete: "set null",
+    }),
+    occurrenceCount: integer("occurrence_count").notNull().default(1),
+    status: tagProposalStatusEnum("status").notNull().default("pending"),
+    mergedIntoTagId: integer("merged_into_tag_id").references(
+      () => filterTags.id,
+      { onDelete: "set null" },
+    ),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    reviewedAt: timestamp("reviewed_at"),
+  },
+  (t) => [
+    index("filter_tag_proposal_slug_idx").on(t.slug),
+    index("filter_tag_proposal_status_idx").on(t.status),
+  ],
+);
+
+export type FilterTagProposal = typeof filterTagProposals.$inferSelect;
+export type NewFilterTagProposal = typeof filterTagProposals.$inferInsert;

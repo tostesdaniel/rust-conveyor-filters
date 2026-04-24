@@ -11,6 +11,7 @@ import {
   updateFilterInputSchema,
   validatePublicFilterLatinChars,
 } from "@/schemas/filterFormSchema";
+import { enqueueFilterIfChanged } from "@/services/ai-categorize";
 import { decodeCursor } from "@/utils/cursor";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
@@ -53,6 +54,7 @@ export const filterRouter = createTRPCRouter({
         search: z.string().optional(),
         categories: z.array(z.string()).optional(),
         items: z.array(z.string()).optional(),
+        tags: z.array(z.string()).optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -84,6 +86,7 @@ export const filterRouter = createTRPCRouter({
         search: z.string().optional(),
         categories: z.array(z.string()).optional(),
         items: z.array(z.string()).optional(),
+        tags: z.array(z.string()).optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -177,6 +180,17 @@ export const filterRouter = createTRPCRouter({
         );
 
         await db.insert(filterItems).values(filterItemsData);
+
+        if (insertedFilter.isPublic) {
+          try {
+            await enqueueFilterIfChanged({
+              filterId: insertedFilter.id,
+              onlyIfPublic: true,
+            });
+          } catch (err) {
+            console.error("Error enqueuing AI categorization:", err);
+          }
+        }
 
         return insertedFilter;
       } catch (error) {
@@ -314,6 +328,15 @@ export const filterRouter = createTRPCRouter({
           }));
 
           await db.insert(filterItems).values(addedItemsData);
+        }
+
+        try {
+          await enqueueFilterIfChanged({
+            filterId,
+            onlyIfPublic: true,
+          });
+        } catch (err) {
+          console.error("Error enqueuing AI categorization:", err);
         }
 
         return { success: true };

@@ -50,6 +50,15 @@ export interface SharedFilterDTO {
 }
 
 /**
+ * Single AI-assigned tag attached to a public filter.
+ */
+export interface FilterTagDTO {
+  slug: string;
+  label: string;
+  rank: number;
+}
+
+/**
  * Minimal filter for public list view
  * Extends base filter with author information
  */
@@ -64,4 +73,5 @@ export interface PublicFilterListDTO {
   filterItems: FilterItemDTO[];
   author: string | null;
   badges: BadgeType[];
+  tags: FilterTagDTO[];
 }

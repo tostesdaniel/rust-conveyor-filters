@@ -291,7 +291,7 @@ export async function processPendingBatch(options: {
 
   for (const id of ids) {
     try {
-      await categorizeAndStore({ filterId: id, allowProposals: false });
+      await categorizeAndStore({ filterId: id, allowProposals: true });
       succeeded += 1;
     } catch (err) {
       failed += 1;

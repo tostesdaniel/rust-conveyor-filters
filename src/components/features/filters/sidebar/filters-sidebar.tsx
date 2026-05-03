@@ -16,7 +16,7 @@ import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar
 export function FiltersSidebar() {
   return (
     <Sidebar
-      className='sticky top-0 hidden h-svh bg-transparent md:flex'
+      className='sticky top-(--new-feature-banner-height,0px) hidden h-[calc(100svh-var(--new-feature-banner-height,0px))] bg-transparent md:flex'
       collapsible='none'
     >
       <SidebarHeader>

@@ -73,5 +73,7 @@ export interface PublicFilterListDTO {
   filterItems: FilterItemDTO[];
   author: string | null;
   badges: BadgeType[];
+  /** Present when author has a Clerk username (profile URL) */
+  creatorUsername: string | null;
   tags: FilterTagDTO[];
 }

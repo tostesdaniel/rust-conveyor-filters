@@ -20,7 +20,6 @@ interface DonateUpgradeModalProps {
   onOpenChange: (open: boolean) => void;
   onShown: () => void;
   onDismiss: () => void;
-  onSuppressForever: () => void;
 }
 
 export function DonateUpgradeModal({
@@ -28,7 +27,6 @@ export function DonateUpgradeModal({
   onOpenChange,
   onShown,
   onDismiss,
-  onSuppressForever,
 }: DonateUpgradeModalProps) {
   useEffect(() => {
     if (open) onShown();
@@ -68,20 +66,13 @@ export function DonateUpgradeModal({
           >
             <Link href='/donate?plan=monthly'>Monthly ($3/mo)</Link>
           </Button>
-          <div className='flex items-center justify-between pt-1 text-sm'>
+          <div className='flex pt-1 text-sm'>
             <button
               type='button'
               onClick={onDismiss}
               className='text-muted-foreground hover:text-foreground'
             >
               Maybe later
-            </button>
-            <button
-              type='button'
-              onClick={onSuppressForever}
-              className='text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline'
-            >
-              Don&apos;t show this again
             </button>
           </div>
         </DialogFooter>

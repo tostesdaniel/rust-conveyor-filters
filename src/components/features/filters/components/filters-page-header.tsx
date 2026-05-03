@@ -1,8 +1,15 @@
 import Image from "next/image";
-import { ClerkLoaded, ClerkLoading, Show, SignInButton, UserButton } from "@clerk/nextjs";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  Show,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -11,9 +18,18 @@ import { ModeToggle } from "@/components/shared/mode-toggle";
 import { RepoStarsButton } from "@/components/shared/repo-stars-button";
 import { Typography } from "@/components/shared/typography";
 
-export function FiltersPageHeader() {
+export function FiltersPageHeader({
+  className,
+  ...props
+}: React.ComponentProps<"header">) {
   return (
-    <header className='flex h-16 shrink-0 items-center transition-[width,height] ease-linear'>
+    <header
+      className={cn(
+        "flex h-16 shrink-0 items-center transition-[width,height] ease-linear",
+        className,
+      )}
+      {...props}
+    >
       <div className='flex flex-1 items-center justify-between'>
         <div className='flex shrink-0 items-center gap-2'>
           <Image
@@ -50,7 +66,7 @@ export function FiltersPageHeader() {
               <Loader2Icon className='h-5 w-5 animate-spin text-muted-foreground' />
             </ClerkLoading>
             <ClerkLoaded>
-              <Show when="signed-out">
+              <Show when='signed-out'>
                 <Button
                   variant='default'
                   className='hidden min-[800px]:block'
@@ -62,7 +78,7 @@ export function FiltersPageHeader() {
                   />
                 </Button>
               </Show>
-              <Show when="signed-in">
+              <Show when='signed-in'>
                 <UserButton />
               </Show>
             </ClerkLoaded>

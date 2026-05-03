@@ -5,6 +5,8 @@
 @custom-variant dark (&:where(.dark *));
 
 :root {
+  --new-feature-banner-height: 0px;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
 

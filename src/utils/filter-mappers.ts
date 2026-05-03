@@ -126,5 +126,6 @@ export function toPublicFilterDTO(
     author: filter.author,
     badges: filter.badges,
     tags: [],
+    creatorUsername: filter.creatorUsername,
   };
 }

@@ -276,7 +276,7 @@ export interface GetPublicFiltersOptions {
 /**
  * Load tags for a set of filter ids, grouped by filterId. Keeps rank order.
  */
-async function loadTagsForFilters(filterIds: number[]) {
+export async function loadTagsForFilters(filterIds: number[]) {
   if (filterIds.length === 0)
     return new Map<
       number,

@@ -16,7 +16,6 @@ export function BannerWrapper() {
     dismissBanner,
     markModalShown,
     dismissModal,
-    suppressModalForever,
   } = useEngagementScore();
 
   // Latch the decision so a subsequent re-render (e.g. from SessionTick
@@ -43,10 +42,6 @@ export function BannerWrapper() {
         onShown={markModalShown}
         onDismiss={() => {
           dismissModal();
-          setActiveSurface("none");
-        }}
-        onSuppressForever={() => {
-          suppressModalForever();
           setActiveSurface("none");
         }}
       />

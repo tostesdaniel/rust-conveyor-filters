@@ -3,6 +3,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { billingRouter } from "./routers/billing";
 import { bookmarkRouter } from "./routers/bookmark";
 import { categoryRouter } from "./routers/category";
+import { creatorRouter } from "./routers/creator";
 import { feedbackRouter } from "./routers/feedback";
 import { filterRouter } from "./routers/filter";
 import { sharedFilterRouter } from "./routers/sharedFilter";
@@ -16,6 +17,7 @@ import { tagRouter } from "./routers/tag";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  creator: creatorRouter,
   filter: filterRouter,
   bookmark: bookmarkRouter,
   category: categoryRouter,

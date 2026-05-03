@@ -3,6 +3,33 @@ import { clerkClient, type User } from "@clerk/nextjs/server";
 import { BadgeType } from "@/types/badges";
 import type { ConveyorFilter, ConveyorFilterWithAuthor } from "@/types/filter";
 
+export function clerkUserToAuthorDisplay(user: User): string | null {
+  const discordAccount = user.externalAccounts?.find(
+    (account: { provider: string }) => account.provider === "oauth_discord",
+  );
+  if (discordAccount) {
+    return discordAccount.username ?? null;
+  }
+  return user.username ?? null;
+}
+
+export function clerkUserToBadges(user: User): BadgeType[] {
+  const badges: BadgeType[] = [];
+  const verifiedType = user.publicMetadata?.verifiedType as
+    | BadgeType
+    | undefined;
+  if (verifiedType) {
+    badges.push(verifiedType);
+  }
+  const meta = user.publicMetadata as UserPublicMetadata | undefined;
+  if (meta?.isSubscriber) {
+    badges.push(BadgeType.SUPPORTER);
+  } else if (meta?.isDonator || meta?.isLegacyDonator) {
+    badges.push(BadgeType.DONATOR);
+  }
+  return badges;
+}
+
 export async function enrichWithAuthor(
   filters: ConveyorFilter[],
 ): Promise<ConveyorFilterWithAuthor[]> {
@@ -30,36 +57,22 @@ export async function enrichWithAuthor(
             ...filter,
             author: null,
             badges: [],
+            creatorUsername: null,
           };
-        }
-
-        const discordAccount = user.externalAccounts?.find(
-          (account: { provider: string }) =>
-            account.provider === "oauth_discord",
-        );
-
-        const badges: BadgeType[] = [];
-        const verifiedType = user.publicMetadata?.verifiedType as BadgeType;
-        if (verifiedType) {
-          badges.push(verifiedType);
-        }
-        const meta = user.publicMetadata as UserPublicMetadata | undefined;
-        if (meta?.isSubscriber) {
-          badges.push(BadgeType.SUPPORTER);
-        } else if (meta?.isDonator || meta?.isLegacyDonator) {
-          badges.push(BadgeType.DONATOR);
         }
 
         return {
           ...filter,
-          author: discordAccount ? discordAccount.username : user.username,
-          badges,
+          author: clerkUserToAuthorDisplay(user),
+          badges: clerkUserToBadges(user),
+          creatorUsername: user.username ?? null,
         };
       } catch (error) {
         return {
           ...filter,
           author: null,
           badges: [],
+          creatorUsername: null,
         };
       }
     });
@@ -68,6 +81,7 @@ export async function enrichWithAuthor(
       ...filter,
       author: null,
       badges: [],
+      creatorUsername: null,
     }));
   }
 }

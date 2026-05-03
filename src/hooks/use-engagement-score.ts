@@ -23,7 +23,6 @@ interface EngagementState {
   bannerDismissedAt: number | null;
   lastModalShownAtScore: number | null;
   modalDismissedAt: number | null;
-  modalSuppressed: boolean;
 }
 
 const INITIAL_STATE: EngagementState = {
@@ -33,7 +32,6 @@ const INITIAL_STATE: EngagementState = {
   bannerDismissedAt: null,
   lastModalShownAtScore: null,
   modalDismissedAt: null,
-  modalSuppressed: false,
 };
 
 // Module-level guards so a surface that mounted in the current session does
@@ -138,23 +136,10 @@ export function useEngagementScore() {
     });
   }, [setState]);
 
-  const suppressModalForever = useCallback(() => {
-    modalShownThisSession = true;
-    setState((prev) => {
-      const current = prev ?? INITIAL_STATE;
-      return {
-        ...current,
-        modalSuppressed: true,
-        modalDismissedAt: Date.now(),
-      };
-    });
-  }, [setState]);
-
   const current = state ?? INITIAL_STATE;
 
   const modalDue =
     !modalShownThisSession &&
-    !current.modalSuppressed &&
     current.score >= nextModalThreshold(current) &&
     pastCooldown(current.modalDismissedAt);
 
@@ -174,6 +159,5 @@ export function useEngagementScore() {
     dismissBanner,
     markModalShown,
     dismissModal,
-    suppressModalForever,
   };
 }

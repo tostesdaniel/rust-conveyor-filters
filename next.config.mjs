@@ -8,6 +8,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.rustconveyorfilters.com" },
       { protocol: "https", hostname: "images.steamusercontent.com" },
+      { protocol: "https", hostname: "img.clerk.com" },
     ],
     minimumCacheTTL: 2678400, // 31 days
     qualities: [75, 90, 100],

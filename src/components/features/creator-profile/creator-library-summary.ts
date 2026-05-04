@@ -37,3 +37,35 @@ export function summarizeCreatorLibrary(
     categoryCountWithFilters: categoryBuckets.length,
   };
 }
+
+const nf = new Intl.NumberFormat("en-US");
+
+export function librarySynopsisLine(
+  publicFilterCount: number,
+  summary: CreatorLibrarySummary,
+): string | null {
+  if (publicFilterCount === 0) {
+    return null;
+  }
+
+  const { uncategorizedCount, categoryCountWithFilters } = summary;
+
+  const allUncategorized =
+    categoryCountWithFilters === 0 && uncategorizedCount > 0;
+
+  const allCategorized =
+    uncategorizedCount === 0 && categoryCountWithFilters > 0;
+
+  if (allUncategorized) {
+    return "Everything lives in the uncategorized lane for now.";
+  }
+
+  if (allCategorized) {
+    const n = categoryCountWithFilters;
+    return n === 1
+      ? "Organized under a single public category."
+      : `Spans ${nf.format(n)} public categories.`;
+  }
+
+  return `${nf.format(categoryCountWithFilters)} categories and ${nf.format(uncategorizedCount)} uncategorized.`;
+}

@@ -4,8 +4,8 @@ import type { CreatorPublicHierarchy } from "@/data/creator-public";
 import type { BadgeType } from "@/types/badges";
 import { cn } from "@/lib/utils";
 import {
+  librarySynopsisLine,
   summarizeCreatorLibrary,
-  type CreatorLibrarySummary,
 } from "@/components/features/creator-profile/creator-library-summary";
 import { Typography } from "@/components/shared/typography";
 import { UserBadge } from "@/components/shared/user-badge";
@@ -33,36 +33,6 @@ export const LANDING_GLOW_SHADOW =
   "shadow-[0_20px_48px_-28px_rgba(67,97,238,0.1)]";
 export const LANDING_GLOW_SHADOW_DARK =
   "dark:shadow-[0_24px_56px_-28px_rgba(76,201,240,0.08)]";
-
-function librarySynopsisLine(
-  publicFilterCount: number,
-  summary: CreatorLibrarySummary,
-): string | null {
-  if (publicFilterCount === 0) {
-    return null;
-  }
-
-  const { uncategorizedCount, categoryCountWithFilters } = summary;
-
-  const allUncategorized =
-    categoryCountWithFilters === 0 && uncategorizedCount > 0;
-
-  const allCategorized =
-    uncategorizedCount === 0 && categoryCountWithFilters > 0;
-
-  if (allUncategorized) {
-    return "Everything lives in the uncategorized lane for now.";
-  }
-
-  if (allCategorized) {
-    const n = categoryCountWithFilters;
-    return n === 1
-      ? "Organized under a single public category."
-      : `Spans ${nf.format(n)} public categories.`;
-  }
-
-  return `${nf.format(categoryCountWithFilters)} categories and ${nf.format(uncategorizedCount)} uncategorized.`;
-}
 
 type MetricTileProps = {
   label: string;

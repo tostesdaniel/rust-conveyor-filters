@@ -1,4 +1,3 @@
-import { useId } from "react";
 import Link from "next/link";
 import { Show, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
@@ -8,8 +7,6 @@ import { DonateCTA } from "@/components/features/donation/donate-cta";
 import { Typography } from "@/components/shared/typography";
 
 export function HeroContent() {
-  const pillArrowGradientId = useId();
-
   return (
     <div className='mx-auto max-w-2xl shrink-0 lg:mx-0 lg:max-w-xl'>
       <div className='mt-8 sm:mt-12 lg:mt-16'>
@@ -41,7 +38,7 @@ export function HeroContent() {
               >
                 <defs>
                   <linearGradient
-                    id={pillArrowGradientId}
+                    id='heroPillTryItArrowGradient'
                     x1='0'
                     y1='0'
                     x2='24'
@@ -54,14 +51,14 @@ export function HeroContent() {
                 </defs>
                 <path
                   d='M5 12h14'
-                  stroke={`url(#${pillArrowGradientId})`}
+                  stroke='url(#heroPillTryItArrowGradient)'
                   strokeWidth='2'
                   strokeLinecap='round'
                   strokeLinejoin='round'
                 />
                 <path
                   d='m12 5 7 7-7 7'
-                  stroke={`url(#${pillArrowGradientId})`}
+                  stroke='url(#heroPillTryItArrowGradient)'
                   strokeWidth='2'
                   strokeLinecap='round'
                   strokeLinejoin='round'

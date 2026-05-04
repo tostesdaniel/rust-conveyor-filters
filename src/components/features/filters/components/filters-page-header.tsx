@@ -1,11 +1,5 @@
 import Image from "next/image";
-import {
-  ClerkLoaded,
-  ClerkLoading,
-  Show,
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, Show, SignInButton } from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
@@ -13,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { UserMenu } from "@/components/layout/user-menu";
 import { Icons } from "@/components/shared/icons";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { RepoStarsButton } from "@/components/shared/repo-stars-button";
@@ -79,7 +74,7 @@ export function FiltersPageHeader({
                 </Button>
               </Show>
               <Show when='signed-in'>
-                <UserButton />
+                <UserMenu />
               </Show>
             </ClerkLoaded>
           </div>

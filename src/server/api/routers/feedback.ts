@@ -1,4 +1,5 @@
 import { db } from "@/db";
+import { notifyFeedbackSubmission } from "@/services/discord-bot";
 import { z } from "zod";
 
 import { feedback } from "@/db/schema";
@@ -16,6 +17,11 @@ export const feedbackRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       await db.insert(feedback).values({
+        ...input,
+        authorId: ctx.userId,
+      });
+
+      void notifyFeedbackSubmission({
         ...input,
         authorId: ctx.userId,
       });

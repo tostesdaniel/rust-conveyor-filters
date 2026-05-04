@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { api, HydrateClient } from "@/trpc/server";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { FilterSortTabs } from "@/components/features/filters/components/filter-sort-tabs";
 import { FiltersPageHeader } from "@/components/features/filters/components/filters-page-header";
 import { FiltersSidebar } from "@/components/features/filters/sidebar/filters-sidebar";
 import { NewFeatureBanner } from "@/components/layout/new-feature-banner";
@@ -26,7 +28,12 @@ export default async function FiltersLayout({
           <SidebarProvider className='max-w-[1400px] flex-1 px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
             <FiltersSidebar />
             <SidebarInset>
-              <FiltersPageHeader />
+              <div className='sticky top-(--new-feature-banner-height,0px) z-10 shrink-0 bg-background'>
+                <FiltersPageHeader />
+                <Suspense>
+                  <FilterSortTabs />
+                </Suspense>
+              </div>
               {children}
             </SidebarInset>
           </SidebarProvider>

@@ -6,7 +6,6 @@ import { useInView } from "react-intersection-observer";
 
 import { useFilters } from "@/hooks/use-filters";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { FilterSortTabs } from "@/components/features/filters/components/filter-sort-tabs";
 import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
 import { FilterCardSkeleton } from "@/components/features/filters/filter-card/filter-card-skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -67,14 +66,11 @@ export function FilterGrid() {
   const hasFilters = allFilters.length > 0;
 
   return (
-    <div className='-mt-0.5'>
-      <React.Suspense>
-        <FilterSortTabs />
-      </React.Suspense>
+    <>
       {isLoading ? (
         <FiltersLoading />
       ) : hasFilters ? (
-        <div className='grid grid-cols-1 gap-4 py-6 lg:grid-cols-2 lg:pb-16'>
+        <div className='grid grid-cols-1 gap-4 pb-6 lg:grid-cols-2 lg:pb-16'>
           {allFilters.map((filter) => (
             <div
               key={filter.id}
@@ -103,6 +99,6 @@ export function FilterGrid() {
           />
         </div>
       )}
-    </div>
+    </>
   );
 }

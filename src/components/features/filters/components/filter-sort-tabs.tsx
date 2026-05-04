@@ -22,7 +22,11 @@ export function FilterSortTabs() {
   };
 
   return (
-    <Tabs value={searchParams.sort} onValueChange={handleTabChange}>
+    <Tabs
+      value={searchParams.sort}
+      onValueChange={handleTabChange}
+      className='-mt-0.5 pb-5'
+    >
       <TabsList>
         {filterSortOptions.map((option) => (
           <TabsTrigger

@@ -31,6 +31,7 @@
     "db:studio": "drizzle-kit studio",
     "update-items": "bun run ./src/scripts/monthly-update/update-items.ts",
     "upload-images": "bun run ./src/scripts/monthly-update/optimize-and-upload-images.ts",
+    "generate-items-sql": "bun run ./src/scripts/monthly-update/generate-items-sql.ts",
     "tags:seed": "bun run ./src/scripts/ai-tags/seed-taxonomy.ts",
     "tags:bootstrap": "bun run ./src/scripts/ai-tags/bootstrap-from-popular.ts",
     "tags:review": "bun run ./src/scripts/ai-tags/review-proposals.ts",

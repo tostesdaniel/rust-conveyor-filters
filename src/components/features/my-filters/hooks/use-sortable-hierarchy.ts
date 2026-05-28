@@ -17,6 +17,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { toast } from "sonner";
+import { useUpdatePreferences } from "@/components/features/my-filters/hooks/use-update-preferences";
 
 type Hierarchy = RouterOutputs["category"]["getHierarchy"];
 type CategoryNode = Hierarchy[number];
@@ -145,26 +146,7 @@ export function useSortableHierarchy() {
       },
     });
 
-  const updatePreferences = api.userPreferences.update.useMutation({
-    onMutate: async ({ uncategorizedPosition }) => {
-      await utils.userPreferences.get.cancel();
-      const previous = utils.userPreferences.get.getData();
-      utils.userPreferences.get.setData(undefined, (old) => ({
-        userId: old?.userId ?? "",
-        uncategorizedPosition,
-      }));
-      return { previous };
-    },
-    onError: (err, _, context) => {
-      if (context?.previous) {
-        utils.userPreferences.get.setData(undefined, context.previous);
-      }
-      toast.error(err.message || "Failed to update preference");
-    },
-    onSettled: () => {
-      utils.userPreferences.get.invalidate();
-    },
-  });
+  const updatePreferences = useUpdatePreferences();
 
   const findFilterById = (id: number) => {
     for (const f of localUncategorized) {

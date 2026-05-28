@@ -62,16 +62,14 @@ function parseBucketId(id: string): BucketLocation | null {
     return { categoryId: null, subCategoryId: null };
   }
   if (id.startsWith("bucket-cat-")) {
-    return {
-      categoryId: Number(id.slice("bucket-cat-".length)),
-      subCategoryId: null,
-    };
+    const categoryId = Number(id.slice("bucket-cat-".length));
+    if (!Number.isFinite(categoryId)) return null;
+    return { categoryId, subCategoryId: null };
   }
   if (id.startsWith("bucket-subcat-")) {
-    return {
-      categoryId: null,
-      subCategoryId: Number(id.slice("bucket-subcat-".length)),
-    };
+    const subCategoryId = Number(id.slice("bucket-subcat-".length));
+    if (!Number.isFinite(subCategoryId)) return null;
+    return { categoryId: null, subCategoryId };
   }
   return null;
 }

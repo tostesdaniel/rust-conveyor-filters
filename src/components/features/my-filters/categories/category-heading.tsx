@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { GripVertical, PlusIcon } from "lucide-react";
 
 import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 import { useFilterSort } from "@/hooks/use-filter-sort";
@@ -18,6 +18,8 @@ interface CategoryHeadingProps {
   isSubCategory?: boolean;
   canCreateSubcategory?: boolean;
   filters: (OwnerFilterDTO | SharedFilterDTO)[];
+  dragHandleRef?: (node: HTMLElement | null) => void;
+  dragHandleProps?: React.HTMLAttributes<HTMLElement>;
 }
 
 export function CategoryHeading({
@@ -27,6 +29,8 @@ export function CategoryHeading({
   isSubCategory = false,
   canCreateSubcategory = false,
   filters,
+  dragHandleRef,
+  dragHandleProps,
 }: CategoryHeadingProps) {
   const { sortType, setSortType } = useFilterSort({
     filters,
@@ -40,7 +44,20 @@ export function CategoryHeading({
 
   return (
     <div className='border-b border-border pb-5 sm:flex sm:items-center sm:justify-between'>
-      <h2 className='text-base leading-6 font-semibold'>{title}</h2>
+      <div className='flex items-center gap-1.5'>
+        {dragHandleRef && (
+          <button
+            type='button'
+            ref={dragHandleRef}
+            {...dragHandleProps}
+            className='cursor-grab rounded p-1 text-muted-foreground hover:text-foreground active:cursor-grabbing'
+            aria-label={`Drag ${title}`}
+          >
+            <GripVertical className='h-4 w-4' aria-hidden='true' />
+          </button>
+        )}
+        <h2 className='text-base leading-6 font-semibold'>{title}</h2>
+      </div>
       {withAction && (
         <div className='mt-3 flex items-center gap-x-2 sm:mt-0 sm:ml-4'>
           <CreateCategoryDialog parentId={null}>

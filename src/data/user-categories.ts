@@ -76,6 +76,7 @@ export async function findSubCategoryById(
 export async function getUserCategoryHierarchy(userId: string) {
   const result = await db.query.userCategories.findMany({
     where: eq(userCategories.userId, userId),
+    orderBy: userCategories.order,
     with: {
       filters: {
         where: isNull(filters.subCategoryId),
@@ -87,6 +88,7 @@ export async function getUserCategoryHierarchy(userId: string) {
         orderBy: filters.order,
       },
       subCategories: {
+        orderBy: subCategories.order,
         with: {
           filters: {
             with: {

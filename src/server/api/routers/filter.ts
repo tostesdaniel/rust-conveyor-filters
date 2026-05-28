@@ -451,6 +451,123 @@ export const filterRouter = createTRPCRouter({
       }
     }),
 
+  moveToPosition: protectedProcedure
+    .input(
+      z.object({
+        filterId: z.number(),
+        destCategoryId: z.number().nullable(),
+        destSubCategoryId: z.number().nullable(),
+        destIndex: z.number().min(0),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { filterId, destCategoryId, destSubCategoryId, destIndex } = input;
+
+      try {
+        await db.transaction(async (tx) => {
+          const existingFilter = await tx.query.filters.findFirst({
+            where: and(
+              eq(filters.id, filterId),
+              eq(filters.authorId, ctx.userId),
+            ),
+          });
+
+          if (!existingFilter) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Filter not found",
+            });
+          }
+
+          const sameBucket =
+            existingFilter.categoryId === destCategoryId &&
+            existingFilter.subCategoryId === destSubCategoryId;
+
+          const destSiblings = await tx.query.filters.findMany({
+            where: and(
+              eq(filters.authorId, ctx.userId),
+              destCategoryId
+                ? eq(filters.categoryId, destCategoryId)
+                : isNull(filters.categoryId),
+              destSubCategoryId
+                ? eq(filters.subCategoryId, destSubCategoryId)
+                : isNull(filters.subCategoryId),
+            ),
+            columns: { id: true },
+            orderBy: filters.order,
+          });
+
+          const destIds = destSiblings
+            .map((f) => f.id)
+            .filter((id) => id !== filterId);
+
+          const clampedIndex = Math.min(destIndex, destIds.length);
+          destIds.splice(clampedIndex, 0, filterId);
+
+          await tx
+            .update(filters)
+            .set({
+              categoryId: destCategoryId,
+              subCategoryId: destSubCategoryId,
+              order: clampedIndex,
+              updatedAt: sql`now()`,
+            })
+            .where(
+              and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),
+            );
+
+          await Promise.all(
+            destIds.map((id, index) =>
+              tx
+                .update(filters)
+                .set({ order: index })
+                .where(
+                  and(eq(filters.id, id), eq(filters.authorId, ctx.userId)),
+                ),
+            ),
+          );
+
+          if (!sameBucket) {
+            const sourceSiblings = await tx.query.filters.findMany({
+              where: and(
+                eq(filters.authorId, ctx.userId),
+                existingFilter.categoryId
+                  ? eq(filters.categoryId, existingFilter.categoryId)
+                  : isNull(filters.categoryId),
+                existingFilter.subCategoryId
+                  ? eq(filters.subCategoryId, existingFilter.subCategoryId)
+                  : isNull(filters.subCategoryId),
+              ),
+              columns: { id: true },
+              orderBy: filters.order,
+            });
+
+            await Promise.all(
+              sourceSiblings.map(({ id }, index) =>
+                tx
+                  .update(filters)
+                  .set({ order: index })
+                  .where(
+                    and(eq(filters.id, id), eq(filters.authorId, ctx.userId)),
+                  ),
+              ),
+            );
+          }
+        });
+
+        return { success: true };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        console.error("Error moving filter:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to move filter",
+        });
+      }
+    }),
+
   logEvent: publicProcedure
     .input(
       z.object({

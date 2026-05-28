@@ -29,7 +29,7 @@ import { TRPCError } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { filters } from "@/db/schema";
+import { filters, subCategories, userCategories } from "@/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -193,6 +193,86 @@ export const categoryRouter = createTRPCRouter({
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to delete category",
+        });
+      }
+    }),
+
+  updateOrder: protectedProcedure
+    .input(
+      z.object({
+        categories: z.array(
+          z.object({
+            id: z.number(),
+            order: z.number(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await db.transaction(async (tx) => {
+          await Promise.all(
+            input.categories.map(({ id, order }) =>
+              tx
+                .update(userCategories)
+                .set({ order })
+                .where(
+                  and(
+                    eq(userCategories.id, id),
+                    eq(userCategories.userId, ctx.userId),
+                  ),
+                ),
+            ),
+          );
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating category order:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update category order",
+        });
+      }
+    }),
+
+  updateSubCategoryOrder: protectedProcedure
+    .input(
+      z.object({
+        parentId: z.number(),
+        subCategories: z.array(
+          z.object({
+            id: z.number(),
+            order: z.number(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await db.transaction(async (tx) => {
+          await Promise.all(
+            input.subCategories.map(({ id, order }) =>
+              tx
+                .update(subCategories)
+                .set({ order })
+                .where(
+                  and(
+                    eq(subCategories.id, id),
+                    eq(subCategories.userId, ctx.userId),
+                    eq(subCategories.parentId, input.parentId),
+                  ),
+                ),
+            ),
+          );
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subcategory order:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update subcategory order",
         });
       }
     }),

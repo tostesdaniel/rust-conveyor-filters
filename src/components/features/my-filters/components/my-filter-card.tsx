@@ -5,10 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   CornerDownRight,
   Edit,
   EllipsisVertical,
+  GripVertical,
   ListPlusIcon,
   Trash,
   Trash2,
@@ -40,6 +43,7 @@ import { ExportConveyorFilter } from "@/components/features/conveyor/export-conv
 import ViewFilter from "@/components/features/filters/components/view-filter";
 import { CategoryDropdownCheckbox } from "@/components/features/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/features/my-filters/categories/clear-filter-category";
+import { filterDraggableId } from "@/components/features/my-filters/hooks/use-sortable-hierarchy";
 import { DeleteSharedFilterDialog } from "@/components/features/my-filters/shared-filters/delete-shared-filter-dialog";
 import { PrivateShareDropdownItem } from "@/components/features/my-filters/shared-filters/private-share-dropdown-item";
 import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
@@ -66,9 +70,55 @@ export function MyFilterCard({
   const [isRemoveSharedFilterDialogOpen, setIsRemoveSharedFilterDialogOpen] =
     useState(false);
   const { data: categories } = useGetUserCategories();
+  const isOwner = isOwnerFilterDTO(filter);
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: filterDraggableId(filter.id),
+    data: {
+      type: "filter",
+      categoryId: filter.categoryId,
+      subCategoryId: filter.subCategoryId,
+    },
+    disabled: !isOwner,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : undefined,
+  };
 
   return (
-    <li className='col-span-1 flex min-w-[300px] overflow-hidden rounded-md shadow-xs'>
+    <li
+      ref={setNodeRef}
+      style={style}
+      className='relative col-span-1 flex min-w-[300px] overflow-visible rounded-md shadow-xs'
+    >
+      {isOwner && (
+        <button
+          type='button'
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+          className='group absolute top-1/2 left-px z-10 flex h-10 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center focus-visible:outline-none active:cursor-grabbing'
+          aria-label='Drag filter'
+        >
+          <div className='flex h-9 w-1 items-center justify-center rounded-full bg-foreground/70 ring-1 ring-card backdrop-blur-sm transition-all duration-150 group-hover:h-10 group-hover:w-5 group-hover:rounded-md group-hover:bg-foreground group-hover:backdrop-blur-none group-focus-visible:h-10 group-focus-visible:w-5 group-focus-visible:rounded-md group-focus-visible:bg-foreground group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2'>
+            <GripVertical
+              className='h-4 w-4 text-card opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100'
+              aria-hidden='true'
+            />
+          </div>
+        </button>
+      )}
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5 text-sm font-medium text-card-foreground'>
         <Image
           src={getR2ImageUrl(filter.imagePath + ".webp", "medium")}

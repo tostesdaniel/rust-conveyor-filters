@@ -217,6 +217,7 @@ export const userCategories = pgTable("user_categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   userId: varchar("user_id", { length: 255 }).notNull(),
+  order: integer("order").notNull().default(0),
 });
 
 export const subCategories = pgTable("user_sub_categories", {
@@ -226,7 +227,23 @@ export const subCategories = pgTable("user_sub_categories", {
   parentId: integer("parent_id")
     .notNull()
     .references(() => userCategories.id, { onDelete: "cascade" }),
+  order: integer("order").notNull().default(0),
 });
+
+export const uncategorizedPositionEnum = pgEnum("uncategorized_position_enum", [
+  "top",
+  "bottom",
+]);
+
+export const userPreferences = pgTable("user_preferences", {
+  userId: varchar("user_id", { length: 255 }).primaryKey(),
+  uncategorizedPosition: uncategorizedPositionEnum("uncategorized_position")
+    .notNull()
+    .default("top"),
+});
+
+export type UserPreferences = typeof userPreferences.$inferSelect;
+export type NewUserPreferences = typeof userPreferences.$inferInsert;
 
 export type UserCategory = typeof userCategories.$inferSelect;
 export type NewUserCategory = typeof userCategories.$inferInsert;

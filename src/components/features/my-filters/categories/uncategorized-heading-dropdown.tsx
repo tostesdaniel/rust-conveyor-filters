@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { EllipsisIcon, Share } from "lucide-react";
+import { api } from "@/trpc/react";
+import { ArrowDownToLine, ArrowUpToLine, EllipsisIcon, Share } from "lucide-react";
 
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
 import { Button } from "@/components/ui/button";
@@ -9,9 +10,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
+import { useUpdatePreferences } from "@/components/features/my-filters/hooks/use-update-preferences";
 
 interface UncategorizedHeadingDropdownProps {
   categoryId: number | null;
@@ -25,6 +28,12 @@ export function UncategorizedHeadingDropdown({
 
   const hasFilters = uncategorizedFilters.length > 0;
 
+  const preferencesQuery = api.userPreferences.get.useQuery();
+  const updatePreferences = useUpdatePreferences();
+
+  const currentPosition = preferencesQuery.data?.uncategorizedPosition ?? "top";
+  const togglePosition = currentPosition === "top" ? "bottom" : "top";
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -34,6 +43,21 @@ export function UncategorizedHeadingDropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          <DropdownMenuItem
+            onClick={() =>
+              updatePreferences.mutate({
+                uncategorizedPosition: togglePosition,
+              })
+            }
+          >
+            {togglePosition === "top" ? (
+              <ArrowUpToLine />
+            ) : (
+              <ArrowDownToLine />
+            )}
+            Pin to {togglePosition}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setIsShareDialogOpen(true)}
             disabled={!hasFilters}

@@ -50,6 +50,44 @@ interface ViewFilterProps {
   variant?: "button" | "dropdown" | "icon";
 }
 
+function TriggerButton({
+  variant,
+  ...props
+}: {
+  variant: ViewFilterProps["variant"];
+}) {
+  return variant === "button" ? (
+    <ButtonWithIcon
+      type='button'
+      variant='secondary'
+      icon={EyeIcon}
+      className='flex-1 sm:flex-none lg:flex-1 xl:flex-none'
+      {...props}
+    >
+      Visualize
+    </ButtonWithIcon>
+  ) : variant === "dropdown" ? (
+    <DropdownMenuItem
+      onSelect={(e) => {
+        e.preventDefault();
+      }}
+      {...props}
+    >
+      <EyeIcon />
+      Visualize
+    </DropdownMenuItem>
+  ) : (
+    <Button
+      variant='ghost'
+      size='icon'
+      className='h-4 w-4 hover:bg-transparent hover:text-muted-foreground'
+      {...props}
+    >
+      <EyeIcon className='h-4 w-4' />
+    </Button>
+  );
+}
+
 export default function ViewFilter({
   filter,
   log = false,
@@ -69,44 +107,11 @@ export default function ViewFilter({
     setOpen(newOpen);
   };
 
-  const TriggerButton = ({ ...props }) => {
-    return variant === "button" ? (
-      <ButtonWithIcon
-        type='button'
-        variant='secondary'
-        icon={EyeIcon}
-        className='flex-1 sm:flex-none lg:flex-1 xl:flex-none'
-        {...props}
-      >
-        Visualize
-      </ButtonWithIcon>
-    ) : variant === "dropdown" ? (
-      <DropdownMenuItem
-        onSelect={(e) => {
-          e.preventDefault();
-        }}
-        {...props}
-      >
-        <EyeIcon />
-        Visualize
-      </DropdownMenuItem>
-    ) : (
-      <Button
-        variant='ghost'
-        size='icon'
-        className='h-4 w-4 hover:bg-transparent hover:text-muted-foreground'
-        {...props}
-      >
-        <EyeIcon className='h-4 w-4' />
-      </Button>
-    );
-  };
-
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <TriggerButton />
+          <TriggerButton variant={variant} />
         </DialogTrigger>
         <DialogContent className='sm:max-w-2xl'>
           <DialogHeader>
@@ -133,7 +138,7 @@ export default function ViewFilter({
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
-        <TriggerButton />
+        <TriggerButton variant={variant} />
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='text-left'>

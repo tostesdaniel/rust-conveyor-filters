@@ -1,5 +1,6 @@
 "use client";
 
+import { useId, useState } from "react";
 import type { createFilterSchema } from "@/schemas/filterFormSchema";
 import {
   CheckIcon,
@@ -37,6 +38,8 @@ export interface FilterCategoryComboboxProps {
 
 export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
   const { data: categories } = useGetUserCategories();
+  const [open, setOpen] = useState(false);
+  const listboxId = useId();
 
   const getSelectedName = () => {
     if (!field.value) return "Select a category";
@@ -53,12 +56,14 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
   };
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <FormControl>
           <Button
             variant='outline'
             role='combobox'
+            aria-expanded={open}
+            aria-controls={listboxId}
             className={cn(
               "w-[200px] justify-between",
               !field.value && "text-muted-foreground",
@@ -69,7 +74,7 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className='w-[200px] p-0'>
+      <PopoverContent id={listboxId} className='w-[200px] p-0'>
         <Command>
           <CommandInput placeholder='Search category...' />
           <CommandList>

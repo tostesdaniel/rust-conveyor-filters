@@ -39,6 +39,7 @@ interface FilterImageComboboxProps {
 const FilterImageCombobox = React.memo(
   ({ field, items }: FilterImageComboboxProps) => {
     const [open, setOpen] = React.useState(false);
+    const listboxId = React.useId();
     const isDesktop = useMediaQuery("(min-width: 768px)");
     const [selectedImage, setSelectedImage] = React.useState<SelectedImage>(
       field.value,
@@ -68,6 +69,7 @@ const FilterImageCombobox = React.memo(
                   variant='outline'
                   role='combobox'
                   aria-expanded={open}
+                  aria-controls={listboxId}
                   className={cn(
                     "w-[300px] justify-between",
                     !field.value && "text-muted-foreground",
@@ -80,7 +82,7 @@ const FilterImageCombobox = React.memo(
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className='w-fit p-0' align='start'>
+            <PopoverContent id={listboxId} className='w-fit p-0' align='start'>
               <ItemList
                 items={items}
                 setOpen={setOpen}
@@ -102,6 +104,7 @@ const FilterImageCombobox = React.memo(
               variant='outline'
               role='combobox'
               aria-expanded={open}
+              aria-controls={listboxId}
               className={cn(
                 "w-[300px] justify-between",
                 !field.value && "text-muted-foreground",
@@ -114,7 +117,7 @@ const FilterImageCombobox = React.memo(
             </Button>
           </DrawerTrigger>
         </div>
-        <DrawerContent>
+        <DrawerContent id={listboxId}>
           <div className='mt-4 border-t'>
             <ItemList
               items={items}

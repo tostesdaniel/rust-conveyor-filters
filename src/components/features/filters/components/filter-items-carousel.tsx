@@ -51,10 +51,16 @@ export function FilterItemsCarousel({
 
     setCurrentPage(api.selectedScrollSnap() + 1);
 
-    api.on("select", () => {
+    const onSelect = () => {
       setCurrentPage(api.selectedScrollSnap() + 1);
       autoplay.current.play();
-    });
+    };
+
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
   }, [api]);
 
   React.useEffect(() => {

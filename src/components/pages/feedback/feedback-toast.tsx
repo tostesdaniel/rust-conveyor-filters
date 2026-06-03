@@ -1,6 +1,5 @@
 "use client";
 
-import { setTimeout } from "timers";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -16,19 +15,23 @@ export function SignInToast() {
       return isLoaded && !isSignedIn && !hasShownToast.current;
     };
 
-    if (shouldShowToast()) {
-      hasShownToast.current = true;
-      setTimeout(() => {
-        toast.warning("Hey there! 👋 You're not signed in.", {
-          description: "Please sign in to share your feedback.",
-          action: {
-            label: "Sign in",
-            onClick: () => router.push("/auth/sign-in"),
-          },
-          position: "top-center",
-        });
-      });
+    if (!shouldShowToast()) {
+      return;
     }
+
+    hasShownToast.current = true;
+    const timeoutId = setTimeout(() => {
+      toast.warning("Hey there! 👋 You're not signed in.", {
+        description: "Please sign in to share your feedback.",
+        action: {
+          label: "Sign in",
+          onClick: () => router.push("/auth/sign-in"),
+        },
+        position: "top-center",
+      });
+    });
+
+    return () => clearTimeout(timeoutId);
   }, [isLoaded, isSignedIn, router]);
 
   return null;

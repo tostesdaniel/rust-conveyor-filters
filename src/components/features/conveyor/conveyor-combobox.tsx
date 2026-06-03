@@ -40,6 +40,7 @@ interface ConveyorComboboxProps {
 
 export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
   const [open, setOpen] = React.useState(false);
+  const listboxId = React.useId();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const TriggerButton = React.useMemo(
@@ -48,6 +49,7 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
         variant='outline'
         role='combobox'
         aria-expanded={open}
+        aria-controls={listboxId}
         className='w-full justify-between text-muted-foreground sm:w-[300px]'
       >
         <div className='mr-2 flex items-center gap-x-2'>
@@ -57,7 +59,7 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
         <ChevronsUpDown className='opacity-50' />
       </Button>
     ),
-    [open],
+    [open, listboxId],
   );
 
   if (isDesktop) {
@@ -65,7 +67,7 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
       <div className='flex items-center gap-x-3'>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
-          <PopoverContent className='w-fit p-0' align='start'>
+          <PopoverContent id={listboxId} className='w-fit p-0' align='start'>
             <ItemList onInsertItem={onInsertItem} />
           </PopoverContent>
         </Popover>
@@ -76,7 +78,7 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{TriggerButton}</DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent id={listboxId}>
         <div className='mt-4 border-t'>
           <ItemList onInsertItem={onInsertItem} />
         </div>

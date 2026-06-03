@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { CheckIcon, ChevronsUpDownIcon, XIcon } from "lucide-react";
@@ -34,6 +34,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function TagSelection() {
   const [{ tags }, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
+  const listboxId = useId();
   const { data: available, isLoading } = api.tag.listActive.useQuery(
     undefined,
     {
@@ -124,6 +125,7 @@ export function TagSelection() {
                       size='sm'
                       role='combobox'
                       aria-expanded={open}
+                      aria-controls={listboxId}
                       className='w-full justify-between gap-2 pr-1.5 pl-3 font-normal'
                     >
                       <span>Tags</span>
@@ -148,6 +150,7 @@ export function TagSelection() {
                   </PopoverTrigger>
                 </div>
                 <PopoverContent
+                  id={listboxId}
                   className='w-(--radix-popover-trigger-width) p-0'
                   align='start'
                   side='bottom'

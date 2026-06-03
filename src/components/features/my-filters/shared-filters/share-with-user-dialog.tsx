@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import {
@@ -82,6 +82,7 @@ export function ShareWithUserDialog({
   setIsDialogOpen,
 }: ShareWithUserDialogProps) {
   const [openCombobox, setOpenCombobox] = useState(false);
+  const tokenListboxId = useId();
   const [recentTokens, setRecentTokens] = useLocalStorage<RecentToken[]>(
     "recent-share-tokens",
     [],
@@ -254,6 +255,7 @@ export function ShareWithUserDialog({
                           variant='outline'
                           role='combobox'
                           aria-expanded={openCombobox}
+                          aria-controls={tokenListboxId}
                           className={cn(
                             "w-[425px] justify-between",
                             !field.value && "text-muted-foreground",
@@ -273,7 +275,7 @@ export function ShareWithUserDialog({
                       </FormControl>
                     </PopoverTrigger>
 
-                    <PopoverContent className='w-[425px] p-0'>
+                    <PopoverContent id={tokenListboxId} className='w-[425px] p-0'>
                       <Command>
                         <CommandInput
                           placeholder='Enter token...'

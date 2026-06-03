@@ -127,7 +127,7 @@ export function formatFilterForPrompt(input: {
     min: number;
   }>;
 }): string {
-  const sortedItems = [...input.items].sort((a, b) =>
+  const sortedItems = input.items.toSorted((a, b) =>
     a.shortname.localeCompare(b.shortname),
   );
   const itemLines = sortedItems.map((it) => {

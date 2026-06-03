@@ -63,7 +63,7 @@ export function sortFiltersByPreference(
   filters: (OwnerFilterDTO | SharedFilterDTO)[],
   sortType: FilterSortTypeValue,
 ): (OwnerFilterDTO | SharedFilterDTO)[] {
-  return [...filters].sort((a, b) => {
+  return filters.toSorted((a, b) => {
     switch (sortType) {
       case "nameAsc":
         return a.name.localeCompare(b.name);

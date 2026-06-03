@@ -277,44 +277,46 @@ export const filterRouter = createTRPCRouter({
             };
           });
 
-          for (const item of filterItemsData) {
-            const isCategory = item.categoryId !== null;
-            await db
-              .update(filterItems)
-              .set(item)
-              .where(
-                and(
-                  eq(filterItems.filterId, item.filterId),
-                  isCategory
-                    ? eq(filterItems.categoryId, item.categoryId!)
-                    : eq(filterItems.itemId, item.itemId!),
-                ),
-              );
-          }
+          await Promise.all(
+            filterItemsData.map((item) => {
+              const isCategory = item.categoryId !== null;
+              return db
+                .update(filterItems)
+                .set(item)
+                .where(
+                  and(
+                    eq(filterItems.filterId, item.filterId),
+                    isCategory
+                      ? eq(filterItems.categoryId, item.categoryId!)
+                      : eq(filterItems.itemId, item.itemId!),
+                  ),
+                );
+            }),
+          );
         }
 
         if (removedItems && removedItems.length > 0) {
-          for (const item of removedItems) {
-            if ("itemId" in item) {
-              await db
-                .delete(filterItems)
-                .where(
-                  and(
-                    eq(filterItems.filterId, filterId),
-                    eq(filterItems.itemId, item.itemId),
-                  ),
-                );
-            } else {
-              await db
-                .delete(filterItems)
-                .where(
-                  and(
-                    eq(filterItems.filterId, filterId),
-                    eq(filterItems.categoryId, item.categoryId),
-                  ),
-                );
-            }
-          }
+          await Promise.all(
+            removedItems.map((item) =>
+              "itemId" in item
+                ? db
+                    .delete(filterItems)
+                    .where(
+                      and(
+                        eq(filterItems.filterId, filterId),
+                        eq(filterItems.itemId, item.itemId),
+                      ),
+                    )
+                : db
+                    .delete(filterItems)
+                    .where(
+                      and(
+                        eq(filterItems.filterId, filterId),
+                        eq(filterItems.categoryId, item.categoryId),
+                      ),
+                    ),
+            ),
+          );
         }
 
         if (addedItems && addedItems.length > 0) {
@@ -497,9 +499,9 @@ export const filterRouter = createTRPCRouter({
             orderBy: filters.order,
           });
 
-          const destIds = destSiblings
-            .map((f) => f.id)
-            .filter((id) => id !== filterId);
+          const destIds = destSiblings.flatMap((f) =>
+            f.id !== filterId ? [f.id] : [],
+          );
 
           const clampedIndex = Math.min(destIndex, destIds.length);
           destIds.splice(clampedIndex, 0, filterId);

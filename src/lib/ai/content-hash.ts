@@ -14,8 +14,8 @@ export function computeFilterContentHash(input: {
   const parts = [
     input.name.toLowerCase().trim(),
     (input.description ?? "").toLowerCase().trim(),
-    [...input.itemShortnames].sort().join(","),
-    [...input.categoryNames].sort().join(","),
+    input.itemShortnames.toSorted().join(","),
+    input.categoryNames.toSorted().join(","),
   ];
   return createHash("sha256").update(parts.join("\n")).digest("hex");
 }

@@ -17,7 +17,7 @@ export function summarizeCreatorLibrary(
 ): CreatorLibrarySummary {
   const uncategorizedCount = hierarchy.uncategorized.length;
   const categoryBuckets = hierarchy.categories
-    .map((cat) => {
+    .flatMap((cat) => {
       const inSubCategories = cat.subCategories.reduce(
         (n, sub) => n + sub.filters.length,
         0,
@@ -25,10 +25,8 @@ export function summarizeCreatorLibrary(
 
       const count = cat.filters.length + inSubCategories;
 
-      return { id: cat.id, name: cat.name, count };
+      return count > 0 ? [{ id: cat.id, name: cat.name, count }] : [];
     })
-    .filter((b) => b.count > 0)
-    .slice()
     .sort((a, b) => b.count - a.count);
 
   return {

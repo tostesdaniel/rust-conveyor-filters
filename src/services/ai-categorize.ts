@@ -401,18 +401,19 @@ export async function enqueueAllPublicFilters(): Promise<number> {
  * Convenience: stats for queue health.
  */
 export async function getCategorizationStats() {
-  const rows = await db.execute<{ status: string; count: number }>(sql`
+  const [rows, pending] = await Promise.all([
+    db.execute<{ status: string; count: number }>(sql`
     SELECT ai_categorization_status AS status, COUNT(*)::int AS count
     FROM filters
     WHERE is_public = true
     GROUP BY ai_categorization_status
-  `);
-
-  const pending = await db.execute<{ count: number }>(sql`
+  `),
+    db.execute<{ count: number }>(sql`
     SELECT COUNT(*)::int AS count
     FROM filter_tag_proposals
     WHERE status = 'pending'
-  `);
+  `),
+  ]);
 
   return {
     byStatus: rows.rows as Array<{ status: string; count: number }>,

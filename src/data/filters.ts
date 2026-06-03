@@ -255,8 +255,10 @@ export async function getPublicFilter(filterId: number) {
     return null;
   }
 
-  const enriched = await enrichWithAuthor([filter]);
-  const tagsByFilter = await loadTagsForFilters([filter.id]);
+  const [enriched, tagsByFilter] = await Promise.all([
+    enrichWithAuthor([filter]),
+    loadTagsForFilters([filter.id]),
+  ]);
   return {
     ...toPublicFilterDTO(enriched[0]),
     tags: tagsByFilter.get(filter.id) ?? [],
@@ -468,8 +470,10 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     orderBy,
   });
 
-  const enrichedFilters = await enrichWithAuthor(result);
-  const tagsByFilter = await loadTagsForFilters(result.map((r) => r.id));
+  const [enrichedFilters, tagsByFilter] = await Promise.all([
+    enrichWithAuthor(result),
+    loadTagsForFilters(result.map((r) => r.id)),
+  ]);
 
   const dtoFilters = enrichedFilters.map((f) => ({
     ...toPublicFilterDTO(f),

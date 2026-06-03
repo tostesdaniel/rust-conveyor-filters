@@ -40,8 +40,10 @@ async function mapFiltersToPublicDTOs(
   if (rawFilters.length === 0) {
     return new Map();
   }
-  const enriched = await enrichWithAuthor(rawFilters);
-  const tagsByFilter = await loadTagsForFilters(rawFilters.map((f) => f.id));
+  const [enriched, tagsByFilter] = await Promise.all([
+    enrichWithAuthor(rawFilters),
+    loadTagsForFilters(rawFilters.map((f) => f.id)),
+  ]);
   const map = new Map<number, PublicFilterListDTO>();
   for (const f of enriched) {
     map.set(f.id, {
@@ -55,22 +57,23 @@ async function mapFiltersToPublicDTOs(
 export async function getCreatorPublicStats(
   authorId: string,
 ): Promise<CreatorPublicStats> {
-  const [filterAgg] = await db
-    .select({
-      publicFilterCount: sql<number>`cast(count(*) as int)`,
-      totalViews: sql<number>`cast(coalesce(sum(${filters.viewCount}), 0) as int)`,
-      totalExports: sql<number>`cast(coalesce(sum(${filters.exportCount}), 0) as int)`,
-    })
-    .from(filters)
-    .where(and(eq(filters.authorId, authorId), eq(filters.isPublic, true)));
-
-  const [bm] = await db
-    .select({
-      bookmarkCount: sql<number>`cast(count(*) as int)`,
-    })
-    .from(bookmarks)
-    .innerJoin(filters, eq(bookmarks.filterId, filters.id))
-    .where(and(eq(filters.authorId, authorId), eq(filters.isPublic, true)));
+  const [[filterAgg], [bm]] = await Promise.all([
+    db
+      .select({
+        publicFilterCount: sql<number>`cast(count(*) as int)`,
+        totalViews: sql<number>`cast(coalesce(sum(${filters.viewCount}), 0) as int)`,
+        totalExports: sql<number>`cast(coalesce(sum(${filters.exportCount}), 0) as int)`,
+      })
+      .from(filters)
+      .where(and(eq(filters.authorId, authorId), eq(filters.isPublic, true))),
+    db
+      .select({
+        bookmarkCount: sql<number>`cast(count(*) as int)`,
+      })
+      .from(bookmarks)
+      .innerJoin(filters, eq(bookmarks.filterId, filters.id))
+      .where(and(eq(filters.authorId, authorId), eq(filters.isPublic, true))),
+  ]);
 
   return {
     publicFilterCount: filterAgg?.publicFilterCount ?? 0,
@@ -83,67 +86,68 @@ export async function getCreatorPublicStats(
 export async function getPublicFilterHierarchyForAuthor(
   authorId: string,
 ): Promise<CreatorPublicHierarchy> {
-  const uncategorizedRaw = await db.query.filters.findMany({
-    where: and(
-      eq(filters.authorId, authorId),
-      eq(filters.isPublic, true),
-      isNull(filters.categoryId),
-      isNull(filters.subCategoryId),
-    ),
-    with: {
-      filterItems: {
-        with: {
-          item: true,
-          category: true,
-        },
-        orderBy: ({ createdAt, id }) => [id, createdAt],
-      },
-    },
-    orderBy: filters.order,
-  });
-
-  const categoriesRaw = await db.query.userCategories.findMany({
-    where: eq(userCategories.userId, authorId),
-    with: {
-      filters: {
-        where: and(
-          eq(filters.authorId, authorId),
-          eq(filters.isPublic, true),
-          isNull(filters.subCategoryId),
-        ),
-        with: {
-          filterItems: {
-            with: {
-              item: true,
-              category: true,
-            },
-            orderBy: ({ createdAt, id }) => [id, createdAt],
+  const [uncategorizedRaw, categoriesRaw] = await Promise.all([
+    db.query.filters.findMany({
+      where: and(
+        eq(filters.authorId, authorId),
+        eq(filters.isPublic, true),
+        isNull(filters.categoryId),
+        isNull(filters.subCategoryId),
+      ),
+      with: {
+        filterItems: {
+          with: {
+            item: true,
+            category: true,
           },
+          orderBy: ({ createdAt, id }) => [id, createdAt],
         },
-        orderBy: filters.order,
       },
-      subCategories: {
-        with: {
-          filters: {
-            where: and(
-              eq(filters.authorId, authorId),
-              eq(filters.isPublic, true),
-            ),
-            with: {
-              filterItems: {
-                with: {
-                  item: true,
-                  category: true,
-                },
-                orderBy: ({ createdAt, id }) => [id, createdAt],
+      orderBy: filters.order,
+    }),
+    db.query.userCategories.findMany({
+      where: eq(userCategories.userId, authorId),
+      with: {
+        filters: {
+          where: and(
+            eq(filters.authorId, authorId),
+            eq(filters.isPublic, true),
+            isNull(filters.subCategoryId),
+          ),
+          with: {
+            filterItems: {
+              with: {
+                item: true,
+                category: true,
               },
+              orderBy: ({ createdAt, id }) => [id, createdAt],
             },
-            orderBy: filters.order,
+          },
+          orderBy: filters.order,
+        },
+        subCategories: {
+          with: {
+            filters: {
+              where: and(
+                eq(filters.authorId, authorId),
+                eq(filters.isPublic, true),
+              ),
+              with: {
+                filterItems: {
+                  with: {
+                    item: true,
+                    category: true,
+                  },
+                  orderBy: ({ createdAt, id }) => [id, createdAt],
+                },
+              },
+              orderBy: filters.order,
+            },
           },
         },
       },
-    },
-  });
+    }),
+  ]);
 
   const allRaw: ConveyorFilter[] = [...uncategorizedRaw];
   for (const cat of categoriesRaw) {

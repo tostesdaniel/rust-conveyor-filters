@@ -39,9 +39,10 @@ export const sharedFilterRouter = createTRPCRouter({
       return [];
     }
 
-    const sharedFiltersResult = await findSharedFilters(userShareToken.id);
-
-    const client = await clerkClient();
+    const [sharedFiltersResult, client] = await Promise.all([
+      findSharedFilters(userShareToken.id),
+      clerkClient(),
+    ]);
     const senderIds = [...new Set(sharedFiltersResult.map((f) => f.senderId))];
     const senderUsernames = await Promise.all(
       senderIds.map(async (senderId) => {

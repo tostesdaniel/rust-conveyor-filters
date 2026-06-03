@@ -119,8 +119,7 @@ async function handleDiscordBoostWebhook(rawBody: string, signature: string) {
 }
 
 export async function POST(req: Request) {
-  const rawBody = await req.text();
-  const headerPayload = await headers();
+  const [rawBody, headerPayload] = await Promise.all([req.text(), headers()]);
   if (hasSvixHeaders(headerPayload)) {
     return handleClerkWebhook(rawBody, headerPayload);
   }

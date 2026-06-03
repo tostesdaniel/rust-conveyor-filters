@@ -20,6 +20,10 @@ function getTooltipText(property: "max" | "min" | "buffer") {
   ];
 }
 
+function handleInputFocus(event: React.FocusEvent<HTMLInputElement>) {
+  event.target.select();
+}
+
 export function FilterSettingsInput({
   label,
   id,
@@ -47,10 +51,6 @@ export function FilterSettingsInput({
     const numericValue = isNaN(Number(inputValue)) ? 0 : Number(inputValue);
 
     setValue(`items.${index}.${property}`, numericValue, { shouldDirty: true });
-  };
-
-  const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    event.target.select();
   };
 
   return (

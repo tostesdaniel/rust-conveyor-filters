@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
@@ -48,22 +55,27 @@ export function FilterShareProvider({
     }
   }, [filter, sharedBy]);
 
-  const openFilter = (
-    filter: PublicFilterListDTO,
-    sharedBy: string | null = null,
-  ) => {
-    setSharedFilter({
-      filter,
-      sharedBy,
-    });
-  };
+  const openFilter = useCallback(
+    (filter: PublicFilterListDTO, sharedBy: string | null = null) => {
+      setSharedFilter({
+        filter,
+        sharedBy,
+      });
+    },
+    [],
+  );
 
-  const closeFilter = () => {
+  const closeFilter = useCallback(() => {
     setSharedFilter(null);
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ openFilter, closeFilter }),
+    [openFilter, closeFilter],
+  );
 
   return (
-    <FilterShareContext.Provider value={{ openFilter, closeFilter }}>
+    <FilterShareContext.Provider value={contextValue}>
       {children}
       {sharedFilter && (
         <SharedFilterDialog

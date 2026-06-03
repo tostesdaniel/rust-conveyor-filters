@@ -13,6 +13,10 @@ import {
 import { CreatorPublicFilters } from "@/components/features/creator-profile/creator-public-filters";
 import { Typography } from "@/components/shared/typography";
 
+const joinDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
+
 function CreatorProfileSkeleton() {
   return (
     <div className='animate-pulse py-6 sm:py-8'>
@@ -87,9 +91,7 @@ export function CreatorProfileView({ username }: { username: string }) {
     );
   }
 
-  const joinLabel = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-  }).format(data.createdAt);
+  const joinLabel = joinDateFormatter.format(data.createdAt);
 
   return (
     <div className='space-y-10 py-6 sm:space-y-12 sm:py-8'>

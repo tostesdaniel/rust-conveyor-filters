@@ -34,7 +34,7 @@ export function FilterItemsCarousel({
   const isMinWidth550 = useMediaQuery("(min-width: 550px)");
   const isMinWidth440 = useMediaQuery("(min-width: 440px)");
   const isMinWidth360 = useMediaQuery("(min-width: 360px)");
-  const autoplay = React.useRef(
+  const [autoplay] = React.useState(() =>
     Autoplay({
       delay: 3000,
       stopOnMouseEnter: true,
@@ -53,7 +53,7 @@ export function FilterItemsCarousel({
 
     const onSelect = () => {
       setCurrentPage(api.selectedScrollSnap() + 1);
-      autoplay.current.play();
+      autoplay.play();
     };
 
     api.on("select", onSelect);
@@ -61,15 +61,15 @@ export function FilterItemsCarousel({
     return () => {
       api.off("select", onSelect);
     };
-  }, [api]);
+  }, [api, autoplay]);
 
   React.useEffect(() => {
     if (inView && api?.canScrollNext()) {
-      autoplay.current.play();
+      autoplay.play();
     } else {
-      autoplay.current.stop();
+      autoplay.stop();
     }
-  }, [api, inView]);
+  }, [api, inView, autoplay]);
 
   const itemsPerPage = React.useMemo(() => {
     if (isMinWidth1300) return 6;
@@ -133,7 +133,7 @@ export function FilterItemsCarousel({
           align: "start",
           ...carouselOpts,
         }}
-        plugins={[autoplay.current]}
+        plugins={[autoplay]}
       >
         <CarouselContent className='py-0.5'>
           {filterItems.map((filterItem) => {

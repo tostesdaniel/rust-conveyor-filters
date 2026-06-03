@@ -61,6 +61,62 @@ const DevTool = dynamic(
   { ssr: false },
 );
 
+function getDirtyData<T extends FieldValues>(
+  allFields: T,
+  dirtyFields: Partial<Record<keyof T, unknown>>,
+): Partial<T> {
+  const changedFieldValues = Object.keys(dirtyFields).reduce(
+    (acc, currentField) => {
+      return {
+        ...acc,
+        [currentField]: allFields[currentField],
+      };
+    },
+    {} as Partial<T>,
+  );
+
+  return changedFieldValues;
+}
+
+function getRemovedItems(
+  initialItems: FilterItem[],
+  currentItems: FilterItem[],
+) {
+  return initialItems.filter((initialItem) => {
+    if ("itemId" in initialItem) {
+      return !currentItems.some(
+        (currentItem) =>
+          "itemId" in currentItem && currentItem.itemId === initialItem.itemId,
+      );
+    } else if ("categoryId" in initialItem) {
+      return !currentItems.some(
+        (currentItem) =>
+          "categoryId" in currentItem &&
+          currentItem.categoryId === initialItem.categoryId,
+      );
+    }
+    return false;
+  });
+}
+
+function getAddedItems(initialItems: FilterItem[], currentItems: FilterItem[]) {
+  return currentItems.filter((currentItem) => {
+    if ("itemId" in currentItem) {
+      return !initialItems.some(
+        (initialItem) =>
+          "itemId" in initialItem && initialItem.itemId === currentItem.itemId,
+      );
+    } else if ("categoryId" in currentItem) {
+      return !initialItems.some(
+        (initialItem) =>
+          "categoryId" in initialItem &&
+          initialItem.categoryId === currentItem.categoryId,
+      );
+    }
+    return false;
+  });
+}
+
 export function EditFilterForm({ filterId }: { filterId: number }) {
   const router = useRouter();
   const { data: items } = useGetItems();
@@ -82,7 +138,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     },
   });
   const { dirtyFields } = useFormState({ control: form.control });
-  const [initialItems, setInitialItems] = React.useState<FilterItem[]>([]);
+  const initialItemsRef = React.useRef<FilterItem[]>([]);
   const hydratedForFilterIdRef = React.useRef<number | null>(null);
 
   const utils = api.useUtils();
@@ -141,7 +197,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       })
       .filter((item): item is FilterItem => item !== null);
 
-    setInitialItems(initialItemsData);
+    initialItemsRef.current = initialItemsData;
     form.reset({
       name: data.name,
       description: data.description ?? "",
@@ -157,71 +213,10 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     void form.trigger();
   }, [data, filterId, form]);
 
-  const getDirtyData = <T extends FieldValues>(
-    allFields: T,
-    dirtyFields: Partial<Record<keyof T, unknown>>,
-  ): Partial<T> => {
-    const changedFieldValues = Object.keys(dirtyFields).reduce(
-      (acc, currentField) => {
-        return {
-          ...acc,
-          [currentField]: allFields[currentField],
-        };
-      },
-      {} as Partial<T>,
-    );
-
-    return changedFieldValues;
-  };
-
-  const getRemovedItems = (
-    initialItems: FilterItem[],
-    currentItems: FilterItem[],
-  ) => {
-    return initialItems.filter((initialItem) => {
-      if ("itemId" in initialItem) {
-        return !currentItems.some(
-          (currentItem) =>
-            "itemId" in currentItem &&
-            currentItem.itemId === initialItem.itemId,
-        );
-      } else if ("categoryId" in initialItem) {
-        return !currentItems.some(
-          (currentItem) =>
-            "categoryId" in currentItem &&
-            currentItem.categoryId === initialItem.categoryId,
-        );
-      }
-      return false;
-    });
-  };
-
-  const getAddedItems = (
-    initialItems: FilterItem[],
-    currentItems: FilterItem[],
-  ) => {
-    return currentItems.filter((currentItem) => {
-      if ("itemId" in currentItem) {
-        return !initialItems.some(
-          (initialItem) =>
-            "itemId" in initialItem &&
-            initialItem.itemId === currentItem.itemId,
-        );
-      } else if ("categoryId" in currentItem) {
-        return !initialItems.some(
-          (initialItem) =>
-            "categoryId" in initialItem &&
-            initialItem.categoryId === currentItem.categoryId,
-        );
-      }
-      return false;
-    });
-  };
-
   async function onSubmit(data: z.infer<typeof createFilterSchema>) {
     const dirtyData = getDirtyData(data, dirtyFields);
-    const removedItems = getRemovedItems(initialItems, data.items);
-    const addedItems = getAddedItems(initialItems, data.items);
+    const removedItems = getRemovedItems(initialItemsRef.current, data.items);
+    const addedItems = getAddedItems(initialItemsRef.current, data.items);
     await mutation.mutateAsync({
       data: dirtyData,
       filterId,

@@ -18,11 +18,13 @@ type ManageSubscriptionProps = {
   subscription: Subscription;
 };
 
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
+
 function formatDate(value: Date | null): string {
   if (!value) return "—";
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-  }).format(new Date(value));
+  return dateFormatter.format(new Date(value));
 }
 
 export function ManageSubscription({ subscription }: ManageSubscriptionProps) {

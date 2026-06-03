@@ -57,6 +57,13 @@ interface BucketLocation {
   subCategoryId: number | null;
 }
 
+function bucketLocationForFilter(filter: FilterNode): BucketLocation {
+  return {
+    categoryId: filter.categoryId,
+    subCategoryId: filter.subCategoryId,
+  };
+}
+
 function parseBucketId(id: string): BucketLocation | null {
   if (id === UNCATEGORIZED_BUCKET_ID) {
     return { categoryId: null, subCategoryId: null };
@@ -164,13 +171,6 @@ export function useSortableHierarchy() {
     }
     return null;
   };
-
-  function bucketLocationForFilter(filter: FilterNode): BucketLocation {
-    return {
-      categoryId: filter.categoryId,
-      subCategoryId: filter.subCategoryId,
-    };
-  }
 
   function bucketLocationFromOverId(overId: string): BucketLocation | null {
     const direct = parseBucketId(overId);

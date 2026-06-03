@@ -16,6 +16,8 @@ import {
 import { CreatorProfileJsonLd } from "@/components/features/creator-profile/creator-profile-json-ld";
 import { CreatorProfileView } from "@/components/features/creator-profile/creator-profile-view";
 
+const nf = new Intl.NumberFormat("en-US");
+
 type CreatorProfilePageProps = {
   params: Promise<{ username: string }>;
 };
@@ -31,7 +33,6 @@ export async function generateMetadata({
   }
 
   const display = clerkUserToAuthorDisplay(user) ?? user.username;
-  const nf = new Intl.NumberFormat("en-US");
   const [stats, hierarchy] = await Promise.all([
     getCreatorPublicStats(user.id),
     getPublicFilterHierarchyForAuthor(user.id),

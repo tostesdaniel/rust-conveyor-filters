@@ -32,7 +32,7 @@ function ImageComboboxSkeleton() {
     <div className='space-y-2'>
       <Skeleton className='h-[17px] w-20' />
       <div className='flex items-center gap-x-3'>
-        <Skeleton className='h-9 w-9' />
+        <Skeleton className='size-9' />
         <Skeleton className='h-9 w-[300px]' />
       </div>
     </div>

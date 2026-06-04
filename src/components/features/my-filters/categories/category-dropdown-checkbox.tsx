@@ -61,7 +61,7 @@ export function CategoryDropdownCheckbox({
       }}
       disabled={isDisabled}
       customIndicator={
-        showChevron ? <ChevronsDown className='h-4 w-4' /> : undefined
+        showChevron ? <ChevronsDown className='size-4' /> : undefined
       }
     >
       {category.name}

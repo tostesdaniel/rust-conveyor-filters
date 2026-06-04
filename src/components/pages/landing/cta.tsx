@@ -12,7 +12,7 @@ import {
 } from "@/components/layout/header-sections";
 import { TextEffect } from "@/components/shared/text-effect";
 
-export function CTA() {
+export function Cta() {
   return (
     <div className='relative isolate overflow-hidden'>
       <motion.div

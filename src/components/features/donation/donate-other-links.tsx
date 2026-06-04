@@ -8,10 +8,7 @@ import { ButtonWithIcon } from "@/components/shared/button-with-icon";
 
 export function DonateOtherLinks() {
   return (
-    <ul
-      role='list'
-      className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'
-    >
+    <ul className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'>
       <ButtonWithIcon icon={Handshake}>
         <a
           href={siteConfig.donate.steamTradeOffer}

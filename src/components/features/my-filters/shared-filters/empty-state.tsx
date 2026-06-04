@@ -5,7 +5,7 @@ import { ShareTokenDisplay } from "./share-token-display";
 export function SharedFiltersEmptyState() {
   return (
     <div className='mt-6 text-center'>
-      <ArchiveX className='mx-auto h-12 w-12' />
+      <ArchiveX className='mx-auto size-12' />
       <h3 className='mt-2 text-sm font-semibold'>No filters shared with you</h3>
       <p className='mx-auto mt-1 max-w-lg text-sm text-balance text-muted-foreground'>
         Welcome to filter sharing! This tab is where you&apos;ll see filters

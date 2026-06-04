@@ -28,7 +28,7 @@ export function EngagementPill({ className }: EngagementPillProps) {
     >
       <Link href='/donate'>
         <HeartHandshake className='size-3.5' />
-        <span>Go ad-free — $3/mo</span>
+        <span>Go ad-free for $3/mo</span>
       </Link>
     </Button>
   );

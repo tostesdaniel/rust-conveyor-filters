@@ -26,7 +26,7 @@ export function SharedFilters() {
           "lg:absolute lg:right-0",
         )}
       >
-        <div className='flex items-center space-x-2 lg:justify-between'>
+        <div className='flex items-center gap-x-2 lg:justify-between'>
           <p className='text-sm font-medium'>Your share token</p>
           <CollapsibleTrigger asChild>
             <Button type='button' variant='ghost' className='w-9 p-0'>
@@ -104,10 +104,7 @@ export function SharedFilters() {
 
 function FilterGrid({ filters }: { filters: SharedFilterDTO[] }) {
   return (
-    <ul
-      role='list'
-      className='mt-6 grid grid-cols-1 gap-5 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'
-    >
+    <ul className='mt-6 grid grid-cols-1 gap-5 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'>
       {filters.map((filter) => (
         <FilterCard key={filter.id} filter={filter} isFilterShared />
       ))}

@@ -52,23 +52,27 @@ export interface TypographyProps
     VariantProps<typeof typographyVariants> {
   asChild?: boolean;
   as?: string;
+  ref?: React.Ref<HTMLElement>;
 }
 
-const Typography = React.forwardRef<HTMLElement, TypographyProps>(
-  ({ className, variant, as, asChild, ...props }, ref) => {
-    const Comp = asChild
-      ? SlotPrimitive.Slot
-      : (as ?? (variant ? variantElementMap[variant] : undefined) ?? "div");
-    return (
-      <Comp
-        className={cn(typographyVariants({ variant, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
-);
-
-Typography.displayName = "Typography";
+function Typography({
+  className,
+  variant,
+  as,
+  asChild,
+  ref,
+  ...props
+}: TypographyProps) {
+  const Comp = asChild
+    ? SlotPrimitive.Slot
+    : (as ?? (variant ? variantElementMap[variant] : undefined) ?? "div");
+  return (
+    <Comp
+      className={cn(typographyVariants({ variant, className }))}
+      ref={ref}
+      {...props}
+    />
+  );
+}
 
 export { Typography, typographyVariants };

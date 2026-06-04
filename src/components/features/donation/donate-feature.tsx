@@ -32,8 +32,8 @@ export function DonateFeature() {
       {features.map((feature) => (
         <div key={feature.name}>
           <dt className='text-base/7 font-semibold'>
-            <div className='mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-foreground/10'>
-              <feature.icon aria-hidden='true' className='h-6 w-6' />
+            <div className='mb-3 flex size-10 items-center justify-center rounded-lg bg-foreground/10'>
+              <feature.icon aria-hidden='true' className='size-6' />
             </div>
             {feature.name}
           </dt>

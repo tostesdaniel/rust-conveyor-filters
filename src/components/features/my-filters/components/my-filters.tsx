@@ -105,7 +105,7 @@ export function MyFilters() {
         ) : activeItem?.type === "category" ? (
           <div className='rounded-md bg-card px-4 py-2 opacity-90 shadow-lg'>
             <div className='flex items-center gap-1.5'>
-              <GripVertical className='h-4 w-4 text-muted-foreground' />
+              <GripVertical className='size-4 text-muted-foreground' />
               <span className='text-base leading-6 font-semibold'>
                 {activeItem.category.name}
               </span>
@@ -114,7 +114,7 @@ export function MyFilters() {
         ) : activeItem?.type === "subcategory" ? (
           <div className='rounded-md bg-card px-4 py-2 opacity-90 shadow-lg'>
             <div className='flex items-center gap-1.5'>
-              <GripVertical className='h-4 w-4 text-muted-foreground' />
+              <GripVertical className='size-4 text-muted-foreground' />
               <span className='text-base leading-6 font-semibold'>
                 {activeItem.subcategory.name}
               </span>
@@ -273,7 +273,6 @@ function FilterBucket({ droppableId, filters }: FilterBucketProps) {
       {filters.length > 0 ? (
         <ul
           ref={setNodeRef}
-          role='list'
           className='mt-6 grid grid-cols-1 gap-5 pl-4 min-[680px]:grid-cols-2 sm:gap-6 lg:grid-cols-3'
         >
           {filters.map((filter) => (

@@ -54,7 +54,7 @@ export async function RepoStarsButton({
         rel='noopener noreferrer'
         aria-label='View project on GitHub and see star count'
       >
-        <Icons.gitHub aria-hidden='true' />
+        <Icons.GitHub aria-hidden='true' />
         <span className='sr-only'>GitHub repository with</span>
         <Suspense fallback={<Skeleton className='h-4 w-10' />}>
           <StargazersCount />

@@ -61,7 +61,7 @@ export function MobileNav() {
           variant='ghost'
           className='ml-2 w-9 px-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden'
         >
-          <Menu className='h-6 w-6' />
+          <Menu className='size-6' />
           <span className='sr-only'>Toggle Menu</span>
         </Button>
       </SheetTrigger>
@@ -105,7 +105,7 @@ export function MobileNav() {
                             : "text-foreground/60",
                         )}
                       >
-                        <IconComponent className='h-4 w-4' />
+                        <IconComponent className='size-4' />
                         {item.name}
                       </MobileLink>
                     </li>

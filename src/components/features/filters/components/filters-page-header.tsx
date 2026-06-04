@@ -50,7 +50,7 @@ export function FiltersPageHeader({
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <Icons.discord />
+                <Icons.Discord />
                 <span className='sr-only'>Discord</span>
               </a>
             </Button>
@@ -58,7 +58,7 @@ export function FiltersPageHeader({
           </div>
           <div className='ml-2 flex h-7 w-auto items-center'>
             <ClerkLoading>
-              <Loader2Icon className='h-5 w-5 animate-spin text-muted-foreground' />
+              <Loader2Icon className='size-5 animate-spin text-muted-foreground' />
             </ClerkLoading>
             <ClerkLoaded>
               <Show when='signed-out'>

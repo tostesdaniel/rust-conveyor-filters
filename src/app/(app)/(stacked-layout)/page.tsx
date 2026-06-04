@@ -1,4 +1,4 @@
-import { CTA } from "@/components/pages/landing/cta";
+import { Cta } from "@/components/pages/landing/cta";
 import { FeaturesShowcase } from "@/components/pages/landing/features-showcase";
 import { HeroBackground } from "@/components/pages/landing/hero-background";
 import { HeroContent } from "@/components/pages/landing/hero-content";
@@ -23,7 +23,7 @@ export default function HomePage() {
 
       <Testimonials />
 
-      <CTA />
+      <Cta />
     </>
   );
 }

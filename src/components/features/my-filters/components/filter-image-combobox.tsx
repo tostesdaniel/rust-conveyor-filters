@@ -165,7 +165,7 @@ const ItemList = React.memo(
                   field.onChange(item.imagePath);
                 }}
               >
-                <div className='relative h-6 w-6'>
+                <div className='relative size-6'>
                   <Image
                     src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
                     alt={item.name}

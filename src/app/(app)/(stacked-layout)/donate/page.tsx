@@ -79,15 +79,12 @@ export default function DonatePage() {
           browsing while their boost stays active.
         </Typography>
 
-        <ul
-          role='list'
-          className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'
-        >
+        <ul className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'>
           <DonateButton
             href={buyMeACoffee}
             platform='buyMeACoffee'
             className='bg-[#FFDD00] font-semibold text-[#0D0C22] transition-colors hover:bg-[#FFDD00]/90'
-            icon={<Icons.buymeacoffee className='h-5 w-5' />}
+            icon={<Icons.BuyMeACoffee className='size-5' />}
           >
             Buy me a coffee
           </DonateButton>
@@ -95,7 +92,7 @@ export default function DonatePage() {
             href={kofi}
             platform='kofi'
             className='border-spacing-96 bg-[#72A5F2] font-semibold text-[#202020] shadow-[1px_1px_0px_rgba(0,0,0,0.2)] transition-colors hover:bg-[#72A5F2]/90'
-            icon={<Icons.kofi className='h-5 w-5 animate-kofi-wiggle' />}
+            icon={<Icons.Kofi className='size-5 animate-kofi-wiggle' />}
           >
             Support me on Ko-fi
           </DonateButton>
@@ -103,7 +100,7 @@ export default function DonatePage() {
             href={patreon}
             platform='patreon'
             className='bg-[#FC674D] font-semibold text-[#202020] shadow-[1px_1px_0px_rgba(0,0,0,0.2)] transition-colors hover:bg-[#FC674D]/90'
-            icon={<Icons.patreon className='h-5 w-5' />}
+            icon={<Icons.Patreon className='size-5' />}
           >
             Support me on Patreon
           </DonateButton>

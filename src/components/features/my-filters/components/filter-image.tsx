@@ -8,7 +8,7 @@ interface FilterImageProps {
 export function FilterImage({ imagePath }: FilterImageProps) {
   if (!imagePath) {
     return (
-      <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-dashed border-input' />
+      <div className='flex size-9 shrink-0 items-center justify-center rounded-md border border-dashed border-input' />
     );
   }
 

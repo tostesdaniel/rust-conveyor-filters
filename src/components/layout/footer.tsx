@@ -43,7 +43,7 @@ export function Footer() {
             </div>
           ))}
         </nav>
-        <div className='mt-4 flex justify-center space-x-6 min-[800px]:order-3 min-[800px]:mt-0'>
+        <div className='mt-4 flex justify-center gap-x-6 min-[800px]:order-3 min-[800px]:mt-0'>
           <a
             href={siteConfig.links.discord}
             target='_blank'
@@ -57,7 +57,7 @@ export function Footer() {
                 "transition-colors hover:bg-transparent hover:text-foreground/85",
               )}
             >
-              <Icons.discord className='h-5 w-5' />
+              <Icons.Discord className='size-5' />
               <span className='sr-only'>Discord Server</span>
             </div>
           </a>
@@ -74,7 +74,7 @@ export function Footer() {
                 "transition-colors hover:bg-transparent hover:text-foreground/85",
               )}
             >
-              <Icons.gitHub className='h-5 w-5' />
+              <Icons.GitHub className='size-5' />
               <span className='sr-only'>GitHub</span>
             </div>
           </a>
@@ -84,7 +84,7 @@ export function Footer() {
             Made with{" "}
             <HeartIcon
               aria-label='love'
-              className='inline h-3 w-3'
+              className='inline size-3'
               fill='red'
               strokeWidth={0}
             />

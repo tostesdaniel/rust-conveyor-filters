@@ -47,7 +47,7 @@ export function ShareTokenDisplay() {
       <div className='flex w-full max-w-sm flex-col'>
         <div className='flex justify-between gap-x-2'>
           <Skeleton className='h-9 flex-1' />
-          <Skeleton className='h-9 w-9' />
+          <Skeleton className='size-9' />
         </div>
         <div className='mt-1 flex items-center gap-x-1'>
           <Skeleton className='h-4 w-36' />

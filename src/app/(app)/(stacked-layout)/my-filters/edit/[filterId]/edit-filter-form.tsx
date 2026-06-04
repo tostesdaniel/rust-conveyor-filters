@@ -272,7 +272,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             </FormItem>
           )}
         />
-        <div className='space-y-6 sm:flex sm:space-y-0 sm:space-x-6'>
+        <div className='gap-y-6 sm:flex sm:space-y-0 sm:space-x-6'>
           <FormField
             control={form.control}
             name='imagePath'

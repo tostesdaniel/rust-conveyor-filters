@@ -124,10 +124,10 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
                         type='button'
                         variant='ghost'
                         size='icon'
-                        className='h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100'
+                        className='size-6 opacity-0 transition-opacity group-hover:opacity-100'
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <PlusIcon className='h-4 w-4' />
+                        <PlusIcon className='size-4' />
                         <span className='sr-only'>Add subcategory</span>
                       </Button>
                     </CreateCategoryDialog>

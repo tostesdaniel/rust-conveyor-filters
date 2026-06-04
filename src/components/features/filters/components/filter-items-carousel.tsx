@@ -155,7 +155,7 @@ export function FilterItemsCarousel({
                     {isCategory ? (
                       <div className='flex h-full w-full flex-col items-center justify-center'>
                         <div className='flex flex-1 items-center justify-center'>
-                          <CategoryIcon className='h-8 w-8' />
+                          <CategoryIcon className='size-8' />
                         </div>
                         <p className='mt-1 w-full overflow-hidden px-0.5 text-center text-xs font-bold whitespace-nowrap'>
                           {category?.name}

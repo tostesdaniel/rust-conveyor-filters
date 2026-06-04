@@ -33,7 +33,7 @@ export function AboutSocialLinks() {
             trackEvent("social_link_clicked", { platform: "github" });
           }}
         >
-          <Icons.gitHub /> Follow me
+          <Icons.GitHub /> Follow me
         </a>
       </Button>
       <Button asChild variant='outline'>

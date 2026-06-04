@@ -53,7 +53,7 @@ export function CategoryHeading({
             className='cursor-grab rounded p-1 text-muted-foreground hover:text-foreground active:cursor-grabbing'
             aria-label={`Drag ${title}`}
           >
-            <GripVertical className='h-4 w-4' aria-hidden='true' />
+            <GripVertical className='size-4' aria-hidden='true' />
           </button>
         )}
         <h2 className='text-base leading-6 font-semibold'>{title}</h2>

@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
-import { ArrowDownToLine, ArrowUpToLine, EllipsisIcon, Share } from "lucide-react";
+import {
+  ArrowDownToLine,
+  ArrowUpToLine,
+  EllipsisIcon,
+  Share,
+} from "lucide-react";
 
 import { useGetUserFiltersByCategory } from "@/hooks/use-get-user-filters-by-category";
 import { Button } from "@/components/ui/button";
@@ -13,8 +18,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 import { useUpdatePreferences } from "@/components/features/my-filters/hooks/use-update-preferences";
+import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 
 interface UncategorizedHeadingDropdownProps {
   categoryId: number | null;
@@ -38,7 +43,7 @@ export function UncategorizedHeadingDropdown({
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button type='button' variant='ghost' size='icon' className='h-8 w-8'>
+          <Button type='button' variant='ghost' size='icon' className='size-8'>
             <EllipsisIcon />
           </Button>
         </DropdownMenuTrigger>
@@ -50,11 +55,7 @@ export function UncategorizedHeadingDropdown({
               })
             }
           >
-            {togglePosition === "top" ? (
-              <ArrowUpToLine />
-            ) : (
-              <ArrowDownToLine />
-            )}
+            {togglePosition === "top" ? <ArrowUpToLine /> : <ArrowDownToLine />}
             Pin to {togglePosition}
           </DropdownMenuItem>
           <DropdownMenuSeparator />

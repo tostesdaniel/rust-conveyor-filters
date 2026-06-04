@@ -213,7 +213,7 @@ function ItemsCombobox({
           disabled={isLoading}
           {...props}
         >
-          <CirclePlusIcon className='size-4 shrink-0' /> Select items...
+          <CirclePlusIcon className='size-4 shrink-0' /> Select items…
         </SidebarMenuButton>
       </PopoverTrigger>
 

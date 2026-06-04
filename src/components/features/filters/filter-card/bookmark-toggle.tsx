@@ -80,9 +80,9 @@ export function BookmarkToggle({
       {...props}
     >
       {isLoading ? (
-        <Loader2Icon className='h-4 w-4 animate-spin' />
+        <Loader2Icon className='size-4 animate-spin' />
       ) : (
-        <BookmarkIcon className='h-4 w-4 group-data-[state=on]:fill-current' />
+        <BookmarkIcon className='size-4 group-data-[state=on]:fill-current' />
       )}
     </Toggle>
   );

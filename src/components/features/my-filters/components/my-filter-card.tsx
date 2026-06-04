@@ -113,7 +113,7 @@ export function MyFilterCard({
         >
           <div className='flex h-9 w-1 items-center justify-center rounded-full bg-foreground/70 ring-1 ring-card backdrop-blur-sm transition-all duration-150 group-hover:h-10 group-hover:w-5 group-hover:rounded-md group-hover:bg-foreground group-hover:backdrop-blur-none group-focus-visible:h-10 group-focus-visible:w-5 group-focus-visible:rounded-md group-focus-visible:bg-foreground group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2'>
             <GripVertical
-              className='h-4 w-4 text-card opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100'
+              className='size-4 text-card opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100'
               aria-hidden='true'
             />
           </div>
@@ -146,8 +146,8 @@ export function MyFilterCard({
           )}
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
         </div>
-        <div className='flex items-center space-x-2 pr-2'>
-          <div className='flex items-center space-x-4'>
+        <div className='flex items-center gap-x-2 pr-2'>
+          <div className='flex items-center gap-x-4'>
             {isFilterShared && <ViewFilter filter={filter} variant='icon' />}
             <ExportConveyorFilter type='icon' filter={filter.filterItems} />
           </div>
@@ -166,10 +166,10 @@ export function MyFilterCard({
                     type='button'
                     variant='ghost'
                     size='icon'
-                    className='h-8 w-8 shrink-0 rounded-full'
+                    className='size-8 shrink-0 rounded-full'
                   >
                     <span className='sr-only'>Open options</span>
-                    <EllipsisVertical className='h-5 w-5' aria-hidden='true' />
+                    <EllipsisVertical className='size-5' aria-hidden='true' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -217,10 +217,10 @@ export function MyFilterCard({
                     type='button'
                     variant='ghost'
                     size='icon'
-                    className='h-8 w-8 shrink-0 rounded-full'
+                    className='size-8 shrink-0 rounded-full'
                   >
                     <span className='sr-only'>Open options</span>
-                    <EllipsisVertical className='h-5 w-5' aria-hidden='true' />
+                    <EllipsisVertical className='size-5' aria-hidden='true' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

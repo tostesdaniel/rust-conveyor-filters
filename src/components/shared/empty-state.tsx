@@ -23,13 +23,13 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className='mt-6 text-center'>
-      <Icon className='mx-auto h-12 w-12' />
+      <Icon className='mx-auto size-12' />
       <h3 className='mt-2 text-sm font-semibold'>{title}</h3>
       <p className='mt-1 text-sm'>{description}</p>
       <div className='mt-6'>
         <Button asChild>
           <Link href={redirectUrl}>
-            <ButtonIcon className='mr-1.5 -ml-0.5 h-5 w-5' aria-hidden='true' />
+            <ButtonIcon className='mr-1.5 -ml-0.5 size-5' aria-hidden='true' />
             {label}
           </Link>
         </Button>

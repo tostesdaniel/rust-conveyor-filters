@@ -19,7 +19,7 @@ export function PrivateShareDropdownItem({
         setIsDialogOpen(true);
       }}
     >
-      <Share2Icon className='h-4 w-4' />
+      <Share2Icon className='size-4' />
       Share
     </DropdownMenuItem>
   );

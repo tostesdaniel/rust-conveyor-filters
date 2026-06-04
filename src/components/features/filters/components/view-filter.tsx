@@ -80,10 +80,10 @@ function TriggerButton({
     <Button
       variant='ghost'
       size='icon'
-      className='h-4 w-4 hover:bg-transparent hover:text-muted-foreground'
+      className='size-4 hover:bg-transparent hover:text-muted-foreground'
       {...props}
     >
-      <EyeIcon className='h-4 w-4' />
+      <EyeIcon className='size-4' />
     </Button>
   );
 }
@@ -123,7 +123,7 @@ export default function ViewFilter({
             viewportClassName='snap-y snap-mandatory'
           >
             <div className='px-4'>
-              <ul role='list' className='grid grid-cols-5 gap-x-6 gap-y-8'>
+              <ul className='grid grid-cols-5 gap-x-6 gap-y-8'>
                 {filter.filterItems.map((filterItem, i) => (
                   <FilterItem key={i} filterItem={filterItem} />
                 ))}
@@ -150,10 +150,7 @@ export default function ViewFilter({
           viewportClassName='snap-y snap-mandatory'
         >
           <div className='px-4'>
-            <ul
-              role='list'
-              className='grid grid-cols-3 gap-x-4 gap-y-6 min-[414px]:grid-cols-4 min-[520px]:grid-cols-5'
-            >
+            <ul className='grid grid-cols-3 gap-x-4 gap-y-6 min-[414px]:grid-cols-4 min-[520px]:grid-cols-5'>
               {filter.filterItems.map((filterItem, i) => (
                 <FilterItem key={i} filterItem={filterItem} />
               ))}

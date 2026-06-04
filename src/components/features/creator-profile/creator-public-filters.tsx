@@ -2,6 +2,7 @@ import type {
   CreatorPublicCategory,
   CreatorPublicHierarchy,
 } from "@/data/creator-public";
+
 import type { PublicFilterListDTO } from "@/types/filter";
 import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
 import { Typography } from "@/components/shared/typography";
@@ -28,10 +29,7 @@ function CategorySectionTitle({
 
 function FilterGrid({ filters }: { filters: PublicFilterListDTO[] }) {
   return (
-    <ul
-      role='list'
-      className='mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2'
-    >
+    <ul className='mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2'>
       {filters.map((filter) => (
         <li key={filter.id}>
           <FilterCard filter={filter} />
@@ -60,11 +58,11 @@ export function CreatorPublicFilters({
   }
 
   return (
-    <div className='pb-12 pt-2'>
+    <div className='pt-2 pb-12'>
       {hasUncategorized ? (
         <section
           id='filters-uncategorized'
-          className='scroll-mt-24 border-t border-border pt-10 first:border-t-0 first:pt-0 not-first:mt-10'
+          className='scroll-mt-24 border-t border-border pt-10 not-first:mt-10 first:border-t-0 first:pt-0'
         >
           <CategorySectionTitle title='No category' />
           <FilterGrid filters={hierarchy.uncategorized} />
@@ -75,7 +73,7 @@ export function CreatorPublicFilters({
         <section
           key={category.id}
           id={`filters-category-${category.id}`}
-          className='scroll-mt-24 border-t border-border pt-10 first:border-t-0 first:pt-0 not-first:mt-10'
+          className='scroll-mt-24 border-t border-border pt-10 not-first:mt-10 first:border-t-0 first:pt-0'
         >
           <CategorySectionTitle title={category.name} />
           {category.filters.length > 0 ? (

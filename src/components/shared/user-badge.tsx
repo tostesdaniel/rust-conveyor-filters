@@ -20,27 +20,27 @@ const badgeConfig: Record<
   }
 > = {
   [BadgeType.DONATOR]: {
-    icon: <HeartHandshake className='h-3 w-3' />,
+    icon: <HeartHandshake className='size-3' />,
     className: "bg-pink-500/10 text-pink-500 hover:bg-pink-500/20",
     label: "Donator",
   },
   [BadgeType.OFFICIAL]: {
-    icon: <Verified className='h-3 w-3' />,
+    icon: <Verified className='size-3' />,
     className: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20",
     label: "Official",
   },
   [BadgeType.CONTENT_CREATOR]: {
-    icon: <Clapperboard className='h-3 w-3' />,
+    icon: <Clapperboard className='size-3' />,
     className: "bg-green-500/10 text-green-500 hover:bg-green-500/20",
     label: "Content Creator",
   },
   [BadgeType.CONTRIBUTOR]: {
-    icon: <CodeXmlIcon className='h-3 w-3' />,
+    icon: <CodeXmlIcon className='size-3' />,
     className: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20",
     label: "Contributor",
   },
   [BadgeType.SUPPORTER]: {
-    icon: <Crown className='h-3 w-3' />,
+    icon: <Crown className='size-3' />,
     className: "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20",
     label: "Supporter",
   },

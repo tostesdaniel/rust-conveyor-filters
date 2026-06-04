@@ -2,8 +2,8 @@
 
 import {
   createContext,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -90,7 +90,7 @@ export function FilterShareProvider({
 }
 
 export function useFilterShare() {
-  const context = useContext(FilterShareContext);
+  const context = use(FilterShareContext);
   if (!context) {
     throw new Error("useFilterShare must be used within FilterShareProvider");
   }

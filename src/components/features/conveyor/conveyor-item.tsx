@@ -49,6 +49,7 @@ export function ConveyorItem({
             src={getR2ImageUrl(item.imagePath + ".webp", "full")}
             alt={item.name}
             fill
+            sizes='160px'
             className='object-contain'
           />
         )}
@@ -57,10 +58,10 @@ export function ConveyorItem({
             type='button'
             variant='destructive'
             size='icon'
-            className='mt-2 h-5 w-5'
+            className='mt-2 size-5'
             onClick={handleRemove}
           >
-            <XIcon className='h-4 w-4' />
+            <XIcon className='size-4' />
           </Button>
         </div>
       </div>

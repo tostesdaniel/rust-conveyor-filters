@@ -166,12 +166,12 @@ export function FeedbackForm() {
                 <RadioGroup
                   onValueChange={field.onChange}
                   value={field.value || ""}
-                  className='flex flex-col space-y-1'
+                  className='flex flex-col gap-y-1'
                   disabled={!isLoggedIn}
                 >
                   {ratingOptions.map((option) => (
                     <FormItem
-                      className='flex items-center space-y-0 space-x-3'
+                      className='flex items-center gap-x-3 gap-y-0'
                       key={option.value}
                     >
                       <FormControl>
@@ -193,7 +193,7 @@ export function FeedbackForm() {
             <LoadingButton>Submitting</LoadingButton>
           ) : (
             <Button type='submit' disabled={!isLoggedIn}>
-              Submit
+              Submit feedback
             </Button>
           )}
         </div>

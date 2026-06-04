@@ -30,7 +30,7 @@ export function Header() {
     <header className='sticky top-0 z-50 border-b border-border/40 bg-background'>
       <div className='mx-auto flex h-16 max-w-(--breakpoint-2xl) items-center px-4 sm:px-6 lg:px-8'>
         <div className='mr-6 shrink-0'>
-          <Link href='/' className='flex items-center space-x-2'>
+          <Link href='/' className='flex items-center gap-x-2'>
             <Image
               src='/logo.webp'
               width={40}
@@ -55,7 +55,7 @@ export function Header() {
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  <Icons.discord />
+                  <Icons.Discord />
                   <span className='sr-only'>Discord</span>
                 </a>
               </Button>
@@ -64,7 +64,7 @@ export function Header() {
           </div>
           <div className='ml-2 flex h-7 w-auto items-center'>
             <ClerkLoading>
-              <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
+              <Loader2 className='size-5 animate-spin text-muted-foreground' />
             </ClerkLoading>
             <ClerkLoaded>
               <Show when='signed-out'>

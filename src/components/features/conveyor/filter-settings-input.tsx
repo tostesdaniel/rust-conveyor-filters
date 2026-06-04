@@ -77,19 +77,19 @@ export function FilterSettingsInput({
             type='button'
             size='icon'
             aria-label={`Increment ${label}`}
-            className='h-4.5 w-4.5 rounded-none rounded-tr-md'
+            className='size-4.5 rounded-none rounded-tr-md'
             onClick={() => handleValueChange(index, "increment", property)}
           >
-            <ChevronUp className='h-4 w-4' />
+            <ChevronUp className='size-4' />
           </Button>
           <Button
             type='button'
             size='icon'
             aria-label={`Decrement ${label}`}
-            className='h-4.5 w-4.5 rounded-none rounded-br-md'
+            className='size-4.5 rounded-none rounded-br-md'
             onClick={() => handleValueChange(index, "decrement", property)}
           >
-            <ChevronDown className='h-4 w-4' />
+            <ChevronDown className='size-4' />
           </Button>
         </div>
       </div>

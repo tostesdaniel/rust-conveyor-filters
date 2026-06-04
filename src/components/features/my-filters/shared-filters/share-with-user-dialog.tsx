@@ -232,7 +232,7 @@ export function ShareWithUserDialog({
                       </FormDescription>
                       {disableIncludeSubcategoriesCheckbox && (
                         <div className='mt-2 -ml-7 flex items-center gap-x-2 text-destructive brightness-150 saturate-150'>
-                          <TriangleAlert className='h-4 w-4' />
+                          <TriangleAlert className='size-4' />
                           <p className='text-sm font-medium'>
                             Add filters to subcategories to enable this option.
                           </p>
@@ -275,7 +275,10 @@ export function ShareWithUserDialog({
                       </FormControl>
                     </PopoverTrigger>
 
-                    <PopoverContent id={tokenListboxId} className='w-[425px] p-0'>
+                    <PopoverContent
+                      id={tokenListboxId}
+                      className='w-[425px] p-0'
+                    >
                       <Command>
                         <CommandInput
                           placeholder='Enter token...'
@@ -299,7 +302,7 @@ export function ShareWithUserDialog({
                                 >
                                   <div className='flex w-full items-center justify-between'>
                                     <div className='flex items-center'>
-                                      <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
+                                      <Clock className='mr-2 size-4 text-muted-foreground' />
                                       <span>{item.token}</span>
                                     </div>
                                     <span className='text-sm text-muted-foreground'>
@@ -325,7 +328,7 @@ export function ShareWithUserDialog({
                           <CommandGroup heading='Recent Tokens'>
                             <CommandItem disabled className='opacity-50'>
                               <div className='flex items-center gap-x-2'>
-                                <Clock className='h-4 w-4 text-muted-foreground' />
+                                <Clock className='size-4 text-muted-foreground' />
                                 <span className='text-sm text-muted-foreground'>
                                   Your recently used tokens will be saved here
                                 </span>

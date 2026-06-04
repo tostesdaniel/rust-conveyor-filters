@@ -56,9 +56,9 @@ export function CategoryHeadingDropdown({
               type='button'
               variant='ghost'
               size='icon'
-              className='h-8 w-8'
+              className='size-8'
             >
-              <EllipsisIcon className='h-4 w-4' />
+              <EllipsisIcon className='size-4' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

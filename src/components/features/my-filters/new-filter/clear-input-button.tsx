@@ -14,7 +14,7 @@ export function ClearInputButton({ setSearch }: ClearInputButtonProps) {
       className='absolute top-1/2 right-3 -translate-y-1/2 opacity-50 hover:bg-transparent hover:opacity-100'
       onClick={() => setSearch("")}
     >
-      <EraserIcon className='h-4 w-4' />
+      <EraserIcon className='size-4' />
       <span className='sr-only'>Clear input</span>
     </Button>
   );

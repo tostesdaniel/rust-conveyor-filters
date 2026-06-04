@@ -53,6 +53,7 @@ export function FilterGrid() {
           {error.message}
         </Typography>
         <button
+          type='button'
           onClick={() => window.location.reload()}
           className='mt-4 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90'
         >

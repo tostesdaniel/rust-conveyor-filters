@@ -32,14 +32,14 @@ export async function SteamGuideCard() {
           alt={guide.title}
           width={80}
           height={80}
-          className='h-20 w-20 sm:max-w-20'
+          className='size-20 sm:max-w-20'
         />
         <div className='self-start justify-self-end sm:order-3 sm:flex sm:flex-1 sm:flex-col sm:justify-between sm:self-auto'>
           <div className='flex h-4 items-center gap-x-0.5'>
             {[...Array(5)].map((_, i) => (
               <StarIcon
                 key={i}
-                className='h-4 w-4 text-green-500'
+                className='size-4 text-green-500'
                 fill={i < 4 ? "currentColor" : "none"}
               />
             ))}
@@ -56,15 +56,15 @@ export async function SteamGuideCard() {
         {parseDescription(guide.description)}
       </CardContent>
       <CardFooter className='justify-between'>
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center gap-x-2'>
           <div className='flex items-center gap-x-1'>
-            <EyeIcon className='h-4 w-4 text-muted-foreground' />
+            <EyeIcon className='size-4 text-muted-foreground' />
             <Typography variant='mutedText'>
               {millify(guide.views)} views
             </Typography>
           </div>
           <div className='flex items-center gap-x-1'>
-            <BookHeartIcon className='h-4 w-4 text-muted-foreground' />
+            <BookHeartIcon className='size-4 text-muted-foreground' />
             <Typography variant='mutedText'>
               {millify(guide.lifetime_favorited)} favorites
             </Typography>
@@ -78,7 +78,7 @@ export async function SteamGuideCard() {
               rel='noopener noreferrer'
             >
               Read more
-              <ArrowRightIcon className='-mb-1 h-3 w-3' />
+              <ArrowRightIcon className='-mb-1 size-3' />
             </a>
           </Button>
         </div>

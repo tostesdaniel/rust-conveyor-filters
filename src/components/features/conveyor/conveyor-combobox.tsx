@@ -236,7 +236,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                       className='flex items-center gap-x-2'
                       onSelect={() => insertItem(item)}
                     >
-                      <div className='relative h-6 w-6'>
+                      <div className='relative size-6'>
                         <Image
                           src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
                           alt={item.name}

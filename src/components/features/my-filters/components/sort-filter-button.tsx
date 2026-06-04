@@ -25,7 +25,7 @@ export function SortFilterButton({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button type='button' variant='ghost' size='icon' className='h-8 w-8'>
+        <Button type='button' variant='ghost' size='icon' className='size-8'>
           <ArrowDownUpIcon className='size-4' />
           <span className='sr-only'>Sort filters</span>
         </Button>

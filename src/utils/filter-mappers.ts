@@ -45,6 +45,8 @@ export function toOwnerFilterDTO(filter: ConveyorFilter): OwnerFilterDTO {
       categoryId: item.categoryId,
       createdAt: item.createdAt,
     })),
+    forkedFromId: filter.forkedFromId,
+    forkedFrom: null,
   };
 }
 
@@ -127,5 +129,8 @@ export function toPublicFilterDTO(
     badges: filter.badges,
     tags: [],
     creatorUsername: filter.creatorUsername,
+    // The data layer fills these in after enrichment.
+    remixCount: 0,
+    forkedFrom: null,
   };
 }

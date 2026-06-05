@@ -31,6 +31,22 @@ export interface OwnerFilterDTO {
   createdAt: Date;
   updatedAt: Date;
   filterItems: FilterItemDTO[];
+  /** Source filter id when this is a fork (may already be deleted). */
+  forkedFromId: number | null;
+  /**
+   * Source attribution, set only while the source is public. If forkedFromId is
+   * set but this is null, the source is private or gone, and the owner sees a
+   * "saved from a shared filter" note instead of public credit.
+   */
+  forkedFrom: ForkAttributionDTO | null;
+}
+
+/** The public source a fork came from. Set only while that source is public. */
+export interface ForkAttributionDTO {
+  id: number;
+  name: string;
+  author: string | null;
+  creatorUsername: string | null;
 }
 
 /**
@@ -76,4 +92,6 @@ export interface PublicFilterListDTO {
   /** Present when author has a Clerk username (profile URL) */
   creatorUsername: string | null;
   tags: FilterTagDTO[];
+  remixCount: number;
+  forkedFrom: ForkAttributionDTO | null;
 }

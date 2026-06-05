@@ -21,6 +21,7 @@ type CreatorProfileHeroProps = {
   bookmarkCount: number;
   totalExports: number;
   totalViews: number;
+  totalRemixes: number;
 };
 
 const nf = new Intl.NumberFormat("en-US");
@@ -86,6 +87,7 @@ export function CreatorProfileHero({
   bookmarkCount,
   totalExports,
   totalViews,
+  totalRemixes,
 }: CreatorProfileHeroProps) {
   const title = displayName ?? username;
   const avatarAlt =
@@ -206,6 +208,7 @@ export function CreatorProfileHero({
               <MetricTile label='Views' value={totalViews} />
               <MetricTile label='Exports' value={totalExports} />
               <MetricTile label='Bookmarks' value={bookmarkCount} />
+              <MetricTile label='Remixes' value={totalRemixes} />
             </div>
           </div>
         ) : null}

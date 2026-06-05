@@ -1,3 +1,4 @@
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import {
   createSharedFilter,
   deleteSharedFilter,
@@ -8,6 +9,7 @@ import {
   findShareTokenByToken,
   findShareTokenId,
 } from "@/data";
+import { createForkedFilter } from "@/data/filters";
 import { db } from "@/db";
 import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
@@ -362,6 +364,94 @@ export const sharedFilterRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
           message:
             "Failed to share filters. Please try again later. If the problem persists, please contact ohTostt on Discord.",
+        });
+      }
+    }),
+
+  saveToCollection: protectedProcedure
+    .input(z.object({ filterId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { filterId } = input;
+
+      // Only fork a filter shared with the caller's own active token.
+      const myToken = await findShareTokenId(ctx.userId);
+      if (!myToken) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "You don't have an active share token.",
+        });
+      }
+
+      const shared = await findSharedFilter({
+        filterId,
+        shareTokenId: myToken.id,
+      });
+      if (!shared) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "This filter isn't shared with you.",
+        });
+      }
+
+      const source = await db.query.filters.findFirst({
+        where: eq(filters.id, filterId),
+        with: {
+          filterItems: {
+            with: { item: true, category: true },
+          },
+        },
+      });
+
+      if (!source) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "The shared filter no longer exists.",
+        });
+      }
+
+      // You can't be shared your own filter, but guard against it anyway.
+      if (source.authorId === ctx.userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You already own this filter.",
+        });
+      }
+
+      // No form schema runs on this path, so check the item cap here.
+      if (source.filterItems.length > MAX_FILTER_ITEMS) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `This filter exceeds the ${MAX_FILTER_ITEMS}-item limit.`,
+        });
+      }
+
+      try {
+        const forked = await createForkedFilter({
+          userId: ctx.userId,
+          source: {
+            id: source.id,
+            name: source.name,
+            description: source.description,
+            imagePath: source.imagePath,
+            authorId: source.authorId,
+          },
+          sourceItems: source.filterItems.map((item) => ({
+            itemId: item.itemId,
+            categoryId: item.categoryId,
+            max: item.max,
+            buffer: item.buffer,
+            min: item.min,
+          })),
+        });
+
+        return { success: true, filterId: forked.id };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to save filter to your collection.",
         });
       }
     }),

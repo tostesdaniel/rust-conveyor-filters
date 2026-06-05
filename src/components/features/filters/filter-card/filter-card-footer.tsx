@@ -1,5 +1,5 @@
 import { format, formatDistanceToNowStrict } from "date-fns";
-import { ArrowBigUpDashIcon, ClockFadingIcon } from "lucide-react";
+import { ArrowBigUpDashIcon, ClockFadingIcon, GitForkIcon } from "lucide-react";
 
 import type { PublicFilterListDTO } from "@/types/filter";
 import { cn } from "@/lib/utils";
@@ -12,11 +12,7 @@ import {
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import ViewFilter from "@/components/features/filters/components/view-filter";
 
-export function FilterCardFooter({
-  filter,
-}: {
-  filter: PublicFilterListDTO;
-}) {
+export function FilterCardFooter({ filter }: { filter: PublicFilterListDTO }) {
   return (
     <CardFooter
       className={cn(
@@ -58,9 +54,31 @@ export function FilterCardFooter({
           </TooltipTrigger>
           <TooltipContent>{format(filter.createdAt, "PPpp")}</TooltipContent>
         </Tooltip>
+
+        {filter.remixCount > 0 && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <CardDescription className='flex items-center gap-1.5 leading-6'>
+                <GitForkIcon
+                  aria-hidden='true'
+                  className='size-4 text-muted-foreground/75'
+                />
+                <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
+                  Remixes:
+                </span>
+                <span className='tabular-nums'>{filter.remixCount}</span>
+              </CardDescription>
+            </TooltipTrigger>
+            <TooltipContent>
+              {filter.remixCount === 1
+                ? "1 person remixed this filter"
+                : `${filter.remixCount} people remixed this filter`}
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
       <div className='flex w-full justify-center gap-2 sm:w-auto lg:w-full xl:w-auto'>
-        <ViewFilter filter={filter} log />
+        <ViewFilter filter={filter} log remixFilterId={filter.id} />
         <ExportConveyorFilter
           type='button'
           filter={filter.filterItems}

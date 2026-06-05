@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { api } from "@/trpc/react";
 import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { useSortable } from "@dnd-kit/sortable";
@@ -11,11 +12,13 @@ import {
   CornerDownRight,
   Edit,
   EllipsisVertical,
+  FolderInputIcon,
   GripVertical,
   ListPlusIcon,
   Trash,
   Trash2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
@@ -71,6 +74,25 @@ export function MyFilterCard({
     useState(false);
   const { data: categories } = useGetUserCategories();
   const isOwner = isOwnerFilterDTO(filter);
+
+  // A fork of a private or deleted source has no public credit, so show the
+  // owner a quiet "saved from a shared filter" note instead.
+  const showSharedSourceNote =
+    isOwner && filter.forkedFromId != null && filter.forkedFrom == null;
+
+  const utils = api.useUtils();
+  const saveToCollection = api.sharedFilter.saveToCollection.useMutation({
+    onSuccess: async () => {
+      await Promise.all([
+        utils.filter.getByCategory.invalidate({ categoryId: null }),
+        utils.category.getHierarchy.invalidate(),
+      ]);
+      toast.success("Saved to your collection");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
 
   const {
     attributes,
@@ -145,6 +167,11 @@ export function MyFilterCard({
             </Link>
           )}
           <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
+          {showSharedSourceNote && (
+            <p className='truncate text-xs text-muted-foreground/75'>
+              Saved from a filter shared with you
+            </p>
+          )}
         </div>
         <div className='flex items-center gap-x-2 pr-2'>
           <div className='flex items-center gap-x-4'>
@@ -174,6 +201,19 @@ export function MyFilterCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      disabled={saveToCollection.isPending}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        saveToCollection.mutate({ filterId: filter.id });
+                      }}
+                    >
+                      <FolderInputIcon />
+                      {saveToCollection.isPending
+                        ? "Saving..."
+                        : "Save to my collection"}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onSelect={() => setIsRemoveSharedFilterDialogOpen(true)}
                       className='text-destructive'

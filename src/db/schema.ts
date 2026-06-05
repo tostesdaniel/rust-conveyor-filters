@@ -1,6 +1,7 @@
 import { tsVector } from "@/db/custom-types/ts-vector";
 import { relations, sql } from "drizzle-orm";
 import {
+  type AnyPgColumn,
   boolean,
   char,
   index,
@@ -52,6 +53,14 @@ export const filters = pgTable(
       { onDelete: "set null" },
     ),
     order: integer("order").default(0).notNull(),
+    // Source filter this was forked from. SET NULL on delete so removing a
+    // source drops its attribution and remix counts.
+    forkedFromId: integer("forked_from_id").references(
+      (): AnyPgColumn => filters.id,
+      { onDelete: "set null" },
+    ),
+    // Source author's Clerk id, kept even after the source filter is deleted.
+    forkedFromAuthorId: varchar("forked_from_author_id", { length: 255 }),
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
@@ -84,6 +93,7 @@ export const filters = pgTable(
     index("filters_export_count_idx").on(t.exportCount.desc(), t.id.asc()),
     index("filters_search_idx").using("gin", t.searchVector),
     index("filters_ai_status_idx").on(t.aiCategorizationStatus),
+    index("filters_forked_from_idx").on(t.forkedFromId),
   ],
 );
 

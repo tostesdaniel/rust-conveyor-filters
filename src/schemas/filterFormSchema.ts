@@ -85,7 +85,13 @@ const baseFilterSchema = z.object({
     ),
 });
 
-export const createFilterSchema = baseFilterSchema.superRefine((data, ctx) => {
+// Create accepts an optional fork source id (the Remix flow). The author
+// snapshot is resolved server-side and never trusted from the client.
+const createBaseSchema = baseFilterSchema.extend({
+  forkedFromId: z.number().int().positive().optional(),
+});
+
+export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
   // Only validate Latin characters if filter is public
   if (!data.isPublic) return;
 

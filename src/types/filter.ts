@@ -21,6 +21,7 @@ export type {
   PublicFilterListDTO,
   FilterItemDTO,
   FilterTagDTO,
+  ForkAttributionDTO,
   OwnerFilterDTO,
   SharedFilterDTO,
 } from "@/types/dto/public-filter";

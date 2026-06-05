@@ -42,12 +42,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
+import { RemixButton } from "@/components/features/filters/filter-card/remix-button";
 import { ButtonWithIcon } from "@/components/shared/button-with-icon";
 
 interface ViewFilterProps {
   filter: OwnerFilterDTO | SharedFilterDTO | PublicFilterListDTO;
   log?: boolean;
   variant?: "button" | "dropdown" | "icon";
+  remixFilterId?: number;
 }
 
 function TriggerButton({
@@ -92,6 +94,7 @@ export default function ViewFilter({
   filter,
   log = false,
   variant = "button",
+  remixFilterId,
 }: ViewFilterProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -130,6 +133,11 @@ export default function ViewFilter({
               </ul>
             </div>
           </ScrollArea>
+          {remixFilterId !== undefined && (
+            <div className='flex justify-end'>
+              <RemixButton filterId={remixFilterId} />
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     );
@@ -158,6 +166,9 @@ export default function ViewFilter({
           </div>
         </ScrollArea>
         <DrawerFooter>
+          {remixFilterId !== undefined && (
+            <RemixButton filterId={remixFilterId} className='w-full' />
+          )}
           <DrawerClose asChild>
             <Button type='button' variant='secondary'>
               Close

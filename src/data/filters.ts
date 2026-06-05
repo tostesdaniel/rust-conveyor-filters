@@ -3,9 +3,13 @@ import "server-only";
 import { db } from "@/db";
 import type { CursorData } from "@/utils/cursor";
 import { encodeCursor } from "@/utils/cursor";
-import { enrichWithAuthor } from "@/utils/enrich-filter";
+import {
+  clerkUserToAuthorDisplay,
+  enrichWithAuthor,
+} from "@/utils/enrich-filter";
 import { toOwnerFilterDTO, toPublicFilterDTO } from "@/utils/filter-mappers";
 import { createTsQuery } from "@/utils/text-search";
+import { clerkClient } from "@clerk/nextjs/server";
 import {
   and,
   asc,
@@ -207,6 +211,155 @@ export async function moveFilterToUncategorized(
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
 
+/** A source filter's items, shaped for copying into a fork. */
+interface ForkSourceItem {
+  itemId: number | null;
+  categoryId: number | null;
+  max: number;
+  buffer: number;
+  min: number;
+}
+
+interface CreateForkedFilterParams {
+  userId: string;
+  source: {
+    id: number;
+    name: string;
+    description: string | null;
+    imagePath: string;
+    authorId: string;
+  };
+  sourceItems: ForkSourceItem[];
+}
+
+/**
+ * Copy a source filter into a new one the user owns. The copy is private,
+ * uncategorized, keeps the source name, and records lineage. The shared "Save
+ * to my collection" path uses this; Remix forks through filter.create instead.
+ */
+export async function createForkedFilter({
+  userId,
+  source,
+  sourceItems,
+}: CreateForkedFilterParams) {
+  const maxOrder = await getMaxOrderInUncategorized(userId);
+
+  const [insertedFilter] = await db
+    .insert(filters)
+    .values({
+      name: source.name,
+      description: source.description,
+      authorId: userId,
+      imagePath: source.imagePath,
+      isPublic: false,
+      categoryId: null,
+      subCategoryId: null,
+      order: maxOrder ? maxOrder.order + 1 : 0,
+      forkedFromId: source.id,
+      forkedFromAuthorId: source.authorId,
+    })
+    .returning();
+
+  if (sourceItems.length > 0) {
+    await db.insert(filterItems).values(
+      sourceItems.map((item) => ({
+        filterId: insertedFilter.id,
+        itemId: item.itemId,
+        categoryId: item.categoryId,
+        max: item.max,
+        buffer: item.buffer,
+        min: item.min,
+      })),
+    );
+  }
+
+  return insertedFilter;
+}
+
+/** Attribution for a fork whose source is public. */
+export interface ForkAttribution {
+  id: number;
+  name: string;
+  author: string | null;
+  creatorUsername: string | null;
+}
+
+/**
+ * Count forks per source id. Callers pass public filter ids, so the count
+ * measures a public source's reach even when the forks themselves are private.
+ */
+export async function loadRemixCounts(filterIds: number[]) {
+  if (filterIds.length === 0) return new Map<number, number>();
+
+  const rows = await db
+    .select({
+      forkedFromId: filters.forkedFromId,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(filters)
+    .where(inArray(filters.forkedFromId, filterIds))
+    .groupBy(filters.forkedFromId);
+
+  const byFilter = new Map<number, number>();
+  for (const row of rows) {
+    if (row.forkedFromId !== null) byFilter.set(row.forkedFromId, row.count);
+  }
+  return byFilter;
+}
+
+/**
+ * Resolve attribution for fork rows. A row resolves to an attribution only when
+ * its source is still public, so forks of private or deleted sources return
+ * null and strangers never see a private author (ADR-0002).
+ */
+export async function loadForkAttributions(
+  forkRows: Array<{ id: number; forkedFromId: number | null }>,
+) {
+  const result = new Map<number, ForkAttribution | null>();
+
+  const sourceIds = [
+    ...new Set(
+      forkRows
+        .map((f) => f.forkedFromId)
+        .filter((id): id is number => id !== null),
+    ),
+  ];
+  if (sourceIds.length === 0) return result;
+
+  const sources = await db.query.filters.findMany({
+    where: and(inArray(filters.id, sourceIds), eq(filters.isPublic, true)),
+    columns: { id: true, name: true, authorId: true },
+  });
+  if (sources.length === 0) return result;
+
+  const client = await clerkClient();
+  const authorIds = [...new Set(sources.map((s) => s.authorId))];
+  const usersResponse = await client.users.getUserList({ userId: authorIds });
+  const userMap = new Map(usersResponse.data.map((u) => [u.id, u]));
+
+  const sourceMap = new Map<number, ForkAttribution>(
+    sources.map((s) => {
+      const user = userMap.get(s.authorId);
+      return [
+        s.id,
+        {
+          id: s.id,
+          name: s.name,
+          author: user ? clerkUserToAuthorDisplay(user) : null,
+          creatorUsername: user?.username ?? null,
+        },
+      ];
+    }),
+  );
+
+  for (const f of forkRows) {
+    if (f.forkedFromId !== null) {
+      result.set(f.id, sourceMap.get(f.forkedFromId) ?? null);
+    }
+  }
+  return result;
+}
+
 // Query functions
 
 export async function getFiltersWithItems(userId: string) {
@@ -220,7 +373,11 @@ export async function getFiltersWithItems(userId: string) {
     },
   });
 
-  return result.map(toOwnerFilterDTO);
+  const forkAttributions = await loadForkAttributions(result);
+  return result.map((f) => ({
+    ...toOwnerFilterDTO(f),
+    forkedFrom: forkAttributions.get(f.id) ?? null,
+  }));
 }
 
 export async function getFilterById(filterId: number, userId: string) {
@@ -255,13 +412,18 @@ export async function getPublicFilter(filterId: number) {
     return null;
   }
 
-  const [enriched, tagsByFilter] = await Promise.all([
-    enrichWithAuthor([filter]),
-    loadTagsForFilters([filter.id]),
-  ]);
+  const [enriched, tagsByFilter, remixCounts, forkAttributions] =
+    await Promise.all([
+      enrichWithAuthor([filter]),
+      loadTagsForFilters([filter.id]),
+      loadRemixCounts([filter.id]),
+      loadForkAttributions([filter]),
+    ]);
   return {
     ...toPublicFilterDTO(enriched[0]),
     tags: tagsByFilter.get(filter.id) ?? [],
+    remixCount: remixCounts.get(filter.id) ?? 0,
+    forkedFrom: forkAttributions.get(filter.id) ?? null,
   };
 }
 
@@ -470,14 +632,19 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     orderBy,
   });
 
-  const [enrichedFilters, tagsByFilter] = await Promise.all([
-    enrichWithAuthor(result),
-    loadTagsForFilters(result.map((r) => r.id)),
-  ]);
+  const [enrichedFilters, tagsByFilter, remixCounts, forkAttributions] =
+    await Promise.all([
+      enrichWithAuthor(result),
+      loadTagsForFilters(result.map((r) => r.id)),
+      loadRemixCounts(result.map((r) => r.id)),
+      loadForkAttributions(result),
+    ]);
 
   const dtoFilters = enrichedFilters.map((f) => ({
     ...toPublicFilterDTO(f),
     tags: tagsByFilter.get(f.id) ?? [],
+    remixCount: remixCounts.get(f.id) ?? 0,
+    forkedFrom: forkAttributions.get(f.id) ?? null,
   }));
 
   // Generate minimal, sort-specific cursor
@@ -542,5 +709,9 @@ export async function getUserFiltersByCategory(
     orderBy: filters.order,
   });
 
-  return result.map(toOwnerFilterDTO);
+  const forkAttributions = await loadForkAttributions(result);
+  return result.map((f) => ({
+    ...toOwnerFilterDTO(f),
+    forkedFrom: forkAttributions.get(f.id) ?? null,
+  }));
 }

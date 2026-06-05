@@ -10,14 +10,30 @@ export const metadata: Metadata = {
   description: "Create new conveyor filter.",
 };
 
-export default async function NewFilterPage() {
+export default async function NewFilterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ remixOf?: string }>;
+}) {
+  const { remixOf } = await searchParams;
+  const remixOfId = remixOf ? Number(remixOf) : undefined;
+  const validRemixId =
+    remixOfId !== undefined && Number.isInteger(remixOfId) && remixOfId > 0
+      ? remixOfId
+      : undefined;
+
   await api.stats.getItems.prefetch();
+  if (validRemixId) {
+    await api.filter.getPublic.prefetch({ filterId: validRemixId });
+  }
 
   return (
     <>
-      <Typography variant='h1'>New Filter</Typography>
+      <Typography variant='h1'>
+        {validRemixId ? "Remix Filter" : "New Filter"}
+      </Typography>
       <HydrateClient>
-        <NewFilterForm />
+        <NewFilterForm remixOf={validRemixId} />
       </HydrateClient>
     </>
   );

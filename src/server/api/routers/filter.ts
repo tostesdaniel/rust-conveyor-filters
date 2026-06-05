@@ -113,6 +113,42 @@ export const filterRouter = createTRPCRouter({
 
       const newFilter = parsed.data;
 
+      // Remix flow: forks are private and uncategorized, and we read the
+      // author snapshot from the source row instead of the client.
+      let forkLineage: {
+        forkedFromId: number;
+        forkedFromAuthorId: string;
+      } | null = null;
+      if (newFilter.forkedFromId) {
+        const source = await db.query.filters.findFirst({
+          where: eq(filters.id, newFilter.forkedFromId),
+          columns: { id: true, authorId: true, isPublic: true },
+        });
+
+        if (!source) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "The filter you're remixing no longer exists.",
+          });
+        }
+
+        // This path only forks public sources.
+        if (!source.isPublic) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You can only remix public filters.",
+          });
+        }
+
+        forkLineage = {
+          forkedFromId: source.id,
+          forkedFromAuthorId: source.authorId,
+        };
+        // Override whatever the client sent.
+        newFilter.isPublic = false;
+        newFilter.category = { categoryId: null, subCategoryId: null };
+      }
+
       // Validate Latin characters for public filters
       if (
         newFilter.isPublic &&
@@ -152,6 +188,8 @@ export const filterRouter = createTRPCRouter({
             subCategoryId: newFilter.category.subCategoryId,
             isPublic: newFilter.isPublic,
             order: maxOrder ? maxOrder.order + 1 : 0,
+            forkedFromId: forkLineage?.forkedFromId ?? null,
+            forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
           })
           .returning();
 
@@ -190,6 +228,15 @@ export const filterRouter = createTRPCRouter({
           } catch (err) {
             console.error("Error enqueuing AI categorization:", err);
           }
+        }
+
+        if (forkLineage) {
+          await db
+            .update(filters)
+            .set({
+              popularityScore: sql`GREATEST(0, ${filters.popularityScore}) + 10`,
+            })
+            .where(eq(filters.id, forkLineage.forkedFromId));
         }
 
         return insertedFilter;

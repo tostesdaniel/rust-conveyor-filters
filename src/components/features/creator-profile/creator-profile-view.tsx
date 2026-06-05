@@ -106,6 +106,7 @@ export function CreatorProfileView({ username }: { username: string }) {
         bookmarkCount={data.stats.bookmarkCount}
         totalExports={data.stats.totalExports}
         totalViews={data.stats.totalViews}
+        totalRemixes={data.stats.totalRemixes}
       />
       <CreatorPublicFilters hierarchy={data.hierarchy} />
     </div>

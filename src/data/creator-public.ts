@@ -1,10 +1,15 @@
 import "server-only";
 
-import { loadTagsForFilters } from "@/data/filters";
+import {
+  loadForkAttributions,
+  loadRemixCounts,
+  loadTagsForFilters,
+} from "@/data/filters";
 import { db } from "@/db";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toPublicFilterDTO } from "@/utils/filter-mappers";
 import { and, eq, isNull, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 
 import type { ConveyorFilter, PublicFilterListDTO } from "@/types/filter";
 import { bookmarks, filters, userCategories } from "@/db/schema";
@@ -14,6 +19,7 @@ export type CreatorPublicStats = {
   totalViews: number;
   totalExports: number;
   bookmarkCount: number;
+  totalRemixes: number;
 };
 
 export type CreatorPublicSubCategory = {
@@ -40,15 +46,21 @@ async function mapFiltersToPublicDTOs(
   if (rawFilters.length === 0) {
     return new Map();
   }
-  const [enriched, tagsByFilter] = await Promise.all([
-    enrichWithAuthor(rawFilters),
-    loadTagsForFilters(rawFilters.map((f) => f.id)),
-  ]);
+  const filterIds = rawFilters.map((f) => f.id);
+  const [enriched, tagsByFilter, remixCounts, forkAttributions] =
+    await Promise.all([
+      enrichWithAuthor(rawFilters),
+      loadTagsForFilters(filterIds),
+      loadRemixCounts(filterIds),
+      loadForkAttributions(rawFilters),
+    ]);
   const map = new Map<number, PublicFilterListDTO>();
   for (const f of enriched) {
     map.set(f.id, {
       ...toPublicFilterDTO(f),
       tags: tagsByFilter.get(f.id) ?? [],
+      remixCount: remixCounts.get(f.id) ?? 0,
+      forkedFrom: forkAttributions.get(f.id) ?? null,
     });
   }
   return map;
@@ -57,7 +69,11 @@ async function mapFiltersToPublicDTOs(
 export async function getCreatorPublicStats(
   authorId: string,
 ): Promise<CreatorPublicStats> {
-  const [[filterAgg], [bm]] = await Promise.all([
+  // Count forks of this author's public filters: join each fork back to its
+  // source and keep only sources that are the author's and public.
+  const sourceFilters = alias(filters, "remix_source_filters");
+
+  const [[filterAgg], [bm], [remixAgg]] = await Promise.all([
     db
       .select({
         publicFilterCount: sql<number>`cast(count(*) as int)`,
@@ -73,6 +89,18 @@ export async function getCreatorPublicStats(
       .from(bookmarks)
       .innerJoin(filters, eq(bookmarks.filterId, filters.id))
       .where(and(eq(filters.authorId, authorId), eq(filters.isPublic, true))),
+    db
+      .select({
+        totalRemixes: sql<number>`cast(count(*) as int)`,
+      })
+      .from(filters)
+      .innerJoin(sourceFilters, eq(filters.forkedFromId, sourceFilters.id))
+      .where(
+        and(
+          eq(sourceFilters.authorId, authorId),
+          eq(sourceFilters.isPublic, true),
+        ),
+      ),
   ]);
 
   return {
@@ -80,6 +108,7 @@ export async function getCreatorPublicStats(
     totalViews: filterAgg?.totalViews ?? 0,
     totalExports: filterAgg?.totalExports ?? 0,
     bookmarkCount: bm?.bookmarkCount ?? 0,
+    totalRemixes: remixAgg?.totalRemixes ?? 0,
   };
 }
 

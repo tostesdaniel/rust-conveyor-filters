@@ -10,6 +10,11 @@ import { toast } from "sonner";
 
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { Toggle } from "@/components/ui/toggle";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface BookmarkToggleProps
   extends React.ComponentProps<typeof TogglePrimitive.Root> {
@@ -72,18 +77,27 @@ export function BookmarkToggle({
   });
 
   return (
-    <Toggle
-      aria-label='Bookmark filter'
-      className='group -my-3 hover:bg-transparent data-[state=on]:bg-transparent data-[state=on]:hover:text-muted-foreground'
-      onPressedChange={() => mutation.mutate({ filterId: filterId })}
-      pressed={isBookmarked}
-      {...props}
-    >
-      {isLoading ? (
-        <Loader2Icon className='size-4 animate-spin' />
-      ) : (
-        <BookmarkIcon className='size-4 group-data-[state=on]:fill-current' />
-      )}
-    </Toggle>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className='-my-3 inline-flex'>
+          <Toggle
+            aria-label='Bookmark filter'
+            className='group hover:bg-transparent data-[state=on]:bg-transparent data-[state=on]:hover:text-muted-foreground'
+            onPressedChange={() => mutation.mutate({ filterId: filterId })}
+            pressed={isBookmarked}
+            {...props}
+          >
+            {isLoading ? (
+              <Loader2Icon className='size-4 animate-spin' />
+            ) : (
+              <BookmarkIcon className='size-4 group-data-[state=on]:fill-current' />
+            )}
+          </Toggle>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        {isBookmarked ? "Remove bookmark" : "Bookmark filter"}
+      </TooltipContent>
+    </Tooltip>
   );
 }

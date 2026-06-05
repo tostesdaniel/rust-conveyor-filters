@@ -1,8 +1,13 @@
 import { useUser } from "@clerk/nextjs";
-import { Share2 } from "lucide-react";
+import { Share } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function ShareButton({ filterId }: { filterId: number }) {
   const { user } = useUser();
@@ -27,14 +32,19 @@ export function ShareButton({ filterId }: { filterId: number }) {
   };
 
   return (
-    <Button
-      type='button'
-      variant='ghost'
-      size='icon'
-      className='hover:bg-transparent hover:text-muted-foreground'
-      onClick={handleShare}
-    >
-      <Share2 />
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          type='button'
+          variant='ghost'
+          size='icon'
+          className='hover:bg-transparent hover:text-muted-foreground'
+          onClick={handleShare}
+        >
+          <Share />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Share filter</TooltipContent>
+    </Tooltip>
   );
 }

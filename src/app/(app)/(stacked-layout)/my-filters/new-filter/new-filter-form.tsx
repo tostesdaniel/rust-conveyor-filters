@@ -1,6 +1,8 @@
 "use client";
 
+import * as React from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createFilterSchema } from "@/schemas/filterFormSchema";
 import { api } from "@/trpc/react";
@@ -39,7 +41,7 @@ const DevTool = dynamic(
   { ssr: false },
 );
 
-export default function NewFilterForm() {
+export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
   const router = useRouter();
   const { data: items } = useGetItems();
   const { data: _categories } = useGetCategories();
@@ -56,8 +58,66 @@ export default function NewFilterForm() {
       description: "",
       items: [],
       isPublic: false,
+      forkedFromId: undefined,
     },
   });
+
+  // Remix prefills the editor from a public source. Nothing saves until the
+  // user submits; forkedFromId rides along in form state.
+  const { data: remixSource, isLoading: isRemixLoading } =
+    api.filter.getPublic.useQuery(
+      { filterId: remixOf ?? 0 },
+      { enabled: !!remixOf },
+    );
+  const hydratedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!remixOf || hydratedRef.current) return;
+    if (isRemixLoading) return;
+
+    hydratedRef.current = true;
+
+    // Source went private or was deleted between click and load.
+    if (!remixSource) {
+      toast.error("That filter is no longer available to remix.");
+      return;
+    }
+
+    form.reset({
+      name: remixSource.name,
+      description: remixSource.description ?? "",
+      imagePath: remixSource.imagePath,
+      category: { categoryId: null, subCategoryId: null },
+      isPublic: false,
+      forkedFromId: remixOf,
+      items: remixSource.filterItems
+        .map((filterItem) => {
+          if (filterItem.item && filterItem.itemId) {
+            return {
+              name: filterItem.item.name,
+              imagePath: filterItem.item.imagePath,
+              itemId: filterItem.itemId,
+              max: filterItem.max,
+              buffer: filterItem.buffer,
+              min: filterItem.min,
+            };
+          }
+          if (filterItem.category && filterItem.categoryId) {
+            return {
+              name: filterItem.category.name,
+              categoryId: filterItem.categoryId,
+              max: filterItem.max,
+              buffer: filterItem.buffer,
+              min: filterItem.min,
+            };
+          }
+          return null;
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null),
+    });
+
+    void form.trigger();
+  }, [remixOf, remixSource, isRemixLoading, form]);
 
   const utils = api.useUtils();
   const updateOrderMutation = api.filter.updateOrder.useMutation();
@@ -149,6 +209,33 @@ export default function NewFilterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 py-6'>
+        {remixSource && (
+          <div className='rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground'>
+            Remixing{" "}
+            <span className='font-medium text-foreground'>
+              {remixSource.name}
+            </span>
+            {remixSource.author ? (
+              <>
+                {" "}
+                by{" "}
+                {remixSource.creatorUsername ? (
+                  <Link
+                    href={`/users/${remixSource.creatorUsername}`}
+                    className='font-medium text-foreground hover:underline'
+                  >
+                    {remixSource.author}
+                  </Link>
+                ) : (
+                  <span className='font-medium text-foreground'>
+                    {remixSource.author}
+                  </span>
+                )}
+              </>
+            ) : null}
+            . Save to add your own copy. You may tweak anything to your liking.
+          </div>
+        )}
         <FormField
           control={form.control}
           name='name'
@@ -231,7 +318,11 @@ export default function NewFilterForm() {
           </FormItem>
         </FormFieldScope>
         <Button type='submit' disabled={mutation.isPending}>
-          {mutation.isPending ? "Submitting..." : "Create Filter"}
+          {mutation.isPending
+            ? "Submitting..."
+            : remixOf
+              ? "Save Remix"
+              : "Create Filter"}
         </Button>
       </form>
       {process.env.NODE_ENV === "development" && (

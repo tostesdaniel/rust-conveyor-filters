@@ -10,7 +10,14 @@ export function FilterCardSkeleton() {
   return (
     <Card className='flex h-full max-w-(--breakpoint-sm) flex-col'>
       <CardHeader>
-        <Skeleton className='h-6 w-3/5' />
+        <div className='flex items-center justify-between'>
+          <Skeleton className='h-6 w-3/5' />
+          <div className='flex items-center gap-1.5'>
+            <Skeleton className='size-5 rounded-md' />
+            <Skeleton className='size-5 rounded-md' />
+            <Skeleton className='size-5 rounded-md' />
+          </div>
+        </div>
         <Skeleton className='h-5 w-1/2' />
         <Skeleton className='h-5 w-2/5' />
       </CardHeader>
@@ -35,14 +42,14 @@ export function FilterCardSkeleton() {
           <Skeleton className='h-5 w-36' />
         </div>
       </CardContent>
-      <CardFooter className='items-end justify-center min-[475px]:justify-between'>
-        <div className='hidden space-y-1.5 pt-0.5 min-[475px]:block'>
+      <CardFooter className='flex-col gap-3 sm:flex-row sm:justify-between lg:flex-col xl:flex-row'>
+        <div className='space-y-1.5 self-start pt-0.5'>
           <Skeleton className='h-4 w-36' />
           <Skeleton className='h-4 w-36' />
         </div>
-        <div className='min- flex w-full items-center justify-center gap-x-4 min-[475px]:w-auto [475px]:block'>
-          <Skeleton className='h-9 w-full min-[475px]:w-24' />
-          <Skeleton className='h-9 w-full min-[475px]:w-24' />
+        <div className='flex w-full gap-2 sm:w-auto lg:w-full xl:w-auto'>
+          <Skeleton className='h-9 flex-1 sm:w-24 sm:flex-none lg:flex-1 xl:w-24 xl:flex-none' />
+          <Skeleton className='h-9 flex-1 sm:w-24 sm:flex-none lg:flex-1 xl:w-24 xl:flex-none' />
         </div>
       </CardFooter>
     </Card>

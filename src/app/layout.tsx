@@ -19,6 +19,7 @@ import { Analytics } from "@/components/features/analytics/analytics";
 import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
 import { SessionTick } from "@/components/features/donation/session-tick";
 import { BannerWrapper } from "@/components/layout/banner-wrapper";
+import { SiteJsonLd } from "@/components/shared/site-json-ld";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const teko = Teko({ subsets: ["latin"], variable: "--font-brand" });
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     template: `%s - ${siteConfig.name}`,
     default: siteConfig.name,
   },
-  description: "Generate Rust conveyor filters with ease",
+  description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   keywords: [
     "Rust",
@@ -98,6 +99,7 @@ export default async function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        <SiteJsonLd />
         <Analytics />
         <GoogleAnalytics gaId='G-BGERZ3ES1R' />
         {!isAdFree && <Nitro />}

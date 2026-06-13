@@ -8,7 +8,8 @@ import {
 import { db } from "@/db";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toPublicFilterDTO } from "@/utils/filter-mappers";
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { clerkClient, type User } from "@clerk/nextjs/server";
+import { and, eq, isNull, max, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
 import type { ConveyorFilter, PublicFilterListDTO } from "@/types/filter";
@@ -222,4 +223,70 @@ export async function getPublicFilterHierarchyForAuthor(
   }
 
   return { uncategorized, categories };
+}
+
+export type PublicCreatorSitemapEntry = {
+  username: string;
+  lastModified: Date;
+};
+
+// Clerk's getUserList caps at 500 ids per request; stay well under it.
+const CLERK_USER_CHUNK = 100;
+
+/**
+ * List every creator that has at least one public filter, resolved to their
+ * current Clerk username, with the most recent public-filter update time as
+ * `lastModified`. Used to populate `/users/[username]` entries in the sitemap.
+ */
+export async function getPublicCreatorSitemapEntries(): Promise<
+  PublicCreatorSitemapEntry[]
+> {
+  const authors = await db
+    .select({
+      authorId: filters.authorId,
+      lastModified: max(filters.updatedAt),
+    })
+    .from(filters)
+    .where(eq(filters.isPublic, true))
+    .groupBy(filters.authorId);
+
+  if (authors.length === 0) {
+    return [];
+  }
+
+  const lastModifiedById = new Map(
+    authors.map((a) => [a.authorId, a.lastModified ?? new Date()]),
+  );
+  const authorIds = authors.map((a) => a.authorId);
+
+  const client = await clerkClient();
+  const entries: PublicCreatorSitemapEntry[] = [];
+
+  for (let i = 0; i < authorIds.length; i += CLERK_USER_CHUNK) {
+    const chunk = authorIds.slice(i, i + CLERK_USER_CHUNK);
+    let users: User[] = [];
+    try {
+      const res = await client.users.getUserList({
+        userId: chunk,
+        limit: CLERK_USER_CHUNK,
+      });
+      users = res.data;
+    } catch {
+      // Skip this chunk on transient Clerk errors rather than failing the
+      // whole sitemap build.
+      continue;
+    }
+
+    for (const user of users) {
+      if (!user.username) {
+        continue;
+      }
+      entries.push({
+        username: user.username,
+        lastModified: lastModifiedById.get(user.id) ?? new Date(),
+      });
+    }
+  }
+
+  return entries;
 }

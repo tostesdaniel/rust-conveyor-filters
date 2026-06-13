@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Steam Guide",
   description:
     "Learn how to import and use Rust conveyor filters with the official Steam Guide.",
+  alternates: { canonical: "/steam-guide" },
 };
 
 export const dynamic = "force-dynamic";

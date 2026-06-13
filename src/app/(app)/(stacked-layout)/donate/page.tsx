@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "Support the Project and Go Ad-Free",
   description:
     "Subscribe for $3/month to enjoy an ad-free experience, get a Supporter badge, and help keep Rust Conveyor Filters running.",
+  alternates: { canonical: "/donate" },
 };
 
 const { buyMeACoffee, kofi, patreon } = siteConfig.donate;

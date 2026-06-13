@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { FeedbackForm } from "@/components/pages/feedback/feedback-form";
 import { SignInToast } from "@/components/pages/feedback/feedback-toast";
 import { Typography } from "@/components/shared/typography";
+
+export const metadata: Metadata = {
+  title: "Feedback",
+  description:
+    "Share your feedback, feature requests, and bug reports for Rust Conveyor Filters.",
+  alternates: { canonical: "/feedback" },
+};
 
 export default function FeedbackPage() {
   return (

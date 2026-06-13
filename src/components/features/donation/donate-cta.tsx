@@ -13,7 +13,7 @@ export function DonateCTA() {
   return (
     <div className='flex items-center gap-x-2 rounded-lg border bg-card p-4'>
       <div className='flex-1'>
-        <h3 className='font-semibold'>Support the Project</h3>
+        <p className='font-semibold'>Support the Project</p>
         <p className='mt-1 text-sm text-muted-foreground'>
           Go ad-free for $3/mo and help keep the site running. No features
           locked - just a cleaner experience.

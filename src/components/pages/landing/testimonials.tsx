@@ -67,7 +67,10 @@ function TestimonialCard({
       <figure>
         <figcaption className='flex items-center gap-x-4'>
           <Avatar className='size-10'>
-            <AvatarImage src={testimonial.avatarUrl} />
+            <AvatarImage
+              src={testimonial.avatarUrl}
+              alt={`${testimonial.name} avatar`}
+            />
             <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className='flex-auto text-base/5'>

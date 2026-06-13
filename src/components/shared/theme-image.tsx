@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
-type ThemeImageProps = Omit<ImageProps, "src" | "priority" | "loading"> & {
+type ThemeImageProps = Omit<ImageProps, "src" | "priority"> & {
   srcLight: string;
   srcDark: string;
 };

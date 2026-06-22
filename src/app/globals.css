@@ -272,6 +272,16 @@
 }
 
 /*
+  Break a block element out of its max-width container so it spans the full
+  viewport width (used for the hero gradient and the full-bleed bands on
+  /hosting). Requires an ancestor with `overflow-x: clip` (set on <body>) to
+  absorb the scrollbar-width sliver and avoid a horizontal scrollbar.
+*/
+@utility full-bleed {
+  margin-inline: calc(50% - 50vw);
+}
+
+/*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.
@@ -328,5 +338,30 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+  Reveal-on-load. Content is fully visible by default; the entrance is purely
+  additive and plays once on mount, so it can never gate visibility. Crawlers,
+  no-JS renders, and reduced-motion users all get the content with no opacity
+  gate, and a rendering crawler sees the finished (visible) state because the
+  animation completes on load — it is never tied to scroll position.
+*/
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on-load {
+    animation: reveal-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 }

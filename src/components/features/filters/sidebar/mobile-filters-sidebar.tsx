@@ -12,7 +12,7 @@ import { CategorySelection } from "@/components/features/filters/sidebar/categor
 import { ClearFiltersButton } from "@/components/features/filters/sidebar/clear-filters-button";
 import { ItemsSelection } from "@/components/features/filters/sidebar/items-selection";
 import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
-import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar-donate-card";
+import { SidebarPromoCard } from "@/components/features/filters/sidebar/sidebar-promo-card";
 
 export function MobileFiltersSidebar() {
   return (
@@ -41,7 +41,7 @@ export function MobileFiltersSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className='px-4 pt-2'>
-          <SidebarDonateCard />
+          <SidebarPromoCard />
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

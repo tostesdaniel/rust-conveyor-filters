@@ -2,15 +2,31 @@ import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { pineConfig, type PinePlacement } from "@/config/pine";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
 
-const navigation = [
+type FooterLink = {
+  name: string;
+  href: string;
+  /** When set, attributes the click to this Pine placement for Umami. */
+  umami?: PinePlacement;
+};
+
+const navigation: FooterLink[] = [
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Steam Guide", href: "/steam-guide" },
+  { name: pineConfig.copy.footerLinkLabel, href: "/hosting", umami: "footer" },
   { name: "Donate", href: "/donate" },
 ];
+
+/** Umami attributes for a Pine-tagged footer link, or nothing for plain nav. */
+function umamiProps(placement: PinePlacement | undefined) {
+  return placement
+    ? { "data-umami-event": "pine-click", "data-umami-event-placement": placement }
+    : {};
+}
 
 export function Footer() {
   return (
@@ -37,7 +53,9 @@ export function Footer() {
                       "pointer-events-none opacity-50",
                   )}
                 >
-                  <Link href={item.href}>{item.name}</Link>
+                  <Link href={item.href} {...umamiProps(item.umami)}>
+                    {item.name}
+                  </Link>
                 </Button>
               )}
             </div>

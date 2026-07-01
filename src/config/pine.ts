@@ -33,6 +33,7 @@ const PINE_CREATIVE: PineCreative = {
 export const pineConfig = {
   enabled: true,
   affiliateUrl: "https://pine.host/rustconveyorfilters",
+  sidebarPineShare: 0.5,
   creatives: [PINE_CREATIVE] as PineCreative[],
   cadence: {
     firstOffset: 12,

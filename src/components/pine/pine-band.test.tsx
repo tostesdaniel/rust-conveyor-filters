@@ -53,11 +53,9 @@ describe("PineBand", () => {
       .map((img) => img.parentElement);
     const classes = boxes.map((box) => box?.className ?? "");
 
-    // Desktop box: hidden below md, revealed at md and up.
     expect(
       classes.some((c) => c.includes("hidden") && c.includes("md:block")),
     ).toBe(true);
-    // Mobile box: shown below md, hidden at md and up.
     expect(classes.some((c) => c.includes("md:hidden"))).toBe(true);
   });
 

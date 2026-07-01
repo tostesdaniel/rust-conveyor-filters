@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Server } from "lucide-react";
 
 import { pineConfig } from "@/config/pine";
@@ -9,28 +9,50 @@ import { useIsAdFree } from "@/hooks/use-is-ad-free";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar-donate-card";
+import { rollPineBucket } from "@/components/features/filters/sidebar/pine-bucket";
 
 /**
- * One sidebar slot, seen on every `/filters` visit, that renders the donate
- * card for non-supporters and the Pine partner card for ad-free supporters
- * (whose donate card and Nitro ads are both suppressed).
+ * One sidebar slot, seen on every `/filters` visit, that surfaces the Pine
+ * partner card to two audiences and the donate card to everyone else:
  *
- * The donate card is the SSR-safe default so the common ~95% path paints with
- * no delay; `useIsAdFree` resolves client-side (Clerk's `useUser()` is `null`
- * until loaded), so for supporters the slot crossfades donate → Pine on resolve
- * (opacity-only, no transform — prefers-reduced-motion safe).
+ * - **Ad-free supporters** always see Pine. Their donate card and Nitro ads
+ *   are both suppressed, so the slot is free.
+ * - **Non-ad-free visitors** see Pine for a stable, per-visit `sidebarPineShare`
+ *   of the time and the donate card otherwise. This widens the path to
+ *   `/hosting`, which is otherwise only reachable via the footer and
+ *   unreachable on the infinite `/filters` grid.
  *
- * It reads `useIsAdFree` only to pick which CTA to show — never to hide Pine —
- * and links internally to `/hosting`, touching no Nitro components or adblock
- * state.
+ * The donate card is the SSR-safe default so the common path paints with no
+ * delay. Both the ad-free check (`useUser()` is `null` until Clerk loads) and
+ * the per-visit roll resolve client-side, so a visitor promoted to Pine
+ * crossfades donate to Pine on resolve (opacity-only, no transform, so it
+ * stays safe under prefers-reduced-motion). The roll is cached per page load
+ * in `rollPineBucket`, so it never flickers mid-visit.
+ *
+ * The slot links internally to `/hosting`, touching no Nitro components or
+ * adblock state.
  */
 export function SidebarPromoCard({ className }: { className?: string }) {
   const isAdFree = useIsAdFree();
-  const slot: "donate" | "pine" | "empty" = !isAdFree
-    ? "donate"
-    : pineConfig.enabled
-      ? "pine"
-      : "empty";
+
+  // Client-only per-visit roll for non-ad-free visitors. Stays `false` on SSR
+  // and first paint so the donate card is the hydration-safe default; the real
+  // roll lands in the effect below and crossfades Pine in for the chosen share.
+  const [rolledPine, setRolledPine] = useState(false);
+  useEffect(() => {
+    setRolledPine(rollPineBucket(pineConfig.sidebarPineShare));
+  }, []);
+
+  const showPine = pineConfig.enabled && (isAdFree || rolledPine);
+  const slot: "donate" | "pine" | "empty" = showPine
+    ? "pine"
+    : isAdFree
+      ? "empty"
+      : "donate";
+
+  // The audience that reaches Pine, for analytics: supporters who always see it
+  // vs. non-ad-free visitors rolled into the new discovery bridge.
+  const audience: "adfree" | "rolled" = isAdFree ? "adfree" : "rolled";
 
   // Animate every swap *except* the first paint, so the SSR-default donate card
   // appears instantly while the later donate → Pine resolve crossfades in.
@@ -49,13 +71,19 @@ export function SidebarPromoCard({ className }: { className?: string }) {
       {slot === "donate" ? (
         <SidebarDonateCard className={className} />
       ) : (
-        <SidebarPineCard className={className} />
+        <SidebarPineCard className={className} audience={audience} />
       )}
     </div>
   );
 }
 
-function SidebarPineCard({ className }: { className?: string }) {
+function SidebarPineCard({
+  className,
+  audience,
+}: {
+  className?: string;
+  audience: "adfree" | "rolled";
+}) {
   const { heading, pitch, ctaLabel } = pineConfig.copy.sidebar;
 
   return (
@@ -82,6 +110,7 @@ function SidebarPineCard({ className }: { className?: string }) {
           href='/hosting'
           data-umami-event='pine-click'
           data-umami-event-placement='sidebar'
+          data-umami-event-audience={audience}
         >
           {ctaLabel}
         </Link>

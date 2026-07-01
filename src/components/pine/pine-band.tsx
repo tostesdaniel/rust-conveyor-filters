@@ -16,9 +16,10 @@ interface PineBandProps {
 /**
  * One responsive variant of the creative inside its own reserved box. The box's
  * `aspectRatio` comes from the asset's intrinsic dimensions, so space is held
- * before the image loads (zero CLS); `visibility` toggles the desktop/mobile
- * swap purely with CSS at the `md` breakpoint — no JS, no second network cost
- * (the hidden variant is lazy and never enters the viewport).
+ * before the image loads (zero CLS). The `visibility` prop toggles the
+ * desktop/mobile swap purely with CSS at the `md` breakpoint: no JS involved,
+ * and no second network cost, since the hidden variant is lazy and never
+ * enters the viewport.
  */
 function CreativeBox({
   asset,

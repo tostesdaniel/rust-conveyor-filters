@@ -20,8 +20,8 @@ export function weaveBands<T>(
 ): WovenItem<T>[] {
   const filterItem = (filter: T): WovenItem<T> => ({ kind: "filter", filter });
 
-  // With no creative to show, a band would have nothing to render — emit a
-  // plain filter list rather than bands with an undefined creative.
+  // With no creative to show, a band would have nothing to render, so emit
+  // a plain filter list rather than bands with an undefined creative.
   if (creativeCount < 1) {
     return filters.map(filterItem);
   }

@@ -2,15 +2,31 @@ import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+import { pineConfig, type PinePlacement } from "@/config/pine";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
 
-const navigation = [
+type FooterLink = {
+  name: string;
+  href: string;
+  /** When set, attributes the click to this Pine placement for Umami. */
+  umami?: PinePlacement;
+};
+
+const navigation: FooterLink[] = [
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Steam Guide", href: "/steam-guide" },
+  { name: pineConfig.copy.footerLinkLabel, href: "/hosting", umami: "footer" },
   { name: "Donate", href: "/donate" },
 ];
+
+/** Umami attributes for a Pine-tagged footer link, or nothing for plain nav. */
+function umamiProps(placement: PinePlacement | undefined) {
+  return placement
+    ? { "data-umami-event": "pine-click", "data-umami-event-placement": placement }
+    : {};
+}
 
 export function Footer() {
   return (
@@ -20,28 +36,44 @@ export function Footer() {
           aria-label='Footer'
           className='columns-2 min-[800px]:order-2 sm:flex sm:justify-center sm:space-x-2 lg:space-x-12'
         >
-          {navigation.map((item) => (
-            <div key={item.name} className='grid-cols-2'>
-              {item.href.startsWith("https://") ? (
-                <Button asChild variant='link'>
-                  <a href={item.href} target='_blank' rel='noopener noreferrer'>
-                    {item.name}
-                  </a>
-                </Button>
+          {navigation.map((item) => {
+            // Highlight the Pine "Hosting" link with a shimmering primary tint
+            // so it stands apart from its plain siblings.
+            const label =
+              item.umami === "footer" ? (
+                <span className='pine-shimmer font-medium'>{item.name}</span>
               ) : (
-                <Button
-                  asChild
-                  variant='link'
-                  className={cn(
-                    item.href === "/contact" &&
-                      "pointer-events-none opacity-50",
-                  )}
-                >
-                  <Link href={item.href}>{item.name}</Link>
-                </Button>
-              )}
-            </div>
-          ))}
+                item.name
+              );
+            return (
+              <div key={item.name} className='grid-cols-2'>
+                {item.href.startsWith("https://") ? (
+                  <Button asChild variant='link'>
+                    <a
+                      href={item.href}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {label}
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    variant='link'
+                    className={cn(
+                      item.href === "/contact" &&
+                        "pointer-events-none opacity-50",
+                    )}
+                  >
+                    <Link href={item.href} {...umamiProps(item.umami)}>
+                      {label}
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            );
+          })}
         </nav>
         <div className='mt-4 flex justify-center gap-x-6 min-[800px]:order-3 min-[800px]:mt-0'>
           <a

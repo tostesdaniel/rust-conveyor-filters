@@ -36,7 +36,9 @@
     "tags:bootstrap": "bun run ./src/scripts/ai-tags/bootstrap-from-popular.ts",
     "tags:review": "bun run ./src/scripts/ai-tags/review-proposals.ts",
     "tags:backfill": "bun run ./src/scripts/ai-tags/backfill.ts",
-    "tags:status": "bun run ./src/scripts/ai-tags/status.ts"
+    "tags:status": "bun run ./src/scripts/ai-tags/status.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.64",
@@ -102,20 +104,26 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tanstack/react-query-devtools": "^5.91.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^24",
     "@types/pg": "^8.15.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9.39.1",
     "eslint-config-next": "^15.5.7",
     "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5.10",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "schema-dts": "^2.0.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.8",
     "wrangler": "^4.56.0"
   },
   "engines": {

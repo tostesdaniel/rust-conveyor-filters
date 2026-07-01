@@ -4,10 +4,13 @@ import * as React from "react";
 import { RotateCcw, Search } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
+import { pineConfig } from "@/config/pine";
+import { planWovenGrid } from "@/config/pine-weave";
 import { useFilters } from "@/hooks/use-filters";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { FilterCard } from "@/components/features/filters/filter-card/filter-card";
 import { FilterCardSkeleton } from "@/components/features/filters/filter-card/filter-card-skeleton";
+import { PineBand } from "@/components/pine/pine-band";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Typography } from "@/components/shared/typography";
 import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
@@ -66,22 +69,41 @@ export function FilterGrid() {
   const allFilters = data?.pages.flatMap((page) => page.data) || [];
   const hasFilters = allFilters.length > 0;
 
+  // Interleave sponsored Pine bands into the filter list at the configured
+  // cadence; deterministic, so pagination never reshuffles existing nodes.
+  const wovenItems = planWovenGrid(allFilters, pineConfig);
+
   return (
     <>
       {isLoading ? (
         <FiltersLoading />
       ) : hasFilters ? (
         <div className='grid grid-cols-1 gap-4 pb-6 lg:grid-cols-2 lg:pb-16'>
-          {allFilters.map((filter) => (
-            <div
-              key={filter.id}
-              className={`transition-opacity duration-300 ${
-                isPlaceholderData ? "opacity-50" : "opacity-100"
-              }`}
-            >
-              <FilterCard filter={filter} />
-            </div>
-          ))}
+          {wovenItems.map((item) =>
+            item.kind === "band" ? (
+              // Partner placement: spans the full grid width and never dims —
+              // it is first-party content, shown to everyone (no ad-free
+              // gating), and would look broken if dimmed during refetch.
+              <div
+                key={item.key}
+                className='max-w-(--breakpoint-sm) lg:col-span-2 lg:max-w-none'
+              >
+                <PineBand
+                  placement='woven-band'
+                  creative={pineConfig.creatives[item.creativeIndex]}
+                />
+              </div>
+            ) : (
+              <div
+                key={item.filter.id}
+                className={`transition-opacity duration-300 ${
+                  isPlaceholderData ? "opacity-50" : "opacity-100"
+                }`}
+              >
+                <FilterCard filter={item.filter} />
+              </div>
+            ),
+          )}
           {isFetchingNextPage &&
             [...Array(4)].map((_, i) => (
               <FilterCardSkeleton key={`skeleton-${i}`} />

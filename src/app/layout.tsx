@@ -106,7 +106,7 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-svh bg-background font-sans antialiased",
+          "min-h-svh overflow-x-clip bg-background font-sans antialiased",
           inter.variable,
           teko.variable,
         )}

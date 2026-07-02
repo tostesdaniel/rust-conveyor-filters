@@ -7,6 +7,8 @@ export function normalizeFilterData(
   return filter.map((item) => ({
     ...item,
     item: "itemId" in item ? { shortname: item.shortname } : null,
-    categoryId: "categoryId" in item ? item.categoryId : null,
+    // The exporter reads `category?.id`, so a bare `categoryId` would export as
+    // a null category. Shape it into the object the exporter expects.
+    category: "categoryId" in item ? { id: item.categoryId } : null,
   })) as unknown as ConveyorFilterItem[];
 }

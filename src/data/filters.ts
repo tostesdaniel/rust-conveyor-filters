@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/db";
+import { filterItemsOrderBy } from "@/data/filter-items-order";
 import type { CursorData } from "@/utils/cursor";
 import { encodeCursor } from "@/utils/cursor";
 import {
@@ -368,7 +369,7 @@ export async function getFiltersWithItems(userId: string) {
     with: {
       filterItems: {
         with: { item: true, category: true },
-        orderBy: ({ createdAt, id }) => [id, createdAt],
+        orderBy: filterItemsOrderBy,
       },
     },
   });
@@ -386,7 +387,7 @@ export async function getFilterById(filterId: number, userId: string) {
     with: {
       filterItems: {
         with: { item: true, category: true },
-        orderBy: ({ createdAt, id }) => [id, createdAt],
+        orderBy: filterItemsOrderBy,
       },
     },
   });
@@ -404,6 +405,7 @@ export async function getPublicFilter(filterId: number) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        orderBy: filterItemsOrderBy,
       },
     },
   });
@@ -626,7 +628,7 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     with: {
       filterItems: {
         with: { item: true, category: true },
-        orderBy: ({ createdAt, id }) => [id, createdAt],
+        orderBy: filterItemsOrderBy,
       },
     },
     orderBy,
@@ -703,7 +705,7 @@ export async function getUserFiltersByCategory(
     with: {
       filterItems: {
         with: { item: true, category: true },
-        orderBy: ({ createdAt, id }) => [id, createdAt],
+        orderBy: filterItemsOrderBy,
       },
     },
     orderBy: filters.order,

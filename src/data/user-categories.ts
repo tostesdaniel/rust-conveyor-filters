@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/db";
+import { filterItemsOrderBy } from "@/data/filter-items-order";
 import { toOwnerFilterDTO } from "@/utils/filter-mappers";
 import { and, eq, isNull } from "drizzle-orm";
 
@@ -83,6 +84,7 @@ export async function getUserCategoryHierarchy(userId: string) {
         with: {
           filterItems: {
             with: { category: true, item: true },
+            orderBy: filterItemsOrderBy,
           },
         },
         orderBy: filters.order,
@@ -94,6 +96,7 @@ export async function getUserCategoryHierarchy(userId: string) {
             with: {
               filterItems: {
                 with: { category: true, item: true },
+                orderBy: filterItemsOrderBy,
               },
             },
             orderBy: filters.order,

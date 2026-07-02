@@ -1,5 +1,6 @@
 import "server-only";
 
+import { filterItemsOrderBy } from "@/data/filter-items-order";
 import {
   loadForkAttributions,
   loadRemixCounts,
@@ -130,7 +131,7 @@ export async function getPublicFilterHierarchyForAuthor(
             item: true,
             category: true,
           },
-          orderBy: ({ createdAt, id }) => [id, createdAt],
+          orderBy: filterItemsOrderBy,
         },
       },
       orderBy: filters.order,
@@ -150,7 +151,7 @@ export async function getPublicFilterHierarchyForAuthor(
                 item: true,
                 category: true,
               },
-              orderBy: ({ createdAt, id }) => [id, createdAt],
+              orderBy: filterItemsOrderBy,
             },
           },
           orderBy: filters.order,
@@ -168,7 +169,7 @@ export async function getPublicFilterHierarchyForAuthor(
                     item: true,
                     category: true,
                   },
-                  orderBy: ({ createdAt, id }) => [id, createdAt],
+                  orderBy: filterItemsOrderBy,
                 },
               },
               orderBy: filters.order,

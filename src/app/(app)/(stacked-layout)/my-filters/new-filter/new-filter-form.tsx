@@ -95,6 +95,9 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
           if (filterItem.item && filterItem.itemId) {
             return {
               name: filterItem.item.name,
+              // shortname must ride along in form state: the in-editor export
+              // reads it, and without it remixed items export with empty names.
+              shortname: filterItem.item.shortname ?? "",
               imagePath: filterItem.item.imagePath,
               itemId: filterItem.itemId,
               max: filterItem.max,

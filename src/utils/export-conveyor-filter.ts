@@ -8,7 +8,6 @@ export function exportConveyorFilter(filter: FilterItemDTO[]) {
     BufferAmount: filterItem.buffer,
     MinAmountInInput: filterItem.min,
     IsBlueprint: false,
-    BufferTransferRemaining: 0,
     TargetItemName: filterItem.item?.shortname ?? "",
   }));
 

@@ -30,6 +30,5 @@ export type GameConveyorFilterItem = {
   BufferAmount: number;
   MinAmountInInput: number;
   IsBlueprint: boolean;
-  BufferTransferRemaining: number;
   TargetItemName: string;
 };

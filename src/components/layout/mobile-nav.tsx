@@ -11,6 +11,7 @@ import {
   InfoIcon,
   Menu,
   MessageSquareIcon,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
@@ -36,6 +37,7 @@ type MobileNavigation = Navigation & {
 const NAV_ICON_MAP = {
   "/filters": BoxIcon,
   "/my-filters": HeartIcon,
+  "/upkeep": Wrench,
   "/feedback": MessageSquareIcon,
   "/about": InfoIcon,
 } as const satisfies Record<string, LucideIcon>;

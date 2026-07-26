@@ -21,6 +21,7 @@ export type Navigation = {
 export const SITE_NAV_ITEMS: Navigation[] = [
   { name: "Filters", href: "/filters" },
   { name: "My Filters", href: "/my-filters" },
+  { name: "Upkeep", href: "/upkeep" },
   { name: "Feedback", href: "/feedback" },
   { name: "About", href: "/about" },
 ];

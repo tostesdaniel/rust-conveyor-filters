@@ -181,8 +181,10 @@ export default function UpkeepPage() {
       "imageCanvasInput",
     ) as HTMLCanvasElement | null;
     if (!v || !canvas) return;
-    canvas.width = v.videoWidth || 1920;
-    canvas.height = v.videoHeight || 1080;
+    if (!v || !canvas) return;
+    if (!v.videoWidth || !v.videoHeight) return;
+    canvas.width = v.videoWidth;
+    canvas.height = v.videoHeight;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.drawImage(v, 0, 0, canvas.width, canvas.height);

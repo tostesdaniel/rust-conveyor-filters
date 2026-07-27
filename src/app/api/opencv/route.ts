@@ -7,10 +7,17 @@ export async function GET() {
     const resolved = require.resolve("opencv.js");
     const content = await fs.readFile(resolved, "utf8");
 
-    return new Response(content, {
+let cached: string | null = null;
+
+    if (cached === null) {
+      const require = createRequire(import.meta.url);
+      cached = await fs.readFile(require.resolve("opencv.js"), "utf8");
+    }
+
+    return new Response(cached, {
       headers: {
         "Content-Type": "application/javascript; charset=utf-8",
-        "Cache-Control": "public, max-age=0, must-revalidate",
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   } catch (err) {

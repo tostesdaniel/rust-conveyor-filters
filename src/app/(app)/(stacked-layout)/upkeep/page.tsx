@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
@@ -9,17 +9,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const checkIcons = [
-  { name: "wood", label: "Wood", src: "/items/check/wood.png" },
-  { name: "stone", label: "Stone", src: "/items/check/stone.png" },
+  {
+    name: "wood",
+    label: "Wood",
+    src: "/items/check/wood1440.png",
+    src2: "/items/check/wood1080.png",
+  },
+  {
+    name: "stone",
+    label: "Stone",
+    src: "/items/check/stone1440.png",
+    src2: "/items/check/stone1080.png",
+  },
   {
     name: "metalFragments",
     label: "Metal Fragments",
-    src: "/items/check/metal_frag.png",
+    src: "/items/check/metal1440.png",
+    src2: "/items/check/metal1080.png",
   },
   {
     name: "highQualityMetal",
     label: "High Quality Metal",
-    src: "/items/check/hqm.png",
+    src: "/items/check/hqm1440.png",
+    src2: "/items/check/hqm1080.png",
   },
 ];
 
@@ -48,8 +60,8 @@ const upkeepInputs = [
   {
     id: "highQualityMetal",
     label: "High Quality Metal",
-    src: "/items/tiny/hq.metal.ore.webp",
-    outputSrc: "/items/full/hq.metal.ore.webp",
+    src: "/items/tiny/metal.refined.webp",
+    outputSrc: "/items/full/metal.refined.webp",
     alt: "High Quality Metal icon",
   },
 ];
@@ -73,15 +85,171 @@ export default function UpkeepPage() {
   const [_iconDetectMessage, setIconDetectMessage] = useState("");
   const [_ocrMessage, setOcrMessage] = useState("");
   const [, copy] = useCopyToClipboard();
-  const isDev = process.env.NODE_ENV === "development";
   const [preflightFailed, setPreflightFailed] = useState(false);
-  const [preflightRegion, setPreflightRegion] = useState<{
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-  } | null>(null);
   const [showCanvas, setShowCanvas] = useState(false);
+  const [streaming, setStreaming] = useState(false);
+  const streamRef = useRef<MediaStream | null>(null);
+  const captureIntervalRef = useRef<number | null>(null);
+  const capturingRef = useRef<boolean>(false);
+
+  const startStream = async () => {
+    try {
+      // use screen capture (display media) instead of camera
+      const s = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      streamRef.current = s;
+      // create or find video element
+      let v = document.getElementById("upkeepVideo") as HTMLVideoElement | null;
+      if (!v) {
+        v = document.createElement("video");
+        v.id = "upkeepVideo";
+        v.autoplay = true;
+        v.playsInline = true;
+        v.muted = true;
+        v.className = "mx-auto w-10/12 rounded-md border bg-black";
+        const parent = document.querySelector("#upkeepVideoContainer");
+        parent?.appendChild(v);
+      }
+      v.srcObject = s;
+      await v.play();
+      setStreaming(true);
+      setShowCanvas(false);
+      setPreflightFailed(false);
+      if (captureIntervalRef.current == null) {
+        captureIntervalRef.current = window.setInterval(() => {
+          if (capturingRef.current) return;
+          capturingRef.current = true;
+          captureFrameAndProcess()
+            .catch(() => {
+              /* ignore */
+            })
+            .finally(() => {
+              capturingRef.current = false;
+            });
+        }, 5000) as unknown as number;
+      }
+    } catch (e) {
+      console.error("Failed to start screen share stream", e);
+    }
+  };
+
+  const stopStream = () => {
+    // stop auto-capture interval first
+    if (captureIntervalRef.current != null) {
+      clearInterval(captureIntervalRef.current as number);
+      captureIntervalRef.current = null;
+    }
+    // reset capturing flag
+    capturingRef.current = false;
+
+    // stop the media tracks
+    if (streamRef.current) {
+      try {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+      } catch (e) {
+        /* ignore */
+      }
+      streamRef.current = null;
+    }
+
+    // remove video element from DOM if present
+    const v = document.getElementById("upkeepVideo") as HTMLVideoElement | null;
+    if (v && v.parentElement) {
+      try {
+        v.pause();
+        v.srcObject = null;
+      } catch (e) {
+        /* ignore */
+      }
+      v.parentElement.removeChild(v);
+    }
+
+    setStreaming(false);
+    const imageCanvasInput = document.getElementById(
+      "imageCanvasInput",
+    ) as HTMLCanvasElement | null;
+    if (imageCanvasInput) {
+      imageCanvasInput.className =
+        "mx-auto hidden w-10/12 rounded-md border bg-muted/30";
+    }
+  };
+
+  const captureFrameAndProcess = async () => {
+    const v = document.getElementById("upkeepVideo") as HTMLVideoElement | null;
+    const canvas = document.getElementById(
+      "imageCanvasInput",
+    ) as HTMLCanvasElement | null;
+    if (!v || !canvas) return;
+    canvas.width = v.videoWidth || 1920;
+    canvas.height = v.videoHeight || 1080;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+
+    // behave like an upload: reset inputs and run preflight/detection
+    setWood(0);
+    setStone(0);
+    setMetalFragments(0);
+    setHighQualityMetal(0);
+
+    const sourceCanvas = canvas;
+
+    // aspect ratio check
+    const ratio = sourceCanvas.width / sourceCanvas.height;
+    const target = 16 / 9;
+    const tol = 0.03;
+    if (Math.abs(ratio - target) > tol) {
+      console.warn("[upkeep][stream] aspect ratio mismatch", { ratio });
+      setDetectedIcons([]);
+      setOcrMessage(
+        "Image aspect ratio is not approximately 16:9; please use a 16:9 camera or rotate/resize.",
+      );
+      setIconDetectMessage("Image not 16:9; skipping detection.");
+      setPreflightFailed(true);
+      setShowCanvas(false);
+      return;
+    }
+
+    // keep canvas hidden during streaming until a successful capture applies OCR
+    setPreflightFailed(false);
+
+    if (!(await hasCostPer24HoursHeader(sourceCanvas))) {
+      console.warn("[upkeep][precheck] failed (stream)");
+      setDetectedIcons([]);
+      setOcrMessage("Top-right check failed: 'Cost per 24 hours' not found.");
+      setIconDetectMessage(
+        "Upload or capture a screenshot that contains 'Cost per 24 hours' in the top-right quadrant.",
+      );
+      setPreflightFailed(true);
+      setShowCanvas(false);
+      return;
+    }
+
+    setDetectedIcons([]);
+    setOcrMessage("");
+    setIconDetectMessage("Source image captured. Detecting icons...");
+
+    const matches = await runIconDetection();
+    if (matches.length > 0) {
+      const applied = await runOcr(matches);
+      if (applied > 0) {
+        // successful capture -> stop auto-capture and stop stream
+        try {
+          stopStream();
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    } else {
+      setOcrMessage("No matched icons for OCR.");
+      setIconDetectMessage(
+        "Capture another image — resource icons not detected.",
+      );
+      setPreflightFailed(true);
+      setShowCanvas(false);
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -164,8 +332,14 @@ export default function UpkeepPage() {
     highQualityMetal: "metal.refined",
   };
 
+  const [stackMultiplier, setStackMultiplier] = useState<number>(1);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFileName, setSelectedFileName] =
+    useState<string>("No file selected.");
+
   const calculateOutputs = () => {
-    const stackSize = [1000, 1000, 1000, 100];
+    const baseStackSize = [1000, 1000, 1000, 100];
+    const stackSize = baseStackSize.map((s) => s * stackMultiplier);
     const upkeep = [wood, stone, metalFragments, highQualityMetal];
     const TOTAL_STACKS = 24;
 
@@ -192,7 +366,8 @@ export default function UpkeepPage() {
   };
 
   const calculateUpkeepTime = () => {
-    const stackSizes = [1000, 1000, 1000, 100];
+    const baseStackSizes = [1000, 1000, 1000, 100];
+    const stackSizes = baseStackSizes.map((s) => s * stackMultiplier);
     const upkeep24h = [wood, stone, metalFragments, highQualityMetal];
     const totalStacks = 24;
 
@@ -323,28 +498,6 @@ export default function UpkeepPage() {
       regionH,
     );
 
-    setPreflightRegion({ x: regionX, y: regionY, w: regionW, h: regionH });
-
-    if (isDev) {
-      try {
-        const outputCanvas = document.getElementById(
-          "iconDetectOutput",
-        ) as HTMLCanvasElement | null;
-        if (outputCanvas) {
-          const outCtx = outputCanvas.getContext("2d");
-          if (outCtx) {
-            outCtx.save();
-            outCtx.strokeStyle = "rgba(255,80,80,0.95)";
-            outCtx.lineWidth = 2;
-            outCtx.strokeRect(regionX + 0.5, regionY + 0.5, regionW, regionH);
-            outCtx.restore();
-          }
-        }
-      } catch (e) {
-        /* ignore drawing errors */
-      }
-    }
-
     const { createWorker } = await import("tesseract.js");
     const worker = await createWorker("eng");
 
@@ -366,37 +519,16 @@ export default function UpkeepPage() {
       return matched;
     } finally {
       await worker.terminate();
-      console.info("[upkeep][precheck] redraw preflight region after OCR");
-      console.log("[upkeep][precheck] preflightRegion", preflightRegion);
-      console.log("[upkeep][precheck] isDev", isDev);
-      if (isDev && preflightRegion) {
-        try {
-          const outCanvas = document.getElementById(
-            "iconDetectOutput",
-          ) as HTMLCanvasElement | null;
-          const outCtx = outCanvas?.getContext("2d");
-          if (outCtx && preflightRegion) {
-            outCtx.save();
-            outCtx.strokeStyle = "rgba(255,80,80,0.95)";
-            outCtx.lineWidth = 2;
-            outCtx.strokeRect(
-              preflightRegion.x + 0.5,
-              preflightRegion.y + 0.5,
-              preflightRegion.w,
-              preflightRegion.h,
-            );
-            outCtx.restore();
-          }
-        } catch (e) {
-          /* ignore */
-        }
-      }
     }
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setSelectedFileName("No file selected.");
+      return;
+    }
+    setSelectedFileName(file.name);
 
     try {
       console.info("[upkeep] upload started", {
@@ -599,69 +731,81 @@ export default function UpkeepPage() {
         let templ: CvMat | null = null;
         let dst: CvMat | null = null;
         let mask: CvMat | null = null;
+        for (const srcOption of [icon.src, icon.src2]) {
+          if (
+            !matches.some((m) => m.name === icon.name) ||
+            !matches.some((m) => m.score >= 0.7)
+          ) {
+            try {
+              const iconCanvas = await loadImageToCanvas(srcOption);
+              templ = cv.imread(iconCanvas);
+              if (templ!.empty()) continue;
+              if (templ!.rows > roiH || templ!.cols > roiW) continue;
 
-        try {
-          const iconCanvas = await loadImageToCanvas(icon.src);
-          templ = cv.imread(iconCanvas);
-          if (templ!.empty()) continue;
-          if (templ!.rows > roiH || templ!.cols > roiW) continue;
+              dst = new cv.Mat();
+              mask = new cv.Mat();
+              cv.matchTemplate(
+                searchRegion,
+                templ,
+                dst,
+                cv.TM_CCOEFF_NORMED,
+                mask,
+              );
 
-          dst = new cv.Mat();
-          mask = new cv.Mat();
-          cv.matchTemplate(searchRegion, templ, dst, cv.TM_CCOEFF_NORMED, mask);
+              const result = cv.minMaxLoc(dst, mask);
+              const { maxVal, maxLoc } = result;
 
-          const result = cv.minMaxLoc(dst, mask);
-          const { maxVal, maxLoc } = result;
+              if (maxVal >= 0.7) {
+                const fullX = maxLoc.x + roiX;
+                const fullY = maxLoc.y + roiY;
+                const iconW = templ!.cols;
+                const iconH = templ!.rows;
 
-          if (maxVal >= 0.7) {
-            const fullX = maxLoc.x + roiX;
-            const fullY = maxLoc.y + roiY;
-            const iconW = templ!.cols;
-            const iconH = templ!.rows;
+                const amountRegion = {
+                  x: fullX - Math.floor(iconW * 0.25),
+                  y: fullY + iconH - Math.floor(iconH * 0.1),
+                  w: Math.floor(iconW * 1.5),
+                  h: Math.max(24, Math.floor(iconH * 0.75)),
+                };
 
-            const amountRegion = {
-              x: fullX - Math.floor(iconW * 0.25),
-              y: fullY + iconH - Math.floor(iconH * 0.1),
-              w: Math.floor(iconW * 1.5),
-              h: Math.max(24, Math.floor(iconH * 0.75)),
-            };
+                matches.push({
+                  name: icon.name,
+                  label: icon.label,
+                  x: fullX,
+                  y: fullY,
+                  score: maxVal,
+                  amountRegion,
+                });
 
-            matches.push({
-              name: icon.name,
-              label: icon.label,
-              x: fullX,
-              y: fullY,
-              score: maxVal,
-              amountRegion,
-            });
+                cv.rectangle(
+                  src,
+                  new cv.Point(fullX, fullY),
+                  new cv.Point(fullX + iconW, fullY + iconH),
+                  new cv.Scalar(0, 200, 100, 255),
+                  2,
+                  cv.LINE_8,
+                  0,
+                );
 
-            cv.rectangle(
-              src,
-              new cv.Point(fullX, fullY),
-              new cv.Point(fullX + iconW, fullY + iconH),
-              new cv.Scalar(0, 200, 100, 255),
-              2,
-              cv.LINE_8,
-              0,
-            );
-
-            cv.rectangle(
-              src,
-              new cv.Point(amountRegion.x, amountRegion.y),
-              new cv.Point(
-                amountRegion.x + amountRegion.w,
-                amountRegion.y + amountRegion.h,
-              ),
-              new cv.Scalar(0, 220, 255, 255),
-              2,
-              cv.LINE_8,
-              0,
-            );
+                cv.rectangle(
+                  src,
+                  new cv.Point(amountRegion.x, amountRegion.y),
+                  new cv.Point(
+                    amountRegion.x + amountRegion.w,
+                    amountRegion.y + amountRegion.h,
+                  ),
+                  new cv.Scalar(0, 220, 255, 255),
+                  2,
+                  cv.LINE_8,
+                  0,
+                );
+              }
+            } finally {
+              templ?.delete();
+              dst?.delete();
+              mask?.delete();
+            }
           }
-        } finally {
-          templ?.delete();
-          dst?.delete();
-          mask?.delete();
         }
       }
 
@@ -678,28 +822,7 @@ export default function UpkeepPage() {
       });
       setDetectedIcons(matches);
       cv.imshow("iconDetectOutput", src);
-      if (isDev && preflightRegion) {
-        try {
-          const outCanvas = document.getElementById(
-            "iconDetectOutput",
-          ) as HTMLCanvasElement | null;
-          const outCtx = outCanvas?.getContext("2d");
-          if (outCtx && preflightRegion) {
-            outCtx.save();
-            outCtx.strokeStyle = "rgba(255,80,80,0.95)";
-            outCtx.lineWidth = 2;
-            outCtx.strokeRect(
-              preflightRegion.x + 0.5,
-              preflightRegion.y + 0.5,
-              preflightRegion.w,
-              preflightRegion.h,
-            );
-            outCtx.restore();
-          }
-        } catch (e) {
-          /* ignore */
-        }
-      }
+      // removed dev-only redraw of preflight region
       setIconDetectMessage(
         matches.length > 0
           ? `Found ${matches.length} icon(s) above 0.7 threshold, ordered by x.`
@@ -716,11 +839,11 @@ export default function UpkeepPage() {
     }
   };
 
-  const runOcr = async (iconsToRead?: DetectedIcon[]) => {
+  const runOcr = async (iconsToRead?: DetectedIcon[]): Promise<number> => {
     const icons = iconsToRead ?? detectedIcons;
     if (icons.length === 0) {
       setOcrMessage("Run icon detection first.");
-      return;
+      return 0;
     }
 
     setOcrMessage("Running OCR...");
@@ -730,7 +853,7 @@ export default function UpkeepPage() {
     ) as HTMLCanvasElement | null;
     if (!sourceCanvas) {
       setOcrMessage("Source canvas not found.");
-      return;
+      return 0;
     }
 
     try {
@@ -793,9 +916,11 @@ export default function UpkeepPage() {
         setPreflightFailed(true);
         setShowCanvas(false);
       }
+      return appliedCount;
     } catch {
       console.error("[upkeep][ocr] failed");
       setOcrMessage("OCR failed.");
+      return 0;
     }
   };
 
@@ -826,29 +951,72 @@ export default function UpkeepPage() {
         >
           Source image
         </label>
-        <input
-          id='fileInput'
-          type='file'
-          accept='image/*'
-          onChange={handleImageChange}
-          className='h-11 w-full cursor-pointer rounded-lg border border-input/80 bg-background px-3 py-2 text-sm text-foreground shadow-sm transition-colors file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary-foreground hover:border-input focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:max-w-md'
-        />
-        {preflightFailed && (
-          <p className='mt-2 text-sm font-medium text-red-500'>
-            {_iconDetectMessage ||
-              _ocrMessage ||
-              "Check failed. Please upload a valid image."}
-          </p>
-        )}
+
+        <div className='mt-2 flex items-center gap-2'>
+          <div id='upkeepVideoContainer' />
+          {streaming ? (
+            <>
+              <button
+                type='button'
+                onClick={stopStream}
+                className='inline-flex h-11 items-center rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-white'
+              >
+                Stop Stream
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type='button'
+                onClick={startStream}
+                className='inline-flex h-11 items-center rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground'
+              >
+                Share Screen
+              </button>
+              <div className='flex items-center gap-3'>
+                <button
+                  type='button'
+                  onClick={() => fileInputRef.current?.click()}
+                  className='inline-flex h-11 items-center rounded-md bg-white px-5 py-2 text-sm font-medium text-gray-900 shadow-sm'
+                >
+                  Browse...
+                </button>
+                <span className='text-sm text-muted-foreground'>
+                  {selectedFileName}
+                </span>
+                <input
+                  id='fileInput'
+                  ref={fileInputRef}
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageChange}
+                  className='hidden'
+                />
+              </div>
+            </>
+          )}
+        </div>
+
         <canvas
           id='imageCanvasInput'
           className='mx-auto hidden w-10/12 rounded-md border bg-muted/30'
         />
 
         <div className='mt-2 grid gap-2'>
-          <p className='text-sm font-medium text-muted-foreground'>
+          <p
+            className={`text-sm font-medium text-muted-foreground ${
+              showCanvas ? "" : "hidden"
+            }`}
+          >
             Detection output
           </p>
+          {preflightFailed && (
+            <p className='mt-2 text-sm font-medium text-red-500'>
+              {_iconDetectMessage ||
+                _ocrMessage ||
+                "Check failed. Please upload a valid image."}
+            </p>
+          )}
           <canvas
             id='iconDetectOutput'
             className={`mx-auto w-10/12 rounded-md border bg-muted/30 ${
@@ -911,7 +1079,27 @@ export default function UpkeepPage() {
       </div>
 
       <div className='space-y-3'>
-        <h2 className='text-2xl font-semibold tracking-tight'>Outputs</h2>
+        <div className='flex items-center justify-between'>
+          <h2 className='text-2xl font-semibold tracking-tight'>Outputs</h2>
+          <div className='flex items-center gap-2'>
+            <span className='text-sm text-muted-foreground'>Stack size</span>
+            <Input
+              type='number'
+              min={1}
+              value={stackMultiplier}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                const next =
+                  Number.isFinite(v) && v > 0
+                    ? Math.max(1, Math.round(v * 10) / 10)
+                    : 1;
+                setStackMultiplier(next);
+              }}
+              className='h-8 w-20 text-sm'
+            />
+            <span className='text-sm text-muted-foreground'>x</span>
+          </div>
+        </div>
         <p className='max-w-2xl text-sm text-muted-foreground'>
           Projected upkeep values for each resource based on your input.
         </p>

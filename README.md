@@ -16,49 +16,43 @@ This project is a web application for generating, editing, and sharing Rust conv
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Dev container (recommended)
 
-You'll need:
+The repo ships a dev container, so the only things you need installed are
+[Docker](https://docs.docker.com/get-started/get-docker/) and the
+[Dev Containers extension][devcontainers]. It contains Bun, Node 24, and Postgres 16.
 
-- Node.js
-- Package manager (npm, yarn, pnpm, or bun)
+1. Clone the repo and open it in VS Code.
+2. Choose **Reopen in Container**.
+3. Add your [Clerk](https://dashboard.clerk.com/sign-up) dev keys to the
+   generated `.env`, then `bun run db:seed` and `bun dev`.
 
-### Installation
+The container also blocks dependency install scripts and holds every package to
+a three-day release-age gate, so a poisoned release can't run code on your
+machine. See [CONTRIBUTING.md](CONTRIBUTING.md#development-environment-setup)
+for the details.
 
-1. Clone and enter the project:
+[devcontainers]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 
-   ```bash
-   git clone https://github.com/tostesdaniel/rust-conveyor-filters.git
-   cd rust-conveyor-filters
-   ```
+### Local install
 
-2. Install the dependencies:
-
-   ```bash
-   npm install   # or yarn/pnpm/bun install
-   ```
-
-3. Fire it up:
-
-   ```bash
-   npm run dev   # or yarn/pnpm/bun dev
-   ```
-
-### Running the Development Server
-
-Start the development server:
+You'll need [Bun](https://bun.sh) 1.3+ (or Node.js 24 with npm/yarn/pnpm) and a
+Postgres 16 server.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+git clone https://github.com/tostesdaniel/rust-conveyor-filters.git
+cd rust-conveyor-filters
+bun install
+bun run db:start     # postgres:16 in Docker, port 5433
+cp .env.example .env # then fill in your Clerk keys
+bun run db:setup
 bun dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000)
+Visit [http://localhost:3000](http://localhost:3000).
+
+Full walkthrough, including which Clerk settings to toggle, in
+[CONTRIBUTING.md](CONTRIBUTING.md#development-environment-setup).
 
 ## 🏗️ Project Structure
 

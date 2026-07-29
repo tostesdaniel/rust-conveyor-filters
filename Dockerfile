@@ -2,7 +2,7 @@ FROM oven/bun:1.3.12-slim AS deps
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
+COPY package.json bun.lock bunfig.toml ./
 
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun ci --no-save

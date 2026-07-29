@@ -4,36 +4,62 @@ Thank you for your interest in contributing to Rust Conveyor Filters! This guide
 
 ## Development Environment Setup
 
-### Prerequisites
+There are two ways in. The dev container is the recommended one, and the only
+one where a compromised npm package can't read your home directory.
 
-- [Bun](https://bun.sh) v1.2 or higher (recommended)
-  - Alternatively: Node.js 18+ with npm/yarn/pnpm
+### Option A: Dev container (recommended)
 
-### Required Services
+The repo ships a dev container: Bun, Node 24, and Postgres 16, with dependency
+install scripts blocked and a release-age gate on every package.
 
-1. **Neon Database (Required)**
+**Requirements:** [Docker](https://docs.docker.com/get-started/get-docker/) and
+the [Dev Containers extension][devcontainers]. That's it - no Bun, Node, or
+Postgres on your machine.
 
-   - Sign up at [Neon](https://neon.tech)
-   - Create a new project
-   - Copy the connection string to your `.env` file with _Connection pooling_ turned **ON**
+1. Clone the repo and open it in VS Code.
+2. Choose **Reopen in Container** when prompted (or run
+   **Dev Containers: Reopen in Container** from the command palette).
+3. Dependencies, `.env`, and the database schema are set up for you. Fill in
+   Clerk below, then `bun run db:seed`.
 
-2. **Clerk Authentication (Required)**
-   - Create an account at [Clerk](https://dashboard.clerk.com/sign-up)
-   - Set up a new application:
-     - For the Application name I suggest **Dev - Rust Conveyor Filters**
-     - For the Sign in options, toggle **Username** and **Discord** and keep the rest as-is.
-     - Go in **Configure** tab, scroll until **API keys**, then copy the publishable key and secret key to your `.env` file
+Postgres runs as a compose service, so `db:start` / `db:stop` aren't used in
+there. `DATABASE_URL` is set on the container and wins over `.env`.
 
-### Optional Services
+**Git and SSH.** You don't copy keys in. VS Code forwards your host's SSH agent
+and copies your `.gitconfig`, so `git push` works with keys that never enter the
+container. It does need an agent running on the host - `ssh-add -l` should list
+your key *outside* the container. macOS and Windows have one; Linux and WSL
+usually don't, so add this to your host shell profile:
 
-The following services are optional for development. The application will either use mock implementations or not use them at all when these services are not configured:
+```bash
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval "$(ssh-agent -s)" >/dev/null
+  ssh-add ~/.ssh/id_ed25519 2>/dev/null
+fi
+```
 
-- **Redis**: Used for rate limiting events in production
-- **Discord Integration**: For community features (meant for production)
-- **Donation Integration**: For donation verification (meant for production)
-- **Steam API**: For profile data (mocks responses that need API keys)
+Note the trade-off: a forwarded agent lets code in the container push as you,
+even though it can't read the key. That's the widest hole in this setup. The
+workspace is bind-mounted too, so `.env` is readable from inside.
 
-## Getting Started
+**Claude Code** is installed in the image. It adds ~370 MB, so if you don't use
+it, put `INSTALL_CLAUDE_CODE=false` in `.devcontainer/.env` (gitignored) and
+rebuild.
+
+**Troubleshooting.** `$'\r': command not found` means a CRLF checkout - a fresh
+clone fixes it, `.gitattributes` prevents it. `Permission denied (publickey)`
+means the agent isn't forwarding, see above. To reset the database,
+`docker volume rm rcf-devcontainer_postgres-data` then `bun run db:setup`.
+
+[devcontainers]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
+
+### Option B: Local install
+
+**Requirements:**
+
+- [Bun](https://bun.sh) v1.3 or higher (recommended)
+  - Alternatively: Node.js 24 with npm/yarn/pnpm
+- Docker, or a Postgres 16 server you already run
 
 1. **Clone the repository**
 
@@ -45,36 +71,62 @@ The following services are optional for development. The application will either
 2. **Install dependencies**
 
    ```bash
-   # Using Bun (recommended)
-   bun install
-
-   # Using npm
-   npm install
-
-   # Using yarn
-   yarn install
-
-   # Using pnpm
-   pnpm install
+   bun install   # or npm / yarn / pnpm install
    ```
 
-3. **Set up environment variables**
+   Note that `bunfig.toml` sets a three-day `minimumReleaseAge` and
+   `package.json` sets `"trustedDependencies": []`, so no package's install
+   scripts run. Both are deliberate - see
+   [Adding a Dependency](#adding-a-dependency).
+
+3. **Start Postgres**
+
+   ```bash
+   bun run db:start   # postgres:16 in Docker on port 5433
+   ```
+
+   Skip this if you're pointing `DATABASE_URL` at a server of your own.
+
+4. **Set up environment variables**
 
    ```bash
    cp .env.example .env
    ```
 
-   Edit `.env` and fill in the required variables (see comments in `.env.example`).
+   Edit `.env` and fill in the required variables (see comments in
+   `.env.example`). The default `DATABASE_URL` already matches `db:start`.
 
-4. **Set up the database**
+5. **Set up the database**
 
    ```bash
-   # Using Bun
-   bun run db:setup
-
-   # Using npm/yarn/pnpm
-   npm run db:setup
+   bun run db:setup   # or npm run db:setup
    ```
+
+### Required Services
+
+**Clerk Authentication (Required).** Auth middleware runs on nearly every route,
+so the app returns a 500 until these keys are real - it isn't an optional
+service you can leave blank.
+
+- Create an account at [Clerk](https://dashboard.clerk.com/sign-up)
+- Set up a new application:
+  - For the Application name I suggest **Dev - Rust Conveyor Filters**
+  - For the Sign in options, toggle **Username** and **Discord** and keep the rest as-is.
+  - Go in **Configure** tab, scroll until **API keys**, then copy the publishable key and secret key to your `.env` file
+
+**Database (Required).** Any Postgres 16. The dev container runs one for you;
+locally, `bun run db:start` runs one in Docker. Nothing in the app is tied to a
+particular hosting provider - it connects over plain `pg`.
+
+### Optional Services
+
+The following services are optional for development. The application will either use mock implementations or not use them at all when these services are not configured:
+
+- **Redis**: Used for rate limiting events in production
+- **Discord Integration**: For community features (meant for production)
+- **Donation Integration**: For donation verification (meant for production)
+- **Steam API**: For profile data (mocks responses that need API keys)
+- **AI categorization**: Groq / Google Generative AI keys; the worker no-ops without them
 
 ## Project Structure
 
@@ -140,15 +192,15 @@ Note: Some files might be in temporary locations and could be moved to more appr
    ```
 
 3. **Make your changes**
-
    - Follow the existing code style
 
 4. **Test your changes**
 
    ```bash
-   # Using Bun
-   bun test
-   bun lint
+   # Using Bun ("bun run test", not "bun test" - the latter is Bun's own runner)
+   bun run test
+   bun run lint
+   bun run type-check
 
    # Using npm/yarn/pnpm
    npm run test
@@ -161,12 +213,30 @@ Note: Some files might be in temporary locations and could be moved to more appr
    - Ensure all tests pass
    - Request review from maintainers
 
+## Adding a Dependency
+
+Two repo-wide rules apply to every install, in the container or not, so nothing
+depends on remembering a flag:
+
+- **`minimumReleaseAge` (3 days)** in `bunfig.toml`. A package published in the
+  last three days won't install. Compromised releases are usually yanked within
+  hours, so this steps over the window where a stolen publish token is still
+  live. For a security fix that genuinely can't wait:
+  `bun install --minimum-release-age=0`.
+- **`"trustedDependencies": []`** in `package.json`. No package's install
+  scripts run. `bun pm untrusted` lists what got blocked. If a package really
+  needs its build step, add that one name to the array and explain why in the
+  commit message - reviewers will ask.
+
+Commit the updated `bun.lock` with your change, and prefer packages that are
+maintained, popular, and small. A dependency is a permanent invitation to run
+someone else's code on every contributor's machine.
+
 ## Database Seeding
 
 The project includes a seeding script to populate your development database with test data. The seed script will:
 
 1. Create two test accounts:
-
    - **RCF Account**: The official site account with public filters
      - Email: <rcf@rcf.com>
      - Username: rustconveyorfilters

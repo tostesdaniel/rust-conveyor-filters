@@ -1,0 +1,45 @@
+name: rcf-devcontainer
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        INSTALL_CLAUDE_CODE: "${INSTALL_CLAUDE_CODE:-true}"
+    init: true
+    command: sleep infinity
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ../:/workspaces/rust-conveyor-filters:cached
+      - node-modules:/workspaces/rust-conveyor-filters/node_modules
+      - next-cache:/workspaces/rust-conveyor-filters/.next
+      - bun-cache:/home/node/.bun/install/cache
+      - claude-config:/home/node/.claude
+    environment:
+      DATABASE_URL: postgresql://postgres:rcfisawesome@db:5432/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: rcfisawesome
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  bun-cache:
+  claude-config:
+  next-cache:
+  node-modules:
+  postgres-data:

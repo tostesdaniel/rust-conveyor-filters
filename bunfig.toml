@@ -1,0 +1,15 @@
+# Install policy. Applies to every `bun install` in this repo, dev container or
+# not, so the rules don't depend on remembering a flag.
+
+[install]
+# Spelled out so a stray NPM_CONFIG_REGISTRY or an .npmrc picked up from a home
+# directory can't redirect resolution to a registry we didn't choose.
+registry = "https://registry.npmjs.org"
+
+# 3 days. The compromised releases that made it into lockfiles over the last few
+# years were nearly all pulled within hours of publishing, and this skips that
+# window entirely. Costs nothing except being three days behind a fresh patch.
+minimumReleaseAge = 259200
+
+# Escape hatch for a security fix that genuinely can't wait out the window.
+# minimumReleaseAgeExcludes = ["some-package"]

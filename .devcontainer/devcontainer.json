@@ -1,0 +1,41 @@
+{
+  "name": "rust-conveyor-filters",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/rust-conveyor-filters",
+  "remoteUser": "node",
+  "shutdownAction": "stopCompose",
+
+  // No "features": each one runs a third-party install script as root at build
+  // time. Extra tooling goes in the Dockerfile.
+
+  "forwardPorts": [3000, 4983, "db:5432"],
+  "portsAttributes": {
+    "3000": { "label": "next dev", "onAutoForward": "notify" },
+    "4983": { "label": "drizzle studio", "onAutoForward": "silent" },
+    "db:5432": { "label": "postgres", "onAutoForward": "silent" }
+  },
+  "otherPortsAttributes": { "onAutoForward": "silent" },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig",
+        "davidanson.vscode-markdownlint",
+        "vitest.explorer",
+        "oven.bun-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": { "path": "/bin/bash", "icon": "terminal-bash" }
+        }
+      }
+    }
+  }
+}

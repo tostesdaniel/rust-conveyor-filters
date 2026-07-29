@@ -18,9 +18,11 @@ RUN apt-get update \
 COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 RUN ln -sf /usr/local/bin/bun /usr/local/bin/bunx
 
+
 ENV NEXT_TELEMETRY_DISABLED=1 \
     DO_NOT_TRACK=1 \
     BUN_INSTALL_CACHE_DIR=/home/node/.bun/install/cache \
+    CLAUDE_CONFIG_DIR=/home/node/.claude \
     SHELL=/bin/bash \
     NPM_CONFIG_PREFIX=/home/node/.npm-global \
     PATH=/home/node/.npm-global/bin:$PATH

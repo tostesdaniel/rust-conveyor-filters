@@ -87,7 +87,7 @@
     "react-hook-form": "^7.72.1",
     "react-intersection-observer": "^9.16.0",
     "server-only": "^0.0.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.4",
     "sonner": "^2.0.7",
     "superjson": "^2.2.6",
     "svix": "^1.82.0",

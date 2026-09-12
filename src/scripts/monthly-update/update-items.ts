@@ -54,8 +54,8 @@ async function updateItems() {
     }
 
     if (updatedItems.length > 0 || newItems.length > 0) {
-      console.log("🔄 Invalidating Vercel cache...");
-      await invalidateVercelCache();
+      console.log("🔄 Invalidating items cache...");
+      await invalidateItemsCache();
     }
 
     console.log("Item update completed successfully!");
@@ -75,7 +75,7 @@ async function updateItems() {
   }
 }
 
-async function invalidateVercelCache() {
+async function invalidateItemsCache() {
   try {
     const productionUrl = process.env.NEXT_PUBLIC_APP_URL || siteConfig.url;
     const revalidateSecret = process.env.REVALIDATE_SECRET;
@@ -98,11 +98,11 @@ async function invalidateVercelCache() {
     const result = await response.json();
 
     if (response.ok) {
-      console.log("  ✅ Vercel cache invalidated successfully");
+      console.log("  ✅ Items cache invalidated successfully");
       console.log(`  📝 ${result.message}`);
       console.log(`  📅 ${result.timestamp}`);
     } else {
-      console.log("  ❌ Failed to invalidate Vercel cache");
+      console.log("  ❌ Failed to invalidate items cache");
       console.log(`  📄 Status: ${response.status} ${response.statusText}`);
       console.log(`  💬 Error: ${result.error || "Unknown error"}`);
       if (result.message) {

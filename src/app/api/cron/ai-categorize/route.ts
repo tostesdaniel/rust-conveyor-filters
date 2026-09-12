@@ -1,7 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { processPendingBatch } from "@/services/ai-categorize";
 
+import { secureCompare } from "@/lib/secure-compare";
+
 export const dynamic = "force-dynamic";
+
+const DEFAULT_BATCH_SIZE = 10;
+const MAX_BATCH_SIZE = 100;
+
+function resolveBatchSize(raw: string | null): number {
+  const parsed = Number.parseInt(raw ?? "", 10);
+  if (!Number.isFinite(parsed)) {
+    return DEFAULT_BATCH_SIZE;
+  }
+  return Math.min(Math.max(parsed, 1), MAX_BATCH_SIZE);
+}
 
 /**
  * Optional HTTP trigger for the AI categorization worker.
@@ -16,7 +29,7 @@ export async function POST(request: NextRequest) {
   }
 
   const auth = request.headers.get("authorization") ?? "";
-  if (auth !== `Bearer ${secret}`) {
+  if (!secureCompare(auth, `Bearer ${secret}`)) {
     return NextResponse.json(
       { ok: false, error: "unauthorized" },
       { status: 401 },
@@ -30,11 +43,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const batchSize = Number.parseInt(
+  // ?batch= is caller-controlled, so clamp it before it hits the worker's query limit.
+  const batchSize = resolveBatchSize(
     request.nextUrl.searchParams.get("batch") ??
       process.env.AI_CATEGORIZATION_BATCH_SIZE ??
-      "10",
-    10,
+      null,
   );
 
   try {

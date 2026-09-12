@@ -1,6 +1,8 @@
 import { revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
+import { secureCompare } from "@/lib/secure-compare";
+
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -13,7 +15,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (authHeader !== `Bearer ${revalidateSecret}`) {
+    if (!secureCompare(authHeader, `Bearer ${revalidateSecret}`)) {
       console.log("❌ Unauthorized revalidation attempt");
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }

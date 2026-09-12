@@ -62,11 +62,9 @@ async function revokeSupporter(clerkUserId: string) {
 }
 
 /**
- * Resolves the Clerk user id from multiple sources in priority order:
- * 1. Checkout metadata (most reliable for order events)
- * 2. Customer metadata embedded in the webhook body
- * 3. Our paynow_customers table keyed by PayNow customer id
- * 4. Existing subscription row (covers renewals / terminations)
+ * Our paynow_customers row wins: PayNow only echoes the metadata back, so a buyer
+ * who sets it could pay once and badge someone else. Metadata covers the first
+ * purchase (no row yet), the subscription row covers renewals.
  */
 async function resolveClerkUserId(opts: {
   checkoutMetadata?: Record<string, string>;
@@ -74,19 +72,27 @@ async function resolveClerkUserId(opts: {
   paynowCustomerId?: string | null;
   paynowSubscriptionId?: string | null;
 }): Promise<string | null> {
-  if (opts.checkoutMetadata?.clerkUserId) {
-    return opts.checkoutMetadata.clerkUserId;
-  }
-
-  if (opts.customerMetadata?.clerkUserId) {
-    return opts.customerMetadata.clerkUserId;
-  }
+  const metadataClerkUserId =
+    opts.checkoutMetadata?.clerkUserId ??
+    opts.customerMetadata?.clerkUserId ??
+    null;
 
   if (opts.paynowCustomerId) {
     const row = await db.query.paynowCustomers.findFirst({
       where: eq(paynowCustomers.paynowCustomerId, opts.paynowCustomerId),
     });
-    if (row) return row.clerkUserId;
+    if (row) {
+      if (metadataClerkUserId && metadataClerkUserId !== row.clerkUserId) {
+        console.warn(
+          `PayNow: metadata clerkUserId ${metadataClerkUserId} disagrees with paynow_customers ${row.clerkUserId} for customer ${opts.paynowCustomerId}, trusting the table`,
+        );
+      }
+      return row.clerkUserId;
+    }
+  }
+
+  if (metadataClerkUserId) {
+    return metadataClerkUserId;
   }
 
   if (opts.paynowSubscriptionId) {
@@ -366,7 +372,7 @@ async function handleSubscriptionTerminated(
 ): Promise<void> {
   const result = paynowSubscriptionBodySchema.safeParse(rawBody);
   if (!result.success) {
-    // Refund/chargeback may arrive as an order body — try to find sub by order
+    // Refund/chargeback may arrive as an order body, try to find sub by order
     console.warn(
       `PayNow ${terminalStatus}: body did not match subscription schema`,
     );

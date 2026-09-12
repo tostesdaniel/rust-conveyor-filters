@@ -1,5 +1,7 @@
 import crypto from "crypto";
 
+import { secureCompare } from "@/lib/secure-compare";
+
 export interface BuyMeACoffeeWebhookPayload {
   type: "donation.created" | "membership.started"; // Others types are ignored for now
   data: {
@@ -30,15 +32,12 @@ export async function verifyBMCWebhook(
   }
 
   if (!signature) {
-    throw new Error("X-BMC-Signature header missing");
+    return false;
   }
 
   const hmac = crypto.createHmac("sha256", webhookSecret);
   hmac.update(payload);
   const expectedSignature = hmac.digest("hex");
 
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature),
-  );
+  return secureCompare(signature, expectedSignature);
 }

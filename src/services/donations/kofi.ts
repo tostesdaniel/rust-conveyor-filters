@@ -1,3 +1,5 @@
+import { secureCompare } from "@/lib/secure-compare";
+
 export interface KoFiWebhookPayload {
   verification_token: string;
   message_id: string;
@@ -24,5 +26,5 @@ export async function verifyKofiWebhook(
     throw new Error("Ko-fi verification token missing");
   }
 
-  return payload.verification_token === verificationToken;
+  return secureCompare(payload.verification_token, verificationToken);
 }

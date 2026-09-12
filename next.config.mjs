@@ -85,6 +85,14 @@ const nextConfig = {
   //     },
   //   ];
   // },
+  rewrites: async () => {
+    return [
+      {
+        source: "/opencv.js",
+        destination: "/api/opencv",
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX();

@@ -6,6 +6,11 @@
 .pnp.js
 .yarn/install-state.gz
 
+
+# I can't imagine why this wasn't already in the default .gitignore, but it is not. So here it is.
+package-lock.json
+*.log
+
 # testing
 /coverage
 
@@ -41,3 +46,6 @@ src/scripts/monthly-update/items-sink/*.json
 .cursorrules
 
 .wrangler
+
+# clerk configuration (can include secrets)
+/.clerk/

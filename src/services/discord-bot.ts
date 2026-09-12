@@ -24,9 +24,25 @@ function clerkDashboardProfileUrl(clerkUserId: string): string | null {
 
 const DISCORD_EMBED_DISPLAY_NAME_MAX = 250;
 
+const DISCORD_MARKDOWN_CHARS = /[\\*_~`|>[\]]/g;
+
+function escapeDiscordMarkdown(raw: string): string {
+  return raw.replace(DISCORD_MARKDOWN_CHARS, "\\$&");
+}
+
+function escapeDiscordUserText(raw: string): string {
+  return raw.replace(
+    /(https?:\/\/[^\s<>\])]+)|([\\*_~`|>[\]])/g,
+    (_match, url: string | undefined, char: string | undefined) =>
+      url ? `<${url}>` : `\\${char}`,
+  );
+}
+
 function safeDiscordMarkdownLinkLabel(raw: string): string {
-  return truncateDiscordDisplayName(
-    raw.replace(/\\/g, "").replace(/\[/g, "").replace(/\]/g, ""),
+  return escapeDiscordMarkdown(
+    truncateDiscordDisplayName(
+      raw.replace(/\\/g, "").replace(/\[/g, "").replace(/\]/g, ""),
+    ),
   );
 }
 
@@ -161,7 +177,9 @@ export async function notifyFeedbackSubmission(
     );
 
     const typeAndRating = `**Type** ${FEEDBACK_TYPE_LABEL[payload.feedbackType]} · **Rating** ${payload.rating}/5`;
-    const headerAndMessage = `${typeAndRating}\n\n**Message**\n${payload.feedback}`;
+    const headerAndMessage = `${typeAndRating}\n\n**Message**\n${escapeDiscordUserText(
+      payload.feedback,
+    )}`;
 
     let description: string;
     let footerText: string | undefined;

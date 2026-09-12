@@ -10,6 +10,7 @@ import {
   HeaderSectionContent,
   HeaderSectionTitle,
 } from "@/components/layout/header-sections";
+import { JsonLd } from "@/components/shared/json-ld";
 
 import { hostingCopy } from "./content";
 import { PineCta } from "./cta";
@@ -39,10 +40,7 @@ export default function HostingPage() {
 
   return (
     <div className='isolate'>
-      <script
-        type='application/ld+json'
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqJsonLd} />
       <section className='relative full-bleed -mt-6 lg:-mt-8'>
         <div
           aria-hidden='true'

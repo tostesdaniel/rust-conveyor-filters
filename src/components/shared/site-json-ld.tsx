@@ -1,6 +1,7 @@
 import type { Graph, SearchAction } from "schema-dts";
 
 import { siteConfig } from "@/config/site";
+import { JsonLd } from "@/components/shared/json-ld";
 
 const ORGANIZATION_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
@@ -57,10 +58,5 @@ export function SiteJsonLd() {
     ],
   };
 
-  return (
-    <script
-      type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
-    />
-  );
+  return <JsonLd data={graph} />;
 }

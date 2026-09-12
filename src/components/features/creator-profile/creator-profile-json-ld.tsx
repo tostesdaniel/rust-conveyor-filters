@@ -1,6 +1,7 @@
 import type { User } from "@clerk/nextjs/server";
 
 import { siteConfig } from "@/config/site";
+import { JsonLd } from "@/components/shared/json-ld";
 
 type CreatorProfileJsonLdProps = {
   user: User;
@@ -32,10 +33,5 @@ export function CreatorProfileJsonLd({
     },
   };
 
-  return (
-    <script
-      type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-  );
+  return <JsonLd data={jsonLd} />;
 }

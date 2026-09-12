@@ -5,23 +5,7 @@ export const useLogFilterEvent = () => {
 
   const logEvent = async (eventType: "view" | "export", filterId: number) => {
     try {
-      const rateLimitResponse = await fetch("api/log-event", {
-        method: "POST",
-        body: JSON.stringify({ filterId, eventType }),
-      });
-      const { success, userId, ip } = (await rateLimitResponse.json()) as {
-        success: boolean;
-        userId: string | null;
-        ip: string | null;
-      };
-
-      const result = await mutateAsync({
-        filterId,
-        eventType,
-        success,
-        userId,
-        ip,
-      });
+      const result = await mutateAsync({ filterId, eventType });
 
       return result.success;
     } catch (error) {

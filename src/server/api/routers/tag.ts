@@ -2,12 +2,10 @@ import { db } from "@/db";
 import { categorizeAndStore } from "@/services/ai-categorize";
 import { checkUserOwnsFilter } from "@/services/filters";
 import { TRPCError } from "@trpc/server";
-import { Ratelimit } from "@upstash/ratelimit";
-import type { Redis } from "@upstash/redis";
 import { asc, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { getRedisClient } from "@/lib/redis";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { filterTagAssignments, filterTags } from "@/db/schema";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
@@ -61,14 +59,11 @@ export const tagRouter = createTRPCRouter({
         });
       }
 
-      const redis = (await getRedisClient()) as Redis;
-      const rateLimit = new Ratelimit({
-        redis,
-        limiter: Ratelimit.fixedWindow(3, "1d"),
-        prefix: "rl:tag-suggest",
-      });
-      const { success } = await rateLimit.limit(`user:${ctx.userId}`);
-      if (!success) {
+      const allowed = await checkRateLimit(
+        { prefix: "rl:tag-suggest", tokens: 3, window: "1d" },
+        `user:${ctx.userId}`,
+      );
+      if (!allowed) {
         throw new TRPCError({
           code: "TOO_MANY_REQUESTS",
           message: "Limit reached. Try again in 24 hours.",

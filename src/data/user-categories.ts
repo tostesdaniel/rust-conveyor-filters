@@ -1,7 +1,7 @@
 import "server-only";
 
-import { db } from "@/db";
 import { filterItemsOrderBy } from "@/data/filter-items-order";
+import { db } from "@/db";
 import { toOwnerFilterDTO } from "@/utils/filter-mappers";
 import { and, eq, isNull } from "drizzle-orm";
 
@@ -56,9 +56,12 @@ export async function findExistingSubCategory(
   });
 }
 
-export async function findParentCategoryById(parentId: number) {
+export async function findParentCategoryById(parentId: number, userId: string) {
   return await db.query.userCategories.findFirst({
-    where: eq(userCategories.id, parentId),
+    where: and(
+      eq(userCategories.id, parentId),
+      eq(userCategories.userId, userId),
+    ),
   });
 }
 
@@ -90,6 +93,7 @@ export async function getUserCategoryHierarchy(userId: string) {
         orderBy: filters.order,
       },
       subCategories: {
+        where: eq(subCategories.userId, userId),
         orderBy: subCategories.order,
         with: {
           filters: {
@@ -119,7 +123,9 @@ export async function getUserCategoryHierarchy(userId: string) {
 export async function getUserCategories(userId: string) {
   return await db.query.userCategories.findMany({
     where: eq(userCategories.userId, userId),
-    with: { subCategories: true },
+    with: {
+      subCategories: { where: eq(subCategories.userId, userId) },
+    },
   });
 }
 

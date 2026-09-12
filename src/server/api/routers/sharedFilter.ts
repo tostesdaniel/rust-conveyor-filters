@@ -17,6 +17,7 @@ import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 
 import type { SharedFilterDTO } from "@/types/filter";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { filters, sharedFilters } from "@/db/schema";
 
 import {
@@ -154,6 +155,18 @@ export const sharedFilterRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { filterId } = input;
+
+      const allowed = await checkRateLimit(
+        { prefix: "rl:shared-filter-share", tokens: 60, window: "1h" },
+        ctx.userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many shares. Try again shortly.",
+        });
+      }
+
       try {
         await db.transaction(async (tx) => {
           const filter = await findExistingFilter(filterId, ctx.userId);
@@ -256,6 +269,18 @@ export const sharedFilterRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message:
             "Cannot specify both subcategory and includeSubcategories. If you got this error, please contact ohTostt on Discord.",
+        });
+      }
+
+      // Writes a row per filter in the category, so it scales with the library.
+      const allowed = await checkRateLimit(
+        { prefix: "rl:shared-filter-share-category", tokens: 10, window: "1h" },
+        ctx.userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many category shares. Try again in an hour.",
         });
       }
 
@@ -390,6 +415,17 @@ export const sharedFilterRouter = createTRPCRouter({
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "This filter isn't shared with you.",
+        });
+      }
+
+      const allowed = await checkRateLimit(
+        { prefix: "rl:shared-filter-save", tokens: 30, window: "1h" },
+        ctx.userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many saves. Try again shortly.",
         });
       }
 

@@ -5,6 +5,7 @@ import {
   getPublicFilters,
   getUserFiltersByCategory,
 } from "@/data/filters";
+import { getItemImagePaths } from "@/data/items";
 import { db } from "@/db";
 import {
   createFilterSchema,
@@ -17,6 +18,8 @@ import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
+import { getClientIp } from "@/lib/client-ip";
+import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
 import { filterEvents, filterItems, filters } from "@/db/schema";
 
 import {
@@ -25,6 +28,22 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "../trpc";
+
+const logEventLimit: RateLimitSpec = {
+  prefix: "rl:filter-log-event",
+  tokens: 1,
+  window: "5m",
+};
+
+const publicListInput = z.object({
+  sort: z.enum(["popular", "new", "updated", "mostUsed"]),
+  cursor: z.string().optional(),
+  pageSize: z.number().int().min(1).max(50).default(6),
+  search: z.string().max(100).optional(),
+  categories: z.array(z.string()).max(20).optional(),
+  items: z.array(z.string()).max(20).optional(),
+  tags: z.array(z.string()).max(20).optional(),
+});
 
 export const filterRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -46,17 +65,7 @@ export const filterRouter = createTRPCRouter({
     }),
 
   getPublicList: publicProcedure
-    .input(
-      z.object({
-        sort: z.enum(["popular", "new", "updated", "mostUsed"]),
-        cursor: z.string().optional(),
-        pageSize: z.number().default(6),
-        search: z.string().optional(),
-        categories: z.array(z.string()).optional(),
-        items: z.array(z.string()).optional(),
-        tags: z.array(z.string()).optional(),
-      }),
-    )
+    .input(publicListInput)
     .query(async ({ input }) => {
       const decodedCursor = input.cursor
         ? decodeCursor(input.cursor)
@@ -78,17 +87,7 @@ export const filterRouter = createTRPCRouter({
     }),
 
   getPublicListInfinite: publicProcedure
-    .input(
-      z.object({
-        sort: z.enum(["popular", "new", "updated", "mostUsed"]),
-        cursor: z.string().optional(),
-        pageSize: z.number().default(6),
-        search: z.string().optional(),
-        categories: z.array(z.string()).optional(),
-        items: z.array(z.string()).optional(),
-        tags: z.array(z.string()).optional(),
-      }),
-    )
+    .input(publicListInput)
     .query(async ({ input }) => {
       const decodedCursor = input.cursor
         ? decodeCursor(input.cursor)
@@ -158,6 +157,14 @@ export const filterRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message:
             "Cannot create public filter with non-English characters. Make it private or use English letters only.",
+        });
+      }
+
+      const itemImagePaths = await getItemImagePaths();
+      if (!itemImagePaths.has(newFilter.imagePath)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid filter image",
         });
       }
 
@@ -281,6 +288,16 @@ export const filterRouter = createTRPCRouter({
           message:
             "Cannot update to public with non-English characters. Use English letters or keep filter private.",
         });
+      }
+
+      if (data.imagePath) {
+        const itemImagePaths = await getItemImagePaths();
+        if (!itemImagePaths.has(data.imagePath)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Invalid filter image",
+          });
+        }
       }
 
       const updateData: Partial<{
@@ -622,36 +639,41 @@ export const filterRouter = createTRPCRouter({
       z.object({
         filterId: z.number(),
         eventType: z.enum(["view", "export"]),
-        success: z.boolean(),
-        userId: z.string().nullable(),
-        ip: z.string().nullable(),
       }),
     )
-    .mutation(async ({ input }) => {
-      const { filterId, eventType, success, userId, ip } = input;
+    .mutation(async ({ ctx, input }) => {
+      const { filterId, eventType } = input;
+      const identity = ctx.userId ?? getClientIp(ctx.headers);
+
+      const allowed = await checkRateLimit(
+        logEventLimit,
+        `${identity}:${filterId}:${eventType}`,
+      );
+
+      if (!allowed) {
+        return { success: false };
+      }
 
       await db.insert(filterEvents).values({
         filterId,
         eventType,
-        userId: userId || null,
-        ip: userId ? null : ip,
+        userId: ctx.userId,
+        ip: ctx.userId ? null : identity,
       });
 
-      if (success) {
-        await db
-          .update(filters)
-          .set({
-            [eventType === "view" ? "viewCount" : "exportCount"]: sql`${
-              filters[eventType === "view" ? "viewCount" : "exportCount"]
-            } + 1`,
-            popularityScore: sql`
-            GREATEST(0, ${filters.popularityScore}) + 
+      await db
+        .update(filters)
+        .set({
+          [eventType === "view" ? "viewCount" : "exportCount"]: sql`${
+            filters[eventType === "view" ? "viewCount" : "exportCount"]
+          } + 1`,
+          popularityScore: sql`
+            GREATEST(0, ${filters.popularityScore}) +
             ${eventType === "view" ? 1 : 5}
           `,
-          })
-          .where(eq(filters.id, filterId));
-      }
+        })
+        .where(eq(filters.id, filterId));
 
-      return { success };
+      return { success: true };
     }),
 });

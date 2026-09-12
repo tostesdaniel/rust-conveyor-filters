@@ -29,6 +29,7 @@ import { TRPCError } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
+import { checkRateLimit } from "@/lib/rate-limit";
 import { filters, subCategories, userCategories } from "@/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -61,8 +62,22 @@ export const categoryRouter = createTRPCRouter({
         });
       }
 
+      const allowed = await checkRateLimit(
+        { prefix: "rl:category-create", tokens: 30, window: "1h" },
+        ctx.userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many categories created. Try again shortly.",
+        });
+      }
+
       if (input.parentId) {
-        const parentCategory = await findParentCategoryById(input.parentId);
+        const parentCategory = await findParentCategoryById(
+          input.parentId,
+          ctx.userId,
+        );
 
         if (!parentCategory) {
           throw new TRPCError({
@@ -88,6 +103,18 @@ export const categoryRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { categoryId, name, isSubCategory } = input;
       const { userId } = ctx;
+
+      const allowed = await checkRateLimit(
+        { prefix: "rl:category-rename", tokens: 40, window: "1h" },
+        userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many renames. Try again shortly.",
+        });
+      }
+
       if (isSubCategory) {
         await renameSubCategory({
           subCategoryId: categoryId,
@@ -114,6 +141,17 @@ export const categoryRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { isSubCategory, categoryId } = input;
       const { userId } = ctx;
+
+      const allowed = await checkRateLimit(
+        { prefix: "rl:category-delete", tokens: 20, window: "1h" },
+        userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many deletions. Try again shortly.",
+        });
+      }
 
       try {
         await db.transaction(async (tx) => {

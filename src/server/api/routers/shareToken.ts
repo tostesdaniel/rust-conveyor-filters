@@ -9,6 +9,8 @@ import { db } from "@/db";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
+import { checkRateLimit } from "@/lib/rate-limit";
+
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const shareTokenRouter = createTRPCRouter({
@@ -38,6 +40,17 @@ export const shareTokenRouter = createTRPCRouter({
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Share token not found",
+        });
+      }
+
+      const allowed = await checkRateLimit(
+        { prefix: "rl:share-token-revoke", tokens: 5, window: "1h" },
+        ctx.userId,
+      );
+      if (!allowed) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many token revocations. Try again in an hour.",
         });
       }
 

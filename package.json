@@ -125,6 +125,10 @@
     "vitest": "^5.0.0",
     "wrangler": "^4.129.0"
   },
+  "overrides": {
+    "sharp": "0.35.4",
+    "postcss": "8.5.28"
+  },
   "trustedDependencies": [],
   "engines": {
     "node": "24.x"

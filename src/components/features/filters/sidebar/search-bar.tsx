@@ -3,6 +3,7 @@
 import { useEffect, useRef, useTransition } from "react";
 import { trackEvent } from "@/utils/rybbit";
 import { InfoIcon, SearchIcon } from "lucide-react";
+import { debounce } from "nuqs";
 
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { Label } from "@/components/ui/label";
@@ -16,10 +17,7 @@ import {
 export function SearchBar() {
   const [isLoading, startTransition] = useTransition();
   const [{ search }, setSearchParams] = useSearchParams({
-    limitUrlUpdates: {
-      method: "debounce",
-      timeMs: 1000,
-    },
+    limitUrlUpdates: debounce(1000),
     startTransition,
     shallow: false,
   });

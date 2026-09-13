@@ -63,7 +63,7 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
       const result = GameConveyorFilterItemSchema.safeParse(parsedData);
       if (!result.success) {
         // Extract the most relevant error message
-        const firstError = result.error.errors[0];
+        const firstError = result.error.issues[0];
         if (firstError.message.includes("Too many items")) {
           setError(
             `Cannot import: Maximum ${MAX_FILTER_ITEMS} items allowed, got ${parsedData?.length || "unknown"} items`,

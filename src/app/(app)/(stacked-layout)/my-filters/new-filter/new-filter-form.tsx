@@ -4,13 +4,16 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createFilterSchema } from "@/schemas/filterFormSchema";
+import {
+  type CreateFilter,
+  type CreateFilterInput,
+  createFilterSchema,
+} from "@/schemas/filterFormSchema";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import type { OwnerFilterDTO } from "@/types/filter";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
@@ -46,7 +49,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
   const { data: items } = useGetItems();
   const { data: _categories } = useGetCategories();
 
-  const form = useForm<z.infer<typeof createFilterSchema>>({
+  const form = useForm<CreateFilterInput, unknown, CreateFilter>({
     resolver: zodResolver(createFilterSchema),
     defaultValues: {
       name: "",
@@ -205,7 +208,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof createFilterSchema>) {
+  function onSubmit(data: CreateFilter) {
     mutation.mutate(data);
   }
 

@@ -45,10 +45,10 @@ const ratingOptions = [
 
 const formSchema = z.object({
   feedbackType: z.enum(["bug", "feature", "general"], {
-    required_error: "Please select feedback type.",
+    error: "Please select feedback type.",
   }),
   feedback: z
-    .string({ required_error: "Please provide feedback." })
+    .string({ error: "Please provide feedback." })
     .transform((value) => value.replace(/\s+/g, " "))
     .refine((value) => value.trim().length >= 30, {
       message:
@@ -59,7 +59,7 @@ const formSchema = z.object({
         "Your feedback is too long. Please provide no more than 255 characters.",
     }),
   rating: z.enum(["1", "2", "3", "4", "5"], {
-    required_error: "Please select one of the rating options.",
+    error: "Please select one of the rating options.",
   }),
 });
 

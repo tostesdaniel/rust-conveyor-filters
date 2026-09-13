@@ -19,7 +19,9 @@ const baseFilterSchema = z.object({
     categoryId: z.number().nullable().default(null),
     subCategoryId: z.number().nullable().default(null),
   }),
-  isPublic: z.boolean().default(false).optional(),
+  // No default: updateFilter treats undefined as "not supplied", so a default
+  // false unpublishes a public filter on every rename.
+  isPublic: z.boolean().optional(),
   items: z
     .array(
       z.union([
@@ -113,6 +115,11 @@ export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
     });
   }
 });
+
+// Input and output differ here: category ids are optional going in, filled
+// coming out. Form state holds the input, submit handlers get the output.
+export type CreateFilterInput = z.input<typeof createFilterSchema>;
+export type CreateFilter = z.output<typeof createFilterSchema>;
 
 /**
  * Zod schema for updating existing filters with partial validation.

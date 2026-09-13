@@ -1,10 +1,12 @@
 import Image from "next/image";
-import { createFilterSchema } from "@/schemas/filterFormSchema";
+import type {
+  CreateFilter,
+  CreateFilterInput,
+} from "@/schemas/filterFormSchema";
 import { categoryMapping } from "@/utils/category-mapping";
 import { getR2ImageUrl } from "@/utils/r2-images";
 import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
-import { z } from "zod";
 
 import { type ItemWithFields } from "@/types/item";
 import { FilterSettingsFieldDescription } from "@/config/constants";
@@ -16,7 +18,7 @@ import { FilterSettingsInput } from "@/components/features/conveyor/filter-setti
 interface ConveyorItemProps {
   item: ItemWithFields;
   index: number;
-  control: Control<z.infer<typeof createFilterSchema>>;
+  control: Control<CreateFilterInput, unknown, CreateFilter>;
   onRemove: (index: number) => void;
 }
 

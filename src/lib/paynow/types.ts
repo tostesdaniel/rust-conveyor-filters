@@ -13,74 +13,65 @@ export function normalizeEventType(raw: string): string {
  * Contains checkout metadata (where we put clerkUserId) and line items
  * (where the subscription_id lives).
  */
-export const paynowOrderBodySchema = z
-  .object({
-    id: z.string(),
-    customer: z
-      .object({
-        id: z.string(),
-        name: z.string().nullable().optional(),
-        metadata: z.record(z.string(), z.string()).optional(),
-      })
-      .passthrough()
-      .optional(),
-    checkout: z
-      .object({
-        id: z.string().optional(),
-        metadata: z.record(z.string(), z.string()).optional(),
-      })
-      .passthrough()
-      .optional(),
-    subscription_id: z.string().nullable().optional(),
-    /** "subscription_initial" | "subscription_renewal" | "one_time" | "mixed" */
-    type: z.string().optional(),
-    lines: z
-      .array(
-        z
-          .object({
-            product_id: z.string().optional(),
-            subscription_id: z.string().nullable().optional(),
-            subscription_interval_scale: z.string().optional(),
-            subscription_interval_value: z.number().int().optional(),
-          })
-          .passthrough(),
-      )
-      .optional(),
-    status: z.string().optional(),
-    created_at: z.string().optional(),
-    completed_at: z.string().optional(),
-  })
-  .passthrough();
+export const paynowOrderBodySchema = z.looseObject({
+  id: z.string(),
+  customer: z
+    .looseObject({
+      id: z.string(),
+      name: z.string().nullable().optional(),
+      metadata: z.record(z.string(), z.string()).optional(),
+    })
+    .optional(),
+  checkout: z
+    .looseObject({
+      id: z.string().optional(),
+      metadata: z.record(z.string(), z.string()).optional(),
+    })
+    .optional(),
+  subscription_id: z.string().nullable().optional(),
+  /** "subscription_initial" | "subscription_renewal" | "one_time" | "mixed" */
+  type: z.string().optional(),
+  lines: z
+    .array(
+      z.looseObject({
+        product_id: z.string().optional(),
+        subscription_id: z.string().nullable().optional(),
+        subscription_interval_scale: z.string().optional(),
+        subscription_interval_value: z.int().optional(),
+      }),
+    )
+    .optional(),
+  status: z.string().optional(),
+  created_at: z.string().optional(),
+  completed_at: z.string().optional(),
+});
 
 export type PaynowOrderBody = z.infer<typeof paynowOrderBodySchema>;
 
 /**
  * Subscription body — shape of `body` for `on_subscription_*` events.
  */
-export const paynowSubscriptionBodySchema = z
-  .object({
-    id: z.string(),
-    status: z.enum(["created", "active", "canceled"]).optional(),
-    customer_id: z.string().optional(),
-    customer: z
-      .object({
-        id: z.string(),
-        metadata: z.record(z.string(), z.string()).optional(),
-      })
-      .passthrough()
-      .optional(),
-    product_id: z.string().optional(),
-    interval_value: z.number().int().optional(),
-    interval_scale: z
-      .enum(["invalid", "day", "week", "month", "year"])
-      .optional(),
-    current_period_start: z.string().nullable().optional(),
-    current_period_end: z.string().nullable().optional(),
-    canceled_at: z.string().nullable().optional(),
-    active_at: z.string().nullable().optional(),
-    created_at: z.string().optional(),
-  })
-  .passthrough();
+export const paynowSubscriptionBodySchema = z.looseObject({
+  id: z.string(),
+  status: z.enum(["created", "active", "canceled"]).optional(),
+  customer_id: z.string().optional(),
+  customer: z
+    .looseObject({
+      id: z.string(),
+      metadata: z.record(z.string(), z.string()).optional(),
+    })
+    .optional(),
+  product_id: z.string().optional(),
+  interval_value: z.int().optional(),
+  interval_scale: z
+    .enum(["invalid", "day", "week", "month", "year"])
+    .optional(),
+  current_period_start: z.string().nullable().optional(),
+  current_period_end: z.string().nullable().optional(),
+  canceled_at: z.string().nullable().optional(),
+  active_at: z.string().nullable().optional(),
+  created_at: z.string().optional(),
+});
 
 export type PaynowSubscriptionBody = z.infer<
   typeof paynowSubscriptionBodySchema
@@ -91,13 +82,11 @@ export type PaynowSubscriptionBody = z.infer<
  * PayNow wraps all event data under `body`.
  * `event_type` is uppercase in practice (e.g. "ON_ORDER_COMPLETED").
  */
-export const paynowWebhookEnvelopeSchema = z
-  .object({
-    event_type: z.string(),
-    event_id: z.string().optional(),
-    body: z.unknown().optional(),
-  })
-  .passthrough();
+export const paynowWebhookEnvelopeSchema = z.looseObject({
+  event_type: z.string(),
+  event_id: z.string().optional(),
+  body: z.unknown().optional(),
+});
 
 export type PaynowWebhookEnvelope = z.infer<typeof paynowWebhookEnvelopeSchema>;
 

@@ -57,7 +57,7 @@ type RecentToken = {
 };
 
 const formSchema = z.object({
-  includeSubcategories: z.boolean().default(false).optional(),
+  includeSubcategories: z.boolean().optional(),
   token: z
     .string()
     .nonempty("Token is required.")

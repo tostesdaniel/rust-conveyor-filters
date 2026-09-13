@@ -38,7 +38,7 @@ const logEventLimit: RateLimitSpec = {
 const publicListInput = z.object({
   sort: z.enum(["popular", "new", "updated", "mostUsed"]),
   cursor: z.string().optional(),
-  pageSize: z.number().int().min(1).max(50).default(6),
+  pageSize: z.int().min(1).max(50).default(6),
   search: z.string().max(100).optional(),
   categories: z.array(z.string()).max(20).optional(),
   items: z.array(z.string()).max(20).optional(),

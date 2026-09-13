@@ -23,8 +23,8 @@ import { Input } from "@/components/ui/input";
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, { message: "Category name must be at least 1 character long" })
-    .max(255, { message: "Category name must be at most 255 characters long" }),
+    .min(1, { error: "Category name must be at least 1 character long" })
+    .max(255, { error: "Category name must be at most 255 characters long" }),
 });
 
 interface RenameCategoryFormProps {

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { CirclePlusIcon, XIcon } from "lucide-react";
+import { throttle } from "nuqs";
 import { toast } from "sonner";
 
 import { useGetItems } from "@/hooks/use-get-items";
@@ -51,10 +52,7 @@ export function ItemsSelection() {
         {
           startTransition,
           shallow: false,
-          limitUrlUpdates: {
-            method: "throttle",
-            timeMs: 500,
-          },
+          limitUrlUpdates: throttle(500),
         },
       );
     },
@@ -185,10 +183,7 @@ function ItemsCombobox({
         {
           startTransition,
           shallow: false,
-          limitUrlUpdates: {
-            method: "throttle",
-            timeMs: 500,
-          },
+          limitUrlUpdates: throttle(500),
         },
       ).then(() => {
         setOpen(false);

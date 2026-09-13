@@ -6,20 +6,22 @@ import { MAX_FILTER_ITEMS } from "@/config/constants";
 const baseFilterSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
+    .min(2, { error: "Name must be at least 2 characters long" })
     .max(50),
   description: z
     .string()
-    .min(2, { message: "Description must be at least 2 characters long" })
+    .min(2, { error: "Description must be at least 2 characters long" })
     .max(255)
     .or(z.literal("")),
   authorId: z.string().optional(), // set by the server when creating a new filter
-  imagePath: z.string().min(1, { message: "You must select an image" }),
+  imagePath: z.string().min(1, { error: "You must select an image" }),
   category: z.object({
     categoryId: z.number().nullable().default(null),
     subCategoryId: z.number().nullable().default(null),
   }),
-  isPublic: z.boolean().default(false).optional(),
+  // No default: updateFilter treats undefined as "not supplied", so a default
+  // false unpublishes a public filter on every rename.
+  isPublic: z.boolean().optional(),
   items: z
     .array(
       z.union([
@@ -41,10 +43,10 @@ const baseFilterSchema = z.object({
       ]),
     )
     .refine((data) => data.length <= MAX_FILTER_ITEMS, {
-      message: `You cannot have more than ${MAX_FILTER_ITEMS} items`,
+      error: `You cannot have more than ${MAX_FILTER_ITEMS} items`,
     })
     .refine((data) => data.length > 0, {
-      message: "You must have at least 1 item",
+      error: "You must have at least 1 item",
     })
     .refine(
       (data) => {
@@ -80,7 +82,7 @@ const baseFilterSchema = z.object({
         return hasUniqueItemIds && hasUniqueCategoryIds;
       },
       {
-        message: "No duplicate items allowed",
+        error: "No duplicate items allowed",
       },
     ),
 });
@@ -88,7 +90,7 @@ const baseFilterSchema = z.object({
 // Create accepts an optional fork source id (the Remix flow). The author
 // snapshot is resolved server-side and never trusted from the client.
 const createBaseSchema = baseFilterSchema.extend({
-  forkedFromId: z.number().int().positive().optional(),
+  forkedFromId: z.int().positive().optional(),
 });
 
 export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
@@ -97,7 +99,7 @@ export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
 
   if (!validateNameLatinChars(data.name)) {
     ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: "custom",
       message:
         "Public filters: English letters only. For non-English characters, make filter private.",
       path: ["name"],
@@ -106,13 +108,18 @@ export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
 
   if (!validateDescriptionLatinChars(data.description)) {
     ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: "custom",
       message:
         "Public filters: English letters only. For non-English characters, make filter private.",
       path: ["description"],
     });
   }
 });
+
+// Input and output differ here: category ids are optional going in, filled
+// coming out. Form state holds the input, submit handlers get the output.
+export type CreateFilterInput = z.input<typeof createFilterSchema>;
+export type CreateFilter = z.output<typeof createFilterSchema>;
 
 /**
  * Zod schema for updating existing filters with partial validation.

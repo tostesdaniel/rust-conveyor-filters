@@ -65,11 +65,14 @@ async function handleClerkWebhook(rawBody: string, headerPayload: Headers) {
   let evt: WebhookEvent;
 
   try {
-    evt = wh.verify(rawBody, {
+    // verify() returns undefined and throws on a bad signature, so the body
+    // gets parsed separately. Malformed JSON lands in the same 400 below.
+    wh.verify(rawBody, {
       "svix-id": headerPayload.get("svix-id")!,
       "svix-timestamp": headerPayload.get("svix-timestamp")!,
       "svix-signature": headerPayload.get("svix-signature")!,
-    }) as WebhookEvent;
+    });
+    evt = JSON.parse(rawBody) as WebhookEvent;
   } catch (err) {
     console.error("Error: Could not verify Clerk webhook:", err);
     return new Response("Error: Verification error", {

@@ -3,7 +3,11 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { createFilterSchema } from "@/schemas/filterFormSchema";
+import {
+  type CreateFilter,
+  type CreateFilterInput,
+  createFilterSchema,
+} from "@/schemas/filterFormSchema";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +18,6 @@ import {
   type FieldValues,
 } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetItems } from "@/hooks/use-get-items";
@@ -123,7 +126,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const { data, isError, error, isLoading, refetch } =
     useGetUserFilter(filterId);
 
-  const form = useForm<z.infer<typeof createFilterSchema>>({
+  const form = useForm<CreateFilterInput, unknown, CreateFilter>({
     resolver: zodResolver(createFilterSchema),
     defaultValues: {
       name: "",
@@ -213,7 +216,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     void form.trigger();
   }, [data, filterId, form]);
 
-  async function onSubmit(data: z.infer<typeof createFilterSchema>) {
+  async function onSubmit(data: CreateFilter) {
     const dirtyData = getDirtyData(data, dirtyFields);
     const removedItems = getRemovedItems(initialItemsRef.current, data.items);
     const addedItems = getAddedItems(initialItemsRef.current, data.items);

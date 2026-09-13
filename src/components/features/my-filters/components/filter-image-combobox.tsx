@@ -2,11 +2,10 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { createFilterSchema } from "@/schemas/filterFormSchema";
+import type { CreateFilterInput } from "@/schemas/filterFormSchema";
 import { getR2ImageUrl } from "@/utils/r2-images";
 import { ChevronsUpDown } from "lucide-react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
-import { z } from "zod";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -32,7 +31,7 @@ import { FilterImage } from "@/components/features/my-filters/components/filter-
 type SelectedImage = string;
 
 interface FilterImageComboboxProps {
-  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "imagePath">;
+  field: ControllerRenderProps<CreateFilterInput, "imagePath">;
   items: Item[];
 }
 
@@ -138,7 +137,7 @@ interface ItemListProps {
   items: Item[];
   setOpen: (open: boolean) => void;
   setSelectedImage: (image: string) => void;
-  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "imagePath">;
+  field: ControllerRenderProps<CreateFilterInput, "imagePath">;
 }
 
 const ItemList = React.memo(

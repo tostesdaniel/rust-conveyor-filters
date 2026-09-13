@@ -1,6 +1,6 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGoogle } from "@ai-sdk/google";
 import { createGroq } from "@ai-sdk/groq";
-import { generateText, Output } from "ai";
+import { generateText, type LanguageModel, Output } from "ai";
 import { z } from "zod";
 
 import {
@@ -91,7 +91,7 @@ function buildResponseSchema(input: CategorizationInput) {
 
 function buildPrompt(input: CategorizationInput) {
   return {
-    system:
+    instructions:
       RUST_SYSTEM_PROMPT +
       `\n\nAvailable tags (you MUST pick 1-${MAX_FILTER_TAGS} from this list):\n` +
       formatTaxonomy(input.taxonomy) +
@@ -105,7 +105,7 @@ function buildPrompt(input: CategorizationInput) {
 function getGoogleModel() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) return null;
-  const google = createGoogleGenerativeAI({ apiKey });
+  const google = createGoogle({ apiKey });
   return google(PRIMARY_MODEL_ID);
 }
 
@@ -185,7 +185,7 @@ export async function categorizeFilter(
   input: CategorizationInput,
 ): Promise<CategorizationResult> {
   const schema = buildResponseSchema(input);
-  const { system, prompt } = buildPrompt(input);
+  const { instructions, prompt } = buildPrompt(input);
 
   const primary = getGoogleModel();
   const fallback = getGroqModel();
@@ -196,9 +196,11 @@ export async function categorizeFilter(
     );
   }
 
+  // Google's model type carries batch methods Groq's lacks, so this has to be
+  // the shared LanguageModel.
   const attempts: Array<{
     provider: "google" | "groq";
-    model: ReturnType<typeof getGoogleModel>;
+    model: LanguageModel;
   }> = [];
   if (primary) attempts.push({ provider: "google", model: primary });
   if (fallback) attempts.push({ provider: "groq", model: fallback });
@@ -211,7 +213,7 @@ export async function categorizeFilter(
       const result = await generateText({
         model: attempt.model,
         output: Output.object({ schema }),
-        system,
+        instructions,
         prompt,
         temperature: 0.2,
       });

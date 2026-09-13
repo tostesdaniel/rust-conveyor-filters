@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import type { createFilterSchema } from "@/schemas/filterFormSchema";
+import type { CreateFilterInput } from "@/schemas/filterFormSchema";
 import {
   CheckIcon,
   ChevronsUpDownIcon,
@@ -9,7 +9,6 @@ import {
   PlusIcon,
 } from "lucide-react";
 import type { ControllerRenderProps } from "react-hook-form";
-import { z } from "zod";
 
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { cn } from "@/lib/utils";
@@ -33,7 +32,7 @@ import { Separator } from "@/components/ui/separator";
 import { CreateCategoryDialog } from "@/components/features/my-filters/categories/dialogs/create-category-dialog";
 
 export interface FilterCategoryComboboxProps {
-  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "category">;
+  field: ControllerRenderProps<CreateFilterInput, "category">;
 }
 
 export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
@@ -171,7 +170,7 @@ const SubcategoryItem = ({
   field,
 }: {
   subCategory: SubCategory;
-  field: ControllerRenderProps<z.infer<typeof createFilterSchema>, "category">;
+  field: ControllerRenderProps<CreateFilterInput, "category">;
 }) => (
   <CommandItem
     value={subCategory.name}

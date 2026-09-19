@@ -1,10 +1,12 @@
 import { tsVector } from "@/db/custom-types/ts-vector";
+import type { ItemUpdateChanges } from "@/db/item-changes";
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   char,
   index,
   integer,
+  jsonb,
   numeric,
   pgEnum,
   pgTable,
@@ -34,6 +36,21 @@ export type NewItem = typeof items.$inferInsert;
 export const itemsRelations = relations(items, ({ many }) => ({
   filterItems: many(filterItems),
 }));
+
+/**
+ * One row per game build worth announcing, written by the same transaction
+ * that applies the snapshot. The Discord post is what `posted_at` tracks, so
+ * a post that fails goes out on the next boot instead of being lost.
+ */
+export const itemAnnouncements = pgTable("item_announcements", {
+  manifestId: varchar("manifest_id", { length: 32 }).primaryKey(),
+  changes: jsonb("changes").notNull().$type<ItemUpdateChanges>(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  postedAt: timestamp("posted_at"),
+});
+
+export type ItemAnnouncement = typeof itemAnnouncements.$inferSelect;
+export type NewItemAnnouncement = typeof itemAnnouncements.$inferInsert;
 
 export const aiCategorizationStatusEnum = pgEnum(
   "ai_categorization_status_enum",

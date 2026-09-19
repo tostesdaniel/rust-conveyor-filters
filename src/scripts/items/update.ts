@@ -34,6 +34,14 @@ async function extractFlags(bundlePath: string) {
   return JSON.parse(stdout) as ItemFlags[];
 }
 
+// The item update workflow branches on these. Locally the stderr lines say the same.
+async function setOutputs(outputs: Record<string, string>) {
+  const file = process.env.GITHUB_OUTPUT;
+  if (!file) return;
+  const lines = Object.entries(outputs).map(([k, v]) => `${k}=${v}\n`);
+  await fs.appendFile(file, lines.join(""));
+}
+
 async function main() {
   const { values } = parseArgs({
     options: {
@@ -47,6 +55,7 @@ async function main() {
     const manifestId = await probeManifestId();
     if (manifestId === previous.gameBuild.manifestId) {
       console.error(`game build ${manifestId} is already in the snapshot`);
+      await setOutputs({ changed: "false", "manifest-id": manifestId });
       return;
     }
   }
@@ -81,6 +90,11 @@ async function main() {
   await fs.writeFile(reportPath, report);
   console.log(report);
   console.error(`report written to ${reportPath}`);
+  await setOutputs({
+    changed: "true",
+    "manifest-id": manifestId,
+    report: reportPath,
+  });
 }
 
 main().catch((err) => {

@@ -4,6 +4,7 @@ import {
   filterItemsOrderBy,
   filterItemsWhere,
 } from "@/data/filter-items-query";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import { toOwnerFilterDTO } from "@/utils/filter-mappers";
 import { and, eq, isNull } from "drizzle-orm";
@@ -115,12 +116,13 @@ export async function getUserCategoryHierarchy(userId: string) {
     },
   });
 
+  const icons = await getItemIcons();
   return result.map((category) => ({
     ...category,
-    filters: category.filters.map(toOwnerFilterDTO),
+    filters: category.filters.map((f) => toOwnerFilterDTO(f, icons)),
     subCategories: category.subCategories.map((subCategory) => ({
       ...subCategory,
-      filters: subCategory.filters.map(toOwnerFilterDTO),
+      filters: subCategory.filters.map((f) => toOwnerFilterDTO(f, icons)),
     })),
   }));
 }

@@ -11,8 +11,31 @@ env:
   IMAGE_TAG: latest
 
 jobs:
+  # Icon URLs carry a version, so a container that fetched one before the new
+  # art reached R2 would cache the old art under the new URL for a year.
+  upload-icons:
+    name: Upload changed icons to R2
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - run: bun ci
+
+      - run: bun items:upload
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
   build-and-push:
     name: Build & Push Docker image
+    needs: upload-icons
     runs-on: ubuntu-24.04
     permissions:
       contents: read

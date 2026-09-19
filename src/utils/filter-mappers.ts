@@ -1,3 +1,4 @@
+import type { ItemIcons } from "@/data/items";
 import type { enrichWithAuthor } from "@/utils/enrich-filter";
 
 import type {
@@ -11,12 +12,16 @@ import type {
  * Convert ConveyorFilter to OwnerFilterDTO
  * Includes owner-specific fields
  */
-export function toOwnerFilterDTO(filter: ConveyorFilter): OwnerFilterDTO {
+export function toOwnerFilterDTO(
+  filter: ConveyorFilter,
+  icons: ItemIcons,
+): OwnerFilterDTO {
   return {
     id: filter.id,
     name: filter.name,
     description: filter.description,
     imagePath: filter.imagePath,
+    imageVersion: icons.get(filter.imagePath) ?? null,
     isPublic: filter.isPublic,
     categoryId: filter.categoryId,
     subCategoryId: filter.subCategoryId,
@@ -28,6 +33,7 @@ export function toOwnerFilterDTO(filter: ConveyorFilter): OwnerFilterDTO {
         ? {
             name: item.item.name,
             imagePath: item.item.imagePath,
+            iconVersion: item.item.iconVersion,
             shortname: item.item.shortname,
           }
         : null,
@@ -53,12 +59,16 @@ export function toOwnerFilterDTO(filter: ConveyorFilter): OwnerFilterDTO {
 /**
  * Convert ConveyorFilter to SharedFilterDTO
  */
-export function toSharedFilterDTO(filter: ConveyorFilter): SharedFilterDTO {
+export function toSharedFilterDTO(
+  filter: ConveyorFilter,
+  icons: ItemIcons,
+): SharedFilterDTO {
   return {
     id: filter.id,
     name: filter.name,
     description: filter.description,
     imagePath: filter.imagePath,
+    imageVersion: icons.get(filter.imagePath) ?? null,
     categoryId: filter.categoryId,
     subCategoryId: filter.subCategoryId,
     createdAt: filter.createdAt,
@@ -68,6 +78,7 @@ export function toSharedFilterDTO(filter: ConveyorFilter): SharedFilterDTO {
         ? {
             name: item.item.name,
             imagePath: item.item.imagePath,
+            iconVersion: item.item.iconVersion,
             shortname: item.item.shortname,
           }
         : null,
@@ -94,12 +105,14 @@ export function toSharedFilterDTO(filter: ConveyorFilter): SharedFilterDTO {
  */
 export function toPublicFilterDTO(
   filter: Awaited<ReturnType<typeof enrichWithAuthor>>[0],
+  icons: ItemIcons,
 ): PublicFilterListDTO {
   return {
     id: filter.id,
     name: filter.name,
     description: filter.description,
     imagePath: filter.imagePath,
+    imageVersion: icons.get(filter.imagePath) ?? null,
     categoryId: filter.categoryId,
     createdAt: filter.createdAt,
     updatedAt: filter.updatedAt,
@@ -108,6 +121,7 @@ export function toPublicFilterDTO(
         ? {
             name: item.item.name,
             imagePath: item.item.imagePath,
+            iconVersion: item.item.iconVersion,
             shortname: item.item.shortname,
           }
         : null,

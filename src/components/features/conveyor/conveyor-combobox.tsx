@@ -114,6 +114,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
           shortname: filterItem.shortname,
           category: filterItem.category,
           imagePath: filterItem.imagePath,
+          iconVersion: filterItem.iconVersion,
           max: 0,
           buffer: 0,
           min: 0,
@@ -238,6 +239,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                       <div className='relative size-6'>
                         <ItemIcon
                           imagePath={item.imagePath}
+                          version={item.iconVersion}
                           size='tiny'
                           alt={item.name}
                           height={24}

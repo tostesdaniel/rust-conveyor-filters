@@ -4,7 +4,12 @@ import type { BadgeType } from "@/types/badges";
  * Minimal item data for carousel/list display and export
  */
 export interface FilterItemDTO {
-  item: { name: string; imagePath: string; shortname: string } | null;
+  item: {
+    name: string;
+    imagePath: string;
+    iconVersion: string | null;
+    shortname: string;
+  } | null;
   category: { name: string; id: number } | null;
   max: number;
   buffer: number;
@@ -24,6 +29,8 @@ export interface OwnerFilterDTO {
   name: string;
   description: string | null;
   imagePath: string;
+  /** Icon version of the cover item, null once that item leaves the game. */
+  imageVersion: string | null;
   isPublic: boolean;
   categoryId: number | null;
   subCategoryId: number | null;
@@ -58,6 +65,7 @@ export interface SharedFilterDTO {
   name: string;
   description: string | null;
   imagePath: string;
+  imageVersion: string | null;
   categoryId: number | null;
   subCategoryId: number | null;
   createdAt: Date;
@@ -83,6 +91,7 @@ export interface PublicFilterListDTO {
   name: string;
   description: string | null;
   imagePath: string;
+  imageVersion: string | null;
   categoryId: number | null;
   createdAt: Date;
   updatedAt: Date;

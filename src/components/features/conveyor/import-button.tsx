@@ -106,6 +106,7 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
             shortname: matchedItem.shortname,
             category: matchedItem.category,
             imagePath: matchedItem.imagePath,
+            iconVersion: matchedItem.iconVersion,
             max: item.MaxAmountInOutput,
             buffer: item.BufferAmount,
             min: item.MinAmountInInput,

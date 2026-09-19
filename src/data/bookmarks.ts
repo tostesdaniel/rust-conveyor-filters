@@ -4,6 +4,7 @@ import {
   filterItemsOrderBy,
   filterItemsWhere,
 } from "@/data/filter-items-query";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toPublicFilterDTO } from "@/utils/filter-mappers";
@@ -47,14 +48,15 @@ export async function getBookmarkedFilters(
   });
 
   // Enrich filters with author data and convert to DTOs
-  const enrichedFilters = await enrichWithAuthor(
-    bookmarkedFilters.map((bookmark) => bookmark.filter),
-  );
+  const [enrichedFilters, icons] = await Promise.all([
+    enrichWithAuthor(bookmarkedFilters.map((bookmark) => bookmark.filter)),
+    getItemIcons(),
+  ]);
 
   return bookmarkedFilters.map((bookmark, index) => ({
     id: bookmark.id,
     filterId: bookmark.filterId,
-    filter: toPublicFilterDTO(enrichedFilters[index]),
+    filter: toPublicFilterDTO(enrichedFilters[index], icons),
   }));
 }
 

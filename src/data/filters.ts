@@ -4,6 +4,7 @@ import {
   filterItemsOrderBy,
   filterItemsWhere,
 } from "@/data/filter-items-query";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import type { CursorData } from "@/utils/cursor";
 import { encodeCursor } from "@/utils/cursor";
@@ -378,9 +379,12 @@ export async function getFiltersWithItems(userId: string) {
     },
   });
 
-  const forkAttributions = await loadForkAttributions(result);
+  const [forkAttributions, icons] = await Promise.all([
+    loadForkAttributions(result),
+    getItemIcons(),
+  ]);
   return result.map((f) => ({
-    ...toOwnerFilterDTO(f),
+    ...toOwnerFilterDTO(f, icons),
     forkedFrom: forkAttributions.get(f.id) ?? null,
   }));
 }
@@ -401,7 +405,7 @@ export async function getFilterById(filterId: number, userId: string) {
     return null;
   }
 
-  return toOwnerFilterDTO(result);
+  return toOwnerFilterDTO(result, await getItemIcons());
 }
 
 export async function getPublicFilter(filterId: number) {
@@ -420,15 +424,16 @@ export async function getPublicFilter(filterId: number) {
     return null;
   }
 
-  const [enriched, tagsByFilter, remixCounts, forkAttributions] =
+  const [enriched, tagsByFilter, remixCounts, forkAttributions, icons] =
     await Promise.all([
       enrichWithAuthor([filter]),
       loadTagsForFilters([filter.id]),
       loadRemixCounts([filter.id]),
       loadForkAttributions([filter]),
+      getItemIcons(),
     ]);
   return {
-    ...toPublicFilterDTO(enriched[0]),
+    ...toPublicFilterDTO(enriched[0], icons),
     tags: tagsByFilter.get(filter.id) ?? [],
     remixCount: remixCounts.get(filter.id) ?? 0,
     forkedFrom: forkAttributions.get(filter.id) ?? null,
@@ -641,16 +646,17 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     orderBy,
   });
 
-  const [enrichedFilters, tagsByFilter, remixCounts, forkAttributions] =
+  const [enrichedFilters, tagsByFilter, remixCounts, forkAttributions, icons] =
     await Promise.all([
       enrichWithAuthor(result),
       loadTagsForFilters(result.map((r) => r.id)),
       loadRemixCounts(result.map((r) => r.id)),
       loadForkAttributions(result),
+      getItemIcons(),
     ]);
 
   const dtoFilters = enrichedFilters.map((f) => ({
-    ...toPublicFilterDTO(f),
+    ...toPublicFilterDTO(f, icons),
     tags: tagsByFilter.get(f.id) ?? [],
     remixCount: remixCounts.get(f.id) ?? 0,
     forkedFrom: forkAttributions.get(f.id) ?? null,
@@ -719,9 +725,12 @@ export async function getUserFiltersByCategory(
     orderBy: filters.order,
   });
 
-  const forkAttributions = await loadForkAttributions(result);
+  const [forkAttributions, icons] = await Promise.all([
+    loadForkAttributions(result),
+    getItemIcons(),
+  ]);
   return result.map((f) => ({
-    ...toOwnerFilterDTO(f),
+    ...toOwnerFilterDTO(f, icons),
     forkedFrom: forkAttributions.get(f.id) ?? null,
   }));
 }

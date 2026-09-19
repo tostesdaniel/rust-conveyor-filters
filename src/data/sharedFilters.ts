@@ -4,6 +4,7 @@ import {
   filterItemsOrderBy,
   filterItemsWhere,
 } from "@/data/filter-items-query";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import { toSharedFilterDTO } from "@/utils/filter-mappers";
 import { and, eq } from "drizzle-orm";
@@ -59,6 +60,7 @@ export async function findSharedFilters(shareTokenId: number) {
     },
   });
 
+  const icons = await getItemIcons();
   // Map filters to DTOs while preserving userCategory structure
   return result.map((sharedFilter) => ({
     id: sharedFilter.id,
@@ -67,7 +69,7 @@ export async function findSharedFilters(shareTokenId: number) {
     senderId: sharedFilter.senderId,
     filter: sharedFilter.filter
       ? {
-          ...toSharedFilterDTO(sharedFilter.filter),
+          ...toSharedFilterDTO(sharedFilter.filter, icons),
           userCategory: sharedFilter.filter.userCategory
             ? {
                 id: sharedFilter.filter.userCategory.id,

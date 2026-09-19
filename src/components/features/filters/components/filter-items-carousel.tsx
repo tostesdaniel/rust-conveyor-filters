@@ -163,6 +163,7 @@ export function FilterItemsCarousel({
                     ) : (
                       <ItemIcon
                         imagePath={item.imagePath}
+                        version={item.iconVersion}
                         size='medium'
                         alt={item.name}
                         fill

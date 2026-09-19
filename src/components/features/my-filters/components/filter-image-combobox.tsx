@@ -47,6 +47,10 @@ const FilterImageCombobox = React.memo(
       setSelectedImage(field.value);
     }, [field.value]);
 
+    const selectedVersion = items.find(
+      (item) => item.imagePath === selectedImage,
+    )?.iconVersion;
+
     const handleSelect = React.useCallback(
       (imagePath: string) => {
         setSelectedImage(imagePath);
@@ -59,7 +63,7 @@ const FilterImageCombobox = React.memo(
     if (isDesktop) {
       return (
         <div className='flex items-center gap-x-3'>
-          <FilterImage imagePath={selectedImage} />
+          <FilterImage imagePath={selectedImage} version={selectedVersion} />
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <FormControl>
@@ -96,7 +100,7 @@ const FilterImageCombobox = React.memo(
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <div className='flex items-center gap-x-3'>
-          <FilterImage imagePath={selectedImage} />
+          <FilterImage imagePath={selectedImage} version={selectedVersion} />
           <DrawerTrigger asChild>
             <Button
               variant='outline'
@@ -166,6 +170,7 @@ const ItemList = React.memo(
                 <div className='relative size-6'>
                   <ItemIcon
                     imagePath={item.imagePath}
+                    version={item.iconVersion}
                     size='tiny'
                     alt={item.name}
                     width={24}

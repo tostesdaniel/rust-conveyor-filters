@@ -8,18 +8,30 @@ export const PLACEHOLDER_ICON = "_placeholder";
 
 interface ItemIconProps extends Omit<ImageProps, "src" | "onError"> {
   imagePath: string;
+  /** The item's `iconVersion`. */
+  version?: string | null;
   size: ImageSize;
 }
 
-export function ItemIcon({ imagePath, size, alt, ...props }: ItemIconProps) {
+export function ItemIcon({
+  imagePath,
+  version,
+  size,
+  alt,
+  ...props
+}: ItemIconProps) {
   const [failedPath, setFailedPath] = useState<string | null>(null);
-  const path = failedPath === imagePath ? PLACEHOLDER_ICON : imagePath;
+  const failed = failedPath === imagePath;
 
   return (
     <Image
       {...props}
       alt={alt}
-      src={getR2ImageUrl(`${path}.webp`, size)}
+      src={
+        failed
+          ? getR2ImageUrl(`${PLACEHOLDER_ICON}.webp`, size)
+          : getR2ImageUrl(`${imagePath}.webp`, size, version)
+      }
       onError={() => setFailedPath(imagePath)}
     />
   );

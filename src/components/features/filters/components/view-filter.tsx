@@ -193,6 +193,7 @@ const FilterItem = ({ filterItem }: { filterItem: FilterItemDTO }) => {
         ) : item ? (
           <ItemIcon
             imagePath={item.imagePath}
+            version={item.iconVersion}
             size='medium'
             alt={item.name}
             width={80}

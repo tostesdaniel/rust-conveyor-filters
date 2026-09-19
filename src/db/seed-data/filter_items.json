@@ -2,7 +2,7 @@
   {
     "id": 1,
     "filterId": 14,
-    "itemId": 125,
+    "gameItemId": 1443579727,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -13,7 +13,7 @@
   {
     "id": 2,
     "filterId": 14,
-    "itemId": 108,
+    "gameItemId": 884424049,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -24,7 +24,7 @@
   {
     "id": 3,
     "filterId": 14,
-    "itemId": 32,
+    "gameItemId": 1965232394,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -35,7 +35,7 @@
   {
     "id": 4,
     "filterId": 14,
-    "itemId": 275,
+    "gameItemId": 1953903201,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -46,7 +46,7 @@
   {
     "id": 5,
     "filterId": 14,
-    "itemId": 79,
+    "gameItemId": -2097376851,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -57,7 +57,7 @@
   {
     "id": 6,
     "filterId": 14,
-    "itemId": 273,
+    "gameItemId": -75944661,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -68,7 +68,7 @@
   {
     "id": 7,
     "filterId": 14,
-    "itemId": 29,
+    "gameItemId": 588596902,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -79,7 +79,7 @@
   {
     "id": 8,
     "filterId": 14,
-    "itemId": 130,
+    "gameItemId": 14241751,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -90,7 +90,7 @@
   {
     "id": 9,
     "filterId": 14,
-    "itemId": 97,
+    "gameItemId": -1234735557,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -101,7 +101,7 @@
   {
     "id": 10,
     "filterId": 3,
-    "itemId": 37,
+    "gameItemId": -1036635990,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -112,7 +112,7 @@
   {
     "id": 11,
     "filterId": 3,
-    "itemId": 3,
+    "gameItemId": -727717969,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -123,7 +123,7 @@
   {
     "id": 12,
     "filterId": 3,
-    "itemId": 96,
+    "gameItemId": -1685290200,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -134,7 +134,7 @@
   {
     "id": 13,
     "filterId": 20,
-    "itemId": 296,
+    "gameItemId": 1545779598,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -145,7 +145,7 @@
   {
     "id": 14,
     "filterId": 20,
-    "itemId": 26,
+    "gameItemId": -1211166256,
     "max": 1152,
     "buffer": 0,
     "min": 0,
@@ -156,7 +156,7 @@
   {
     "id": 15,
     "filterId": 20,
-    "itemId": 461,
+    "gameItemId": 1079279582,
     "max": 60,
     "buffer": 0,
     "min": 0,
@@ -167,7 +167,7 @@
   {
     "id": 16,
     "filterId": 20,
-    "itemId": 146,
+    "gameItemId": 1373240771,
     "max": 30,
     "buffer": 0,
     "min": 0,
@@ -178,7 +178,7 @@
   {
     "id": 17,
     "filterId": 20,
-    "itemId": 206,
+    "gameItemId": -194953424,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -189,7 +189,7 @@
   {
     "id": 18,
     "filterId": 20,
-    "itemId": 456,
+    "gameItemId": -1108136649,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -200,7 +200,7 @@
   {
     "id": 19,
     "filterId": 20,
-    "itemId": 219,
+    "gameItemId": 1110385766,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -211,7 +211,7 @@
   {
     "id": 20,
     "filterId": 20,
-    "itemId": 630,
+    "gameItemId": 1751045826,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -222,7 +222,7 @@
   {
     "id": 21,
     "filterId": 20,
-    "itemId": 319,
+    "gameItemId": 1850456855,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -233,7 +233,7 @@
   {
     "id": 22,
     "filterId": 20,
-    "itemId": 235,
+    "gameItemId": 237239288,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -244,7 +244,7 @@
   {
     "id": 23,
     "filterId": 15,
-    "itemId": 222,
+    "gameItemId": -4031221,
     "max": 11,
     "buffer": 0,
     "min": 0,
@@ -255,7 +255,7 @@
   {
     "id": 24,
     "filterId": 15,
-    "itemId": 470,
+    "gameItemId": -1157596551,
     "max": 22,
     "buffer": 0,
     "min": 0,
@@ -266,7 +266,7 @@
   {
     "id": 25,
     "filterId": 15,
-    "itemId": 692,
+    "gameItemId": -1982036270,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -277,7 +277,7 @@
   {
     "id": 26,
     "filterId": 5,
-    "itemId": 28,
+    "gameItemId": -321733511,
     "max": 4,
     "buffer": 0,
     "min": 0,
@@ -288,7 +288,7 @@
   {
     "id": 27,
     "filterId": 8,
-    "itemId": 222,
+    "gameItemId": -4031221,
     "max": 11,
     "buffer": 0,
     "min": 0,
@@ -299,7 +299,7 @@
   {
     "id": 28,
     "filterId": 8,
-    "itemId": 470,
+    "gameItemId": -1157596551,
     "max": 22,
     "buffer": 0,
     "min": 0,
@@ -310,7 +310,7 @@
   {
     "id": 29,
     "filterId": 8,
-    "itemId": 692,
+    "gameItemId": -1982036270,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -321,7 +321,7 @@
   {
     "id": 30,
     "filterId": 8,
-    "itemId": 28,
+    "gameItemId": -321733511,
     "max": 4,
     "buffer": 0,
     "min": 0,
@@ -332,7 +332,7 @@
   {
     "id": 31,
     "filterId": 8,
-    "itemId": 564,
+    "gameItemId": -151838493,
     "max": 12,
     "buffer": 0,
     "min": 0,
@@ -343,7 +343,7 @@
   {
     "id": 32,
     "filterId": 15,
-    "itemId": 564,
+    "gameItemId": -151838493,
     "max": 12,
     "buffer": 0,
     "min": 0,
@@ -354,7 +354,7 @@
   {
     "id": 33,
     "filterId": 7,
-    "itemId": 42,
+    "gameItemId": -1101924344,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -365,7 +365,7 @@
   {
     "id": 34,
     "filterId": 7,
-    "itemId": 261,
+    "gameItemId": -113413047,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -376,7 +376,7 @@
   {
     "id": 35,
     "filterId": 7,
-    "itemId": 266,
+    "gameItemId": -2022172587,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -387,7 +387,7 @@
   {
     "id": 36,
     "filterId": 7,
-    "itemId": 267,
+    "gameItemId": 296519935,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -398,7 +398,7 @@
   {
     "id": 37,
     "filterId": 7,
-    "itemId": 435,
+    "gameItemId": -1517740219,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -409,7 +409,7 @@
   {
     "id": 38,
     "filterId": 7,
-    "itemId": 455,
+    "gameItemId": -1800345240,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -420,7 +420,7 @@
   {
     "id": 39,
     "filterId": 7,
-    "itemId": 648,
+    "gameItemId": 2040726127,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -431,7 +431,7 @@
   {
     "id": 40,
     "filterId": 7,
-    "itemId": 547,
+    "gameItemId": 143803535,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -442,7 +442,7 @@
   {
     "id": 41,
     "filterId": 12,
-    "itemId": 42,
+    "gameItemId": -1101924344,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -453,7 +453,7 @@
   {
     "id": 42,
     "filterId": 12,
-    "itemId": 261,
+    "gameItemId": -113413047,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -464,7 +464,7 @@
   {
     "id": 43,
     "filterId": 12,
-    "itemId": 266,
+    "gameItemId": -2022172587,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -475,7 +475,7 @@
   {
     "id": 44,
     "filterId": 12,
-    "itemId": 267,
+    "gameItemId": 296519935,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -486,7 +486,7 @@
   {
     "id": 45,
     "filterId": 12,
-    "itemId": 435,
+    "gameItemId": -1517740219,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -497,7 +497,7 @@
   {
     "id": 46,
     "filterId": 12,
-    "itemId": 455,
+    "gameItemId": -1800345240,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -508,7 +508,7 @@
   {
     "id": 47,
     "filterId": 12,
-    "itemId": 648,
+    "gameItemId": 2040726127,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -519,7 +519,7 @@
   {
     "id": 48,
     "filterId": 12,
-    "itemId": 547,
+    "gameItemId": 143803535,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -530,7 +530,7 @@
   {
     "id": 49,
     "filterId": 12,
-    "itemId": 620,
+    "gameItemId": 1266491000,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -541,7 +541,7 @@
   {
     "id": 50,
     "filterId": 12,
-    "itemId": 658,
+    "gameItemId": 254522515,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -552,7 +552,7 @@
   {
     "id": 51,
     "filterId": 11,
-    "itemId": 62,
+    "gameItemId": 1525520776,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -563,7 +563,7 @@
   {
     "id": 52,
     "filterId": 11,
-    "itemId": 613,
+    "gameItemId": 200773292,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -574,7 +574,7 @@
   {
     "id": 53,
     "filterId": 11,
-    "itemId": 481,
+    "gameItemId": 1803831286,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -585,7 +585,7 @@
   {
     "id": 54,
     "filterId": 11,
-    "itemId": 190,
+    "gameItemId": 1714496074,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -596,7 +596,7 @@
   {
     "id": 55,
     "filterId": 11,
-    "itemId": 665,
+    "gameItemId": -1539025626,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -607,7 +607,7 @@
   {
     "id": 56,
     "filterId": 11,
-    "itemId": 677,
+    "gameItemId": 363163265,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -618,7 +618,7 @@
   {
     "id": 57,
     "filterId": 11,
-    "itemId": 286,
+    "gameItemId": -144513264,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -629,7 +629,7 @@
   {
     "id": 58,
     "filterId": 11,
-    "itemId": 555,
+    "gameItemId": -144417939,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -640,7 +640,7 @@
   {
     "id": 59,
     "filterId": 4,
-    "itemId": 361,
+    "gameItemId": -765183617,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -651,7 +651,7 @@
   {
     "id": 60,
     "filterId": 4,
-    "itemId": 371,
+    "gameItemId": -1367281941,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -662,7 +662,7 @@
   {
     "id": 61,
     "filterId": 4,
-    "itemId": 365,
+    "gameItemId": 795371088,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -673,7 +673,7 @@
   {
     "id": 62,
     "filterId": 4,
-    "itemId": 96,
+    "gameItemId": -1685290200,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -684,7 +684,7 @@
   {
     "id": 63,
     "filterId": 4,
-    "itemId": 37,
+    "gameItemId": -1036635990,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -695,7 +695,7 @@
   {
     "id": 64,
     "filterId": 4,
-    "itemId": 29,
+    "gameItemId": 588596902,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -706,7 +706,7 @@
   {
     "id": 65,
     "filterId": 4,
-    "itemId": 275,
+    "gameItemId": 1953903201,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -717,7 +717,7 @@
   {
     "id": 66,
     "filterId": 4,
-    "itemId": 79,
+    "gameItemId": -2097376851,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -728,7 +728,7 @@
   {
     "id": 67,
     "filterId": 21,
-    "itemId": 38,
+    "gameItemId": -803263829,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -739,7 +739,7 @@
   {
     "id": 68,
     "filterId": 21,
-    "itemId": 324,
+    "gameItemId": -699558439,
     "max": 60,
     "buffer": 0,
     "min": 0,
@@ -750,7 +750,7 @@
   {
     "id": 69,
     "filterId": 21,
-    "itemId": 322,
+    "gameItemId": -2002277461,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -761,7 +761,7 @@
   {
     "id": 70,
     "filterId": 21,
-    "itemId": 630,
+    "gameItemId": 1751045826,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -772,7 +772,7 @@
   {
     "id": 71,
     "filterId": 21,
-    "itemId": 319,
+    "gameItemId": 1850456855,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -783,7 +783,7 @@
   {
     "id": 72,
     "filterId": 21,
-    "itemId": 235,
+    "gameItemId": 237239288,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -794,7 +794,7 @@
   {
     "id": 73,
     "filterId": 21,
-    "itemId": 363,
+    "gameItemId": -1549739227,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -805,7 +805,7 @@
   {
     "id": 74,
     "filterId": 6,
-    "itemId": 573,
+    "gameItemId": 1181207482,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -816,7 +816,7 @@
   {
     "id": 75,
     "filterId": 6,
-    "itemId": 636,
+    "gameItemId": -1102429027,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -827,7 +827,7 @@
   {
     "id": 76,
     "filterId": 6,
-    "itemId": 563,
+    "gameItemId": -1778159885,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -838,7 +838,7 @@
   {
     "id": 77,
     "filterId": 6,
-    "itemId": 363,
+    "gameItemId": -1549739227,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -849,7 +849,7 @@
   {
     "id": 78,
     "filterId": 20,
-    "itemId": 363,
+    "gameItemId": -1549739227,
     "max": 6,
     "buffer": 0,
     "min": 0,
@@ -860,7 +860,7 @@
   {
     "id": 79,
     "filterId": 18,
-    "itemId": 309,
+    "gameItemId": -1673693549,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -871,7 +871,7 @@
   {
     "id": 80,
     "filterId": 18,
-    "itemId": 43,
+    "gameItemId": 479143914,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -882,7 +882,7 @@
   {
     "id": 81,
     "filterId": 18,
-    "itemId": 229,
+    "gameItemId": 1882709339,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -893,7 +893,7 @@
   {
     "id": 82,
     "filterId": 18,
-    "itemId": 210,
+    "gameItemId": 95950017,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -904,7 +904,7 @@
   {
     "id": 83,
     "filterId": 18,
-    "itemId": 228,
+    "gameItemId": -1021495308,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -915,7 +915,7 @@
   {
     "id": 84,
     "filterId": 18,
-    "itemId": 301,
+    "gameItemId": 176787552,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -926,7 +926,7 @@
   {
     "id": 85,
     "filterId": 18,
-    "itemId": 320,
+    "gameItemId": 1199391518,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -937,7 +937,7 @@
   {
     "id": 86,
     "filterId": 18,
-    "itemId": 326,
+    "gameItemId": 1414245522,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -948,7 +948,7 @@
   {
     "id": 87,
     "filterId": 18,
-    "itemId": 425,
+    "gameItemId": 1230323789,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -959,7 +959,7 @@
   {
     "id": 88,
     "filterId": 18,
-    "itemId": 356,
+    "gameItemId": 573926264,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -970,7 +970,7 @@
   {
     "id": 89,
     "filterId": 18,
-    "itemId": 355,
+    "gameItemId": 1234880403,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -981,7 +981,7 @@
   {
     "id": 90,
     "filterId": 18,
-    "itemId": 354,
+    "gameItemId": -1994909036,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -992,7 +992,7 @@
   {
     "id": 91,
     "filterId": 18,
-    "itemId": 469,
+    "gameItemId": 2019042823,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1003,7 +1003,7 @@
   {
     "id": 92,
     "filterId": 18,
-    "itemId": 482,
+    "gameItemId": 73681876,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1014,7 +1014,7 @@
   {
     "id": 93,
     "filterId": 18,
-    "itemId": 468,
+    "gameItemId": 1523195708,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1025,7 +1025,7 @@
   {
     "id": 94,
     "filterId": 18,
-    "itemId": 53,
+    "gameItemId": 634478325,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1036,7 +1036,7 @@
   {
     "id": 95,
     "filterId": 9,
-    "itemId": 185,
+    "gameItemId": -1018587433,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1047,7 +1047,7 @@
   {
     "id": 96,
     "filterId": 9,
-    "itemId": 254,
+    "gameItemId": -858312878,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1058,7 +1058,7 @@
   {
     "id": 97,
     "filterId": 9,
-    "itemId": 694,
+    "gameItemId": 1381010055,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1069,7 +1069,7 @@
   {
     "id": 98,
     "filterId": 9,
-    "itemId": 690,
+    "gameItemId": -946369541,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1080,7 +1080,7 @@
   {
     "id": 99,
     "filterId": 9,
-    "itemId": 214,
+    "gameItemId": 69511070,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1091,7 +1091,7 @@
   {
     "id": 100,
     "filterId": 18,
-    "itemId": 696,
+    "gameItemId": -629028935,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1102,7 +1102,7 @@
   {
     "id": 101,
     "filterId": 1,
-    "itemId": 505,
+    "gameItemId": 1874610722,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1113,7 +1113,7 @@
   {
     "id": 102,
     "filterId": 1,
-    "itemId": 502,
+    "gameItemId": -1615281216,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1124,7 +1124,7 @@
   {
     "id": 103,
     "filterId": 1,
-    "itemId": 504,
+    "gameItemId": -1040518150,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1135,7 +1135,7 @@
   {
     "id": 104,
     "filterId": 1,
-    "itemId": 510,
+    "gameItemId": -1501451746,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1146,7 +1146,7 @@
   {
     "id": 105,
     "filterId": 1,
-    "itemId": 511,
+    "gameItemId": 170758448,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1157,7 +1157,7 @@
   {
     "id": 106,
     "filterId": 1,
-    "itemId": 506,
+    "gameItemId": 1559779253,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1168,7 +1168,7 @@
   {
     "id": 107,
     "filterId": 1,
-    "itemId": 499,
+    "gameItemId": -1880231361,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1179,7 +1179,7 @@
   {
     "id": 108,
     "filterId": 1,
-    "itemId": 508,
+    "gameItemId": 1186655046,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1190,7 +1190,7 @@
   {
     "id": 109,
     "filterId": 1,
-    "itemId": 75,
+    "gameItemId": 656371026,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1201,7 +1201,7 @@
   {
     "id": 110,
     "filterId": 1,
-    "itemId": 369,
+    "gameItemId": 1158340332,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1212,7 +1212,7 @@
   {
     "id": 111,
     "filterId": 1,
-    "itemId": 306,
+    "gameItemId": 1883981800,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1223,7 +1223,7 @@
   {
     "id": 112,
     "filterId": 1,
-    "itemId": 452,
+    "gameItemId": 1072924620,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1234,7 +1234,7 @@
   {
     "id": 113,
     "filterId": 1,
-    "itemId": 493,
+    "gameItemId": -1802083073,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1245,7 +1245,7 @@
   {
     "id": 114,
     "filterId": 1,
-    "itemId": 512,
+    "gameItemId": -1693832478,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1256,7 +1256,7 @@
   {
     "id": 115,
     "filterId": 1,
-    "itemId": 54,
+    "gameItemId": 656371028,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1267,7 +1267,7 @@
   {
     "id": 116,
     "filterId": 1,
-    "itemId": 57,
+    "gameItemId": 1158340334,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1278,7 +1278,7 @@
   {
     "id": 117,
     "filterId": 1,
-    "itemId": 300,
+    "gameItemId": 1883981798,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1289,7 +1289,7 @@
   {
     "id": 118,
     "filterId": 1,
-    "itemId": 448,
+    "gameItemId": -89874794,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1300,7 +1300,7 @@
   {
     "id": 119,
     "filterId": 1,
-    "itemId": 495,
+    "gameItemId": 1330084809,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1311,7 +1311,7 @@
   {
     "id": 120,
     "filterId": 1,
-    "itemId": 49,
+    "gameItemId": 656371027,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1322,7 +1322,7 @@
   {
     "id": 121,
     "filterId": 1,
-    "itemId": 384,
+    "gameItemId": 1158340331,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1333,7 +1333,7 @@
   {
     "id": 122,
     "filterId": 1,
-    "itemId": 304,
+    "gameItemId": 1883981801,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1344,7 +1344,7 @@
   {
     "id": 123,
     "filterId": 1,
-    "itemId": 429,
+    "gameItemId": -493159321,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1355,7 +1355,7 @@
   {
     "id": 124,
     "filterId": 1,
-    "itemId": 500,
+    "gameItemId": 926800282,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1366,7 +1366,7 @@
   {
     "id": 125,
     "filterId": 1,
-    "itemId": 497,
+    "gameItemId": 895374329,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1377,7 +1377,7 @@
   {
     "id": 126,
     "filterId": 1,
-    "itemId": 501,
+    "gameItemId": 1376065505,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1388,7 +1388,7 @@
   {
     "id": 127,
     "filterId": 1,
-    "itemId": 503,
+    "gameItemId": 268565518,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1399,7 +1399,7 @@
   {
     "id": 128,
     "filterId": 1,
-    "itemId": 509,
+    "gameItemId": -626174997,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1410,7 +1410,7 @@
   {
     "id": 129,
     "filterId": 13,
-    "itemId": 315,
+    "gameItemId": -1729415579,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1421,7 +1421,7 @@
   {
     "id": 130,
     "filterId": 13,
-    "itemId": 561,
+    "gameItemId": -2123125470,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1432,7 +1432,7 @@
   {
     "id": 131,
     "filterId": 13,
-    "itemId": 661,
+    "gameItemId": 603811464,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1443,7 +1443,7 @@
   {
     "id": 132,
     "filterId": 13,
-    "itemId": 231,
+    "gameItemId": 2063916636,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1454,7 +1454,7 @@
   {
     "id": 133,
     "filterId": 13,
-    "itemId": 329,
+    "gameItemId": 524678627,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1465,7 +1465,7 @@
   {
     "id": 134,
     "filterId": 13,
-    "itemId": 574,
+    "gameItemId": -541206665,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1476,7 +1476,7 @@
   {
     "id": 135,
     "filterId": 13,
-    "itemId": 292,
+    "gameItemId": -487356515,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1487,7 +1487,7 @@
   {
     "id": 136,
     "filterId": 13,
-    "itemId": 667,
+    "gameItemId": -929092070,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1498,7 +1498,7 @@
   {
     "id": 137,
     "filterId": 13,
-    "itemId": 207,
+    "gameItemId": -1184406448,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1509,7 +1509,7 @@
   {
     "id": 138,
     "filterId": 13,
-    "itemId": 237,
+    "gameItemId": 1480022580,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1520,7 +1520,7 @@
   {
     "id": 139,
     "filterId": 13,
-    "itemId": 338,
+    "gameItemId": 263834859,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1531,7 +1531,7 @@
   {
     "id": 140,
     "filterId": 13,
-    "itemId": 565,
+    "gameItemId": -649128577,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1542,7 +1542,7 @@
   {
     "id": 141,
     "filterId": 13,
-    "itemId": 291,
+    "gameItemId": -33009419,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1553,7 +1553,7 @@
   {
     "id": 142,
     "filterId": 13,
-    "itemId": 619,
+    "gameItemId": -1677315902,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1564,7 +1564,7 @@
   {
     "id": 143,
     "filterId": 13,
-    "itemId": 208,
+    "gameItemId": 1712261904,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1575,7 +1575,7 @@
   {
     "id": 144,
     "filterId": 13,
-    "itemId": 240,
+    "gameItemId": 1729374708,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1586,7 +1586,7 @@
   {
     "id": 145,
     "filterId": 13,
-    "itemId": 337,
+    "gameItemId": 2024467711,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1597,7 +1597,7 @@
   {
     "id": 146,
     "filterId": 13,
-    "itemId": 566,
+    "gameItemId": -557539629,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1608,7 +1608,7 @@
   {
     "id": 147,
     "filterId": 2,
-    "itemId": 158,
+    "gameItemId": -587989372,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1619,7 +1619,7 @@
   {
     "id": 148,
     "filterId": 2,
-    "itemId": 128,
+    "gameItemId": -1698937385,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1630,7 +1630,7 @@
   {
     "id": 149,
     "filterId": 2,
-    "itemId": 514,
+    "gameItemId": -1904821376,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1641,7 +1641,7 @@
   {
     "id": 150,
     "filterId": 2,
-    "itemId": 161,
+    "gameItemId": -851988960,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1652,7 +1652,7 @@
   {
     "id": 151,
     "filterId": 2,
-    "itemId": 120,
+    "gameItemId": -1654233406,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1663,7 +1663,7 @@
   {
     "id": 152,
     "filterId": 2,
-    "itemId": 138,
+    "gameItemId": -1768880890,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1674,7 +1674,7 @@
   {
     "id": 153,
     "filterId": 2,
-    "itemId": 141,
+    "gameItemId": -1878764039,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1685,7 +1685,7 @@
   {
     "id": 154,
     "filterId": 2,
-    "itemId": 155,
+    "gameItemId": 680234026,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1696,7 +1696,7 @@
   {
     "id": 155,
     "filterId": 19,
-    "itemId": 348,
+    "gameItemId": 1171735914,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1707,7 +1707,7 @@
   {
     "id": 156,
     "filterId": 19,
-    "itemId": 234,
+    "gameItemId": -690968985,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1718,7 +1718,7 @@
   {
     "id": 157,
     "filterId": 19,
-    "itemId": 271,
+    "gameItemId": -1778897469,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1729,7 +1729,7 @@
   {
     "id": 158,
     "filterId": 19,
-    "itemId": 264,
+    "gameItemId": -216999575,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1740,7 +1740,7 @@
   {
     "id": 159,
     "filterId": 19,
-    "itemId": 323,
+    "gameItemId": -502177121,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1751,7 +1751,7 @@
   {
     "id": 160,
     "filterId": 19,
-    "itemId": 260,
+    "gameItemId": -1448252298,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1762,7 +1762,7 @@
   {
     "id": 161,
     "filterId": 19,
-    "itemId": 192,
+    "gameItemId": -1507239837,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1773,7 +1773,7 @@
   {
     "id": 162,
     "filterId": 19,
-    "itemId": 18,
+    "gameItemId": 553270375,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1784,7 +1784,7 @@
   {
     "id": 163,
     "filterId": 19,
-    "itemId": 17,
+    "gameItemId": 2090395347,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1795,7 +1795,7 @@
   {
     "id": 164,
     "filterId": 19,
-    "itemId": 250,
+    "gameItemId": -798293154,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1806,7 +1806,7 @@
   {
     "id": 165,
     "filterId": 19,
-    "itemId": 388,
+    "gameItemId": 2023888403,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1817,7 +1817,7 @@
   {
     "id": 166,
     "filterId": 19,
-    "itemId": 20,
+    "gameItemId": -746647361,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1828,7 +1828,7 @@
   {
     "id": 167,
     "filterId": 19,
-    "itemId": 259,
+    "gameItemId": -1286302544,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1839,7 +1839,7 @@
   {
     "id": 168,
     "filterId": 19,
-    "itemId": 248,
+    "gameItemId": 492357192,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1850,7 +1850,7 @@
   {
     "id": 169,
     "filterId": 19,
-    "itemId": 36,
+    "gameItemId": -1044468317,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1861,7 +1861,7 @@
   {
     "id": 170,
     "filterId": 19,
-    "itemId": 175,
+    "gameItemId": 888415708,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1872,7 +1872,7 @@
   {
     "id": 171,
     "filterId": 19,
-    "itemId": 245,
+    "gameItemId": -458565393,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1883,7 +1883,7 @@
   {
     "id": 172,
     "filterId": 19,
-    "itemId": 697,
+    "gameItemId": -948291630,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1894,7 +1894,7 @@
   {
     "id": 173,
     "filterId": 19,
-    "itemId": 268,
+    "gameItemId": 1849887541,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1905,7 +1905,7 @@
   {
     "id": 174,
     "filterId": 19,
-    "itemId": 255,
+    "gameItemId": -692338819,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1916,7 +1916,7 @@
   {
     "id": 175,
     "filterId": 19,
-    "itemId": 430,
+    "gameItemId": -695978112,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1927,7 +1927,7 @@
   {
     "id": 176,
     "filterId": 19,
-    "itemId": 424,
+    "gameItemId": 988652725,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1938,7 +1938,7 @@
   {
     "id": 177,
     "filterId": 19,
-    "itemId": 232,
+    "gameItemId": -563624462,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1949,7 +1949,7 @@
   {
     "id": 178,
     "filterId": 19,
-    "itemId": 441,
+    "gameItemId": 1149964039,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1960,7 +1960,7 @@
   {
     "id": 179,
     "filterId": 19,
-    "itemId": 603,
+    "gameItemId": 1951603367,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1971,7 +1971,7 @@
   {
     "id": 180,
     "filterId": 19,
-    "itemId": 249,
+    "gameItemId": 1371909803,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1982,7 +1982,7 @@
   {
     "id": 181,
     "filterId": 19,
-    "itemId": 13,
+    "gameItemId": 665332906,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -1993,7 +1993,7 @@
   {
     "id": 182,
     "filterId": 19,
-    "itemId": 170,
+    "gameItemId": -1819763926,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2004,7 +2004,7 @@
   {
     "id": 183,
     "filterId": 19,
-    "itemId": 253,
+    "gameItemId": 1293102274,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2015,7 +2015,7 @@
   {
     "id": 184,
     "filterId": 17,
-    "itemId": 47,
+    "gameItemId": 1142993169,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2026,7 +2026,7 @@
   {
     "id": 185,
     "filterId": 17,
-    "itemId": 593,
+    "gameItemId": -151387974,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2037,7 +2037,7 @@
   {
     "id": 186,
     "filterId": 17,
-    "itemId": 272,
+    "gameItemId": -939424778,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2048,18 +2048,7 @@
   {
     "id": 187,
     "filterId": 17,
-    "itemId": 649,
-    "max": 0,
-    "buffer": 0,
-    "min": 0,
-    "createdAt": "2024-08-24 21:59:14.384695",
-    "updatedAt": "2024-08-24 21:59:14.384695",
-    "categoryId": null
-  },
-  {
-    "id": 188,
-    "filterId": 17,
-    "itemId": 693,
+    "gameItemId": 1623701499,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2070,7 +2059,7 @@
   {
     "id": 189,
     "filterId": 17,
-    "itemId": 389,
+    "gameItemId": 1643667218,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2081,7 +2070,7 @@
   {
     "id": 190,
     "filterId": 17,
-    "itemId": 391,
+    "gameItemId": 866332017,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2092,7 +2081,7 @@
   {
     "id": 191,
     "filterId": 17,
-    "itemId": 383,
+    "gameItemId": 42535890,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2103,7 +2092,7 @@
   {
     "id": 192,
     "filterId": 17,
-    "itemId": 382,
+    "gameItemId": -1423304443,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2114,7 +2103,7 @@
   {
     "id": 193,
     "filterId": 17,
-    "itemId": 351,
+    "gameItemId": 2087678962,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2125,7 +2114,7 @@
   {
     "id": 194,
     "filterId": 17,
-    "itemId": 193,
+    "gameItemId": 762289806,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2136,7 +2125,7 @@
   {
     "id": 195,
     "filterId": 17,
-    "itemId": 381,
+    "gameItemId": 1305578813,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2147,7 +2136,7 @@
   {
     "id": 196,
     "filterId": 17,
-    "itemId": 447,
+    "gameItemId": 2104517339,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2158,7 +2147,7 @@
   {
     "id": 197,
     "filterId": 17,
-    "itemId": 671,
+    "gameItemId": -246672609,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2169,7 +2158,7 @@
   {
     "id": 198,
     "filterId": 17,
-    "itemId": 608,
+    "gameItemId": 240752557,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2180,7 +2169,7 @@
   {
     "id": 199,
     "filterId": 17,
-    "itemId": 614,
+    "gameItemId": -96256997,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2191,7 +2180,7 @@
   {
     "id": 200,
     "filterId": 10,
-    "itemId": 112,
+    "gameItemId": -265292885,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2202,7 +2191,7 @@
   {
     "id": 201,
     "filterId": 10,
-    "itemId": 118,
+    "gameItemId": -1166712463,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2213,7 +2202,7 @@
   {
     "id": 202,
     "filterId": 10,
-    "itemId": 135,
+    "gameItemId": 443432036,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2224,7 +2213,7 @@
   {
     "id": 203,
     "filterId": 10,
-    "itemId": 287,
+    "gameItemId": -365097295,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2235,7 +2224,7 @@
   {
     "id": 204,
     "filterId": 10,
-    "itemId": 181,
+    "gameItemId": -781014061,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2246,7 +2235,7 @@
   {
     "id": 205,
     "filterId": 10,
-    "itemId": 544,
+    "gameItemId": -1284169891,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2257,7 +2246,7 @@
   {
     "id": 206,
     "filterId": 10,
-    "itemId": 538,
+    "gameItemId": -1100168350,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2268,7 +2257,7 @@
   {
     "id": 207,
     "filterId": 10,
-    "itemId": 540,
+    "gameItemId": -132247350,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2279,7 +2268,7 @@
   {
     "id": 208,
     "filterId": 16,
-    "itemId": 681,
+    "gameItemId": 1538126328,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2290,7 +2279,7 @@
   {
     "id": 209,
     "filterId": 16,
-    "itemId": 640,
+    "gameItemId": 610102428,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2301,7 +2290,7 @@
   {
     "id": 210,
     "filterId": 16,
-    "itemId": 682,
+    "gameItemId": 1430085198,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2312,7 +2301,7 @@
   {
     "id": 211,
     "filterId": 16,
-    "itemId": 643,
+    "gameItemId": 742745918,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2323,7 +2312,7 @@
   {
     "id": 212,
     "filterId": 16,
-    "itemId": 463,
+    "gameItemId": -1049172752,
     "max": 0,
     "buffer": 0,
     "min": 0,
@@ -2334,7 +2323,7 @@
   {
     "id": 213,
     "filterId": 16,
-    "itemId": 24,
+    "gameItemId": -1196547867,
     "max": 0,
     "buffer": 0,
     "min": 0,

@@ -9,6 +9,7 @@ import {
   loadRemixCounts,
   loadTagsForFilters,
 } from "@/data/filters";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toPublicFilterDTO } from "@/utils/filter-mappers";
@@ -52,17 +53,18 @@ async function mapFiltersToPublicDTOs(
     return new Map();
   }
   const filterIds = rawFilters.map((f) => f.id);
-  const [enriched, tagsByFilter, remixCounts, forkAttributions] =
+  const [enriched, tagsByFilter, remixCounts, forkAttributions, icons] =
     await Promise.all([
       enrichWithAuthor(rawFilters),
       loadTagsForFilters(filterIds),
       loadRemixCounts(filterIds),
       loadForkAttributions(rawFilters),
+      getItemIcons(),
     ]);
   const map = new Map<number, PublicFilterListDTO>();
   for (const f of enriched) {
     map.set(f.id, {
-      ...toPublicFilterDTO(f),
+      ...toPublicFilterDTO(f, icons),
       tags: tagsByFilter.get(f.id) ?? [],
       remixCount: remixCounts.get(f.id) ?? 0,
       forkedFrom: forkAttributions.get(f.id) ?? null,

@@ -148,7 +148,7 @@ export function isCdnNewer(stored: SnapshotIcon | null, lastModified: Date) {
   return stored === null || lastModified > new Date(stored.takenAt);
 }
 
-async function mapConcurrent<T>(
+export async function mapConcurrent<T>(
   items: T[],
   limit: number,
   fn: (item: T) => Promise<void>,

@@ -13,7 +13,12 @@ function itemRow(
   overrides: Partial<FilterItemDTO> = {},
 ): FilterItemDTO {
   return {
-    item: { name: shortname, imagePath: `items/${shortname}`, shortname },
+    item: {
+      name: shortname,
+      imagePath: `items/${shortname}`,
+      iconVersion: null,
+      shortname,
+    },
     category: null,
     max: 0,
     buffer: 0,

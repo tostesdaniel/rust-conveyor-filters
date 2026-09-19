@@ -1,4 +1,4 @@
-type ImageSize = "tiny" | "small" | "medium" | "full";
+export type ImageSize = "tiny" | "small" | "medium" | "full";
 
 /**
  * Generates a URL for an image stored in Cloudflare R2

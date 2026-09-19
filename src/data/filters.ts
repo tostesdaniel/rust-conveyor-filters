@@ -1,7 +1,10 @@
 import "server-only";
 
+import {
+  filterItemsOrderBy,
+  filterItemsWhere,
+} from "@/data/filter-items-query";
 import { db } from "@/db";
-import { filterItemsOrderBy } from "@/data/filter-items-order";
 import type { CursorData } from "@/utils/cursor";
 import { encodeCursor } from "@/utils/cursor";
 import {
@@ -369,6 +372,7 @@ export async function getFiltersWithItems(userId: string) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
     },
@@ -387,6 +391,7 @@ export async function getFilterById(filterId: number, userId: string) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
     },
@@ -405,6 +410,7 @@ export async function getPublicFilter(filterId: number) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
     },
@@ -628,6 +634,7 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
     },
@@ -705,6 +712,7 @@ export async function getUserFiltersByCategory(
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
     },

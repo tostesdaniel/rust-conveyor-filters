@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import {
   DndContext,
   DragOverlay,
@@ -30,6 +28,7 @@ import {
   useSortableHierarchy,
 } from "@/components/features/my-filters/hooks/use-sortable-hierarchy";
 import { EmptyState } from "@/components/shared/empty-state";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 export function MyFilters() {
   const {
@@ -245,8 +244,9 @@ function FilterCardOverlay({ filter }: { filter: OwnerFilterDTO }) {
   return (
     <div className='flex min-w-[300px] overflow-hidden rounded-md opacity-90 shadow-lg'>
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5'>
-        <Image
-          src={getR2ImageUrl(filter.imagePath + ".webp", "medium")}
+        <ItemIcon
+          imagePath={filter.imagePath}
+          size='medium'
           alt=''
           width='64'
           height='64'

@@ -1,6 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { filterItemsOrderBy } from "@/data/filter-items-order";
+import {
+  filterItemsOrderBy,
+  filterItemsWhere,
+} from "@/data/filter-items-query";
 import { describe, expect, it } from "vitest";
 
 describe("filterItemsOrderBy", () => {
@@ -15,6 +18,18 @@ describe("filterItemsOrderBy", () => {
     });
 
     expect(result).toEqual([id, createdAt]);
+  });
+});
+
+describe("filterItemsWhere", () => {
+  it("keeps category rows, whose item_id is null", () => {
+    const where = filterItemsWhere({ itemId: { column: "item_id" } as never });
+    const text = where.queryChunks
+      .map((c) => (typeof c === "object" && c && "value" in c ? c.value : ""))
+      .join("");
+
+    expect(text).toContain("not exists");
+    expect(text).not.toContain("not in");
   });
 });
 
@@ -47,7 +62,7 @@ function objectBodyAfter(source: string, openBraceIndex: number): string {
   return source.slice(openBraceIndex + 1, i - 1);
 }
 
-describe("data-layer filterItems ordering is consistent everywhere", () => {
+describe("data-layer filterItems reads are consistent everywhere", () => {
   const dataDir = join(process.cwd(), "src", "data");
   const files = collectDataFiles(dataDir);
 
@@ -56,7 +71,7 @@ describe("data-layer filterItems ordering is consistent everywhere", () => {
   });
 
   it.each(files.map((f) => [f.slice(dataDir.length + 1), f] as const))(
-    "%s: every filterItems fetch uses filterItemsOrderBy",
+    "%s: every filterItems fetch uses filterItemsOrderBy and filterItemsWhere",
     (_label, file) => {
       const source = readFileSync(file, "utf8");
       const marker = "filterItems: {";
@@ -80,6 +95,11 @@ describe("data-layer filterItems ordering is consistent everywhere", () => {
               `Add it so this read returns items in the same stable order as every ` +
               `other display/export path.`,
           ).toContain("orderBy: filterItemsOrderBy");
+          expect(
+            body,
+            `A filterItems fetch in ${file} is missing "where: filterItemsWhere". ` +
+              `Without it, items that are no longer insertable get shown and exported.`,
+          ).toContain("where: filterItemsWhere");
         }
 
         searchFrom = idx + marker.length;

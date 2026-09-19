@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/trpc/react";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -50,6 +48,7 @@ import { filterDraggableId } from "@/components/features/my-filters/hooks/use-so
 import { DeleteSharedFilterDialog } from "@/components/features/my-filters/shared-filters/delete-shared-filter-dialog";
 import { PrivateShareDropdownItem } from "@/components/features/my-filters/shared-filters/private-share-dropdown-item";
 import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
+import { ItemIcon } from "@/components/shared/item-icon";
 import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
 // Type guard to check if filter is owned
@@ -142,8 +141,9 @@ export function MyFilterCard({
         </button>
       )}
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5 text-sm font-medium text-card-foreground'>
-        <Image
-          src={getR2ImageUrl(filter.imagePath + ".webp", "medium")}
+        <ItemIcon
+          imagePath={filter.imagePath}
+          size='medium'
           alt='Collection image'
           width='64'
           height='64'

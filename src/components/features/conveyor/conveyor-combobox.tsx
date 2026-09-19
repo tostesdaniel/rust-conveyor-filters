@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -32,6 +30,7 @@ import {
 } from "@/components/ui/popover";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { ClearInputButton } from "@/components/features/my-filters/new-filter/clear-input-button";
+import { ItemIcon } from "@/components/shared/item-icon";
 import { SearchTipTooltip } from "@/components/shared/search-tip-tooltip";
 
 interface ConveyorComboboxProps {
@@ -237,8 +236,9 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                       onSelect={() => insertItem(item)}
                     >
                       <div className='relative size-6'>
-                        <Image
-                          src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
+                        <ItemIcon
+                          imagePath={item.imagePath}
+                          size='tiny'
                           alt={item.name}
                           height={24}
                           width={24}

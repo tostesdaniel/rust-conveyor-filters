@@ -290,7 +290,8 @@ export const filterRouter = createTRPCRouter({
         });
       }
 
-      if (data.imagePath) {
+      // An existing cover survives its item leaving the game; only new picks are checked.
+      if (data.imagePath && data.imagePath !== currentFilter.imagePath) {
         const itemImagePaths = await getItemImagePaths();
         if (!itemImagePaths.has(data.imagePath)) {
           throw new TRPCError({

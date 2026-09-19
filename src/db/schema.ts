@@ -1,7 +1,6 @@
 import { tsVector } from "@/db/custom-types/ts-vector";
 import { relations, sql } from "drizzle-orm";
 import {
-  type AnyPgColumn,
   boolean,
   char,
   index,
@@ -13,15 +12,17 @@ import {
   timestamp,
   uniqueIndex,
   varchar,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
-  itemId: integer("itemid").notNull(),
+  itemId: integer("itemid").notNull().unique(),
   shortname: varchar("shortname", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   category: varchar("category", { length: 255 }).notNull(),
   imagePath: varchar("image_path", { length: 255 }).notNull(),
+  insertable: boolean("insertable").notNull().default(true),
 });
 
 export type Item = typeof items.$inferSelect;

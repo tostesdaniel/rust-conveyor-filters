@@ -1,10 +1,8 @@
-import Image from "next/image";
 import type {
   CreateFilter,
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
 import { categoryMapping } from "@/utils/category-mapping";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 
@@ -14,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { FormDescription, FormField } from "@/components/ui/form";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { FilterSettingsInput } from "@/components/features/conveyor/filter-settings-input";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 interface ConveyorItemProps {
   item: ItemWithFields;
@@ -47,8 +46,9 @@ export function ConveyorItem({
         {isCategory ? (
           <CategoryIcon className='h-full w-full object-contain' />
         ) : (
-          <Image
-            src={getR2ImageUrl(item.imagePath + ".webp", "full")}
+          <ItemIcon
+            imagePath={item.imagePath}
+            size='full'
             alt={item.name}
             fill
             sizes='160px'

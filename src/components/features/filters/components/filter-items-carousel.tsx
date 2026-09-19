@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import Autoplay from "embla-carousel-autoplay";
 import { useInView } from "react-intersection-observer";
 
@@ -18,6 +16,7 @@ import {
   type CarouselOptions,
 } from "@/components/ui/carousel";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 export function FilterItemsCarousel({
   filterItems,
@@ -162,8 +161,9 @@ export function FilterItemsCarousel({
                         </p>
                       </div>
                     ) : (
-                      <Image
-                        src={getR2ImageUrl(item.imagePath + ".webp", "medium")}
+                      <ItemIcon
+                        imagePath={item.imagePath}
+                        size='medium'
                         alt={item.name}
                         fill
                         sizes='80px'

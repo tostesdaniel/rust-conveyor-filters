@@ -1,4 +1,3 @@
-import { MAX_FILTER_ITEMS } from "@/config/constants";
 import {
   createSharedFilter,
   deleteSharedFilter,
@@ -9,6 +8,10 @@ import {
   findShareTokenByToken,
   findShareTokenId,
 } from "@/data";
+import {
+  filterItemsOrderBy,
+  filterItemsWhere,
+} from "@/data/filter-items-query";
 import { createForkedFilter } from "@/data/filters";
 import { db } from "@/db";
 import { clerkClient } from "@clerk/nextjs/server";
@@ -17,6 +20,7 @@ import { and, eq, inArray, isNotNull, isNull, or } from "drizzle-orm";
 import { z } from "zod";
 
 import type { SharedFilterDTO } from "@/types/filter";
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { filters, sharedFilters } from "@/db/schema";
 
@@ -434,6 +438,8 @@ export const sharedFilterRouter = createTRPCRouter({
         with: {
           filterItems: {
             with: { item: true, category: true },
+            where: filterItemsWhere,
+            orderBy: filterItemsOrderBy,
           },
         },
       });

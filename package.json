@@ -29,6 +29,8 @@
     "db:seed": "bun run src/db/seed",
     "db:setup": "bun db:push && bun db:seed",
     "db:studio": "drizzle-kit studio",
+    "items:update": "bun run ./src/scripts/items/update.ts",
+    "items:icons": "bun run ./src/scripts/items/update-icons.ts",
     "update-items": "bun run ./src/scripts/monthly-update/update-items.ts",
     "upload-images": "bun run ./src/scripts/monthly-update/optimize-and-upload-images.ts",
     "generate-items-sql": "bun run ./src/scripts/monthly-update/generate-items-sql.ts",

@@ -1,6 +1,6 @@
 /**
  * Uploads every icon in public/items that R2 lacks or holds different bytes
- * for. Runs on push to main.
+ * for. Runs before every production image build.
  *
  *   bun items:upload [--dry-run]
  *

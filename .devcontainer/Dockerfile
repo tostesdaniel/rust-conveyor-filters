@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.12-slim AS bun
+FROM oven/bun:1.4.2-slim AS bun
 
 # trixie: bookworm's postgresql-client is 15, too old to talk to a 16 server.
 FROM node:24.15.0-trixie-slim

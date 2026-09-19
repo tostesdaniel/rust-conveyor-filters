@@ -1,0 +1,138 @@
+name: Item Update
+
+on:
+  schedule:
+    # Evening UTC, so a Thursday patch gets its PR the same day.
+    - cron: "37 21 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Rebuild the snapshot even if the game build hasn't changed
+        type: boolean
+        default: false
+
+concurrency:
+  group: item-update
+  cancel-in-progress: false
+
+env:
+  BRANCH: items/game-build
+  CACHE_DIR: node_modules/.cache/rust-items
+
+jobs:
+  update:
+    name: Update the item snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # The open PR's branch can carry hand-pushed `items:icons --local`
+      # commits, so it gets main merged in rather than being reset to it.
+      # Without an open PR the branch is either merged or abandoned.
+      - name: Check out the update branch
+        id: branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          pr=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            git switch -C "$BRANCH" "origin/$BRANCH"
+            git merge --no-edit origin/main || {
+              echo "::error::origin/main doesn't merge cleanly into $BRANCH (PR #$pr). Merge it by hand."
+              exit 1
+            }
+          else
+            git switch -C "$BRANCH" origin/main
+          fi
+          git show origin/main:src/db/item-snapshot.json > "$RUNNER_TEMP/main-snapshot.json"
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - run: bun ci
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: src/scripts/items/requirements.txt
+
+      - run: pip install -r src/scripts/items/requirements.txt
+
+      # After `bun ci`, which owns node_modules. DepotDownloader keeps its
+      # chunk state here, so a new build only fetches what changed.
+      - uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CACHE_DIR }}
+          key: rust-items-${{ runner.os }}
+          restore-keys: rust-items-${{ runner.os }}-
+
+      # Diffed against main so a PR spanning several builds lists every change
+      # still waiting to deploy, not just the latest build's.
+      - name: Update the snapshot
+        id: update
+        run: bun items:update --baseline "$RUNNER_TEMP/main-snapshot.json" ${{ inputs.force && '--force' || '' }}
+
+      - if: steps.update.outputs.changed == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CACHE_DIR }}
+          key: rust-items-${{ runner.os }}-${{ steps.update.outputs.manifest-id }}-${{ github.run_id }}
+
+      - name: Commit and push
+        id: push
+        if: steps.update.outputs.changed == 'true'
+        env:
+          PR: ${{ steps.branch.outputs.pr }}
+          MANIFEST_ID: ${{ steps.update.outputs.manifest-id }}
+        run: |
+          git add src/db/item-snapshot.json public/items
+          if git diff --cached --quiet; then
+            echo "snapshot rebuilt with no file changes"
+            exit 0
+          fi
+          git commit -m "chore(items): update to game build $MANIFEST_ID"
+          if [ -n "$PR" ]; then
+            git push origin "$BRANCH"
+          else
+            git push --force-with-lease origin "$BRANCH"
+          fi
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the PR
+        if: steps.push.outputs.pushed == 'true'
+        env:
+          PR: ${{ steps.branch.outputs.pr }}
+          MANIFEST_ID: ${{ steps.update.outputs.manifest-id }}
+          REPORT: ${{ steps.update.outputs.report }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cat "$REPORT" >> "$GITHUB_STEP_SUMMARY"
+          body="$RUNNER_TEMP/body.md"
+          # GitHub rejects bodies over 65536 characters. Cutting bytes stays
+          # under that, and dropping the last line drops any split character.
+          if [ "$(wc -c < "$REPORT")" -gt 60000 ]; then
+            head -c 60000 "$REPORT" | sed '$d' > "$body"
+            printf '\n_Truncated. The full report is in the [workflow run](%s) summary._\n' "$RUN_URL" >> "$body"
+          else
+            cp "$REPORT" "$body"
+          fi
+          printf '\n---\nIcons from the game install go on this branch as extra commits (`bun items:icons --local`). The next game build merges main in and keeps them.\n' >> "$body"
+
+          title="chore(items): update to game build $MANIFEST_ID"
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --title "$title" --body-file "$body"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$title" --body-file "$body"
+          fi

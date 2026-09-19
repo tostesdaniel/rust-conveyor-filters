@@ -3,7 +3,8 @@ import path from "path";
 import { clerkClient } from "@clerk/nextjs/server";
 import { sql } from "drizzle-orm";
 
-import { db } from ".";
+import { db } from "./client";
+import { syncItemSnapshot } from "./item-sync";
 import {
   categories,
   filterItems,
@@ -13,7 +14,6 @@ import {
   type Category,
   type Filter,
   type FilterItem,
-  type Item,
   type UserCategory,
 } from "./schema";
 
@@ -160,15 +160,9 @@ const createClerkUsers = async () => {
 
 const insertItems = async () => {
   try {
-    console.log("\n📦 Inserting items...");
-    const values = loadJson<Item[]>("seed-data/items.json");
-    console.log(`  ↪ Found ${values.length} items to insert`);
-    await db.insert(items).values(
-      values.map(({ id, ...rest }) => ({
-        ...rest,
-      })),
-    );
-    console.log("  ✓ Items inserted successfully");
+    console.log("\n📦 Inserting items from the item snapshot...");
+    const result = await syncItemSnapshot(db);
+    console.log(`  ✓ ${result?.inserted ?? 0} items inserted successfully`);
   } catch (error) {
     throw new SeedError("Failed to insert items", error);
   }
@@ -189,6 +183,8 @@ const insertCategories = async () => {
 type UserIds = [rcfId: string, devId: string];
 type CategoryIdMap = Map<string, Map<number, number>>;
 type FilterIdMap = Map<string, Map<number, number>>;
+// Item row IDs depend on insertion order, so seed rows name the game item.
+type SeedFilterItem = Omit<FilterItem, "itemId"> & { gameItemId: number };
 
 const insertUserCategories = async ([rcfId, devId]: UserIds) => {
   try {
@@ -311,25 +307,36 @@ const insertFilterItems = async (
 ) => {
   try {
     console.log("\n📦 Inserting filter items...");
-    const values = loadJson<FilterItem[]>("seed-data/filter_items.json");
+    const values = loadJson<SeedFilterItem[]>("seed-data/filter_items.json");
     console.log(`  ↪ Found ${values.length} filter items per user to insert`);
 
-    // Create filter items for both users
-    const rcfFilterItems = values.map(({ id, filterId, ...value }) => ({
-      ...value,
-      filterId: filterIdMap.get(rcfId)!.get(filterId)!, // Map to RCF user's filter ID
-      createdAt: new Date(value.createdAt),
-      updatedAt: new Date(value.updatedAt),
-      authorId: rcfId,
-    }));
+    const itemRows = await db
+      .select({ id: items.id, itemId: items.itemId })
+      .from(items);
+    const itemIdMap = new Map(itemRows.map((row) => [row.itemId, row.id]));
 
-    const devFilterItems = values.map(({ id, filterId, ...value }) => ({
-      ...value,
-      filterId: filterIdMap.get(devId)!.get(filterId)!, // Map to Dev user's filter ID
-      createdAt: new Date(value.createdAt),
-      updatedAt: new Date(value.updatedAt),
-      authorId: devId,
-    }));
+    // Create filter items for both users
+    const rcfFilterItems = values.map(
+      ({ id, filterId, gameItemId, ...value }) => ({
+        ...value,
+        itemId: itemIdMap.get(gameItemId)!,
+        filterId: filterIdMap.get(rcfId)!.get(filterId)!, // Map to RCF user's filter ID
+        createdAt: new Date(value.createdAt),
+        updatedAt: new Date(value.updatedAt),
+        authorId: rcfId,
+      }),
+    );
+
+    const devFilterItems = values.map(
+      ({ id, filterId, gameItemId, ...value }) => ({
+        ...value,
+        itemId: itemIdMap.get(gameItemId)!,
+        filterId: filterIdMap.get(devId)!.get(filterId)!, // Map to Dev user's filter ID
+        createdAt: new Date(value.createdAt),
+        updatedAt: new Date(value.updatedAt),
+        authorId: devId,
+      }),
+    );
 
     await db.insert(filterItems).values([...rcfFilterItems, ...devFilterItems]);
     console.log(

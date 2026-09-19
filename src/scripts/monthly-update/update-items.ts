@@ -19,13 +19,14 @@ async function updateItems() {
       },
     });
 
-    const existingItemsMap = new Map<number, Omit<Item, "id" | "insertable">>(
-      existingItems.map((item) => [item.itemId, item]),
-    );
+    const existingItemsMap = new Map<
+      number,
+      Omit<Item, "id" | "insertable" | "iconVersion">
+    >(existingItems.map((item) => [item.itemId, item]));
 
     const newItemFiles = glob("**/*.json", { cwd: itemsSinkDir });
-    const updatedItems: Omit<Item, "id" | "insertable">[] = [];
-    const newItems: Omit<Item, "id" | "insertable">[] = [];
+    const updatedItems: Omit<Item, "id" | "insertable" | "iconVersion">[] = [];
+    const newItems: Omit<Item, "id" | "insertable" | "iconVersion">[] = [];
 
     for await (const file of newItemFiles) {
       const filePath = path.join(itemsSinkDir, file);
@@ -119,7 +120,7 @@ async function invalidateItemsCache() {
 }
 
 function checkForChanges(
-  existingItem: Omit<Item, "id" | "insertable">,
+  existingItem: Omit<Item, "id" | "insertable" | "iconVersion">,
   newItem: GameItem,
 ) {
   if (existingItem.itemId !== newItem.itemid) {
@@ -135,7 +136,9 @@ function checkForChanges(
   }
 }
 
-function normalizeItem(item: GameItem): Omit<Item, "id" | "insertable"> {
+function normalizeItem(
+  item: GameItem,
+): Omit<Item, "id" | "insertable" | "iconVersion"> {
   return {
     itemId: item.itemid,
     shortname: item.shortname,

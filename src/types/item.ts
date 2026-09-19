@@ -14,6 +14,7 @@ export type NewConveyorItem =
       shortname: string;
       category: string;
       imagePath: string;
+      iconVersion: string | null;
       max: number;
       buffer: number;
       min: number;

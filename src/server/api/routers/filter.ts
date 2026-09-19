@@ -5,7 +5,7 @@ import {
   getPublicFilters,
   getUserFiltersByCategory,
 } from "@/data/filters";
-import { getItemImagePaths } from "@/data/items";
+import { getItemIcons } from "@/data/items";
 import { db } from "@/db";
 import {
   createFilterSchema,
@@ -160,8 +160,8 @@ export const filterRouter = createTRPCRouter({
         });
       }
 
-      const itemImagePaths = await getItemImagePaths();
-      if (!itemImagePaths.has(newFilter.imagePath)) {
+      const itemIcons = await getItemIcons();
+      if (!itemIcons.has(newFilter.imagePath)) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Invalid filter image",
@@ -292,8 +292,8 @@ export const filterRouter = createTRPCRouter({
 
       // An existing cover survives its item leaving the game; only new picks are checked.
       if (data.imagePath && data.imagePath !== currentFilter.imagePath) {
-        const itemImagePaths = await getItemImagePaths();
-        if (!itemImagePaths.has(data.imagePath)) {
+        const itemIcons = await getItemIcons();
+        if (!itemIcons.has(data.imagePath)) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Invalid filter image",

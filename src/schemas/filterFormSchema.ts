@@ -29,6 +29,7 @@ const baseFilterSchema = z.object({
           itemId: z.number(),
           name: z.string(),
           imagePath: z.string(),
+          iconVersion: z.string().nullable().optional(),
           max: z.number().min(0),
           buffer: z.number().min(0),
           min: z.number().min(0),

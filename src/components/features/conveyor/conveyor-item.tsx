@@ -48,6 +48,7 @@ export function ConveyorItem({
         ) : (
           <ItemIcon
             imagePath={item.imagePath}
+            version={item.iconVersion}
             size='full'
             alt={item.name}
             fill

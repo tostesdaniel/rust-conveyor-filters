@@ -5,9 +5,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  createFilterSchema,
   type CreateFilter,
   type CreateFilterInput,
-  createFilterSchema,
 } from "@/schemas/filterFormSchema";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
@@ -102,6 +102,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
               // reads it, and without it remixed items export with empty names.
               shortname: filterItem.item.shortname ?? "",
               imagePath: filterItem.item.imagePath,
+              iconVersion: filterItem.item.iconVersion,
               itemId: filterItem.itemId,
               max: filterItem.max,
               buffer: filterItem.buffer,

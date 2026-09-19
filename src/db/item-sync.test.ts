@@ -84,6 +84,18 @@ describe("planItemSync", () => {
     expect(plan.updates).toEqual([toRow(redLight)]);
   });
 
+  it("updates an item whose icon was redrawn", () => {
+    const icon = {
+      source: "cdn" as const,
+      takenAt: "2026-09-18T00:00:00.000Z",
+    };
+    const before = { ...light, icon: { ...icon, fingerprint: "aaaa" } };
+    const after = { ...light, icon: { ...icon, fingerprint: "bbbb" } };
+    const plan = planItemSync([after], [row(before, 1)], new Set());
+    expect(plan.updates).toEqual([toRow(after)]);
+    expect(plan.updates[0].iconVersion).toBe("bbbb");
+  });
+
   it("retires insertable rows the snapshot dropped, and only those", () => {
     const gone = item({ itemId: 9, shortname: "gone" });
     const goneHidden = item({

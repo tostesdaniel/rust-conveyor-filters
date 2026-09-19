@@ -269,6 +269,7 @@ function Item({
       <div className={cn("relative h-6 w-6", className)}>
         <ItemIcon
           imagePath={item.imagePath}
+          version={item.iconVersion}
           size='tiny'
           alt={item.name}
           width={24}

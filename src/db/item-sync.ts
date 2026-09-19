@@ -44,6 +44,7 @@ export function toRow(item: SnapshotItem): NewItem {
     category: item.category,
     imagePath: item.shortname,
     insertable: item.insertable,
+    iconVersion: item.icon?.fingerprint ?? null,
   };
 }
 
@@ -53,7 +54,8 @@ function sameRow(a: NewItem, b: Item) {
     a.name === b.name &&
     a.category === b.category &&
     a.imagePath === b.imagePath &&
-    a.insertable === b.insertable
+    a.insertable === b.insertable &&
+    a.iconVersion === b.iconVersion
   );
 }
 
@@ -143,6 +145,7 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
           category: sql`excluded.category`,
           imagePath: sql`excluded.image_path`,
           insertable: sql`excluded.insertable`,
+          iconVersion: sql`excluded.icon_version`,
         },
       });
   }

@@ -4,9 +4,9 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import {
+  createFilterSchema,
   type CreateFilter,
   type CreateFilterInput,
-  createFilterSchema,
 } from "@/schemas/filterFormSchema";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
@@ -51,6 +51,7 @@ interface ItemFilterItem extends FilterItemBase {
   itemId: number;
   shortname?: string;
   imagePath: string;
+  iconVersion?: string | null;
 }
 
 interface CategoryFilterItem extends FilterItemBase {
@@ -180,6 +181,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             name: item.name,
             shortname: item.shortname ?? "",
             imagePath: item.imagePath,
+            iconVersion: item.iconVersion,
             itemId: filterItem.itemId,
             max: filterItem.max,
             buffer: filterItem.buffer,

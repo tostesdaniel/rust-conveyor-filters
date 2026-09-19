@@ -246,6 +246,7 @@ function FilterCardOverlay({ filter }: { filter: OwnerFilterDTO }) {
       <div className='flex w-16 shrink-0 items-center justify-center rounded-l-md border-2 border-foreground/70 bg-card p-1.5'>
         <ItemIcon
           imagePath={filter.imagePath}
+          version={filter.imageVersion}
           size='medium'
           alt=''
           width='64'

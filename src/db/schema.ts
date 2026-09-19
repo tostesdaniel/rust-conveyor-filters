@@ -23,6 +23,9 @@ export const items = pgTable("items", {
   category: varchar("category", { length: 255 }).notNull(),
   imagePath: varchar("image_path", { length: 255 }).notNull(),
   insertable: boolean("insertable").notNull().default(true),
+  // The snapshot's icon fingerprint. Icon URLs carry it so a redrawn icon
+  // gets past a year of immutable caching.
+  iconVersion: varchar("icon_version", { length: 16 }),
 });
 
 export type Item = typeof items.$inferSelect;

@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import type { CreateFilterInput } from "@/schemas/filterFormSchema";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { ChevronsUpDown } from "lucide-react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
 
@@ -27,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { FilterImage } from "@/components/features/my-filters/components/filter-image";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 type SelectedImage = string;
 
@@ -165,8 +164,9 @@ const ItemList = React.memo(
                 }}
               >
                 <div className='relative size-6'>
-                  <Image
-                    src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
+                  <ItemIcon
+                    imagePath={item.imagePath}
+                    size='tiny'
                     alt={item.name}
                     width={24}
                     height={24}

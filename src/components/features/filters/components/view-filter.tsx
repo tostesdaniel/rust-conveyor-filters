@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Image from "next/image";
 import { categoryMapping } from "@/utils/category-mapping";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { EyeIcon } from "lucide-react";
 
@@ -44,6 +42,7 @@ import {
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { RemixButton } from "@/components/features/filters/filter-card/remix-button";
 import { ButtonWithIcon } from "@/components/shared/button-with-icon";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 interface ViewFilterProps {
   filter: OwnerFilterDTO | SharedFilterDTO | PublicFilterListDTO;
@@ -192,8 +191,9 @@ const FilterItem = ({ filterItem }: { filterItem: FilterItemDTO }) => {
         {category ? (
           <CategoryIcon className='h-full w-full object-cover py-2' />
         ) : item ? (
-          <Image
-            src={getR2ImageUrl(item.imagePath + ".webp", "medium")}
+          <ItemIcon
+            imagePath={item.imagePath}
+            size='medium'
             alt={item.name}
             width={80}
             height={80}

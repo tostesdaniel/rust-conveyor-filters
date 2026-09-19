@@ -1,7 +1,10 @@
 import "server-only";
 
+import {
+  filterItemsOrderBy,
+  filterItemsWhere,
+} from "@/data/filter-items-query";
 import { db } from "@/db";
-import { filterItemsOrderBy } from "@/data/filter-items-order";
 import { toSharedFilterDTO } from "@/utils/filter-mappers";
 import { and, eq } from "drizzle-orm";
 
@@ -34,6 +37,7 @@ export async function findSharedFilters(shareTokenId: number) {
               item: true,
               category: true,
             },
+            where: filterItemsWhere,
             orderBy: filterItemsOrderBy,
           },
           userCategory: {

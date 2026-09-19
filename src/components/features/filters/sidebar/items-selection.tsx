@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useCallback, useRef, useState, useTransition } from "react";
-import Image from "next/image";
-import { getR2ImageUrl } from "@/utils/r2-images";
 import { trackEvent } from "@/utils/rybbit";
 import { CirclePlusIcon, XIcon } from "lucide-react";
 import { throttle } from "nuqs";
@@ -36,6 +34,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 export function ItemsSelection() {
   const { data: itemsData, isLoading: itemsLoading } = useGetItems();
@@ -268,8 +267,9 @@ function Item({
   return (
     <div className='flex items-center gap-2'>
       <div className={cn("relative h-6 w-6", className)}>
-        <Image
-          src={getR2ImageUrl(item.imagePath + ".webp", "tiny")}
+        <ItemIcon
+          imagePath={item.imagePath}
+          size='tiny'
           alt={item.name}
           width={24}
           height={24}

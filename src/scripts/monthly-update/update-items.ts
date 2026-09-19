@@ -15,16 +15,17 @@ async function updateItems() {
     const existingItems = await db.query.items.findMany({
       columns: {
         id: false,
+        insertable: false,
       },
     });
 
-    const existingItemsMap = new Map<number, Omit<Item, "id">>(
+    const existingItemsMap = new Map<number, Omit<Item, "id" | "insertable">>(
       existingItems.map((item) => [item.itemId, item]),
     );
 
     const newItemFiles = glob("**/*.json", { cwd: itemsSinkDir });
-    const updatedItems: Omit<Item, "id">[] = [];
-    const newItems: Omit<Item, "id">[] = [];
+    const updatedItems: Omit<Item, "id" | "insertable">[] = [];
+    const newItems: Omit<Item, "id" | "insertable">[] = [];
 
     for await (const file of newItemFiles) {
       const filePath = path.join(itemsSinkDir, file);
@@ -117,7 +118,10 @@ async function invalidateItemsCache() {
   }
 }
 
-function checkForChanges(existingItem: Omit<Item, "id">, newItem: GameItem) {
+function checkForChanges(
+  existingItem: Omit<Item, "id" | "insertable">,
+  newItem: GameItem,
+) {
   if (existingItem.itemId !== newItem.itemid) {
     throw new Error(
       `Item ID mismatch between ${existingItem.name} and ${newItem.Name} (${existingItem.itemId} !== ${newItem.itemid})`,
@@ -131,7 +135,7 @@ function checkForChanges(existingItem: Omit<Item, "id">, newItem: GameItem) {
   }
 }
 
-function normalizeItem(item: GameItem): Omit<Item, "id"> {
+function normalizeItem(item: GameItem): Omit<Item, "id" | "insertable"> {
   return {
     itemId: item.itemid,
     shortname: item.shortname,

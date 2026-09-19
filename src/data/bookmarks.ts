@@ -1,7 +1,10 @@
 import "server-only";
 
+import {
+  filterItemsOrderBy,
+  filterItemsWhere,
+} from "@/data/filter-items-query";
 import { db } from "@/db";
-import { filterItemsOrderBy } from "@/data/filter-items-order";
 import { enrichWithAuthor } from "@/utils/enrich-filter";
 import { toPublicFilterDTO } from "@/utils/filter-mappers";
 import { and, eq } from "drizzle-orm";
@@ -35,6 +38,7 @@ export async function getBookmarkedFilters(
         with: {
           filterItems: {
             with: { item: true, category: true },
+            where: filterItemsWhere,
             orderBy: filterItemsOrderBy,
           },
         },

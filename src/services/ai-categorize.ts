@@ -1,3 +1,4 @@
+import { filterItemsWhere } from "@/data/filter-items-query";
 import { db } from "@/db/client";
 import { and, desc, eq, notExists, sql } from "drizzle-orm";
 
@@ -48,6 +49,7 @@ async function loadFilterForCategorization(filterId: number) {
     with: {
       filterItems: {
         with: { item: true, category: true },
+        where: filterItemsWhere,
       },
     },
   });

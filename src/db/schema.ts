@@ -11,6 +11,7 @@ import {
   pgEnum,
   pgTable,
   serial,
+  text,
   timestamp,
   uniqueIndex,
   varchar,
@@ -22,6 +23,8 @@ export const items = pgTable("items", {
   itemId: integer("itemid").notNull().unique(),
   shortname: varchar("shortname", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
+  // Longest is 415 chars today, so text and not the varchar the rest use.
+  description: text("description").notNull().default(""),
   category: varchar("category", { length: 255 }).notNull(),
   imagePath: varchar("image_path", { length: 255 }).notNull(),
   insertable: boolean("insertable").notNull().default(true),

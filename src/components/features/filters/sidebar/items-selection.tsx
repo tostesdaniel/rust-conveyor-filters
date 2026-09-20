@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState, useTransition } from "react";
+import { searchItems } from "@/utils/item-search";
 import { trackEvent } from "@/utils/rybbit";
 import { CirclePlusIcon, XIcon } from "lucide-react";
 import { throttle } from "nuqs";
@@ -193,7 +194,10 @@ function ItemsCombobox({
 
   if (!itemsData) return null;
 
-  const selectables = itemsData.filter((item) => !items?.includes(item.name));
+  const selectables = searchItems(
+    itemsData.filter((item) => !items?.includes(item.name)),
+    inputValue,
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -217,7 +221,11 @@ function ItemsCombobox({
           width: "var(--radix-popover-trigger-width)",
         }}
       >
-        <Command onKeyDown={handleKeyDown} className='overflow-visible'>
+        <Command
+          onKeyDown={handleKeyDown}
+          shouldFilter={false}
+          className='overflow-visible'
+        >
           <CommandInput
             ref={inputRef}
             value={inputValue}
@@ -231,7 +239,7 @@ function ItemsCombobox({
           <CommandList>
             {open && selectables.length > 0 ? (
               <CommandGroup className='h-full overflow-auto'>
-                {selectables.map((item) => (
+                {selectables.map(({ item }) => (
                   <CommandItem
                     key={item.itemId}
                     className='cursor-pointer'

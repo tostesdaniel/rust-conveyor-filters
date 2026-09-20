@@ -8,6 +8,7 @@ export interface BaselineItem {
   itemId: number;
   shortname: string;
   name: string;
+  description: string;
   category: string;
   insertable: boolean;
   redirectTo: number | null;
@@ -17,6 +18,7 @@ interface DbExportRow {
   itemid: number;
   shortname: string;
   name: string;
+  description?: string;
   category: string;
   insertable?: boolean;
 }
@@ -34,6 +36,7 @@ export async function readBaseline(file: string): Promise<BaselineItem[]> {
     itemId: row.itemid,
     shortname: row.shortname,
     name: row.name,
+    description: row.description ?? "",
     category: row.category,
     insertable: row.insertable ?? true,
     redirectTo: null,
@@ -48,6 +51,7 @@ export interface ItemDiff {
   renamed: { item: SnapshotItem; from: string }[];
   recategorized: { item: SnapshotItem; from: string }[];
   reshortnamed: { item: SnapshotItem; from: string }[];
+  redescribed: { item: SnapshotItem; from: string }[];
 }
 
 export function diffItems(
@@ -64,6 +68,7 @@ export function diffItems(
     renamed: [],
     recategorized: [],
     reshortnamed: [],
+    redescribed: [],
   };
 
   for (const item of items) {
@@ -81,6 +86,9 @@ export function diffItems(
     }
     if (old.shortname !== item.shortname) {
       diff.reshortnamed.push({ item, from: old.shortname });
+    }
+    if (old.description !== item.description) {
+      diff.redescribed.push({ item, from: old.description });
     }
   }
 
@@ -168,6 +176,13 @@ export function renderReport({
         "Shortname changed",
         diff.reshortnamed.map(
           ({ item, from }) => `- ${code(from)} → ${code(item.shortname)}`,
+        ),
+      ),
+      ...section(
+        "Description changed",
+        diff.redescribed.map(
+          ({ item, from }) =>
+            `- ${code(item.shortname)} ${from} → ${item.description}`,
         ),
       ),
     );

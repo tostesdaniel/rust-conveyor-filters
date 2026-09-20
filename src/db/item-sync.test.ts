@@ -9,6 +9,7 @@ function item(
 ): SnapshotItem {
   return {
     name: overrides.shortname.toUpperCase(),
+    description: `A ${overrides.shortname}.`,
     category: "Items",
     insertable: true,
     hidden: false,

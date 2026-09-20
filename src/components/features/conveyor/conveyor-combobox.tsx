@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { categoryMapping } from "@/utils/category-mapping";
+import { searchItems } from "@/utils/item-search";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -197,16 +198,23 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                 },
               );
 
-              const hasMatchingItems =
-                !isCategoryMatch &&
-                categorizedItems[category.name].some((item) =>
-                  item.name.toLowerCase().includes(searchLower),
-                );
+              // A category hit lists the whole category, so the matcher only
+              // runs when the query has to pick items out of it.
+              const matches = isCategoryMatch
+                ? []
+                : searchItems(categorizedItems[category.name], search);
 
               const showCategory =
-                !search || isCategoryMatch || hasMatchingItems;
+                !search || isCategoryMatch || matches.length > 0;
 
               if (!showCategory) return null;
+
+              const shown = isCategoryMatch
+                ? categorizedItems[category.name].map((item) => ({
+                    item,
+                    viaDescription: false,
+                  }))
+                : matches;
 
               return (
                 <CommandGroup key={category.id} heading={categoryName}>
@@ -227,12 +235,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                     </CommandItem>
                   )}
 
-                  {(isCategoryMatch
-                    ? categorizedItems[category.name]
-                    : categorizedItems[category.name].filter((item: Item) =>
-                        item.name.toLowerCase().includes(searchLower),
-                      )
-                  ).map((item: Item) => (
+                  {shown.map(({ item, viaDescription }) => (
                     <CommandItem
                       key={item.id}
                       className='flex items-center gap-x-2'
@@ -251,7 +254,15 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                           className='rounded-sm object-contain'
                         />
                       </div>
-                      {item.name}
+                      <div className='min-w-0 flex-1'>
+                        <p className='truncate'>{item.name}</p>
+                        {/* Otherwise nothing on the row says why it matched. */}
+                        {viaDescription && (
+                          <p className='truncate text-xs text-muted-foreground'>
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
                     </CommandItem>
                   ))}
                 </CommandGroup>

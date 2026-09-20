@@ -2,7 +2,7 @@
  * Posts an item update to the Discord announcement channel once the items are
  * live, from the rows `syncItemSnapshot` queues.
  */
-import type { ItemUpdateChanges } from "@/db/item-changes";
+import type { ItemUpdateChanges, RemovedItem } from "@/db/item-changes";
 import { asc, eq, isNull, sql } from "drizzle-orm";
 import type { NodePgQueryResultHKT } from "drizzle-orm/node-postgres";
 import type { PgDatabase } from "drizzle-orm/pg-core";
@@ -10,7 +10,7 @@ import type { PgDatabase } from "drizzle-orm/pg-core";
 import { itemAnnouncements } from "@/db/schema";
 import type * as schema from "@/db/schema";
 
-import { buildIconGrid } from "./item-icon-grid";
+import { buildIconGrid, type GridEntry } from "./item-icon-grid";
 import { fetchLatestRustNews, type RustNewsPost } from "./rust-news";
 
 type Db = PgDatabase<NodePgQueryResultHKT, typeof schema>;
@@ -24,7 +24,7 @@ const ANNOUNCE_LOCK = 7_106_318_543;
 const EMBED_COLOR = 0xe8_b1_30;
 const EMBED_DESCRIPTION_MAX = 4096;
 const SITE_URL = "https://rustconveyorfilters.com";
-const GRID_FILENAME = "new-items.png";
+const GRID_FILENAME = "item-changes.png";
 
 const MAX_ANNOUNCEMENT_AGE_MS = 3 * 24 * 60 * 60 * 1000;
 
@@ -44,35 +44,63 @@ function nameList(items: { name: string }[], max = 40) {
   return [rest > 0 ? `${shown.join(", ")} and ${rest} more` : shown.join(", ")];
 }
 
+function bulletList<T>(items: T[], line: (item: T) => string, max = 20) {
+  const rest = items.length - max;
+  return [
+    ...items.slice(0, max).map(line),
+    ...(rest > 0 ? [`- and ${rest} more`] : []),
+  ];
+}
+
+/**
+ * One paragraph per target rather than a line per item, so items
+ * that redirect to the same target won't be listed multiple times.
+ */
+function mergeGroups(merged: RemovedItem[], max = 20) {
+  const byTarget = new Map<string, RemovedItem[]>();
+  for (const item of merged.slice(0, max)) {
+    const target = item.mergedInto!;
+    byTarget.set(target, [...(byTarget.get(target) ?? []), item]);
+  }
+
+  const rest = merged.length - max;
+  return [
+    ...[...byTarget].flatMap(([target, items], i) => [
+      ...(i > 0 ? [""] : []),
+      `Filters with the following items now contain **${escapeMarkdown(target)}** instead:`,
+      nameList(items)[0],
+    ]),
+    ...(rest > 0 ? ["", `and ${rest} more merged elsewhere`] : []),
+  ];
+}
+
 export function buildDescription(changes: ItemUpdateChanges) {
+  const merged = changes.removed.filter((i) => i.mergedInto !== null);
   const lines = [
     ...section(
-      `New in the conveyor picker (${changes.added.length})`,
+      `➕ New in the conveyor picker (${changes.added.length})`,
       changes.added.length > 0 ? nameList(changes.added) : [],
     ),
     ...section(
-      `Removed from the picker (${changes.removed.length})`,
-      changes.removed.slice(0, 20).map((i) => {
-        const name = escapeMarkdown(i.name);
-        return i.mergedInto
-          ? `- ${name}, now part of ${escapeMarkdown(i.mergedInto)}`
-          : `- ${name}`;
-      }),
+      `➖ Removed from the picker (${changes.removed.length})`,
+      bulletList(changes.removed, (i) => `- ${escapeMarkdown(i.name)}`),
     ),
     ...section(
-      `Renamed (${changes.renamed.length})`,
-      changes.renamed
-        .slice(0, 20)
-        .map((i) => `- ${escapeMarkdown(i.from)} → ${escapeMarkdown(i.name)}`),
+      `➡️ Merged into another item (${merged.length})`,
+      mergeGroups(merged),
+    ),
+    ...section(
+      `✏️ Renamed (${changes.renamed.length})`,
+      bulletList(
+        changes.renamed,
+        (i) => `- ${escapeMarkdown(i.from)} → ${escapeMarkdown(i.name)}`,
+      ),
     ),
   ];
 
-  if (changes.iconsRedrawn > 0) {
-    lines.push(`${changes.iconsRedrawn} icons now match the game's new art.`);
-  }
-  if (changes.filtersChanged > 0) {
+  if (changes.redrawn.length > 0) {
     lines.push(
-      `${changes.filtersChanged} saved filters used a removed item, so we moved them over for you.`,
+      `🔄 ${changes.redrawn.length} icons now match the game's new art.`,
     );
   }
 
@@ -80,6 +108,24 @@ export function buildDescription(changes: ItemUpdateChanges) {
   return description.length > EMBED_DESCRIPTION_MAX
     ? `${description.slice(0, EMBED_DESCRIPTION_MAX - 1)}…`
     : description;
+}
+
+/** Added first, then what left, then what only changed its art. */
+export function gridEntries(changes: ItemUpdateChanges): GridEntry[] {
+  return [
+    ...changes.added.map((i) => ({
+      shortname: i.shortname,
+      kind: "added" as const,
+    })),
+    ...changes.removed.map<GridEntry>((i) => ({
+      shortname: i.shortname,
+      kind: i.mergedInto ? "merged" : "removed",
+    })),
+    ...changes.redrawn.map((i) => ({
+      shortname: i.shortname,
+      kind: "redrawn" as const,
+    })),
+  ];
 }
 
 export function buildMessage({
@@ -111,7 +157,7 @@ export function buildMessage({
 }
 
 async function post(changes: ItemUpdateChanges) {
-  const grid = await buildIconGrid(changes.added.map((i) => i.shortname));
+  const grid = await buildIconGrid(gridEntries(changes));
   const message = buildMessage({
     changes,
     news: await fetchLatestRustNews(),

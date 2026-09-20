@@ -1,6 +1,6 @@
 /**
  * Rebuilds the Item snapshot from the dedicated-server depot and takes CDN
- * icons for it. Exits early when the game build hasn't changed.
+ * icons for it. Exits early when the build ships the same item data.
  *
  *   bun items:update [--force] [--baseline <snapshot or items table export>]
  */
@@ -61,13 +61,24 @@ async function main() {
   }
 
   const { manifestId, itemsDir, bundlePath } = await fetchItemFiles();
+  const { hash: itemDataHash } = await hashItemData(itemsDir, bundlePath);
+
+  if (
+    previous &&
+    !values.force &&
+    itemDataHash === previous.gameBuild.itemDataHash
+  ) {
+    console.error(`game build ${manifestId} ships the same item data`);
+    await setOutputs({ changed: "false", "manifest-id": manifestId });
+    return;
+  }
+
   const flags = await extractFlags(bundlePath);
   const items = buildItems(
     flags,
     await readItemJson(itemsDir),
     previous?.items ?? [],
   );
-  const { hash: itemDataHash } = await hashItemData(itemsDir);
 
   console.error(
     `taking CDN icons for ${items.filter((i) => i.insertable).length} items`,

@@ -2,12 +2,14 @@ name: Item Update
 
 on:
   schedule:
-    # Evening UTC, so a Thursday patch gets its PR the same day.
+    # Thursdays, 17:26-19:00 UTC across the last ten from RSS feed.
+    - cron: "7-57/10 17-22 * * 4"
+    # Daily for patches.
     - cron: "37 21 * * *"
   workflow_dispatch:
     inputs:
       force:
-        description: Rebuild the snapshot even if the game build hasn't changed
+        description: Rebuild the snapshot even if the item data hasn't changed
         type: boolean
         default: false
 

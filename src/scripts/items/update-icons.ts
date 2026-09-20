@@ -30,7 +30,10 @@ async function main() {
   let iconChanges;
   if (values.local) {
     const itemsDir = path.join(RUST_DIR, "Bundles", "items");
-    const { hash } = await hashItemData(itemsDir);
+    const { hash } = await hashItemData(
+      itemsDir,
+      path.join(RUST_DIR, "Bundles", "shared", "items.preload.bundle"),
+    );
     // An install Steam hasn't patched yet would stamp last month's sprites as
     // fresh, and the CDN could then never replace them.
     if (hash !== snapshot.gameBuild.itemDataHash) {

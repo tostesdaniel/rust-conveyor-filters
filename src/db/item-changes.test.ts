@@ -10,6 +10,7 @@ function item(
 ): SnapshotItem {
   return {
     name: overrides.shortname.toUpperCase(),
+    description: `A ${overrides.shortname}.`,
     category: "Items",
     insertable: true,
     hidden: false,
@@ -65,6 +66,19 @@ describe("describeChanges", () => {
     expect(changes.removed).toEqual([
       { shortname: "mlrs", name: "MLRS", mergedInto: null },
     ]);
+  });
+
+  it("says nothing about a reworded description", () => {
+    const ak = item({
+      itemId: 1,
+      shortname: "ak",
+      description: "High damage machine rifle.",
+    });
+    const rows = [row({ ...ak, description: "High damage rifle." }, 1)];
+
+    const changes = changesFor([ak], rows);
+
+    expect(hasVisibleChanges(changes)).toBe(false);
   });
 
   it("counts a redrawn icon but not a first one", () => {

@@ -8,6 +8,7 @@ function item(
 ): SnapshotItem {
   return {
     name: overrides.shortname,
+    description: `A ${overrides.shortname}.`,
     category: "Items",
     insertable: true,
     hidden: false,
@@ -85,6 +86,14 @@ describe("diffItems", () => {
     expect(renamed.recategorized).toEqual([
       { item: light, from: "Electrical" },
     ]);
+  });
+
+  it("tracks reworded descriptions", () => {
+    const reworded = diffItems(
+      [baseline(light, { description: "A lamp." })],
+      [light],
+    );
+    expect(reworded.redescribed).toEqual([{ item: light, from: "A lamp." }]);
   });
 
   it("explains why an item is no longer insertable", () => {

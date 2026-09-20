@@ -48,6 +48,7 @@ export function toRow(item: SnapshotItem): NewItem {
     itemId: item.itemId,
     shortname: item.shortname,
     name: item.name,
+    description: item.description,
     category: item.category,
     imagePath: item.shortname,
     insertable: item.insertable,
@@ -59,6 +60,7 @@ function sameRow(a: NewItem, b: Item) {
   return (
     a.shortname === b.shortname &&
     a.name === b.name &&
+    a.description === b.description &&
     a.category === b.category &&
     a.imagePath === b.imagePath &&
     a.insertable === b.insertable &&
@@ -154,6 +156,7 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
         set: {
           shortname: sql`excluded.shortname`,
           name: sql`excluded.name`,
+          description: sql`excluded.description`,
           category: sql`excluded.category`,
           imagePath: sql`excluded.image_path`,
           insertable: sql`excluded.insertable`,

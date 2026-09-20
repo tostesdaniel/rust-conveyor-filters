@@ -22,6 +22,7 @@ export interface SnapshotItem {
   itemId: number;
   shortname: string;
   name: string;
+  description: string;
   category: string;
   insertable: boolean;
   hidden: boolean;
@@ -54,6 +55,8 @@ export interface ItemJson {
   itemid: number;
   shortname: string;
   Name: string;
+  /** Null on 12 items, the boats and the wallpapers among them. */
+  Description: string | null;
   Category: string;
 }
 
@@ -86,6 +89,7 @@ export function buildItems(
       itemId: f.itemId,
       shortname: f.shortname,
       name: json.Name,
+      description: json.Description ?? "",
       category: json.Category,
       insertable: isInsertable(f),
       hidden: f.hidden,

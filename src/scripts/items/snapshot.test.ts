@@ -29,6 +29,7 @@ function json(f: ItemFlags, extra: Partial<ItemJson> = {}): [string, ItemJson] {
       itemid: f.itemId,
       shortname: f.shortname,
       Name: f.shortname.toUpperCase(),
+      Description: `A ${f.shortname}.`,
       Category: "Items",
       ...extra,
     },
@@ -111,10 +112,26 @@ describe("buildItems", () => {
     expect(items[1]).toMatchObject({ insertable: false, redirectTo: 4 });
   });
 
+  it("keeps a null description as an empty string", () => {
+    const boat = flags({ itemId: 7, shortname: "rhib" });
+    const [item] = buildItems(
+      [boat],
+      new Map([json(boat, { Description: null })]),
+      [],
+    );
+    expect(item.description).toBe("");
+  });
+
   it("ignores dump files the game has no definition for", () => {
     const junk: [string, ItemJson] = [
       "2module car.json",
-      { itemid: 2, shortname: "2module.car", Name: "junk", Category: "Items" },
+      {
+        itemid: 2,
+        shortname: "2module.car",
+        Name: "junk",
+        Description: "junk",
+        Category: "Items",
+      },
     ];
     const plushie: [string, ItemJson] = [
       "charity.plushie.05.json",
@@ -122,6 +139,7 @@ describe("buildItems", () => {
         itemid: 99,
         shortname: "charity.plushie.05",
         Name: "x",
+        Description: "x",
         Category: "Fun",
       },
     ];

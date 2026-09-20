@@ -1,6 +1,6 @@
 /**
  * Rebuilds the Item snapshot from the dedicated-server depot and takes CDN
- * icons for it. Exits early when the game build hasn't changed.
+ * icons for it. Exits early when the build ships the same item data.
  *
  *   bun items:update [--force] [--baseline <snapshot or items table export>]
  */
@@ -34,6 +34,14 @@ async function extractFlags(bundlePath: string) {
   return JSON.parse(stdout) as ItemFlags[];
 }
 
+// The item update workflow branches on these. Locally the stderr lines say the same.
+async function setOutputs(outputs: Record<string, string>) {
+  const file = process.env.GITHUB_OUTPUT;
+  if (!file) return;
+  const lines = Object.entries(outputs).map(([k, v]) => `${k}=${v}\n`);
+  await fs.appendFile(file, lines.join(""));
+}
+
 async function main() {
   const { values } = parseArgs({
     options: {
@@ -47,18 +55,30 @@ async function main() {
     const manifestId = await probeManifestId();
     if (manifestId === previous.gameBuild.manifestId) {
       console.error(`game build ${manifestId} is already in the snapshot`);
+      await setOutputs({ changed: "false", "manifest-id": manifestId });
       return;
     }
   }
 
   const { manifestId, itemsDir, bundlePath } = await fetchItemFiles();
+  const { hash: itemDataHash } = await hashItemData(itemsDir, bundlePath);
+
+  if (
+    previous &&
+    !values.force &&
+    itemDataHash === previous.gameBuild.itemDataHash
+  ) {
+    console.error(`game build ${manifestId} ships the same item data`);
+    await setOutputs({ changed: "false", "manifest-id": manifestId });
+    return;
+  }
+
   const flags = await extractFlags(bundlePath);
   const items = buildItems(
     flags,
     await readItemJson(itemsDir),
     previous?.items ?? [],
   );
-  const { hash: itemDataHash } = await hashItemData(itemsDir);
 
   console.error(
     `taking CDN icons for ${items.filter((i) => i.insertable).length} items`,
@@ -81,6 +101,11 @@ async function main() {
   await fs.writeFile(reportPath, report);
   console.log(report);
   console.error(`report written to ${reportPath}`);
+  await setOutputs({
+    changed: "true",
+    "manifest-id": manifestId,
+    report: reportPath,
+  });
 }
 
 main().catch((err) => {

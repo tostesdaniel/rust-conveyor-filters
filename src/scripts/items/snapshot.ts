@@ -101,7 +101,7 @@ export function buildItems(
  * A local icon run compares its install's hash against the snapshot's to
  * prove Steam already patched it to that build.
  */
-export async function hashItemData(itemsDir: string) {
+export async function hashItemData(itemsDir: string, bundlePath: string) {
   const files = (await fs.readdir(itemsDir))
     .filter((f) => f.endsWith(".json"))
     .sort();
@@ -110,6 +110,7 @@ export async function hashItemData(itemsDir: string) {
     const content = await fs.readFile(path.join(itemsDir, file));
     hash.update(file).update("\0").update(content).update("\0");
   }
+  hash.update(await fs.readFile(bundlePath));
   return { hash: hash.digest("hex"), fileCount: files.length };
 }
 

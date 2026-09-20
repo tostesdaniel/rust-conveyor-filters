@@ -88,7 +88,7 @@ rust-conveyor-filters/
 │   ├── providers/             # React context providers
 │   ├── schemas/               # Form schema definitions
 │   ├── scripts/               # Scripts for the project
-│   │   └── monthly-update/    # Monthly update script
+│   │   └── items/             # Item snapshot and icon updates
 │   ├── services/              # Services for the project
 │   └── types/                 # TypeScript type definitions
 └── public/                    # Static assets

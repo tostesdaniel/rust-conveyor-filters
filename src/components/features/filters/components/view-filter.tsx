@@ -189,7 +189,7 @@ const FilterItem = ({ filterItem }: { filterItem: FilterItemDTO }) => {
     <li className='snap-start'>
       <Card className='aspect-square w-20 py-0'>
         {category ? (
-          <CategoryIcon className='h-full w-full object-cover py-2' />
+          <CategoryIcon className='h-full w-full py-2' />
         ) : item ? (
           <ItemIcon
             imagePath={item.imagePath}

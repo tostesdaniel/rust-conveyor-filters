@@ -215,8 +215,10 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                       onSelect={() => insertItem(category)}
                       className='mb-1'
                     >
-                      <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide [&_svg]:size-6'>
-                        <CategoryIcon className='rounded-sm border border-foreground object-contain p-px' />
+                      <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide'>
+                        <span className='size-6 shrink-0 rounded-sm border border-foreground p-px'>
+                          <CategoryIcon className='size-full' />
+                        </span>
                         <p className='flex-1'>{category.name}</p>
                         <span className='text-end text-xs text-muted-foreground'>
                           CATEGORY

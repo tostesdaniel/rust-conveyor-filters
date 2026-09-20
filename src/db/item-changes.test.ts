@@ -81,7 +81,7 @@ describe("describeChanges", () => {
     expect(hasVisibleChanges(changes)).toBe(false);
   });
 
-  it("counts a redrawn icon but not a first one", () => {
+  it("names a redrawn icon but not a first one", () => {
     const redrawn = item({
       itemId: 1,
       shortname: "ak",
@@ -105,7 +105,7 @@ describe("describeChanges", () => {
 
     const changes = changesFor([redrawn, first], rows);
 
-    expect(changes.iconsRedrawn).toBe(1);
+    expect(changes.redrawn).toEqual([{ shortname: "ak", name: "AK" }]);
   });
 
   it("treats a renamed item as a rename, not a redraw", () => {
@@ -131,7 +131,7 @@ describe("describeChanges", () => {
     expect(changes.renamed).toEqual([
       { shortname: "ak", name: "AK-47", from: "Assault Rifle" },
     ]);
-    expect(changes.iconsRedrawn).toBe(0);
+    expect(changes.redrawn).toEqual([]);
   });
 
   it("stays quiet when only the category moved", () => {

@@ -27,7 +27,7 @@ export interface ItemUpdateChanges {
   added: ChangedItem[];
   removed: RemovedItem[];
   renamed: RenamedItem[];
-  iconsRedrawn: number;
+  redrawn: ChangedItem[];
   /** Saved filters the repoint touched, not rows. */
   filtersChanged: number;
 }
@@ -37,7 +37,7 @@ export function hasVisibleChanges(changes: ItemUpdateChanges) {
     changes.added.length > 0 ||
     changes.removed.length > 0 ||
     changes.renamed.length > 0 ||
-    changes.iconsRedrawn > 0
+    changes.redrawn.length > 0
   );
 }
 
@@ -57,7 +57,7 @@ export function describeChanges(
     added: [],
     removed: [],
     renamed: [],
-    iconsRedrawn: 0,
+    redrawn: [],
     filtersChanged,
   };
 
@@ -84,7 +84,7 @@ export function describeChanges(
       changes.renamed.push({ ...named(row), from: old.name });
       // A rename carries its own line, so its icon isn't counted twice.
     } else if (old.iconVersion && old.iconVersion !== row.iconVersion) {
-      changes.iconsRedrawn += 1;
+      changes.redrawn.push(named(row));
     }
   }
 

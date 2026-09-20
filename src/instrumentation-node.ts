@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { syncItemSnapshot } from "@/db/item-sync";
 import { startAiCategorizeCron } from "@/server/crons/ai-categorize";
 import { startRevokeExpiredSubscriptionsCron } from "@/server/crons/revoke-expired-subscriptions";
+import { postPendingItemUpdates } from "@/services/item-update-announcer";
 
 // Awaited so the first request already sees this build's catalogue. A failed
 // sync leaves last build's items up rather than taking the site down, and the
@@ -17,6 +18,12 @@ try {
   }
 } catch (err) {
   console.error("items: snapshot sync failed", err);
+}
+
+try {
+  await postPendingItemUpdates(db);
+} catch (err) {
+  console.error("items: announcement failed", err);
 }
 
 startRevokeExpiredSubscriptionsCron();

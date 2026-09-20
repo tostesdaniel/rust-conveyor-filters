@@ -3,9 +3,16 @@ import { and, eq, inArray, sql } from "drizzle-orm";
 import type { NodePgQueryResultHKT } from "drizzle-orm/node-postgres";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 
+import { describeChanges, hasVisibleChanges } from "./item-changes";
 import bundledSnapshot from "./item-snapshot.json";
 import type * as schema from "./schema";
-import { filterItems, items, type Item, type NewItem } from "./schema";
+import {
+  filterItems,
+  itemAnnouncements,
+  items,
+  type Item,
+  type NewItem,
+} from "./schema";
 
 type Db = PgDatabase<NodePgQueryResultHKT, typeof schema>;
 
@@ -128,7 +135,12 @@ async function readPlan(db: Db, snapshot: SnapshotItem[]) {
           .from(filterItems)
           .innerJoin(items, eq(items.id, filterItems.itemId))
           .where(inArray(items.itemId, sources));
-  return planItemSync(snapshot, rows, new Set(referenced.map((r) => r.itemId)));
+  const plan = planItemSync(
+    snapshot,
+    rows,
+    new Set(referenced.map((r) => r.itemId)),
+  );
+  return { plan, rows };
 }
 
 async function applyPlan(tx: Db, plan: ItemSyncPlan) {
@@ -159,7 +171,9 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
 
   let repointed = 0;
   let dropped = 0;
-  if (plan.repoints.length === 0) return { repointed, dropped };
+  if (plan.repoints.length === 0) {
+    return { repointed, dropped, filtersChanged: 0 };
+  }
 
   // Targets can be rows the upsert above just created.
   const ids = await tx
@@ -172,6 +186,18 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
       ),
     );
   const idOf = new Map(ids.map((r) => [r.itemId, r.id]));
+
+  // Counted before the loop moves or drops anything. A filter holding two
+  // colours of the same light is one filter the player sees change.
+  const touched = await tx
+    .selectDistinct({ filterId: filterItems.filterId })
+    .from(filterItems)
+    .where(
+      inArray(
+        filterItems.itemId,
+        plan.repoints.map((p) => idOf.get(p.from)!),
+      ),
+    );
 
   // One pair at a time: two colours of the same light in one filter both land
   // on the plain light, and the second has to see the first's row to drop.
@@ -200,7 +226,7 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
     repointed += moved.rowCount ?? 0;
   }
 
-  return { repointed, dropped };
+  return { repointed, dropped, filtersChanged: touched.length };
 }
 
 /**
@@ -213,15 +239,32 @@ export async function syncItemSnapshot(
   snapshot: ItemSnapshot = bundledSnapshot as ItemSnapshot,
 ): Promise<ItemSyncResult | null> {
   // Unchanged boots stop here, without a transaction or the lock.
-  if (isEmpty(await readPlan(db, snapshot.items))) return null;
+  if (isEmpty((await readPlan(db, snapshot.items)).plan)) return null;
 
   return db.transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(${SYNC_LOCK})`);
     // Another replica may have applied it while this one waited.
-    const plan = await readPlan(tx, snapshot.items);
+    const { plan, rows } = await readPlan(tx, snapshot.items);
     if (isEmpty(plan)) return null;
 
-    const { repointed, dropped } = await applyPlan(tx, plan);
+    const { repointed, dropped, filtersChanged } = await applyPlan(tx, plan);
+
+    // Queued in the sync's own transaction, so only the replica that applied
+    // the build queues the post, and a rolled back sync announces nothing.
+    const changes = describeChanges(
+      snapshot.gameBuild.manifestId,
+      plan,
+      rows,
+      snapshot.items,
+      filtersChanged,
+    );
+    if (hasVisibleChanges(changes)) {
+      await tx
+        .insert(itemAnnouncements)
+        .values({ manifestId: changes.manifestId, changes })
+        .onConflictDoNothing();
+    }
+
     return {
       manifestId: snapshot.gameBuild.manifestId,
       inserted: plan.inserts.length,

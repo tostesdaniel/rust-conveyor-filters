@@ -9,7 +9,8 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "tailwindCSS.classFunctions": ["cn"],
+  "tailwindCSS.classAttributes": ["class", "className", "[a-zA-Z]+ClassName"],
+  "tailwindCSS.classFunctions": ["cn", "cva", "clsx", "twMerge"],
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.preferences.preferTypeOnlyAutoImports": false,

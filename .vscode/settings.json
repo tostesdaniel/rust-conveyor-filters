@@ -10,9 +10,9 @@
     "*.css": "tailwindcss"
   },
   "tailwindCSS.classFunctions": ["cn"],
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.preferTypeOnlyAutoImports": false,
   "workbench.editor.customLabels.patterns": {
     "**/{layout,page}.tsx": "${dirname}/${filename}"
   },

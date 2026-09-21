@@ -210,11 +210,8 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
               if (!showCategory) return null;
 
               const shown = isCategoryMatch
-                ? categorizedItems[category.name].map((item) => ({
-                    item,
-                    viaDescription: false,
-                  }))
-                : matches;
+                ? categorizedItems[category.name]
+                : matches.map(({ item }) => item);
 
               return (
                 <CommandGroup key={category.id} heading={categoryName}>
@@ -235,7 +232,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                     </CommandItem>
                   )}
 
-                  {shown.map(({ item, viaDescription }) => (
+                  {shown.map((item) => (
                     <CommandItem
                       key={item.id}
                       className='flex items-center gap-x-2'
@@ -254,15 +251,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                           className='rounded-sm object-contain'
                         />
                       </div>
-                      <div className='min-w-0 flex-1'>
-                        <p className='truncate'>{item.name}</p>
-                        {/* Otherwise nothing on the row says why it matched. */}
-                        {viaDescription && (
-                          <p className='truncate text-xs text-muted-foreground'>
-                            {item.description}
-                          </p>
-                        )}
-                      </div>
+                      <p className='min-w-0 flex-1 truncate'>{item.name}</p>
                     </CommandItem>
                   ))}
                 </CommandGroup>

@@ -109,7 +109,7 @@ export function Cta() {
         <svg
           viewBox='0 0 1024 1024'
           aria-hidden='true'
-          className='absolute top-1/2 left-1/2 -z-10 size-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]'
+          className='absolute top-1/2 left-1/2 -z-10 size-[64rem] -translate-x-1/2 mask-[radial-gradient(closest-side,white,transparent)]'
         >
           <circle
             r={512}

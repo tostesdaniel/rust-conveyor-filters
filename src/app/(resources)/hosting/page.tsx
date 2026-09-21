@@ -44,18 +44,18 @@ export default function HostingPage() {
       <section className='relative full-bleed -mt-6 lg:-mt-8'>
         <div
           aria-hidden='true'
-          className='pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:linear-gradient(to_bottom,black_45%,transparent)]'
+          className='pointer-events-none absolute inset-0 -z-10 overflow-hidden mask-[linear-gradient(to_bottom,black_45%,transparent)]'
         >
-          <div className='absolute top-0 right-[-12rem] transform-gpu blur-3xl'>
+          <div className='absolute top-0 -right-48 transform-gpu blur-3xl'>
             <div
               style={{ clipPath: GRADIENT_CLIP }}
-              className='aspect-1108/632 w-[60rem] bg-linear-to-r from-[#4cc9f0] to-[#4361ee] opacity-20 lg:w-[80rem]'
+              className='aspect-1108/632 w-240 bg-linear-to-r from-[#4cc9f0] to-[#4361ee] opacity-20 lg:w-7xl'
             />
           </div>
-          <div className='absolute top-0 left-[-12rem] hidden transform-gpu blur-3xl sm:block'>
+          <div className='absolute top-0 -left-48 hidden transform-gpu blur-3xl sm:block'>
             <div
               style={{ clipPath: GRADIENT_CLIP }}
-              className='aspect-1108/632 w-[60rem] -scale-x-100 bg-linear-to-r from-[#4cc9f0] to-[#4361ee] opacity-20 lg:w-[80rem]'
+              className='aspect-1108/632 w-240 -scale-x-100 bg-linear-to-r from-[#4cc9f0] to-[#4361ee] opacity-20 lg:w-7xl'
             />
           </div>
         </div>
@@ -293,7 +293,7 @@ export default function HostingPage() {
           />
           <div
             aria-hidden='true'
-            className='pointer-events-none absolute -top-32 left-1/2 -z-10 h-72 w-[44rem] max-w-full -translate-x-1/2 rounded-full bg-[#4361ee]/25 blur-3xl'
+            className='pointer-events-none absolute -top-32 left-1/2 -z-10 h-72 w-176 max-w-full -translate-x-1/2 rounded-full bg-[#4361ee]/25 blur-3xl'
           />
           <div
             aria-hidden='true'
@@ -302,7 +302,7 @@ export default function HostingPage() {
                 "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
               backgroundSize: "44px 44px",
             }}
-            className='absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_60%_55%_at_50%_38%,black,transparent)] opacity-40'
+            className='absolute inset-0 -z-10 mask-[radial-gradient(ellipse_60%_55%_at_50%_38%,black,transparent)] opacity-40'
           />
 
           <div className='mx-auto flex max-w-2xl flex-col items-center'>

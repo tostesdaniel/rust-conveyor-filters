@@ -69,10 +69,7 @@ function BannerDismiss({
       <button
         ref={ref}
         type='button'
-        className={cn(
-          "-m-3 p-3 focus-visible:outline-offset-[-4px]",
-          className,
-        )}
+        className={cn("-m-3 p-3 focus-visible:-outline-offset-4", className)}
         {...props}
       >
         <span className='sr-only'>Dismiss</span>

@@ -79,7 +79,7 @@ function TestimonialCard({
           </div>
         </figcaption>
         <blockquote>
-          <h4 className='mt-6 -mb-6 bg-gradient-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-center text-3xl font-semibold tracking-tight text-balance text-transparent sm:text-4xl'>
+          <h4 className='mt-6 -mb-6 bg-linear-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-center text-3xl font-semibold tracking-tight text-balance text-transparent sm:text-4xl'>
             {testimonial.title}
           </h4>
           <p className='mt-3 p-6 text-lg font-semibold tracking-tight whitespace-pre-line sm:p-12 sm:text-xl/8'>

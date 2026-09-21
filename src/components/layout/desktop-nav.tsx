@@ -24,7 +24,7 @@ export function DesktopNav({
           className={cn(
             "rounded-none text-primary/70 hover:no-underline",
             "border-b-2 border-transparent hover:border-primary/80 hover:text-primary/90",
-            pathname === item.href && "!border-blue-500 !text-primary",
+            pathname === item.href && "border-blue-500! text-primary!",
           )}
         >
           <Link href={item.href}>{item.name}</Link>

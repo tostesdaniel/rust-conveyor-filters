@@ -53,7 +53,7 @@ export function ConveyorCard() {
         />
       </CardContent>
       <CardFooter className='flex-col gap-x-4 gap-y-3 min-[550px]:flex-row sm:justify-end'>
-        <div className='order-last flex-1 self-start min-[550px]:order-none min-[550px]:self-auto sm:flex-none'>
+        <div className='order-last flex-1 self-start min-[550px]:order-0 min-[550px]:self-auto sm:flex-none'>
           <FormField
             control={control}
             name='isPublic'

@@ -286,9 +286,7 @@ function Item({
           className='rounded-sm object-contain'
         />
       </div>
-      <span
-        className={cn(truncate && "line-clamp-1 text-sm/7 overflow-ellipsis")}
-      >
+      <span className={cn(truncate && "line-clamp-1 text-sm/7 text-ellipsis")}>
         {item.name}
       </span>
     </div>

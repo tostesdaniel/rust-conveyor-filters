@@ -33,16 +33,18 @@ export function ShareButton({ filterId }: { filterId: number }) {
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          type='button'
-          variant='ghost'
-          size='icon'
-          className='hover:bg-transparent hover:text-muted-foreground'
-          onClick={handleShare}
-        >
-          <Share />
-        </Button>
+      <TooltipTrigger
+        render={
+          <Button
+            type='button'
+            variant='ghost'
+            size='icon'
+            className='hover:bg-transparent hover:text-muted-foreground'
+            onClick={handleShare}
+          />
+        }
+      >
+        <Share />
       </TooltipTrigger>
       <TooltipContent>Share filter</TooltipContent>
     </Tooltip>

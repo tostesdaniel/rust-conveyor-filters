@@ -9,6 +9,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 
 import "./globals.css";
@@ -119,16 +120,20 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <NuqsAdapter>
-                <div className='flex min-h-svh flex-col'>{children}</div>
-              </NuqsAdapter>
-              {!isAdFree && (
-                <>
-                  <SessionTick />
-                  <BannerWrapper />
-                </>
-              )}
-              <Toaster richColors />
+              <TooltipProvider>
+                <NuqsAdapter>
+                  <div className='isolate flex min-h-svh flex-col'>
+                    {children}
+                  </div>
+                </NuqsAdapter>
+                {!isAdFree && (
+                  <>
+                    <SessionTick />
+                    <BannerWrapper />
+                  </>
+                )}
+                <Toaster richColors />
+              </TooltipProvider>
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </TRPCReactProvider>

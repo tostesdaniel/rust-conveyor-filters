@@ -1,6 +1,6 @@
 import * as React from "react";
+import { useRender } from "@base-ui/react/use-render";
 import { cva, VariantProps } from "class-variance-authority";
-import { Slot as SlotPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 
@@ -61,18 +61,25 @@ function Typography({
   as,
   asChild,
   ref,
+  children,
   ...props
 }: TypographyProps) {
-  const Comp = asChild
-    ? SlotPrimitive.Slot
-    : (as ?? (variant ? variantElementMap[variant] : undefined) ?? "div");
-  return (
-    <Comp
-      className={cn(typographyVariants({ variant, className }))}
-      ref={ref}
-      {...props}
-    />
-  );
+  const tag = (as ??
+    (variant ? variantElementMap[variant] : undefined) ??
+    "div") as keyof React.JSX.IntrinsicElements;
+
+  // asChild means the child element IS the rendered tag, so it must not also
+  // be passed through as children.
+  return useRender({
+    render: asChild ? (children as React.ReactElement) : undefined,
+    defaultTagName: tag,
+    ref,
+    props: {
+      className: cn(typographyVariants({ variant, className })),
+      ...(asChild ? {} : { children }),
+      ...props,
+    },
+  });
 }
 
 export { Typography, typographyVariants };

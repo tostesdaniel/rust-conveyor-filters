@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Server } from "lucide-react";
 
 import { pineConfig } from "@/config/pine";
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar-donate-card";
+import { buttonVariants } from "@/components/ui/button";
 import { rollPineBucket } from "@/components/features/filters/sidebar/pine-bucket";
+import { SidebarDonateCard } from "@/components/features/filters/sidebar/sidebar-donate-card";
 
 /**
  * One sidebar slot, seen on every `/filters` visit, that surfaces the Pine
@@ -66,7 +66,7 @@ export function SidebarPromoCard({ className }: { className?: string }) {
   return (
     <div
       key={slot}
-      className={cn(mounted.current && "animate-in fade-in-0 duration-150")}
+      className={cn(mounted.current && "duration-150 animate-in fade-in-0")}
     >
       {slot === "donate" ? (
         <SidebarDonateCard className={className} />
@@ -93,7 +93,7 @@ function SidebarPineCard({
         className,
       )}
     >
-      <span className='absolute right-2 top-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white'>
+      <span className='absolute top-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white'>
         {pineConfig.copy.sponsoredLabel}
       </span>
       <div className='flex items-center gap-2 pr-16 font-semibold text-foreground'>
@@ -101,20 +101,18 @@ function SidebarPineCard({
         <span>{heading}</span>
       </div>
       <p className='mt-1 text-xs leading-snug text-muted-foreground'>{pitch}</p>
-      <Button
-        asChild
-        size='sm'
-        className='mt-2 h-8 w-full gap-1.5 text-xs font-medium'
+      <Link
+        href='/hosting'
+        data-umami-event='pine-click'
+        data-umami-event-placement='sidebar'
+        data-umami-event-audience={audience}
+        className={cn(
+          buttonVariants({ size: "sm" }),
+          "mt-2 h-8 w-full gap-1.5 text-xs font-medium",
+        )}
       >
-        <Link
-          href='/hosting'
-          data-umami-event='pine-click'
-          data-umami-event-placement='sidebar'
-          data-umami-event-audience={audience}
-        >
-          {ctaLabel}
-        </Link>
-      </Button>
+        {ctaLabel}
+      </Link>
     </div>
   );
 }

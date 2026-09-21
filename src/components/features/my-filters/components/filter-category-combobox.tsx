@@ -56,23 +56,25 @@ export function FilterCategoryCombobox({ field }: FilterCategoryComboboxProps) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <FormControl>
-          <Button
-            variant='outline'
-            role='combobox'
-            aria-expanded={open}
-            aria-controls={listboxId}
-            className={cn(
-              "w-[200px] justify-between",
-              !field.value && "text-muted-foreground",
-            )}
-          >
-            {getSelectedName() ?? "Select a category"}
-            <ChevronsUpDownIcon className='opacity-50' />
-          </Button>
-        </FormControl>
-      </PopoverTrigger>
+      <FormControl>
+        <PopoverTrigger
+          render={
+            <Button
+              variant='outline'
+              role='combobox'
+              aria-expanded={open}
+              aria-controls={listboxId}
+              className={cn(
+                "w-[200px] justify-between",
+                !field.value && "text-muted-foreground",
+              )}
+            />
+          }
+        >
+          {getSelectedName() ?? "Select a category"}
+          <ChevronsUpDownIcon className='opacity-50' />
+        </PopoverTrigger>
+      </FormControl>
       <PopoverContent id={listboxId} className='w-[200px] p-0'>
         <Command>
           <CommandInput placeholder='Search category...' />

@@ -30,7 +30,7 @@ export function FilterCardDescription({
   return (
     <>
       {isDescriptionLong ? (
-        <Accordion type='single' collapsible>
+        <Accordion multiple={false}>
           <AccordionItem
             value='description'
             className='border-none shadow-[0_1px_0_0_rgba(0,0,0,1)] shadow-muted'

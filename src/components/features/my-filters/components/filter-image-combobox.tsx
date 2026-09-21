@@ -65,25 +65,27 @@ const FilterImageCombobox = React.memo(
         <div className='flex items-center gap-x-3'>
           <FilterImage imagePath={selectedImage} version={selectedVersion} />
           <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant='outline'
-                  role='combobox'
-                  aria-expanded={open}
-                  aria-controls={listboxId}
-                  className={cn(
-                    "w-[300px] justify-between",
-                    !field.value && "text-muted-foreground",
-                  )}
-                >
-                  {field.value
-                    ? items.find((item) => item.imagePath === field.value)?.name
-                    : "Select item"}
-                  <ChevronsUpDown className='opacity-50' />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
+            <FormControl>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant='outline'
+                    role='combobox'
+                    aria-expanded={open}
+                    aria-controls={listboxId}
+                    className={cn(
+                      "w-[300px] justify-between",
+                      !field.value && "text-muted-foreground",
+                    )}
+                  />
+                }
+              >
+                {field.value
+                  ? items.find((item) => item.imagePath === field.value)?.name
+                  : "Select item"}
+                <ChevronsUpDown className='opacity-50' />
+              </PopoverTrigger>
+            </FormControl>
             <PopoverContent id={listboxId} className='w-fit p-0' align='start'>
               <ItemList
                 items={items}
@@ -101,22 +103,24 @@ const FilterImageCombobox = React.memo(
       <Drawer open={open} onOpenChange={setOpen}>
         <div className='flex items-center gap-x-3'>
           <FilterImage imagePath={selectedImage} version={selectedVersion} />
-          <DrawerTrigger asChild>
-            <Button
-              variant='outline'
-              role='combobox'
-              aria-expanded={open}
-              aria-controls={listboxId}
-              className={cn(
-                "w-[300px] justify-between",
-                !field.value && "text-muted-foreground",
-              )}
-            >
-              {field.value
-                ? items.find((item) => item.imagePath === field.value)?.name
-                : "Select item"}
-              <ChevronsUpDown className='opacity-50' />
-            </Button>
+          <DrawerTrigger
+            render={
+              <Button
+                variant='outline'
+                role='combobox'
+                aria-expanded={open}
+                aria-controls={listboxId}
+                className={cn(
+                  "w-[300px] justify-between",
+                  !field.value && "text-muted-foreground",
+                )}
+              />
+            }
+          >
+            {field.value
+              ? items.find((item) => item.imagePath === field.value)?.name
+              : "Select item"}
+            <ChevronsUpDown className='opacity-50' />
           </DrawerTrigger>
         </div>
         <DrawerContent id={listboxId}>

@@ -6,7 +6,7 @@ import * as motion from "motion/react-client";
 import { testimonials, type Testimonial } from "@/config/testimonials";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   HeaderSectionContainer,
   HeaderSectionContent,
@@ -105,21 +105,18 @@ function LeaveYourReviewCard() {
           </p>
           <p className='mt-6 text-base/7 text-balance text-primary/80'>
             Leave a review on our{" "}
-            <Button
-              asChild
-              variant='secondary'
-              size='sm'
-              className='inline-flex h-6 bg-[#d4d7f9] text-primary hover:bg-[#5865f2] hover:text-secondary has-[>svg]:px-1.5 dark:bg-[#282b50] dark:text-secondary-foreground dark:hover:bg-[#5865f2]'
+            <a
+              href='https://discord.com/channels/1272807564693995520/1337643680164610098'
+              target='_blank'
+              rel='noopener noreferrer'
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "sm" }),
+                "inline-flex h-6 bg-[#d4d7f9] text-primary hover:bg-[#5865f2] hover:text-secondary has-[>svg]:px-1.5 dark:bg-[#282b50] dark:text-secondary-foreground dark:hover:bg-[#5865f2]",
+              )}
             >
-              <a
-                href='https://discord.com/channels/1272807564693995520/1337643680164610098'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                #🎓│testimonials
-                <ExternalLinkIcon className='size-4' aria-hidden />
-              </a>
-            </Button>{" "}
+              #🎓│testimonials
+              <ExternalLinkIcon className='size-4' aria-hidden />
+            </a>{" "}
             Discord channel and get featured here!
           </p>
         </div>

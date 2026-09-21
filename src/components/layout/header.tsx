@@ -71,13 +71,13 @@ export function Header() {
                 <Button
                   variant='default'
                   className='hidden min-[800px]:block'
-                  asChild
-                >
-                  <SignInButton
-                    fallbackRedirectUrl='/my-filters'
-                    signUpFallbackRedirectUrl='/my-filters'
-                  />
-                </Button>
+                  render={
+                    <SignInButton
+                      fallbackRedirectUrl='/my-filters'
+                      signUpFallbackRedirectUrl='/my-filters'
+                    />
+                  }
+                />
               </Show>
               <Show when='signed-in'>
                 <UserMenu />

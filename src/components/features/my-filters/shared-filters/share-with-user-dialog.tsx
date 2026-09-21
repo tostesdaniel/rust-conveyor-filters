@@ -249,31 +249,33 @@ export function ShareWithUserDialog({
               render={({ field }) => (
                 <FormItem className='flex flex-col'>
                   <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant='outline'
-                          role='combobox'
-                          aria-expanded={openCombobox}
-                          aria-controls={tokenListboxId}
-                          className={cn(
-                            "w-[425px] justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                          disabled={isPending}
-                        >
-                          {field.value ? (
-                            <div className='flex items-center'>
-                              <KeyRound className='mr-2 size-4 opacity-50' />
-                              {field.value}
-                            </div>
-                          ) : (
-                            "Enter or select a token..."
-                          )}
-                          <ChevronsUpDown />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
+                    <FormControl>
+                      <PopoverTrigger
+                        render={
+                          <Button
+                            variant='outline'
+                            role='combobox'
+                            aria-expanded={openCombobox}
+                            aria-controls={tokenListboxId}
+                            className={cn(
+                              "w-[425px] justify-between",
+                              !field.value && "text-muted-foreground",
+                            )}
+                            disabled={isPending}
+                          />
+                        }
+                      >
+                        {field.value ? (
+                          <div className='flex items-center'>
+                            <KeyRound className='mr-2 size-4 opacity-50' />
+                            {field.value}
+                          </div>
+                        ) : (
+                          "Enter or select a token..."
+                        )}
+                        <ChevronsUpDown />
+                      </PopoverTrigger>
+                    </FormControl>
 
                     <PopoverContent
                       id={tokenListboxId}

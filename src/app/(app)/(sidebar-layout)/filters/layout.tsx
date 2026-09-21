@@ -28,7 +28,7 @@ export default async function FiltersLayout({
           <SidebarProvider className='max-w-[1400px] flex-1 px-4 min-[1600px]:max-w-screen-2xl sm:px-6 lg:px-8'>
             <FiltersSidebar />
             <SidebarInset>
-              <div className='sticky top-(--new-feature-banner-height,0px) z-10 shrink-0 bg-background'>
+              <div className='sticky top-(--new-feature-banner-height,0px) z-10 -mx-px mb-px shrink-0 bg-background px-px'>
                 <FiltersPageHeader />
                 <Suspense>
                   <FilterSortTabs />

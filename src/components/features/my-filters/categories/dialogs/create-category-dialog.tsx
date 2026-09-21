@@ -12,7 +12,7 @@ import {
 import { CreateCategoryForm } from "@/components/features/my-filters/categories/forms/create-category-form";
 
 interface CreateCategoryDialogProps {
-  children: React.ReactNode;
+  children: React.ReactElement;
   parentId: number | null;
 }
 
@@ -24,7 +24,7 @@ export function CreateCategoryDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger render={children} />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

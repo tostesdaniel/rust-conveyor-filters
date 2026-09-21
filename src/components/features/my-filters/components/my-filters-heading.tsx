@@ -6,7 +6,7 @@ import { PlusIcon } from "lucide-react";
 
 import { useGetUserCategories } from "@/hooks/use-get-user-categories";
 import { useGetUserFilters } from "@/hooks/use-get-user-filters";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Typography } from "@/components/shared/typography";
 
 export function MyFiltersHeading() {
@@ -23,18 +23,16 @@ export function MyFiltersHeading() {
         <Typography variant='h1'>My Filters</Typography>
       </div>
       <div className='mt-4 flex md:mt-0 md:ml-4'>
-        <Button
-          type='button'
-          asChild
+        <Link
+          href='/my-filters/new-filter'
           onClick={() => {
             trackEvent("new_filter_clicked");
           }}
+          className={buttonVariants()}
         >
-          <Link href='/my-filters/new-filter'>
-            <PlusIcon aria-hidden='true' />
-            New Filter
-          </Link>
-        </Button>
+          <PlusIcon aria-hidden='true' />
+          New Filter
+        </Link>
       </div>
     </div>
   );

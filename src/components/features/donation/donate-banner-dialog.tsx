@@ -5,7 +5,8 @@ import Link from "next/link";
 import { HeartHandshake } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -50,9 +51,15 @@ export function DonateBannerDialog({
             <span className='font-semibold'>
               Browse ad-free for $3/mo and support the project
             </span>
-            <Button asChild size='sm' variant='link' className='ml-2'>
-              <Link href='/donate'>Subscribe</Link>
-            </Button>
+            <Link
+              href='/donate'
+              className={cn(
+                buttonVariants({ variant: "link", size: "sm" }),
+                "ml-2",
+              )}
+            >
+              Subscribe
+            </Link>
           </BannerDescription>
           <BannerDismiss onClick={onDismiss} />
         </Banner>
@@ -77,17 +84,17 @@ export function DonateBannerDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type='button' variant='secondary' onClick={onDismiss}>
-              Maybe later
-            </Button>
+          <DialogClose
+            render={
+              <Button type='button' variant='secondary' onClick={onDismiss} />
+            }
+          >
+            Maybe later
           </DialogClose>
-          <Button asChild onClick={onDismiss}>
-            <Link href='/donate'>
-              <HeartHandshake />
-              Subscribe for $3/mo
-            </Link>
-          </Button>
+          <Link href='/donate' onClick={onDismiss} className={buttonVariants()}>
+            <HeartHandshake />
+            Subscribe for $3/mo
+          </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>

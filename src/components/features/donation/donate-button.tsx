@@ -3,12 +3,16 @@
 import { useState, type ComponentProps } from "react";
 import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
+import { type VariantProps } from "class-variance-authority";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { DonateAlert } from "@/components/features/donation/donate-alert";
 
-interface DonateButtonProps extends ComponentProps<typeof Button> {
+interface DonateButtonProps
+  extends ComponentProps<"a">,
+    VariantProps<typeof buttonVariants> {
   icon?: React.ReactNode;
   children: React.ReactNode;
   href: string;
@@ -26,6 +30,9 @@ export function DonateButton({
   href,
   children,
   platform,
+  className,
+  variant,
+  size,
   ...props
 }: DonateButtonProps) {
   const { user } = useUser();
@@ -75,12 +82,15 @@ export function DonateButton({
 
   return (
     <>
-      <Button asChild {...props}>
-        <a href={href} onClick={handleClick}>
-          {icon && <span className='[&_svg]:size-5'>{icon}</span>}
-          {children}
-        </a>
-      </Button>
+      <a
+        href={href}
+        onClick={handleClick}
+        className={cn(buttonVariants({ variant, size }), className)}
+        {...props}
+      >
+        {icon && <span className='[&_svg]:size-5'>{icon}</span>}
+        {children}
+      </a>
 
       <DonateAlert
         isOpen={showAlert}

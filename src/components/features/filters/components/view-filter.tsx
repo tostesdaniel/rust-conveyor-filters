@@ -69,9 +69,9 @@ function TriggerButton({
     </ButtonWithIcon>
   ) : variant === "dropdown" ? (
     <DropdownMenuItem
-      onSelect={(e) => {
-        e.preventDefault();
-      }}
+      nativeButton
+      render={<button type='button' className='w-full' />}
+      closeOnClick={false}
       {...props}
     >
       <EyeIcon />
@@ -112,9 +112,7 @@ export default function ViewFilter({
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogTrigger asChild>
-          <TriggerButton variant={variant} />
-        </DialogTrigger>
+        <DialogTrigger render={<TriggerButton variant={variant} />} />
         <DialogContent className='sm:max-w-2xl'>
           <DialogHeader>
             <DialogTitle>{filter.name}</DialogTitle>
@@ -122,9 +120,9 @@ export default function ViewFilter({
           </DialogHeader>
           <ScrollArea
             className='h-[360px]'
-            viewportClassName='snap-y snap-mandatory'
+            viewportClassName='snap-y snap-mandatory scroll-pt-0.5'
           >
-            <div className='px-4'>
+            <div className='px-4 py-0.5'>
               <ul className='grid grid-cols-5 gap-x-6 gap-y-8'>
                 {filter.filterItems.map((filterItem, i) => (
                   <FilterItem key={i} filterItem={filterItem} />
@@ -144,19 +142,17 @@ export default function ViewFilter({
 
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
-      <DrawerTrigger asChild>
-        <TriggerButton variant={variant} />
-      </DrawerTrigger>
+      <DrawerTrigger render={<TriggerButton variant={variant} />} />
       <DrawerContent>
-        <DrawerHeader className='text-left'>
+        <DrawerHeader className='pb-4 text-left'>
           <DrawerTitle>{filter.name}</DrawerTitle>
           <DrawerDescription>{filter.description}</DrawerDescription>
         </DrawerHeader>
         <ScrollArea
           className='h-[360px]'
-          viewportClassName='snap-y snap-mandatory'
+          viewportClassName='snap-y snap-mandatory scroll-pt-0.5'
         >
-          <div className='px-4'>
+          <div className='px-4 py-0.5'>
             <ul className='grid grid-cols-3 gap-x-4 gap-y-6 min-[414px]:grid-cols-4 min-[520px]:grid-cols-5'>
               {filter.filterItems.map((filterItem, i) => (
                 <FilterItem key={i} filterItem={filterItem} />
@@ -164,14 +160,12 @@ export default function ViewFilter({
             </ul>
           </div>
         </ScrollArea>
-        <DrawerFooter>
+        <DrawerFooter className='pt-4'>
           {remixFilterId !== undefined && (
             <RemixButton filterId={remixFilterId} className='w-full' />
           )}
-          <DrawerClose asChild>
-            <Button type='button' variant='secondary'>
-              Close
-            </Button>
+          <DrawerClose render={<Button type='button' variant='secondary' />}>
+            Close
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -205,10 +199,10 @@ const FilterItem = ({ filterItem }: { filterItem: FilterItemDTO }) => {
       </Card>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <p className='mt-2 truncate text-sm font-medium'>
-              {item?.name || category?.name}
-            </p>
+          <TooltipTrigger
+            render={<p className='mt-2 truncate text-sm font-medium' />}
+          >
+            {item?.name || category?.name}
           </TooltipTrigger>
           <TooltipContent>
             <p className='text-sm font-medium'>

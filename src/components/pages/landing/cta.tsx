@@ -3,7 +3,8 @@ import { SignUpButton } from "@clerk/nextjs";
 import { ArrowRightIcon } from "lucide-react";
 import * as motion from "motion/react-client";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   HeaderSectionContainer,
   HeaderSectionContent,
@@ -79,9 +80,7 @@ export function Cta() {
                 },
               }}
             >
-              <Button asChild>
-                <SignUpButton>Get Started</SignUpButton>
-              </Button>
+              <Button render={<SignUpButton />}>Get Started</Button>
             </motion.div>
             <motion.div
               variants={{
@@ -97,12 +96,13 @@ export function Cta() {
                 },
               }}
             >
-              <Button asChild variant='link' className='group'>
-                <Link href='/about'>
-                  Learn More{" "}
-                  <ArrowRightIcon className='transition-transform group-hover:translate-x-0.5' />
-                </Link>
-              </Button>
+              <Link
+                href='/about'
+                className={cn(buttonVariants({ variant: "link" }), "group")}
+              >
+                Learn More{" "}
+                <ArrowRightIcon className='transition-transform group-hover:translate-x-0.5' />
+              </Link>
             </motion.div>
           </motion.div>
         </HeaderSectionContainer>

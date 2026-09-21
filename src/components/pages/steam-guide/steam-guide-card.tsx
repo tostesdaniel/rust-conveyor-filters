@@ -5,7 +5,7 @@ import { ArrowRightIcon, BookHeartIcon, EyeIcon, StarIcon } from "lucide-react";
 import millify from "millify";
 
 import { steamConfig } from "@/config/constants";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -24,9 +24,17 @@ export async function SteamGuideCard() {
     guide.preview_url ||
     "https://images.steamusercontent.com/ugc/2407823090587833568/565887E3C1B64A41F9CD1F1EE8ADBE3C241823FE/?imw=128&imh=128&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true";
 
+  const stars = [...Array(5)].map((_, i) => (
+    <StarIcon
+      key={i}
+      className='size-4 text-green-500'
+      fill={i < 4 ? "currentColor" : "none"}
+    />
+  ));
+
   return (
     <Card className='mx-auto mt-6 max-w-3xl rounded-none sm:rounded-lg'>
-      <CardHeader className='grid grid-cols-2 sm:flex sm:flex-row'>
+      <CardHeader className='grid grid-cols-2 sm:flex sm:flex-row sm:gap-x-5'>
         <Image
           src={previewUrl}
           alt={guide.title}
@@ -34,21 +42,20 @@ export async function SteamGuideCard() {
           height={80}
           className='size-20 sm:max-w-20'
         />
-        <div className='self-start justify-self-end sm:order-3 sm:flex sm:flex-1 sm:flex-col sm:justify-between sm:self-auto'>
-          <div className='flex h-4 items-center gap-x-0.5'>
-            {[...Array(5)].map((_, i) => (
-              <StarIcon
-                key={i}
-                className='size-4 text-green-500'
-                fill={i < 4 ? "currentColor" : "none"}
-              />
-            ))}
-          </div>
-          <Separator className='hidden sm:block' />
+
+        <div className='flex h-4 items-center gap-x-0.5 self-start justify-self-end sm:hidden'>
+          {stars}
         </div>
-        <div className='col-span-2 sm:ml-4'>
-          <CardTitle>{guide.title}</CardTitle>
-          <CardDescription>Created by {user.personaname}</CardDescription>
+        <div className='col-span-2 sm:flex-1'>
+          <div className='sm:flex sm:items-start sm:justify-between sm:gap-x-5'>
+            <div>
+              <CardTitle>{guide.title}</CardTitle>
+              <CardDescription>Created by {user.personaname}</CardDescription>
+            </div>
+            <div className='hidden h-4 items-center gap-x-0.5 sm:flex'>
+              {stars}
+            </div>
+          </div>
           <Separator className='mt-1.5' />
         </div>
       </CardHeader>
@@ -71,16 +78,15 @@ export async function SteamGuideCard() {
           </div>
         </div>
         <div>
-          <Button asChild variant='link'>
-            <a
-              href={steamConfig.GUIDE_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Read more
-              <ArrowRightIcon className='-mb-1 size-3' />
-            </a>
-          </Button>
+          <a
+            href={steamConfig.GUIDE_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            className={buttonVariants({ variant: "link" })}
+          >
+            Read more
+            <ArrowRightIcon className='-mb-1 size-3' />
+          </a>
         </div>
       </CardFooter>
     </Card>

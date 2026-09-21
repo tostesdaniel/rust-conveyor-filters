@@ -144,11 +144,11 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
         if (open) setError(null);
       }}
     >
-      <PopoverTrigger asChild>
-        <Button type='button' variant='secondary' {...props}>
-          <Upload />
-          Import
-        </Button>
+      <PopoverTrigger
+        render={<Button type='button' variant='secondary' {...props} />}
+      >
+        <Upload />
+        Import
       </PopoverTrigger>
       <PopoverContent>
         <div className='grid gap-4'>

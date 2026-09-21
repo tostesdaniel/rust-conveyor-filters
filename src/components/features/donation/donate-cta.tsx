@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export function DonateCTA() {
   const isAdFree = useIsAdFree();
@@ -19,12 +19,10 @@ export function DonateCTA() {
           locked - just a cleaner experience.
         </p>
       </div>
-      <Button asChild variant='outline'>
-        <Link href='/donate'>
-          <Heart />
-          Subscribe
-        </Link>
-      </Button>
+      <Link href='/donate' className={buttonVariants({ variant: "outline" })}>
+        <Heart />
+        Subscribe
+      </Link>
     </div>
   );
 }

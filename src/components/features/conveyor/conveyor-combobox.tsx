@@ -4,7 +4,7 @@ import * as React from "react";
 import { categoryMapping } from "@/utils/category-mapping";
 import { searchItems } from "@/utils/item-search";
 import { ChevronsUpDown, Plus } from "lucide-react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { ConveyorFilterItem } from "@/types/filter";
@@ -66,8 +66,12 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
     return (
       <div className='flex items-center gap-x-3'>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
-          <PopoverContent id={listboxId} className='w-fit p-0' align='start'>
+          <PopoverTrigger render={TriggerButton} />
+          <PopoverContent
+            id={listboxId}
+            className='w-fit gap-0 p-0'
+            align='start'
+          >
             <ItemList onInsertItem={onInsertItem} />
           </PopoverContent>
         </Popover>
@@ -77,11 +81,9 @@ export function ConveyorCombobox({ onInsertItem }: ConveyorComboboxProps) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{TriggerButton}</DrawerTrigger>
+      <DrawerTrigger render={TriggerButton} />
       <DrawerContent id={listboxId}>
-        <div className='mt-4 border-t'>
-          <ItemList onInsertItem={onInsertItem} />
-        </div>
+        <ItemList onInsertItem={onInsertItem} />
       </DrawerContent>
     </Drawer>
   );
@@ -94,9 +96,23 @@ interface ItemListProps {
 const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   const { data: items } = useGetItems();
   const { data: categories, isSuccess: categoriesSuccess } = useGetCategories();
-  const { getValues, trigger } = useFormContext();
+  const { control, getValues, trigger } = useFormContext();
   const [search, setSearch] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const conveyorItems = useWatch({ control, name: "items" }) as
+    | NewConveyorItem[]
+    | undefined;
+
+  const { insertedItemIds, insertedCategoryIds } = React.useMemo(() => {
+    const itemIds = new Set<number>();
+    const categoryIds = new Set<number>();
+    for (const entry of conveyorItems ?? []) {
+      if ("itemId" in entry) itemIds.add(entry.itemId);
+      else categoryIds.add(entry.categoryId);
+    }
+    return { insertedItemIds: itemIds, insertedCategoryIds: categoryIds };
+  }, [conveyorItems]);
 
   React.useEffect(() => {
     if (search === "") {
@@ -218,17 +234,16 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                   {isCategoryMatch && (
                     <CommandItem
                       onSelect={() => insertItem(category)}
-                      className='mb-1'
+                      data-checked={insertedCategoryIds.has(category.id)}
+                      className='mb-1 gap-x-2 rounded-b-none border-b pb-2 font-semibold tracking-wide'
                     >
-                      <div className='-mb-2 flex w-full items-center gap-x-2 border-b pb-2 font-semibold tracking-wide'>
-                        <span className='size-6 shrink-0 rounded-sm border border-foreground p-px'>
-                          <CategoryIcon className='size-full' />
-                        </span>
-                        <p className='flex-1'>{category.name}</p>
-                        <span className='text-end text-xs text-muted-foreground'>
-                          CATEGORY
-                        </span>
-                      </div>
+                      <span className='size-6 shrink-0 rounded-sm border border-foreground p-px'>
+                        <CategoryIcon className='size-full' />
+                      </span>
+                      <p className='flex-1'>{category.name}</p>
+                      <span className='text-end text-xs text-muted-foreground'>
+                        CATEGORY
+                      </span>
                     </CommandItem>
                   )}
 
@@ -236,6 +251,7 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
                     <CommandItem
                       key={item.id}
                       className='flex items-center gap-x-2'
+                      data-checked={insertedItemIds.has(item.id)}
                       onSelect={() => insertItem(item)}
                     >
                       <div className='relative size-6'>

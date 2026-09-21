@@ -62,10 +62,11 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
           <AlertDialogCancel
             disabled={isPending}
             onClick={() => setOpen(false)}
+            variant='ghost'
           >
             Cancel
           </AlertDialogCancel>
-          <Button type='submit' disabled={isPending}>
+          <Button type='submit' disabled={isPending} variant='destructive'>
             {isPending ? "Deleting..." : "Delete"}
           </Button>
         </AlertDialogFooter>

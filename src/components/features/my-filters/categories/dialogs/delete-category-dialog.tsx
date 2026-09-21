@@ -56,11 +56,12 @@ export function DeleteCategoryDialog({
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogCancel variant='ghost'>Cancel</AlertDialogCancel>
         <AlertDialogAction
           onClick={() => {
             deleteCategoryMutate({ categoryId, isSubCategory });
           }}
+          variant='destructive'
         >
           Delete
         </AlertDialogAction>

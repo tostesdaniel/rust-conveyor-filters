@@ -28,7 +28,7 @@ export function SearchTipTooltip() {
   if (!isVisible) return null;
 
   return (
-    <Card className='relative w-full rounded-sm rounded-b-none border-blue-200 bg-blue-50 md:max-w-[320px] dark:border-blue-900 dark:bg-blue-950'>
+    <Card className='relative w-full rounded-sm rounded-b-none border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950'>
       <Button
         variant='ghost'
         size='icon'
@@ -37,7 +37,8 @@ export function SearchTipTooltip() {
       >
         <X />
       </Button>
-      <CardHeader className='p-4'>
+
+      <CardHeader className='p-4 md:max-w-[320px]'>
         <CardTitle className='text-sm font-medium'>
           Pro Tip: Category Search
         </CardTitle>

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { HeartHandshake, Sparkles } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -52,20 +53,21 @@ export function DonateUpgradeModal({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className='flex-col gap-2 sm:flex-col sm:space-x-0'>
-          <Button asChild className='w-full' onClick={onDismiss}>
-            <Link href='/donate?plan=yearly'>
-              <HeartHandshake />
-              Subscribe yearly ($30)
-            </Link>
-          </Button>
-          <Button
-            asChild
-            variant='secondary'
-            className='w-full'
+          <Link
+            href='/donate?plan=yearly'
             onClick={onDismiss}
+            className={cn(buttonVariants(), "w-full")}
           >
-            <Link href='/donate?plan=monthly'>Monthly ($3/mo)</Link>
-          </Button>
+            <HeartHandshake />
+            Subscribe yearly ($30)
+          </Link>
+          <Link
+            href='/donate?plan=monthly'
+            onClick={onDismiss}
+            className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
+          >
+            Monthly ($3/mo)
+          </Link>
           <div className='flex pt-1 text-sm'>
             <button
               type='button'

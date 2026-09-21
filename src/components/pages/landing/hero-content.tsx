@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Show, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { DonateCTA } from "@/components/features/donation/donate-cta";
 import { Typography } from "@/components/shared/typography";
 
@@ -87,21 +88,22 @@ export function HeroContent() {
         </p>
         <div className='mt-10 flex items-center gap-x-6'>
           <Show when='signed-in'>
-            <Button type='button' asChild>
-              <Link href='/my-filters'>Go to My Filters</Link>
-            </Button>
+            <Link href='/my-filters' className={buttonVariants()}>
+              Go to My Filters
+            </Link>
           </Show>
           <Show when='signed-out'>
-            <Button type='button' asChild>
-              <SignUpButton>Get Started Now</SignUpButton>
+            <Button type='button' render={<SignUpButton />}>
+              Get Started Now
             </Button>
           </Show>
-          <Button type='button' variant='link' className='group' asChild>
-            <Link href='/filters'>
-              Browse Filters
-              <ArrowRight className='transition-transform group-hover:translate-x-0.5' />
-            </Link>
-          </Button>
+          <Link
+            href='/filters'
+            className={cn(buttonVariants({ variant: "link" }), "group")}
+          >
+            Browse Filters
+            <ArrowRight className='transition-transform group-hover:translate-x-0.5' />
+          </Link>
         </div>
         <div className='mt-8'>
           <DonateCTA />

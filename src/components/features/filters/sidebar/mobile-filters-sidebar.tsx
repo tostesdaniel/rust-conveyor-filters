@@ -13,6 +13,7 @@ import { ClearFiltersButton } from "@/components/features/filters/sidebar/clear-
 import { ItemsSelection } from "@/components/features/filters/sidebar/items-selection";
 import { SearchBar } from "@/components/features/filters/sidebar/search-bar";
 import { SidebarPromoCard } from "@/components/features/filters/sidebar/sidebar-promo-card";
+import { TagSelection } from "@/components/features/filters/sidebar/tag-selection";
 
 export function MobileFiltersSidebar() {
   return (
@@ -25,6 +26,10 @@ export function MobileFiltersSidebar() {
                 <SearchBar />
               </Suspense>
             </SidebarMenuItem>
+
+            <Suspense fallback={<SidebarMenuSkeleton />}>
+              <TagSelection />
+            </Suspense>
 
             <Suspense fallback={<SidebarMenuSkeleton />}>
               <ItemsSelection />

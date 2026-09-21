@@ -13,10 +13,9 @@ import {
   MessageSquareIcon,
   type LucideIcon,
 } from "lucide-react";
-import { VisuallyHidden } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -56,26 +55,28 @@ export function MobileNav() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant='ghost'
-          className='ml-2 w-9 px-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden'
-        >
-          <Menu className='size-6' />
-          <span className='sr-only'>Toggle Menu</span>
-        </Button>
+      <SheetTrigger
+        render={
+          <Button
+            variant='ghost'
+            className='ml-2 w-9 px-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden'
+          />
+        }
+      >
+        <Menu className='size-6' />
+        <span className='sr-only'>Toggle Menu</span>
       </SheetTrigger>
       <SheetContent
         side='right'
         className='z-99999 grow gap-y-5 overflow-y-auto px-6 pb-4'
       >
-        <VisuallyHidden.Root>
+        <div className='sr-only'>
           <SheetTitle>Navigation Menu</SheetTitle>
           <SheetDescription>
             Navigate through the app sections and access filtering tools for
             your search.
           </SheetDescription>
-        </VisuallyHidden.Root>
+        </div>
         <div className='flex h-16 shrink-0 items-center'>
           <Image
             src='/logo.webp'
@@ -152,10 +153,16 @@ function MobileLink({
   };
 
   return (
-    <Button asChild variant='ghost' className={cn("justify-start", className)}>
-      <Link href={href} onClick={handleClick} {...props}>
-        {children}
-      </Link>
-    </Button>
+    <Link
+      href={href}
+      onClick={handleClick}
+      {...props}
+      className={cn(
+        buttonVariants({ variant: "ghost" }),
+        cn("justify-start", className),
+      )}
+    >
+      {children}
+    </Link>
   );
 }

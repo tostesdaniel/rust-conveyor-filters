@@ -19,11 +19,13 @@ interface ShareHelpDialogProps {
 export function ShareHelpDialog({ className }: ShareHelpDialogProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button type='button' variant='ghost' className={cn(className)}>
-          <HelpCircleIcon />
-          <span>How to Share Filters</span>
-        </Button>
+      <DialogTrigger
+        render={
+          <Button type='button' variant='ghost' className={cn(className)} />
+        }
+      >
+        <HelpCircleIcon />
+        <span>How to Share Filters</span>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

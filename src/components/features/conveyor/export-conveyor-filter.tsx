@@ -69,7 +69,7 @@ export function ExportConveyorFilter({
       Export
     </Button>
   ) : type === "dropdown" ? (
-    <DropdownMenuItem onSelect={handleCopy(exportText)} className={className}>
+    <DropdownMenuItem onClick={handleCopy(exportText)} className={className}>
       <Copy />
       Export
     </DropdownMenuItem>

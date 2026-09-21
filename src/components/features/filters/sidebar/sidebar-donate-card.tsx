@@ -5,7 +5,7 @@ import { HeartHandshake } from "lucide-react";
 
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 interface SidebarDonateCardProps {
   className?: string;
@@ -29,13 +29,15 @@ export function SidebarDonateCard({ className }: SidebarDonateCardProps) {
       <p className='mt-1 text-xs leading-snug text-muted-foreground'>
         $3/mo removes ads and helps keep the site running.
       </p>
-      <Button
-        asChild
-        size='sm'
-        className='mt-2 h-8 w-full gap-1.5 text-xs font-medium'
+      <Link
+        href='/donate'
+        className={cn(
+          buttonVariants({ size: "sm" }),
+          "mt-2 h-8 w-full gap-1.5 text-xs font-medium",
+        )}
       >
-        <Link href='/donate'>Subscribe</Link>
-      </Button>
+        Subscribe
+      </Link>
     </div>
   );
 }

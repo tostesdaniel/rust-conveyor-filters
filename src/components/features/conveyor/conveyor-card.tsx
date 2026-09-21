@@ -34,7 +34,7 @@ export function ConveyorCard() {
 
   return (
     <Card className='gap-3 divide-y py-3'>
-      <CardHeader className='relative pb-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-6'>
+      <CardHeader className='relative pb-3 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-x-6'>
         <div className='flex items-center gap-x-2 pr-10'>
           <BoxIcon className='size-5 shrink-0 text-muted-foreground' />
           <CardTitle className='shrink-0 text-xl'>Conveyor Filter</CardTitle>

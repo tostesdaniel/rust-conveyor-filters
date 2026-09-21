@@ -6,6 +6,7 @@ import { Button } from "../../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -24,14 +25,23 @@ export function SortFilterButton({
 }: SortFilterButtonProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button type='button' variant='ghost' size='icon' className='size-8'>
-          <ArrowDownUpIcon className='size-4' />
-          <span className='sr-only'>Sort filters</span>
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type='button'
+            variant='ghost'
+            size='icon'
+            className='size-8'
+          />
+        }
+      >
+        <ArrowDownUpIcon className='size-4' />
+        <span className='sr-only'>Sort filters</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+      <DropdownMenuContent className='min-w-40'>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={value}

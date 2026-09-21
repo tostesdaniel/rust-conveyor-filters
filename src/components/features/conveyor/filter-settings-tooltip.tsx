@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip";
 
 interface FilterSettingsTooltipProps {
-  children: React.ReactNode;
+  children: React.ReactElement;
   tooltipText: string;
 }
 
@@ -17,7 +17,7 @@ export function FilterSettingsTooltip({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipTrigger render={children} />
         <TooltipContent>
           <p>{tooltipText}</p>
         </TooltipContent>

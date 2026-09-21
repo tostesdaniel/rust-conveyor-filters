@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { api } from "@/trpc/react";
 import { ChevronsDown } from "lucide-react";
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { toast } from "sonner";
 
 import type { OwnerFilterDTO } from "@/types/filter";
@@ -11,7 +10,7 @@ import type { UserCategory } from "@/db/schema";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 
 type DropdownMenuCheckboxItemProps = React.ComponentProps<
-  typeof DropdownMenuPrimitive.CheckboxItem
+  typeof DropdownMenuCheckboxItem
 >;
 
 interface CategoryDropdownCheckboxProps {
@@ -52,7 +51,8 @@ export function CategoryDropdownCheckbox({
     <DropdownMenuCheckboxItem
       checked={checked}
       onCheckedChange={setChecked}
-      onSelect={() => {
+      closeOnClick
+      onClick={() => {
         manageFilterCategoryMutation({
           filterId: filter.id,
           categoryId: category.id,

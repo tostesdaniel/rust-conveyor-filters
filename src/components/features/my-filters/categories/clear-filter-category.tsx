@@ -37,7 +37,7 @@ export function ClearFilterCategory({
   return (
     <DropdownMenuItem
       className='flex items-center'
-      onSelect={handleClearCategory}
+      onClick={handleClearCategory}
       disabled={isDisabled}
     >
       <ListXIcon />

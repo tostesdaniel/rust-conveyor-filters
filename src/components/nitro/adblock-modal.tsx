@@ -5,7 +5,8 @@ import Link from "next/link";
 import { HeartHandshake } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -51,12 +52,14 @@ export function AdblockModal({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button asChild className='w-full' onClick={onSubscribe}>
-            <Link href='/donate'>
-              <HeartHandshake />
-              Support &amp; remove ads
-            </Link>
-          </Button>
+          <Link
+            href='/donate'
+            onClick={onSubscribe}
+            className={cn(buttonVariants(), "w-full")}
+          >
+            <HeartHandshake />
+            Support &amp; remove ads
+          </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>

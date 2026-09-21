@@ -17,57 +17,63 @@ export function FilterCardFooter({ filter }: { filter: PublicFilterListDTO }) {
     <CardFooter
       className={cn(
         "flex-col gap-3",
-        "sm:flex-row sm:justify-between",
+        "sm:flex-row sm:items-end sm:justify-between",
         "lg:flex-col",
         "xl:flex-row",
       )}
     >
       <div className='self-start'>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <CardDescription className='flex items-center gap-1.5 leading-6'>
-              <ClockFadingIcon
-                aria-hidden='true'
-                className='size-4 text-muted-foreground/75'
-              />
-              <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
-                Updated:
-              </span>
-              <span>{formatDistanceToNowStrict(filter.updatedAt)} ago</span>
-            </CardDescription>
+          <TooltipTrigger
+            render={
+              <CardDescription className='flex items-center gap-1.5 leading-6' />
+            }
+          >
+            <ClockFadingIcon
+              aria-hidden='true'
+              className='size-4 text-muted-foreground/75'
+            />
+            <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
+              Updated:
+            </span>
+            <span>{formatDistanceToNowStrict(filter.updatedAt)} ago</span>
           </TooltipTrigger>
           <TooltipContent>{format(filter.updatedAt, "PPpp")}</TooltipContent>
         </Tooltip>
 
         <Tooltip>
-          <TooltipTrigger asChild>
-            <CardDescription className='flex items-center gap-1 leading-6'>
-              <ArrowBigUpDashIcon
-                aria-hidden='true'
-                className='-ml-0.5 size-5 text-muted-foreground/75'
-              />
-              <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
-                Created:
-              </span>
-              <span>{format(filter.createdAt, "MMM d, yyyy")}</span>
-            </CardDescription>
+          <TooltipTrigger
+            render={
+              <CardDescription className='flex items-center gap-1 leading-6' />
+            }
+          >
+            <ArrowBigUpDashIcon
+              aria-hidden='true'
+              className='-ml-0.5 size-5 text-muted-foreground/75'
+            />
+            <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
+              Created:
+            </span>
+            <span>{format(filter.createdAt, "MMM d, yyyy")}</span>
           </TooltipTrigger>
           <TooltipContent>{format(filter.createdAt, "PPpp")}</TooltipContent>
         </Tooltip>
 
         {filter.remixCount > 0 && (
           <Tooltip>
-            <TooltipTrigger asChild>
-              <CardDescription className='flex items-center gap-1.5 leading-6'>
-                <GitForkIcon
-                  aria-hidden='true'
-                  className='size-4 text-muted-foreground/75'
-                />
-                <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
-                  Remixes:
-                </span>
-                <span className='tabular-nums'>{filter.remixCount}</span>
-              </CardDescription>
+            <TooltipTrigger
+              render={
+                <CardDescription className='flex items-center gap-1.5 leading-6' />
+              }
+            >
+              <GitForkIcon
+                aria-hidden='true'
+                className='size-4 text-muted-foreground/75'
+              />
+              <span className='text-xs font-medium tracking-wide text-muted-foreground/75 uppercase'>
+                Remixes:
+              </span>
+              <span className='tabular-nums'>{filter.remixCount}</span>
             </TooltipTrigger>
             <TooltipContent>
               {filter.remixCount === 1

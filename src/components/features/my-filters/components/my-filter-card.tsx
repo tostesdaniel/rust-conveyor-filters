@@ -189,23 +189,25 @@ export function MyFilterCard({
               />
 
               <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    type='button'
-                    variant='ghost'
-                    size='icon'
-                    className='size-8 shrink-0 rounded-full'
-                  >
-                    <span className='sr-only'>Open options</span>
-                    <EllipsisVertical className='size-5' aria-hidden='true' />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='icon'
+                      className='size-8 shrink-0 rounded-full'
+                    />
+                  }
+                >
+                  <span className='sr-only'>Open options</span>
+                  <EllipsisVertical className='size-5' aria-hidden='true' />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className='min-w-48'>
                   <DropdownMenuGroup>
                     <DropdownMenuItem
                       disabled={saveToCollection.isPending}
-                      onSelect={(e) => {
-                        e.preventDefault();
+                      closeOnClick={false}
+                      onClick={() => {
                         saveToCollection.mutate({ filterId: filter.id });
                       }}
                     >
@@ -216,7 +218,7 @@ export function MyFilterCard({
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      onSelect={() => setIsRemoveSharedFilterDialogOpen(true)}
+                      onClick={() => setIsRemoveSharedFilterDialogOpen(true)}
                       className='text-destructive'
                     >
                       <Trash />
@@ -253,31 +255,35 @@ export function MyFilterCard({
               />
 
               <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    type='button'
-                    variant='ghost'
-                    size='icon'
-                    className='size-8 shrink-0 rounded-full'
-                  >
-                    <span className='sr-only'>Open options</span>
-                    <EllipsisVertical className='size-5' aria-hidden='true' />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='icon'
+                      className='size-8 shrink-0 rounded-full'
+                    />
+                  }
+                >
+                  <span className='sr-only'>Open options</span>
+                  <EllipsisVertical className='size-5' aria-hidden='true' />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className='min-w-60'>
                   <DropdownMenuGroup>
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href={`/my-filters/edit/${filter.id}`}
-                        onClick={() => {
-                          trackEvent("my_filter_edit_clicked", {
-                            filterId: filter.id,
-                          });
-                        }}
-                      >
-                        <Edit />
-                        Edit
-                      </Link>
+                    <DropdownMenuItem
+                      render={
+                        <Link
+                          href={`/my-filters/edit/${filter.id}`}
+                          onClick={() => {
+                            trackEvent("my_filter_edit_clicked", {
+                              filterId: filter.id,
+                            });
+                          }}
+                        />
+                      }
+                    >
+                      <Edit />
+                      Edit
                     </DropdownMenuItem>
                     <ViewFilter filter={filter} variant='dropdown' />
                     <DropdownMenuSeparator />
@@ -353,7 +359,7 @@ export function MyFilterCard({
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onSelect={() => {
+                    onClick={() => {
                       trackEvent("my_filter_delete_opened", {
                         filterId: filter.id,
                       });

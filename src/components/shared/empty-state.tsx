@@ -2,7 +2,7 @@ import { UrlObject } from "url";
 import Link from "next/link";
 import { type LucideIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 interface EmptyStateProps {
   Icon: LucideIcon;
@@ -27,12 +27,10 @@ export function EmptyState({
       <h3 className='mt-2 text-sm font-semibold'>{title}</h3>
       <p className='mt-1 text-sm'>{description}</p>
       <div className='mt-6'>
-        <Button asChild>
-          <Link href={redirectUrl}>
-            <ButtonIcon className='mr-1.5 -ml-0.5 size-5' aria-hidden='true' />
-            {label}
-          </Link>
-        </Button>
+        <Link href={redirectUrl} className={buttonVariants()}>
+          <ButtonIcon className='mr-1.5 -ml-0.5 size-5' aria-hidden='true' />
+          {label}
+        </Link>
       </div>
     </div>
   );

@@ -4,12 +4,13 @@ import { useState } from "react";
 import { EllipsisIcon, PencilIcon, ShareIcon, TrashIcon } from "lucide-react";
 
 import { useGetUserCategoryHierarchy } from "@/hooks/use-get-user-category-hierarchy";
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -48,73 +49,69 @@ export function CategoryHeadingDropdown({
   };
 
   return (
-    <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-      <Dialog open={isRenameDialogOpen} onOpenChange={setIsRenameDialogOpen}>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
             <Button
               type='button'
               variant='ghost'
               size='icon'
               className='size-8'
-            >
-              <EllipsisIcon className='size-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
+            />
+          }
+        >
+          <EllipsisIcon className='size-4' />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='min-w-48'>
+          <DropdownMenuGroup>
             <DropdownMenuLabel>
               Manage {isSubCategory ? "Subcategory" : "Category"}
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={(e) => {
-                  e.preventDefault();
-                  setIsRenameDialogOpen(true);
-                }}
-              >
-                <PencilIcon />
-                <span>Rename {isSubCategory ? "Subcategory" : "Category"}</span>
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <RenameCategoryDialog
-              categoryId={categoryId}
-              isSubCategory={isSubCategory}
-              setOpen={setIsRenameDialogOpen}
-            />
-            <AlertDialogTrigger asChild>
-              <DropdownMenuItem
-                onSelect={(e) => {
-                  e.preventDefault();
-                  setIsDeleteDialogOpen(true);
-                }}
-              >
-                <TrashIcon />
-                <span>Delete {isSubCategory ? "Subcategory" : "Category"}</span>
-              </DropdownMenuItem>
-            </AlertDialogTrigger>
-            <DeleteCategoryDialog
-              categoryId={categoryId}
-              isSubCategory={isSubCategory}
-            />
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => setIsShareDialogOpen(true)}
-              disabled={!evalCategoryHasFilters()}
-            >
-              <ShareIcon />
-              <span>Share {isSubCategory ? "Subcategory" : "Category"}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <ShareWithUserDialog
-          open={isShareDialogOpen}
-          onOpenChange={setIsShareDialogOpen}
-          setIsDialogOpen={setIsShareDialogOpen}
-          categoryId={!isSubCategory ? categoryId : undefined}
-          subCategoryId={isSubCategory ? categoryId : undefined}
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+            <PencilIcon />
+            <span>Rename {isSubCategory ? "Subcategory" : "Category"}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+            <TrashIcon />
+            <span>Delete {isSubCategory ? "Subcategory" : "Category"}</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => setIsShareDialogOpen(true)}
+            disabled={!evalCategoryHasFilters()}
+          >
+            <ShareIcon />
+            <span>Share {isSubCategory ? "Subcategory" : "Category"}</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={isRenameDialogOpen} onOpenChange={setIsRenameDialogOpen}>
+        <RenameCategoryDialog
+          categoryId={categoryId}
+          isSubCategory={isSubCategory}
+          setOpen={setIsRenameDialogOpen}
         />
       </Dialog>
-    </AlertDialog>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <DeleteCategoryDialog
+          categoryId={categoryId}
+          isSubCategory={isSubCategory}
+        />
+      </AlertDialog>
+      <ShareWithUserDialog
+        open={isShareDialogOpen}
+        onOpenChange={setIsShareDialogOpen}
+        setIsDialogOpen={setIsShareDialogOpen}
+        categoryId={!isSubCategory ? categoryId : undefined}
+        subCategoryId={isSubCategory ? categoryId : undefined}
+      />
+    </>
   );
 }

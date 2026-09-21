@@ -42,12 +42,19 @@ export function UncategorizedHeadingDropdown({
   return (
     <>
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button type='button' variant='ghost' size='icon' className='size-8'>
-            <EllipsisIcon />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              type='button'
+              variant='ghost'
+              size='icon'
+              className='size-8'
+            />
+          }
+        >
+          <EllipsisIcon />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className='min-w-40'>
           <DropdownMenuItem
             onClick={() =>
               updatePreferences.mutate({

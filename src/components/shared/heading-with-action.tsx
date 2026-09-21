@@ -3,7 +3,7 @@ import Link from "next/link";
 import { VariantProps } from "class-variance-authority";
 import { LucideIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Typography, typographyVariants } from "@/components/shared/typography";
 
 interface HeadingWithActionProps {
@@ -31,12 +31,10 @@ export function HeadingWithAction({
         </Typography>
       </div>
       <div className='mt-4 flex md:mt-0 md:ml-4'>
-        <Button type='button' asChild>
-          <Link href={redirectUrl}>
-            {ActionIcon && <ActionIcon aria-hidden='true' />}
-            {buttonLabel}
-          </Link>
-        </Button>
+        <Link href={redirectUrl} className={buttonVariants()}>
+          {ActionIcon && <ActionIcon aria-hidden='true' />}
+          {buttonLabel}
+        </Link>
       </div>
     </div>
   );

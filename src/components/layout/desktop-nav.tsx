@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { SITE_NAV_ITEMS } from "@/components/layout/header";
 
 export function DesktopNav({
@@ -17,18 +17,19 @@ export function DesktopNav({
   return (
     <nav className={className} {...props}>
       {SITE_NAV_ITEMS.map((item) => (
-        <Button
+        <Link
+          href={item.href}
           key={item.href}
-          variant='link'
-          asChild
           className={cn(
+            buttonVariants({ variant: "link" }),
             "rounded-none text-primary/70 hover:no-underline",
-            "border-b-2 border-transparent hover:border-primary/80 hover:text-primary/90",
-            pathname === item.href && "border-blue-500! text-primary!",
+            "border-x-0 border-t-0 border-b-2 border-b-transparent",
+            "hover:border-b-primary/80 hover:text-primary/90",
+            pathname === item.href && "border-b-blue-500! text-primary!",
           )}
         >
-          <Link href={item.href}>{item.name}</Link>
-        </Button>
+          {item.name}
+        </Link>
       ))}
     </nav>
   );

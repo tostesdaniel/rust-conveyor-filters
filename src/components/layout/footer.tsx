@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { HeartIcon } from "lucide-react";
 
-import { siteConfig } from "@/config/site";
 import { pineConfig, type PinePlacement } from "@/config/pine";
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
@@ -24,7 +24,10 @@ const navigation: FooterLink[] = [
 /** Umami attributes for a Pine-tagged footer link, or nothing for plain nav. */
 function umamiProps(placement: PinePlacement | undefined) {
   return placement
-    ? { "data-umami-event": "pine-click", "data-umami-event-placement": placement }
+    ? {
+        "data-umami-event": "pine-click",
+        "data-umami-event-placement": placement,
+      }
     : {};
 }
 
@@ -48,28 +51,28 @@ export function Footer() {
             return (
               <div key={item.name} className='grid-cols-2'>
                 {item.href.startsWith("https://") ? (
-                  <Button asChild variant='link'>
-                    <a
-                      href={item.href}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      {label}
-                    </a>
-                  </Button>
+                  <a
+                    href={item.href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={buttonVariants({ variant: "link" })}
+                  >
+                    {label}
+                  </a>
                 ) : (
-                  <Button
-                    asChild
-                    variant='link'
+                  <Link
+                    href={item.href}
+                    {...umamiProps(item.umami)}
                     className={cn(
-                      item.href === "/contact" &&
-                        "pointer-events-none opacity-50",
+                      buttonVariants({ variant: "link" }),
+                      cn(
+                        item.href === "/contact" &&
+                          "pointer-events-none opacity-50",
+                      ),
                     )}
                   >
-                    <Link href={item.href} {...umamiProps(item.umami)}>
-                      {label}
-                    </Link>
-                  </Button>
+                    {label}
+                  </Link>
                 )}
               </div>
             );

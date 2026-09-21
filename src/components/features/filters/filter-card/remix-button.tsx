@@ -30,18 +30,20 @@ export function RemixButton({
   if (iconOnly) {
     return (
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Link
-            href={href}
-            aria-label='Remix this filter'
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "icon" }),
-              "hover:bg-transparent hover:text-muted-foreground",
-              className,
-            )}
-          >
-            <GitForkIcon />
-          </Link>
+        <TooltipTrigger
+          render={
+            <Link
+              href={href}
+              aria-label='Remix this filter'
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "icon" }),
+                "hover:bg-transparent hover:text-muted-foreground",
+                className,
+              )}
+            />
+          }
+        >
+          <GitForkIcon />
         </TooltipTrigger>
         <TooltipContent>Remix this filter</TooltipContent>
       </Tooltip>
@@ -51,11 +53,7 @@ export function RemixButton({
   return (
     <Link
       href={href}
-      className={cn(
-        buttonVariants({ variant: "secondary" }),
-        "flex-1 sm:flex-none lg:flex-1 xl:flex-none",
-        className,
-      )}
+      className={cn(buttonVariants(), className)}
     >
       <GitForkIcon />
       Remix

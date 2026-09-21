@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef, useState, useTransition } from "react";
+import React, { useCallback, useState, useTransition } from "react";
 import { searchItems } from "@/utils/item-search";
 import { trackEvent } from "@/utils/rybbit";
 import { CirclePlusIcon, XIcon } from "lucide-react";
@@ -8,6 +8,7 @@ import { throttle } from "nuqs";
 import { toast } from "sonner";
 
 import { useGetItems } from "@/hooks/use-get-items";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { cn } from "@/lib/utils";
 import { items } from "@/db/schema";
@@ -20,6 +21,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -35,6 +44,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { navSheetDrawerLayer } from "@/components/features/filters/sidebar/nav-sheet-drawer";
 import { ItemIcon } from "@/components/shared/item-icon";
 
 export function ItemsSelection() {
@@ -96,36 +106,39 @@ export function ItemsSelection() {
                 const foundItem = itemsData?.find((i) => i.name === item);
                 return foundItem ? (
                   <SidebarMenuSubItem key={item}>
-                    <SidebarMenuSubButton className='h-8' asChild>
-                      <div
-                        className={cn(
-                          "group relative pr-7",
-                          isLoading && "pointer-events-none opacity-50",
-                        )}
-                        onClick={() => {
-                          if (!isLoading) {
-                            handleRemoveItem(item);
-                          }
-                        }}
+                    <SidebarMenuSubButton
+                      className='h-8'
+                      render={
+                        <div
+                          className={cn(
+                            "group relative pr-7",
+                            isLoading && "pointer-events-none opacity-50",
+                          )}
+                          onClick={() => {
+                            if (!isLoading) {
+                              handleRemoveItem(item);
+                            }
+                          }}
+                        />
+                      }
+                    >
+                      <Item item={foundItem} truncate />
+                      <Button
+                        variant='destructive'
+                        size='icon'
+                        className='absolute top-[9px] right-1.5 size-3.5 shadow-none group-hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40'
+                        disabled={isLoading}
                       >
-                        <Item item={foundItem} truncate />
-                        <Button
-                          variant='destructive'
-                          size='icon'
-                          className='absolute top-[9px] right-1.5 size-3.5 shadow-none group-hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40'
-                          disabled={isLoading}
-                        >
-                          <XIcon
-                            className='size-3'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (!isLoading) {
-                                handleRemoveItem(item);
-                              }
-                            }}
-                          />
-                        </Button>
-                      </div>
+                        <XIcon
+                          className='size-3'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isLoading) {
+                              handleRemoveItem(item);
+                            }
+                          }}
+                        />
+                      </Button>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 ) : null;
@@ -142,24 +155,12 @@ function ItemsCombobox({
   className,
   ...props
 }: React.ComponentProps<"button">) {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const { data: itemsData } = useGetItems();
   const [{ items }, setSearchParams] = useSearchParams();
   const [isLoading, startTransition] = useTransition();
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current;
-      if (!input) return;
-
-      if (e.key === "Esc") {
-        input.blur();
-      }
-    },
-    [],
-  );
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleSelectItem = useCallback(
     (item: {
@@ -199,66 +200,81 @@ function ItemsCombobox({
     inputValue,
   );
 
+  const trigger = (
+    <SidebarMenuButton
+      variant='outline'
+      className={cn(
+        "w-full justify-start border text-muted-foreground dark:border-input",
+        className,
+      )}
+      disabled={isLoading}
+      {...props}
+    />
+  );
+
+  const list = (
+    <Command shouldFilter={false} className='overflow-visible'>
+      <CommandInput
+        value={inputValue}
+        onValueChange={setInputValue}
+        placeholder='Select items...'
+        disabled={isLoading}
+      />
+
+      <CommandList>
+        {selectables.length > 0 ? (
+          <CommandGroup className='h-full overflow-auto'>
+            {selectables.map(({ item }) => (
+              <CommandItem
+                key={item.itemId}
+                className='cursor-pointer'
+                onSelect={() => handleSelectItem(item)}
+                disabled={isLoading}
+              >
+                <Item item={item} />
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        ) : (
+          <CommandEmpty>No items found.</CommandEmpty>
+        )}
+      </CommandList>
+    </Command>
+  );
+
+  if (!isDesktop) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen} showSwipeHandle>
+        <DrawerTrigger render={trigger}>
+          <CirclePlusIcon className='size-4 shrink-0' /> Select items…
+        </DrawerTrigger>
+
+        <DrawerContent className='pb-4' {...navSheetDrawerLayer}>
+          <DrawerHeader className='sr-only'>
+            <DrawerTitle>Select items</DrawerTitle>
+            <DrawerDescription>
+              Search for items to filter the results by. Up to 5 at a time.
+            </DrawerDescription>
+          </DrawerHeader>
+          {list}
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <SidebarMenuButton
-          variant='outline'
-          className={cn(
-            "w-full justify-start border text-muted-foreground dark:border-input",
-            className,
-          )}
-          disabled={isLoading}
-          {...props}
-        >
-          <CirclePlusIcon className='size-4 shrink-0' /> Select items…
-        </SidebarMenuButton>
+      <PopoverTrigger render={trigger}>
+        <CirclePlusIcon className='size-4 shrink-0' /> Select items…
       </PopoverTrigger>
 
       <PopoverContent
         className='p-0'
         style={{
-          width: "var(--radix-popover-trigger-width)",
+          width: "var(--anchor-width)",
         }}
       >
-        <Command
-          onKeyDown={handleKeyDown}
-          shouldFilter={false}
-          className='overflow-visible'
-        >
-          <CommandInput
-            ref={inputRef}
-            value={inputValue}
-            onValueChange={setInputValue}
-            onBlur={() => setOpen(false)}
-            onFocus={() => setOpen(true)}
-            placeholder='Select items...'
-            disabled={isLoading}
-          />
-
-          <CommandList>
-            {open && selectables.length > 0 ? (
-              <CommandGroup className='h-full overflow-auto'>
-                {selectables.map(({ item }) => (
-                  <CommandItem
-                    key={item.itemId}
-                    className='cursor-pointer'
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    onSelect={() => handleSelectItem(item)}
-                    disabled={isLoading}
-                  >
-                    <Item item={item} />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ) : (
-              <CommandEmpty>No items found.</CommandEmpty>
-            )}
-          </CommandList>
-        </Command>
+        {list}
       </PopoverContent>
     </Popover>
   );

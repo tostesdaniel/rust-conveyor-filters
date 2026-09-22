@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { api, HydrateClient } from "@/trpc/server";
+import { auth } from "@clerk/nextjs/server";
 
 import { Typography } from "@/components/shared/typography";
 
@@ -15,6 +16,8 @@ export default async function NewFilterPage({
 }: {
   searchParams: Promise<{ remixOf?: string }>;
 }) {
+  await auth.protect();
+
   const { remixOf } = await searchParams;
   const remixOfId = remixOf ? Number(remixOf) : undefined;
   const validRemixId =

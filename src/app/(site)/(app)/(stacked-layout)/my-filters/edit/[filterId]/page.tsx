@@ -2,6 +2,7 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { api, HydrateClient } from "@/trpc/server";
+import { auth } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 
 import { Typography } from "@/components/shared/typography";
@@ -32,6 +33,8 @@ const getEditableFilter = cache(async (filterId: number) => {
 export async function generateMetadata(props: {
   params: Promise<{ filterId: string }>;
 }): Promise<Metadata> {
+  await auth.protect();
+
   const params = await props.params;
   const filterId = parseFilterId(params.filterId);
   const filter = filterId === null ? null : await getEditableFilter(filterId);
@@ -51,6 +54,8 @@ export async function generateMetadata(props: {
 export default async function EditFilterPage(props: {
   params: Promise<{ filterId: string }>;
 }) {
+  await auth.protect();
+
   const params = await props.params;
   const filterId = parseFilterId(params.filterId);
 

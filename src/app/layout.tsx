@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Teko } from "next/font/google";
-import { TRPCReactProvider } from "@/trpc/react";
-import { ClerkProvider } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { cn } from "@/lib/utils";
@@ -17,9 +13,6 @@ import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { Nitro } from "@/lib/nitro";
 import { Analytics } from "@/components/features/analytics/analytics";
-import { OutboundLinkTracker } from "@/components/features/analytics/outbound-link-tracker";
-import { SessionTick } from "@/components/features/donation/session-tick";
-import { BannerWrapper } from "@/components/layout/banner-wrapper";
 import { SiteJsonLd } from "@/components/shared/site-json-ld";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -85,25 +78,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { sessionClaims } = await auth();
-  const meta = sessionClaims?.metadata as UserPublicMetadata | undefined;
-  const isSubscriber = !!meta?.isSubscriber;
-  const isLegacyDonator = !!meta?.isLegacyDonator;
-  const isNitroBooster = !!meta?.isNitroBooster;
-  const isAdFree = isSubscriber || isLegacyDonator || isNitroBooster;
-
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
         <SiteJsonLd />
         <Analytics />
         <GoogleAnalytics gaId='G-BGERZ3ES1R' />
-        {!isAdFree && <Nitro />}
+        <Nitro />
       </head>
       <body
         className={cn(
@@ -112,33 +98,17 @@ export default async function RootLayout({
           teko.variable,
         )}
       >
-        <ClerkProvider>
-          <TRPCReactProvider>
-            <ThemeProvider
-              attribute='class'
-              defaultTheme='system'
-              enableSystem
-              disableTransitionOnChange
-            >
-              <TooltipProvider>
-                <NuqsAdapter>
-                  <div className='isolate flex min-h-svh flex-col'>
-                    {children}
-                  </div>
-                </NuqsAdapter>
-                {!isAdFree && (
-                  <>
-                    <SessionTick />
-                    <BannerWrapper />
-                  </>
-                )}
-                <Toaster richColors />
-              </TooltipProvider>
-            </ThemeProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </TRPCReactProvider>
-          <OutboundLinkTracker />
-        </ClerkProvider>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster richColors />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

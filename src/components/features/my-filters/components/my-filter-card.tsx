@@ -49,7 +49,7 @@ import { DeleteSharedFilterDialog } from "@/components/features/my-filters/share
 import { PrivateShareDropdownItem } from "@/components/features/my-filters/shared-filters/private-share-dropdown-item";
 import { ShareWithUserDialog } from "@/components/features/my-filters/shared-filters/share-with-user-dialog";
 import { ItemIcon } from "@/components/shared/item-icon";
-import { DeleteFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
+import { DeleteFilterForm } from "@/app/(site)/(app)/(stacked-layout)/my-filters/components/forms/delete-filter-form";
 
 // Type guard to check if filter is owned
 function isOwnerFilterDTO(

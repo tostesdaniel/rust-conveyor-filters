@@ -5,7 +5,7 @@ import { api, HydrateClient } from "@/trpc/server";
 import { TRPCError } from "@trpc/server";
 
 import { Typography } from "@/components/shared/typography";
-import { EditFilterForm } from "@/app/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
+import { EditFilterForm } from "@/app/(site)/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 
 function parseFilterId(raw: string): number | null {
   if (!/^\d+$/.test(raw)) return null;

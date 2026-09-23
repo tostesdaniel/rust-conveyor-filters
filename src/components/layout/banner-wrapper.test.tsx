@@ -283,6 +283,28 @@ describe("BannerWrapper boost prompt", () => {
       expect(status).toHaveAccessibleDescription(LINKED_BODY);
       expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
     });
+
+    it("sits in exactly one live region so it's announced once", async () => {
+      await visitFirstDay();
+      await sessionShowsPrompt();
+
+      const isLive = (el: Element) => {
+        const live = el.getAttribute("aria-live");
+        if (live) return live !== "off";
+        return ["status", "alert", "log"].includes(
+          el.getAttribute("role") ?? "",
+        );
+      };
+      let liveRegions = 0;
+      let el: Element | null = screen.getByRole("status", {
+        name: BOOST_TITLE,
+      });
+      while (el) {
+        if (isLive(el)) liveRegions++;
+        el = el.parentElement;
+      }
+      expect(liveRegions).toBe(1);
+    });
   });
 
   describe("priority", () => {

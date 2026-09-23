@@ -113,12 +113,6 @@ export type FeedbackDiscordPayload = {
 
 const USER_COUNT_THROTTLE_KEY = "discord-user-count-last-update";
 const USER_COUNT_THROTTLE_MS = 305_000; // 5 minutes + 5 second buffer
-const USER_LOOKUP_PAGE_SIZE = 100;
-
-type DiscordExternalAccount = {
-  provider?: string | null;
-  providerUserId?: string | null;
-};
 
 export async function updateUserCountChannel() {
   if (!DISCORD_TOKEN || !USER_COUNT_CHANNEL_ID) {
@@ -321,36 +315,4 @@ export async function getGuildMember(userId: string) {
     console.error("Failed to fetch guild member:", error);
     return null;
   }
-}
-
-export async function findClerkUserIdByDiscordUserId(
-  discordUserId: string,
-): Promise<string | null> {
-  const clerk = await clerkClient();
-  const totalUsers = await clerk.users.getCount();
-
-  for (let offset = 0; offset < totalUsers; offset += USER_LOOKUP_PAGE_SIZE) {
-    const users = await clerk.users.getUserList({
-      limit: USER_LOOKUP_PAGE_SIZE,
-      offset,
-    });
-
-    const match = users.data.find((user) =>
-      user.externalAccounts?.some(
-        (account: DiscordExternalAccount) =>
-          account.provider === "oauth_discord" &&
-          account.providerUserId === discordUserId,
-      ),
-    );
-
-    if (match) {
-      return match.id;
-    }
-
-    if (users.data.length < USER_LOOKUP_PAGE_SIZE) {
-      break;
-    }
-  }
-
-  return null;
 }

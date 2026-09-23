@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { syncItemSnapshot } from "@/db/item-sync";
 import { startAiCategorizeCron } from "@/server/crons/ai-categorize";
 import { startRevokeExpiredSubscriptionsCron } from "@/server/crons/revoke-expired-subscriptions";
+import { startSyncServerBoostersCron } from "@/server/crons/sync-server-boosters";
 import { postPendingItemUpdates } from "@/services/item-update-announcer";
 
 // Awaited so the first request already sees this build's catalogue. A failed
@@ -27,4 +28,5 @@ try {
 }
 
 startRevokeExpiredSubscriptionsCron();
+startSyncServerBoostersCron();
 startAiCategorizeCron();

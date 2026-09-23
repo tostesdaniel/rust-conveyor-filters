@@ -1,0 +1,25 @@
+FROM oven/bun:1.4.2-slim AS builder
+
+WORKDIR /app
+
+COPY package.json bun.lock bunfig.toml ./
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun ci --no-save
+
+COPY tsconfig.json ./
+COPY src ./src
+
+RUN bun build src/bot/index.ts --target=node --format=esm --outfile=dist/bot.mjs
+
+FROM node:24.15.0-slim AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=builder --chown=node:node /app/dist/bot.mjs ./bot.mjs
+
+USER node
+
+CMD ["node", "bot.mjs"]

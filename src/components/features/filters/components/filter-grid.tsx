@@ -13,7 +13,7 @@ import { FilterCardSkeleton } from "@/components/features/filters/filter-card/fi
 import { PineBand } from "@/components/pine/pine-band";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Typography } from "@/components/shared/typography";
-import FiltersLoading from "@/app/(app)/(sidebar-layout)/filters/loading";
+import FiltersLoading from "@/app/(site)/(app)/(sidebar-layout)/filters/loading";
 
 export function FilterGrid() {
   const { ref, inView } = useInView({

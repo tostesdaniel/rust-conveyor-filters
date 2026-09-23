@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { api, HydrateClient } from "@/trpc/server";
+import { auth } from "@clerk/nextjs/server";
 
 import { MyFiltersHeading } from "@/components/features/my-filters/components/my-filters-heading";
 import { MyFiltersTabs } from "@/components/features/my-filters/components/my-filters-tabs";
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function MyFiltersPage() {
+  await auth.protect();
+
   await Promise.all([
     api.bookmark.getAll.prefetch(),
     api.filter.getByCategory.prefetch({ categoryId: null }),

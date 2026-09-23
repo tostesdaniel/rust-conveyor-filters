@@ -1,14 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ClerkLoaded, ClerkLoading, Show, SignInButton } from "@clerk/nextjs";
-import { Loader2 } from "lucide-react";
-
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { EngagementPill } from "@/components/features/donation/engagement-pill";
 import { DesktopNav } from "@/components/layout/desktop-nav";
+import { HeaderAuth } from "@/components/layout/header-auth";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { UserMenu } from "@/components/layout/user-menu";
 import { Icons } from "@/components/shared/icons";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { RepoStarsButton } from "@/components/shared/repo-stars-button";
@@ -62,28 +59,7 @@ export function Header() {
             </nav>
             <ModeToggle />
           </div>
-          <div className='ml-2 flex h-7 w-auto items-center'>
-            <ClerkLoading>
-              <Loader2 className='size-5 animate-spin text-muted-foreground' />
-            </ClerkLoading>
-            <ClerkLoaded>
-              <Show when='signed-out'>
-                <Button
-                  variant='default'
-                  className='hidden min-[800px]:block'
-                  render={
-                    <SignInButton
-                      fallbackRedirectUrl='/my-filters'
-                      signUpFallbackRedirectUrl='/my-filters'
-                    />
-                  }
-                />
-              </Show>
-              <Show when='signed-in'>
-                <UserMenu />
-              </Show>
-            </ClerkLoaded>
-          </div>
+          <HeaderAuth />
         </div>
         <MobileNav />
       </div>

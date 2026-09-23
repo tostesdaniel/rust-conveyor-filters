@@ -129,7 +129,7 @@
     "wrangler": "^4.135.0"
   },
   "overrides": {
-    "postcss": "8.5.28"
+    "postcss": "$postcss"
   },
   "trustedDependencies": [],
   "engines": {

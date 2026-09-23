@@ -25,19 +25,6 @@ export async function setSubscriberStatus(
   });
 }
 
-export async function setNitroBoosterStatus(
-  userId: string,
-  isNitroBooster: boolean,
-) {
-  await (
-    await clerkClient()
-  ).users.updateUserMetadata(userId, {
-    publicMetadata: {
-      isNitroBooster,
-    },
-  });
-}
-
 export async function setContentCreatorStatus(userId: string) {
   await (
     await clerkClient()

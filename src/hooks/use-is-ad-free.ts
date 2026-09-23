@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
  * Returns true if the user has any ad-free entitlement:
  * - Active PayNow subscriber (isSubscriber metadata)
  * - Pre-migration legacy donator (isLegacyDonator metadata)
- * - Discord Nitro Booster (isNitroBooster metadata)
+ * - Server booster of our Discord (isServerBooster metadata)
  *
  * New 3rd-party donators (isDonator) get a badge but NOT ad-free.
  */
@@ -16,7 +16,7 @@ export function useIsAdFree(): boolean {
   const meta = user?.publicMetadata as UserPublicMetadata | undefined;
   const isSubscriber = !!meta?.isSubscriber;
   const isLegacyDonator = !!meta?.isLegacyDonator;
-  const isNitroBooster = !!meta?.isNitroBooster;
+  const isServerBooster = !!meta?.isServerBooster;
 
-  return isSubscriber || isLegacyDonator || isNitroBooster;
+  return isSubscriber || isLegacyDonator || isServerBooster;
 }

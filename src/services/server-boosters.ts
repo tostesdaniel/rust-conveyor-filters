@@ -55,8 +55,9 @@ export async function fetchBoostingDiscordIds(
 
 function discordUserIdOf(user: User): string | null {
   return (
-    user.externalAccounts.find((account) => account.provider === "oauth_discord")
-      ?.providerUserId ?? null
+    user.externalAccounts.find(
+      (account) => account.provider === "oauth_discord",
+    )?.providerUserId ?? null
   );
 }
 
@@ -74,7 +75,7 @@ async function listBoosterCandidates(
 
     for (const user of data) {
       const discordUserId = discordUserIdOf(user);
-      const isBooster = !!user.publicMetadata.isNitroBooster;
+      const isBooster = !!user.publicMetadata.isServerBooster;
       if (discordUserId || isBooster) {
         candidates.push({ clerkUserId: user.id, discordUserId, isBooster });
       }
@@ -102,10 +103,10 @@ async function applyBoosterChanges(
 ) {
   for (const { clerkUserId, isBooster } of changes) {
     await clerk.users.updateUserMetadata(clerkUserId, {
-      publicMetadata: { isNitroBooster: isBooster },
+      publicMetadata: { isServerBooster: isBooster },
     });
     console.log(
-      `boosters: ${isBooster ? "granted" : "revoked"} ad-free for ${clerkUserId}`,
+      `boosters: ${isBooster ? "granted" : "revoked"} Server booster status for ${clerkUserId}`,
     );
   }
 }

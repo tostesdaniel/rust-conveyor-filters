@@ -27,6 +27,9 @@ export function clerkUserToBadges(user: User): BadgeType[] {
   } else if (meta?.isDonator || meta?.isLegacyDonator) {
     badges.push(BadgeType.DONATOR);
   }
+  if (meta?.isServerBooster) {
+    badges.push(BadgeType.SERVER_BOOSTER);
+  }
   return badges;
 }
 

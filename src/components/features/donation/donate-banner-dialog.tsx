@@ -79,8 +79,8 @@ export function DonateBannerDialog({
           <DialogTitle>Go Ad-Free</DialogTitle>
           <DialogDescription>
             Subscribe for $3/mo to remove ads and get a Supporter badge. Every
-            subscription helps keep the site running. Discord Nitro Boosters
-            enjoy ad-free browsing too.
+            subscription helps keep the site running. Boosting our Discord
+            server also makes the site ad-free.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { PricingTable } from "@clerk/nextjs";
 
+import { BadgeType } from "@/types/badges";
 import { siteConfig } from "@/config/site";
 import { Separator } from "@/components/ui/separator";
 import { PricingCards } from "@/components/donate/pricing-cards";
@@ -10,6 +11,7 @@ import { DonateOtherLinks } from "@/components/features/donation/donate-other-li
 import { DonateSupporterPerks } from "@/components/features/donation/donate-supporter-perks";
 import { Icons } from "@/components/shared/icons";
 import { Typography } from "@/components/shared/typography";
+import { UserBadge } from "@/components/shared/user-badge";
 
 const paynowEnabled = process.env.NEXT_PUBLIC_PAYNOW_ENABLED === "true";
 
@@ -76,9 +78,21 @@ export default function DonatePage() {
           is exclusive to active subscribers.
         </Typography>
         <Typography variant='mutedText' className='mt-1 text-center text-sm'>
-          Discord Nitro Boosters also receive the Supporter badge and ad-free
-          browsing while their boost stays active.
+          <a
+            href={siteConfig.links.discordBoost}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='underline underline-offset-4 hover:text-foreground'
+          >
+            Server boosters
+          </a>{" "}
+          get ad-free browsing and the Server Booster badge while their boost
+          lasts.
         </Typography>
+        <div className='mt-3 flex flex-wrap justify-center gap-2'>
+          <UserBadge type={BadgeType.DONATOR} />
+          <UserBadge type={BadgeType.SERVER_BOOSTER} />
+        </div>
 
         <ul className='mt-6 grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2'>
           <DonateButton

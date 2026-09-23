@@ -4,11 +4,12 @@ export enum BadgeType {
   OFFICIAL = "official",
   CONTRIBUTOR = "contributor",
   SUPPORTER = "supporter",
+  SERVER_BOOSTER = "server_booster",
 }
 
 export interface UserBadge {
   verifiedType?: BadgeType.OFFICIAL | BadgeType.CONTENT_CREATOR;
   isDonator?: boolean;
   isSubscriber?: boolean;
-  isNitroBooster?: boolean;
+  isServerBooster?: boolean;
 }

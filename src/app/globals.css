@@ -519,3 +519,36 @@
     animation: boost-shimmer 900ms ease-out 300ms both;
   }
 }
+
+/* A canvas keeps its intrinsic size under inset alone, so the bleed is spelled
+   out. Both buttons are positioned so they paint over the glow wrapper. */
+.boost-glow-layer {
+  --glow-bleed: 9px;
+  position: absolute;
+  top: calc(-1 * var(--glow-bleed));
+  left: calc(-1 * var(--glow-bleed));
+  width: calc(100% + 2 * var(--glow-bleed));
+  height: calc(100% + 2 * var(--glow-bleed));
+  pointer-events: none;
+  filter: blur(10px);
+}
+.boost-glow-hover {
+  filter: blur(8px);
+  mix-blend-mode: plus-lighter;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+/* Gated so a tap on a phone doesn't leave it lit. */
+@media (hover: hover) {
+  .boost-glow:hover .boost-glow-hover {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boost-glow-layer:not(.boost-glow-hover) {
+    filter: blur(7px);
+  }
+  .boost-glow-hover {
+    transition: opacity 150ms ease-out !important;
+  }
+}

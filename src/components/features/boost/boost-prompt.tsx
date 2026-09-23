@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { GemIcon } from "@/components/shared/gem-icon";
 
+import { BoostGlow } from "./boost-glow";
+
 export type BoostPromptVariant = "linked" | "unlinked";
 
 const SONNER_ID = "boost-prompt";
@@ -37,7 +39,7 @@ const FOCUS_OUTLINE =
 const CTA_CLASS = cn(
   buttonVariants(),
   FOCUS_OUTLINE,
-  "h-10 flex-1 rounded-[8px] bg-(color:--boost-cta) font-semibold text-(color:--boost-cta-text) hover:bg-(color:--boost-cta-hover) active:bg-(color:--boost-cta-active)",
+  "relative h-10 w-full rounded-[8px] bg-(color:--boost-cta) font-semibold text-(color:--boost-cta-text) hover:bg-(color:--boost-cta-hover) active:bg-(color:--boost-cta-active)",
 );
 
 const QUIET_BUTTON_CLASS =
@@ -126,21 +128,23 @@ function BoostPromptCard({ variant, onCta, onDismiss }: BoostPromptProps) {
         {copy.body}
       </p>
       <div className='mt-4 flex gap-2'>
-        {variant === "linked" ? (
-          <a
-            href={siteConfig.links.discordBoost}
-            target='_blank'
-            rel='noopener noreferrer'
-            onClick={onCta}
-            className={CTA_CLASS}
-          >
-            {copy.cta}
-          </a>
-        ) : (
-          <Button type='button' onClick={onCta} className={CTA_CLASS}>
-            {copy.cta}
-          </Button>
-        )}
+        <BoostGlow className='flex-1'>
+          {variant === "linked" ? (
+            <a
+              href={siteConfig.links.discordBoost}
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={onCta}
+              className={CTA_CLASS}
+            >
+              {copy.cta}
+            </a>
+          ) : (
+            <Button type='button' onClick={onCta} className={CTA_CLASS}>
+              {copy.cta}
+            </Button>
+          )}
+        </BoostGlow>
         <Button
           type='button'
           variant='ghost'
@@ -148,7 +152,7 @@ function BoostPromptCard({ variant, onCta, onDismiss }: BoostPromptProps) {
           className={cn(
             FOCUS_OUTLINE,
             QUIET_BUTTON_CLASS,
-            "h-10 rounded-[8px] dark:hover:bg-(color:--boost-wash)",
+            "relative h-10 rounded-[8px] dark:hover:bg-(color:--boost-wash)",
           )}
         >
           Not now

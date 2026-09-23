@@ -110,6 +110,19 @@ function boostPrompt() {
   return screen.queryByText(BOOST_TITLE);
 }
 
+function stubMatchMedia(matches: (query: string) => boolean) {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: matches(query),
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
+
 beforeEach(() => {
   // Sonner defers dismissals to requestAnimationFrame.
   vi.useFakeTimers({
@@ -125,16 +138,9 @@ beforeEach(() => {
   });
   vi.setSystemTime(DAY_1);
   localStorage.clear();
-  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
+  stubMatchMedia(() => false);
+  // Unless a test hands the glow a context.
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
 
   setAudience("linked");
   mocks.useIsAdFree.mockReturnValue(false);
@@ -151,6 +157,7 @@ afterEach(async () => {
   toast.dismiss();
   vi.useRealTimers();
   vi.clearAllMocks();
+  vi.restoreAllMocks();
 });
 
 // Day one only stamps firstSeenDay, so tests that want the prompt start on the
@@ -184,6 +191,41 @@ async function expectHiddenThenShownAfterDays(from: number, days: number) {
   session = await sessionShowsPrompt();
   expect(session.shown).toBe(true);
   return session.view;
+}
+
+// Every frame starts by clearing the glow canvas, so clears count frames.
+function stubCanvas() {
+  const clearRect = vi.fn();
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(
+    () =>
+      ({
+        clearRect,
+        fillRect: vi.fn(),
+        drawImage: vi.fn(),
+        setTransform: vi.fn(),
+        createRadialGradient: () => ({ addColorStop: vi.fn() }),
+      }) as unknown as CanvasRenderingContext2D,
+  );
+  return { frames: () => clearRect.mock.calls.length };
+}
+
+function preferReducedMotion() {
+  stubMatchMedia((query) => query.includes("prefers-reduced-motion: reduce"));
+}
+
+function setTabHidden(hidden: boolean) {
+  Object.defineProperty(document, "hidden", {
+    configurable: true,
+    get: () => hidden,
+  });
+  act(() => {
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+}
+
+function glowCanvases() {
+  const card = screen.getByRole("status", { name: BOOST_TITLE });
+  return Array.from(card.querySelectorAll("canvas"));
 }
 
 describe("BannerWrapper boost prompt", () => {
@@ -518,6 +560,90 @@ describe("BannerWrapper boost prompt", () => {
       const { shown } = await sessionShowsPrompt();
       expect(shown).toBe(false);
       vi.restoreAllMocks();
+    });
+  });
+
+  describe("CTA glow", () => {
+    afterEach(() => {
+      Reflect.deleteProperty(document, "hidden");
+    });
+
+    it("holds a still CSS glow when canvas is unavailable", async () => {
+      await visitFirstDay();
+      await sessionShowsPrompt();
+
+      const canvases = glowCanvases();
+      expect(canvases.length).toBeGreaterThan(0);
+      for (const canvas of canvases) {
+        expect(canvas).toHaveAttribute("aria-hidden", "true");
+        for (const rgb of [
+          "34, 184, 240",
+          "106, 114, 234",
+          "242, 92, 200",
+          "69, 224, 180",
+        ]) {
+          expect(canvas.style.backgroundImage).toContain(`rgba(${rgb}, 0.95)`);
+        }
+      }
+      await advance(1000);
+      fireEvent.click(screen.getByRole("link", { name: "Boost on Discord" }));
+      expect(mocks.trackEvent).toHaveBeenCalledWith("boost_prompt_clicked", {
+        variant: "linked",
+      });
+    });
+
+    it("drifts while the tab is visible", async () => {
+      const canvas = stubCanvas();
+      await visitFirstDay();
+      await sessionShowsPrompt();
+
+      const before = canvas.frames();
+      await advance(1000);
+      expect(canvas.frames()).toBeGreaterThan(before + 30);
+    });
+
+    it("pauses while the tab is hidden and resumes on return", async () => {
+      const canvas = stubCanvas();
+      await visitFirstDay();
+      await sessionShowsPrompt();
+
+      setTabHidden(true);
+      const paused = canvas.frames();
+      await advance(1000);
+      expect(canvas.frames()).toBe(paused);
+
+      setTabHidden(false);
+      await advance(1000);
+      expect(canvas.frames()).toBeGreaterThan(paused + 30);
+    });
+
+    it("stops for good once the prompt closes", async () => {
+      const canvas = stubCanvas();
+      await visitFirstDay();
+      await sessionShowsPrompt();
+
+      dismissVia("not-now");
+      await advance(1000);
+      await advance(1000);
+      expect(boostPrompt()).not.toBeInTheDocument();
+
+      const closed = canvas.frames();
+      setTabHidden(true);
+      setTabHidden(false);
+      await advance(1000);
+      expect(canvas.frames()).toBe(closed);
+    });
+
+    it("holds one still frame under reduced motion", async () => {
+      const canvas = stubCanvas();
+      await visitFirstDay();
+      preferReducedMotion();
+      await sessionShowsPrompt();
+
+      const still = canvas.frames();
+      expect(still).toBeGreaterThan(0);
+      await advance(1000);
+      expect(canvas.frames()).toBe(still);
     });
   });
 

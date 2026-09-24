@@ -18,14 +18,14 @@ describe("Footer hosting link", () => {
     expect(link).not.toHaveAttribute("target", "_blank");
   });
 
-  it("tags footer clicks for Umami under their own placement", () => {
+  it("tags footer clicks for Rybbit under their own placement", () => {
     render(<Footer />);
 
     const link = screen.getByRole("link", {
       name: pineConfig.copy.footerLinkLabel,
     });
-    expect(link).toHaveAttribute("data-umami-event", "pine-click");
-    expect(link).toHaveAttribute("data-umami-event-placement", "footer");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-prop-placement", "footer");
   });
 
   it("highlights the Hosting label with the shimmer treatment", () => {

@@ -103,9 +103,9 @@ function SidebarPineCard({
       <p className='mt-1 text-xs leading-snug text-muted-foreground'>{pitch}</p>
       <Link
         href='/hosting'
-        data-umami-event='pine-click'
-        data-umami-event-placement='sidebar'
-        data-umami-event-audience={audience}
+        data-rybbit-event='pine-click'
+        data-rybbit-prop-placement='sidebar'
+        data-rybbit-prop-audience={audience}
         className={cn(
           buttonVariants({ size: "sm" }),
           "mt-2 h-8 w-full gap-1.5 text-xs font-medium",

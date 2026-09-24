@@ -10,23 +10,27 @@ import { Icons } from "@/components/shared/icons";
 type FooterLink = {
   name: string;
   href: string;
-  /** When set, attributes the click to this Pine placement for Umami. */
-  umami?: PinePlacement;
+  /** When set, attributes the click to this Pine placement for Rybbit. */
+  pinePlacement?: PinePlacement;
 };
 
 const navigation: FooterLink[] = [
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Steam Guide", href: "/steam-guide" },
-  { name: pineConfig.copy.footerLinkLabel, href: "/hosting", umami: "footer" },
+  {
+    name: pineConfig.copy.footerLinkLabel,
+    href: "/hosting",
+    pinePlacement: "footer",
+  },
   { name: "Donate", href: "/donate" },
 ];
 
-/** Umami attributes for a Pine-tagged footer link, or nothing for plain nav. */
-function umamiProps(placement: PinePlacement | undefined) {
+/** Rybbit attributes for a Pine-tagged footer link, or nothing for plain nav. */
+function rybbitProps(placement: PinePlacement | undefined) {
   return placement
     ? {
-        "data-umami-event": "pine-click",
-        "data-umami-event-placement": placement,
+        "data-rybbit-event": "pine-click",
+        "data-rybbit-prop-placement": placement,
       }
     : {};
 }
@@ -43,7 +47,7 @@ export function Footer() {
             // Highlight the Pine "Hosting" link with a shimmering primary tint
             // so it stands apart from its plain siblings.
             const label =
-              item.umami === "footer" ? (
+              item.pinePlacement === "footer" ? (
                 <span className='pine-shimmer font-medium'>{item.name}</span>
               ) : (
                 item.name
@@ -62,7 +66,7 @@ export function Footer() {
                 ) : (
                   <Link
                     href={item.href}
-                    {...umamiProps(item.umami)}
+                    {...rybbitProps(item.pinePlacement)}
                     className={cn(
                       buttonVariants({ variant: "link" }),
                       cn(

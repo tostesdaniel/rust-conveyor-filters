@@ -61,8 +61,8 @@ describe("SidebarPromoCard", () => {
       name: pineConfig.copy.sidebar.ctaLabel,
     });
     expect(link).toHaveAttribute("href", "/hosting");
-    expect(link).toHaveAttribute("data-umami-event-placement", "sidebar");
-    expect(link).toHaveAttribute("data-umami-event-audience", "rolled");
+    expect(link).toHaveAttribute("data-rybbit-prop-placement", "sidebar");
+    expect(link).toHaveAttribute("data-rybbit-prop-audience", "rolled");
     // The donate card is replaced, not stacked.
     expect(
       screen.queryByRole("link", { name: /subscribe/i }),
@@ -81,9 +81,9 @@ describe("SidebarPromoCard", () => {
     // Internal link to /hosting, not an outbound affiliate URL.
     expect(link).toHaveAttribute("href", "/hosting");
     expect(link).not.toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("data-umami-event", "pine-click");
-    expect(link).toHaveAttribute("data-umami-event-placement", "sidebar");
-    expect(link).toHaveAttribute("data-umami-event-audience", "adfree");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-prop-placement", "sidebar");
+    expect(link).toHaveAttribute("data-rybbit-prop-audience", "adfree");
 
     expect(
       screen.getByText(pineConfig.copy.sponsoredLabel),

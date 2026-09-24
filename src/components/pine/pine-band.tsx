@@ -52,8 +52,8 @@ export function PineBand({ placement, creative }: PineBandProps) {
       href={buildPineUrl()}
       target='_blank'
       rel='sponsored noopener'
-      data-umami-event='pine-click'
-      data-umami-event-placement={placement}
+      data-rybbit-event='pine-click'
+      data-rybbit-prop-placement={placement}
       className='relative block w-full'
     >
       <CreativeBox

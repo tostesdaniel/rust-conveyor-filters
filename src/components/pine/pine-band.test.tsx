@@ -28,12 +28,12 @@ describe("PineBand", () => {
     expect(link).toHaveAttribute("rel", "sponsored noopener");
   });
 
-  it("tags the click for Umami with the placement as a property", () => {
+  it("tags the click for Rybbit with the placement as a property", () => {
     render(<PineBand placement='hosting-page' creative={CREATIVE} />);
 
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("data-umami-event", "pine-click");
-    expect(link).toHaveAttribute("data-umami-event-placement", "hosting-page");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-prop-placement", "hosting-page");
   });
 
   it("announces the creative's alt text on its imagery", () => {

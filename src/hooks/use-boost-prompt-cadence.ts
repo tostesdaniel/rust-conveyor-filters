@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 const STORAGE_KEY = "boost-prompt-v1";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const CLICK_SNOOZE_MS = 30 * DAY_MS;
+const CONNECT_SNOOZE_MS = DAY_MS;
 
 interface BoostPromptState {
   firstSeenDay: string;
@@ -90,5 +91,12 @@ export function useBoostPromptCadence(eligible: boolean) {
     }));
   }, []);
 
-  return { due, recordDismiss, recordClick };
+  const recordConnectClick = useCallback(() => {
+    updateState((state) => ({
+      ...state,
+      nextDueAt: Date.now() + CONNECT_SNOOZE_MS,
+    }));
+  }, []);
+
+  return { due, recordDismiss, recordClick, recordConnectClick };
 }

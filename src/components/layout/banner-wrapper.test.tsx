@@ -536,6 +536,24 @@ describe("BannerWrapper boost prompt", () => {
       await expectHiddenThenShownAfterDays(answeredAt, 7);
     });
 
+    it("brings the linked prompt a day after Connect Discord without advancing the dismiss ladder", async () => {
+      setAudience("unlinked");
+      await visitFirstDay();
+      const session = await sessionShowsPrompt();
+
+      let answeredAt = Date.now();
+      fireEvent.click(screen.getByRole("button", { name: "Connect Discord" }));
+      await endSession(session.view);
+      setAudience("linked");
+      const view = await expectHiddenThenShownAfterDays(answeredAt, 1);
+      expect(screen.getByText(LINKED_BODY)).toBeInTheDocument();
+
+      answeredAt = Date.now();
+      dismissVia("not-now");
+      await endSession(view);
+      await expectHiddenThenShownAfterDays(answeredAt, 7);
+    });
+
     it("comes back next session when left unanswered", async () => {
       await visitFirstDay();
       const first = await sessionShowsPrompt();

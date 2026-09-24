@@ -146,7 +146,7 @@ export function BannerWrapper() {
     trackEvent("adblock_modal_shown");
   }, [markShown]);
 
-  const { recordClick, recordDismiss } = boostCadence;
+  const { recordClick, recordConnectClick, recordDismiss } = boostCadence;
   // StrictMode runs effects twice in dev, which double-tracked the show.
   const boostOpened = useRef(false);
   useEffect(() => {
@@ -159,8 +159,12 @@ export function BannerWrapper() {
       variant,
       onCta: () => {
         trackEvent("boost_prompt_clicked", { variant });
-        recordClick();
-        if (variant === "unlinked") openUserProfile();
+        if (variant === "unlinked") {
+          recordConnectClick();
+          openUserProfile();
+        } else {
+          recordClick();
+        }
         setActiveSurface("none");
       },
       onDismiss: () => {
@@ -174,6 +178,7 @@ export function BannerWrapper() {
     boostVariant,
     openUserProfile,
     recordClick,
+    recordConnectClick,
     recordDismiss,
   ]);
 

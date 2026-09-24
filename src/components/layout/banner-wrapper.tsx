@@ -18,6 +18,8 @@ import { DonateUpgradeModal } from "@/components/features/donation/donate-upgrad
 import { AdblockModal } from "@/components/nitro/adblock-modal";
 import { useAdblockDetected } from "@/components/nitro/use-adblock-detected";
 
+import { useSurfaceForced } from "./forced-surface-store";
+
 // Grace period from mount so the modal never collides with first paint.
 const ADBLOCK_MODAL_DELAY_MS = 4000;
 const BOOST_PROMPT_DELAY_MS = 6000;
@@ -60,6 +62,7 @@ export function BannerWrapper() {
   } = useEngagementScore();
 
   const pathname = usePathname();
+  const surfaceForced = useSurfaceForced();
   const adblockDetected = useAdblockDetected();
   const { inCooldown, markShown } = useAdblockCooldown();
 
@@ -91,7 +94,9 @@ export function BannerWrapper() {
   }, [adblockDetected, isAdFree]);
 
   useEffect(() => {
-    if (activeSurface !== "none" || surfaceShownThisSession) return;
+    if (surfaceForced || activeSurface !== "none" || surfaceShownThisSession) {
+      return;
+    }
 
     const onAdRoute = isAdRoute(pathname);
     const adblockPending = adblockDetected === null && !inCooldown;
@@ -123,6 +128,7 @@ export function BannerWrapper() {
     surfaceShownThisSession = true;
     setActiveSurface(next);
   }, [
+    surfaceForced,
     activeSurface,
     adblockDelayElapsed,
     boostDelayElapsed,
@@ -171,7 +177,7 @@ export function BannerWrapper() {
     recordDismiss,
   ]);
 
-  if (isAdFree) return null;
+  if (isAdFree || surfaceForced) return null;
 
   if (activeSurface === "adblock") {
     return (

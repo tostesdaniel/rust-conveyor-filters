@@ -162,6 +162,10 @@ function BoostPromptCard({ variant, onCta, onDismiss }: BoostPromptProps) {
   );
 }
 
+export function hideBoostPrompt() {
+  toast.dismiss(SONNER_ID);
+}
+
 // Sonner fires onDismiss for swipes and for our own toast.dismiss, so only the
 // first exit counts.
 export function showBoostPrompt({

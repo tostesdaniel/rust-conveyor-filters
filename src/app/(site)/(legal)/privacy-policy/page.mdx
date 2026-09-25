@@ -2,7 +2,7 @@ import { Typography } from "@/components/shared/typography";
 
 # Privacy Policy
 
-Last updated on March 26, 2026
+Last updated on September 24, 2026
 
 ## 1. Information We Collect
 
@@ -59,13 +59,15 @@ We use cookies to enhance your experience on our site. Cookies are small data fi
 
 - **Strictly Necessary Cookies**: Essential for the operation of our service, including authentication cookies set by [Clerk](https://clerk.com/).
   - **First Party Cookies**: `_session`, `_client_uat`
-  - **Third Party Cookies**: `_cfduid` (set by Cloudflare for security and performance)
+  - **Third Party Cookies**: `__cf_bm` and `cf_clearance` (set by Cloudflare when its bot protection checks a visit)
 
 - **Advertising Cookies**: Set by NitroPay and its advertising partners to deliver targeted ads and measure ad performance. These cookies may track your browsing behavior across websites. EU users will be prompted for consent before these cookies are set.
 
-- **Analytics Cookies**: Used to understand how visitors interact with our website.
+- **Analytics**: Used to understand how visitors interact with our website.
+  - **Rybbit**: our own analytics, hosted on our server. It sets no cookies. It stores a random visitor ID (`rybbit-visitor-id`) in your browser's local storage so repeat visits can be counted. This data is not shared with anyone.
+  - **Google Analytics**: sets the `_ga` and `_ga_BGERZ3ES1R` cookies.
 
-You can control cookie preferences through your browser settings or, for EU users, through the NitroPay CMP consent manager linked above.
+You can control cookie preferences through your browser settings or, for EU users, through the NitroPay CMP consent manager linked above. Clearing your browser's site data also removes the Rybbit visitor ID.
 
 ## 6. Security
 

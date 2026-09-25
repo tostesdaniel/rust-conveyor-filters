@@ -43,9 +43,7 @@ describe("Analytics", () => {
 
     const script = renderScript();
 
-    expect(script?.getAttribute("src")).toBe(
-      "https://sapo.example.com/api/script.js",
-    );
+    expect(script?.getAttribute("src")).toBe("/analytics/script.js");
     expect(script?.getAttribute("data-site-id")).toBe("1");
     expect(script?.getAttribute("data-tag")).toBe("ecaec53");
     expect(

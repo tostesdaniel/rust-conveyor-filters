@@ -2,8 +2,15 @@ import createMDX from "@next/mdx";
 
 const rybbitHost = process.env.NEXT_PUBLIC_RYBBIT_HOST;
 
-// Unset var would leave a literal "undefined" origin in the policy.
-const rybbit = rybbitHost ? [rybbitHost] : [];
+const RYBBIT_PROXY_PATHS = [
+  "script.js",
+  "replay.js",
+  "metrics.js",
+  "track",
+  "identify",
+  "session-replay/record/:siteId",
+  "site/tracking-config/:siteId",
+];
 
 const clerk = [
   "https://*.clerk.accounts.dev",
@@ -19,11 +26,11 @@ const googleAnalytics = [
 
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${[...clerk, ...rybbit, ...googleAnalytics, "https://s.nitropay.com"].join(" ")}`,
+  `script-src 'self' 'unsafe-inline' ${[...clerk, ...googleAnalytics, "https://s.nitropay.com"].join(" ")}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https://cdn.rustconveyorfilters.com https://images.steamusercontent.com https://img.clerk.com ${googleAnalytics.join(" ")}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${[...clerk, ...rybbit, ...googleAnalytics].join(" ")}`,
+  `connect-src 'self' ${[...clerk, ...googleAnalytics].join(" ")}`,
   "worker-src 'self' blob:",
   `frame-src 'self' ${clerk.join(" ")}`,
   "form-action 'self'",
@@ -74,18 +81,13 @@ const nextConfig = {
       },
     ];
   },
-  // rewrites: async () => {
-  //   return [
-  //     {
-  //       source: "/api/script.js",
-  //       destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`,
-  //     },
-  //     {
-  //       source: "/api/track",
-  //       destination: `${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/track`,
-  //     },
-  //   ];
-  // },
+  rewrites: async () => {
+    if (!rybbitHost) return [];
+    return RYBBIT_PROXY_PATHS.map((path) => ({
+      source: `/analytics/${path}`,
+      destination: `${rybbitHost}/api/${path}`,
+    }));
+  },
 };
 
 const withMDX = createMDX();

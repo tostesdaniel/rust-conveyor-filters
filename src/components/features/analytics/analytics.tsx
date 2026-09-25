@@ -14,7 +14,7 @@ export function Analytics() {
 
   return (
     <Script
-      src={`${host}/api/script.js`}
+      src='/analytics/script.js'
       data-site-id='1'
       data-mask-patterns={MASK_PATTERNS}
       data-tag={process.env.NEXT_PUBLIC_COMMIT_SHA?.slice(0, 7)}

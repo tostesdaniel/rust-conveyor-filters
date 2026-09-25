@@ -10,6 +10,8 @@ function item(
     name: overrides.shortname,
     description: `A ${overrides.shortname}.`,
     category: "Items",
+    stackSize: 1,
+    itemType: "Generic",
     insertable: true,
     hidden: false,
     redirectTo: null,

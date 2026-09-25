@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { itemTypeEnum, type ItemType } from "@/db/schema";
+
 export const SNAPSHOT_PATH = path.join(
   process.cwd(),
   "src",
@@ -24,6 +26,8 @@ export interface SnapshotItem {
   name: string;
   description: string;
   category: string;
+  stackSize: number;
+  itemType: ItemType;
   insertable: boolean;
   hidden: boolean;
   redirectTo: number | null;
@@ -56,9 +60,14 @@ export interface ItemJson {
   itemid: number;
   shortname: string;
   Name: string;
-  /** Null on 12 items, the boats and the wallpapers among them. */
   Description: string | null;
   Category: string;
+  ItemType: string;
+  stackable: number;
+}
+
+function isItemType(value: string): value is ItemType {
+  return (itemTypeEnum.enumValues as readonly string[]).includes(value);
 }
 
 export function isInsertable(flags: ItemFlags) {
@@ -86,12 +95,18 @@ export function buildItems(
     if (!json || json.itemid !== f.itemId) {
       throw new Error(`no item JSON matches ${f.shortname} (${f.itemId})`);
     }
+    const itemType = json.ItemType;
+    if (!isItemType(itemType)) {
+      throw new Error(`${f.shortname} has item type ${itemType}`);
+    }
     return {
       itemId: f.itemId,
       shortname: f.shortname,
       name: json.Name,
       description: json.Description ?? "",
       category: json.Category,
+      stackSize: json.stackable,
+      itemType,
       insertable: isInsertable(f),
       hidden: f.hidden,
       redirectTo: f.redirectTo,
@@ -144,7 +159,6 @@ export async function readSnapshot(
   }
 }
 
-/** One item per line, so a monthly PR diff reads as a list of changed items. */
 export function serializeSnapshot(snapshot: ItemSnapshot) {
   const items = snapshot.items.map((i) => `    ${JSON.stringify(i)}`);
   return [

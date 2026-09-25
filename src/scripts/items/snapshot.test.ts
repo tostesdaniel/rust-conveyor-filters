@@ -31,6 +31,8 @@ function json(f: ItemFlags, extra: Partial<ItemJson> = {}): [string, ItemJson] {
       Name: f.shortname.toUpperCase(),
       Description: `A ${f.shortname}.`,
       Category: "Items",
+      ItemType: "Generic",
+      stackable: 1,
       ...extra,
     },
   ];
@@ -131,6 +133,8 @@ describe("buildItems", () => {
         Name: "junk",
         Description: "junk",
         Category: "Items",
+        ItemType: "Generic",
+        stackable: 1,
       },
     ];
     const plushie: [string, ItemJson] = [
@@ -141,6 +145,8 @@ describe("buildItems", () => {
         Name: "x",
         Description: "x",
         Category: "Fun",
+        ItemType: "Generic",
+        stackable: 1,
       },
     ];
     const items = buildItems(
@@ -150,6 +156,35 @@ describe("buildItems", () => {
     );
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe("Car");
+  });
+
+  it("takes the stack size and item type from the JSON dump", () => {
+    const [item] = buildItems(
+      [wood],
+      new Map([json(wood, { stackable: 1000 })]),
+      [],
+    );
+    expect(item).toMatchObject({ stackSize: 1000, itemType: "Generic" });
+  });
+
+  it("keeps a liquid insertable", () => {
+    const water = flags({ itemId: 8, shortname: "water" });
+    const [item] = buildItems(
+      [water],
+      new Map([json(water, { ItemType: "Liquid", stackable: 2147483647 })]),
+      [],
+    );
+    expect(item).toMatchObject({
+      itemType: "Liquid",
+      stackSize: 2147483647,
+      insertable: true,
+    });
+  });
+
+  it("fails loudly on an item type it doesn't know", () => {
+    expect(() =>
+      buildItems([wood], new Map([json(wood, { ItemType: "Gas" })]), []),
+    ).toThrow(/wood.*Gas/);
   });
 
   it("fails loudly when a definition has no JSON", () => {

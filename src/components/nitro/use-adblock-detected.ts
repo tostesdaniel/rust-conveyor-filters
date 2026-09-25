@@ -14,17 +14,22 @@ const MAX_WAIT_MS = 8000;
  * Catches blockers that block the script outright (uBlock Origin, uBlock Lite,
  * Brave Shields); not those that load the script but block the ad creatives
  * downstream (AdGuard). Resolves once per page load; the result is latched.
+ * Null until it resolves, which can take the full 8s when ads are blocked.
  */
-export function useAdblockDetected(): boolean {
-  const [blocked, setBlocked] = useState(false);
+export function useAdblockDetected(): boolean | null {
+  const [blocked, setBlocked] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (window.nitroAds?.loaded === true) return;
+    if (window.nitroAds?.loaded === true) {
+      setBlocked(false);
+      return;
+    }
 
     const startedAt = Date.now();
     const interval = window.setInterval(() => {
       if (window.nitroAds?.loaded === true) {
         window.clearInterval(interval);
+        setBlocked(false);
       } else if (Date.now() - startedAt >= MAX_WAIT_MS) {
         window.clearInterval(interval);
         setBlocked(true);

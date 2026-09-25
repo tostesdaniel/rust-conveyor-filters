@@ -9,8 +9,8 @@ declare global {
     isLegacyDonator?: boolean;
     /** Active subscribers - set via billing webhook */
     isSubscriber?: boolean;
-    /** Discord Nitro Boosters - ad-free as community thank-you */
-    isNitroBooster?: boolean;
+    /** Server boosters - badge + ad-free while the boost lasts */
+    isServerBooster?: boolean;
     /** PayNow customer id linked to this Clerk user */
     paynowCustomerId?: string;
   }

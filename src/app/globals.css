@@ -397,3 +397,179 @@
     animation-delay: calc(var(--i, 0) * 80ms);
   }
 }
+
+.boost-card,
+.boost-banner {
+  --boost-base: hsl(246 6% 96%);
+  --boost-glow-from: rgba(200, 150, 238, 0.45);
+  --boost-glow-to: rgba(168, 124, 212, 0.22);
+  --boost-cta: hsl(237 78% 63%);
+  --boost-cta-hover: hsl(236 50% 52%);
+  --boost-cta-active: hsl(236 48% 45%);
+  --boost-cta-text: #ffffff;
+  --boost-title: hsl(240 6% 15%);
+  --boost-title-shadow: none;
+  --boost-muted: color-mix(in oklab, var(--boost-title) 80%, transparent);
+  --boost-wash: color-mix(in oklab, var(--boost-title) 8%, transparent);
+  --boost-mint: #45e0b4;
+  --boost-lavender: #c4c8f6;
+  --boost-new: hsl(164 72% 28%);
+}
+
+.boost-card {
+  background:
+    radial-gradient(
+      ellipse 100% 72% at 50% 0,
+      var(--boost-glow-from) 0,
+      var(--boost-glow-to) 50%,
+      transparent 80%
+    ),
+    var(--boost-base);
+}
+
+.boost-banner {
+  background:
+    radial-gradient(
+      ellipse 38% 260% at 50% 50%,
+      var(--boost-glow-from) 0,
+      var(--boost-glow-to) 45%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 22% 260% at 0% 50%,
+      var(--boost-glow-to) 0,
+      transparent 75%
+    ),
+    var(--boost-base);
+}
+
+.dark .boost-card,
+.dark .boost-banner {
+  --boost-base: hsl(236 8% 16%);
+  --boost-glow-from: rgba(146, 94, 214, 0.55);
+  --boost-glow-to: rgba(84, 52, 140, 0.28);
+  --boost-cta: #ffffff;
+  --boost-cta-hover: #ffffff;
+  --boost-cta-active: hsl(240 6% 90%);
+  --boost-cta-text: hsl(240 6% 10%);
+  --boost-title: hsl(0 0% 98%);
+  --boost-title-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  --boost-new: var(--boost-mint);
+}
+
+/* Sonner owns the <li> transform (stacking and swipe drag both write --y), so
+   motion goes through --y and its own data attributes. The extra attribute
+   selectors outrank Sonner's styles, which it injects after ours. The exit is
+   front-only so a stacked prompt still leaves from its slot in the stack. */
+[data-sonner-toast].boost-toast[data-swiping="false"] {
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 400ms;
+}
+[data-sonner-toast].boost-toast[data-mounted="false"] {
+  --y: translateY(16px);
+}
+[data-sonner-toast].boost-toast[data-removed="true"][data-front="true"][data-swipe-out="false"] {
+  --y: translateY(8px);
+  transition:
+    transform 200ms ease-in,
+    opacity 200ms ease-in;
+}
+
+/* Sonner and the global rule above both cut every transition to nothing under
+   reduced motion, which would pop the card in. Keep the fade, drop the travel. */
+@media (prefers-reduced-motion: reduce) {
+  [data-sonner-toast].boost-toast[data-mounted="false"],
+  [data-sonner-toast].boost-toast[data-removed="true"][data-front="true"][data-swipe-out="false"] {
+    --y: translateY(0);
+  }
+  [data-sonner-toast].boost-toast[data-swiping="false"] {
+    transition: opacity 500ms ease-out !important;
+  }
+  [data-sonner-toast].boost-toast[data-removed="true"][data-front="true"][data-swipe-out="false"] {
+    transition: opacity 200ms ease-in !important;
+  }
+}
+
+@keyframes boost-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes boost-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Same outline as the path in GemIcon, so the sweep never spills past it. */
+.boost-shimmer {
+  clip-path: polygon(
+    33.3% 16.7%,
+    66.7% 16.7%,
+    91.7% 37.5%,
+    50% 87.5%,
+    8.3% 37.5%
+  );
+  background: linear-gradient(
+      115deg,
+      transparent 42%,
+      rgb(255 255 255 / 0.75) 50%,
+      transparent 58%
+    )
+    100% 0 / 250% 100% no-repeat;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .boost-sparkle {
+    animation: boost-twinkle var(--twinkle-duration) ease-in-out
+      var(--twinkle-delay) infinite both;
+  }
+  .boost-shimmer {
+    animation: boost-shimmer 900ms ease-out 300ms both;
+  }
+}
+
+/* A canvas keeps its intrinsic size under inset alone, so the bleed is spelled
+   out. Both buttons are positioned so they paint over the glow wrapper. */
+.boost-glow-layer {
+  --glow-bleed: 9px;
+  position: absolute;
+  top: calc(-1 * var(--glow-bleed));
+  left: calc(-1 * var(--glow-bleed));
+  width: calc(100% + 2 * var(--glow-bleed));
+  height: calc(100% + 2 * var(--glow-bleed));
+  pointer-events: none;
+  filter: blur(10px);
+}
+.boost-glow-hover {
+  filter: blur(8px);
+  mix-blend-mode: plus-lighter;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+/* Gated so a tap on a phone doesn't leave it lit. */
+@media (hover: hover) {
+  .boost-glow:hover .boost-glow-hover {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boost-glow-layer:not(.boost-glow-hover) {
+    filter: blur(7px);
+  }
+  .boost-glow-hover {
+    transition: opacity 150ms ease-out !important;
+  }
+}

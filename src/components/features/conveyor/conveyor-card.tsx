@@ -76,6 +76,7 @@ export function ConveyorCard() {
           />
           <ExportConveyorFilter
             type='button'
+            source='editor'
             filter={normalizeFilterData(filter)}
             className='w-full min-[550px]:w-auto'
           />

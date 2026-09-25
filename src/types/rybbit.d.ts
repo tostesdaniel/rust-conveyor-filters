@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 interface Rybbit {
   /**
    * Tracks a page view
@@ -10,7 +9,14 @@ interface Rybbit {
    * @param name Name of the event
    * @param properties Optional properties for the event
    */
-  event: (name: string, properties?: Record<string, any>) => void;
+  event: (name: string, properties?: Record<string, string | number>) => void;
+
+  /**
+   * Tracks a caught error
+   * @param error The error to report
+   * @param properties Optional properties for the error
+   */
+  error: (error: Error, properties?: Record<string, string | number>) => void;
 
   /**
    * Sets a custom user ID for tracking logged-in users
@@ -43,6 +49,11 @@ interface Rybbit {
    * @param target Optional target attribute of the link
    */
   trackOutbound: (url: string, text?: string, target?: string) => void;
+
+  /**
+   * Runs the callback once the script has loaded its site config
+   */
+  onReady: (callback: (api: Rybbit) => void) => void;
 }
 
 declare global {

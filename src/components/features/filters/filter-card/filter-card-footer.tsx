@@ -87,6 +87,7 @@ export function FilterCardFooter({ filter }: { filter: PublicFilterListDTO }) {
         <ViewFilter filter={filter} log remixFilterId={filter.id} />
         <ExportConveyorFilter
           type='button'
+          source='public_card'
           filter={filter.filterItems}
           filterId={filter.id}
           log

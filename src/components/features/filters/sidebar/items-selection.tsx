@@ -54,7 +54,7 @@ export function ItemsSelection() {
 
   const handleRemoveItem = useCallback(
     (item: string) => {
-      trackEvent("filter_item_removed", { item });
+      trackEvent("browse_item_removed", { item });
       const newItems =
         items && items.length > 1 ? items.filter((i) => i !== item) : null;
       setSearchParams(
@@ -177,7 +177,7 @@ function ItemsCombobox({
         });
       }
 
-      trackEvent("filter_item_added", { item: item.name });
+      trackEvent("browse_item_added", { item: item.name });
       setInputValue("");
       setSearchParams(
         { items: [...(items || []), item.name] },

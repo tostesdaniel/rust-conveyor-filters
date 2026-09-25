@@ -103,7 +103,7 @@ function SidebarPineCard({
       <p className='mt-1 text-xs leading-snug text-muted-foreground'>{pitch}</p>
       <Link
         href='/hosting'
-        data-rybbit-event='pine-click'
+        data-rybbit-event='pine_promo_clicked'
         data-rybbit-prop-placement='sidebar'
         data-rybbit-prop-audience={audience}
         className={cn(

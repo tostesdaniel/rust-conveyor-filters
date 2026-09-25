@@ -32,7 +32,7 @@ describe("PineBand", () => {
     render(<PineBand placement='hosting-page' creative={CREATIVE} />);
 
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine_outbound_clicked");
     expect(link).toHaveAttribute("data-rybbit-prop-placement", "hosting-page");
   });
 

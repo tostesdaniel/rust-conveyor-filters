@@ -53,7 +53,7 @@ export function BookmarkToggle({
     onSuccess: (data) => {
       trackEvent("filter_bookmark_toggled", {
         filterId,
-        bookmarked: data.bookmarked,
+        bookmarked: String(data.bookmarked),
       });
       if (data.bookmarked) {
         trackAction("bookmarkOn");

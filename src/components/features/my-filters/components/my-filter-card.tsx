@@ -161,7 +161,10 @@ export function MyFilterCard({
               href={`/my-filters/edit/${filter.id}`}
               className='block overflow-hidden font-medium text-ellipsis text-foreground/85 transition-colors hover:text-foreground'
               onClick={() => {
-                trackEvent("my_filter_edit_clicked", { filterId: filter.id });
+                trackEvent("my_filter_edit_clicked", {
+                  filterId: filter.id,
+                  source: "name",
+                });
               }}
             >
               {filter.name}
@@ -177,7 +180,11 @@ export function MyFilterCard({
         <div className='flex items-center gap-x-2 pr-2'>
           <div className='flex items-center gap-x-4'>
             {isFilterShared && <ViewFilter filter={filter} variant='icon' />}
-            <ExportConveyorFilter type='icon' filter={filter.filterItems} />
+            <ExportConveyorFilter
+              type='icon'
+              source='my_filters'
+              filter={filter.filterItems}
+            />
           </div>
 
           {isFilterShared && (
@@ -277,6 +284,7 @@ export function MyFilterCard({
                           onClick={() => {
                             trackEvent("my_filter_edit_clicked", {
                               filterId: filter.id,
+                              source: "menu",
                             });
                           }}
                         />
@@ -354,6 +362,7 @@ export function MyFilterCard({
                     />
                     <ExportConveyorFilter
                       type='dropdown'
+                      source='my_filters'
                       filter={filter.filterItems}
                     />
                   </DropdownMenuGroup>

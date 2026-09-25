@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "next/navigation";
+import { trackEvent } from "@/utils/rybbit";
 import { toast } from "sonner";
 
 import type { PublicFilterListDTO } from "@/types/filter";
@@ -54,6 +55,16 @@ export function FilterShareProvider({
       setSharedFilter({ filter, sharedBy });
     }
   }, [filter, sharedBy]);
+
+  const viewedFilterId = filter?.id;
+  useEffect(() => {
+    if (viewedFilterId) {
+      trackEvent("filter_viewed", {
+        filterId: viewedFilterId,
+        source: "share_link",
+      });
+    }
+  }, [viewedFilterId]);
 
   const openFilter = useCallback(
     (filter: PublicFilterListDTO, sharedBy: string | null = null) => {

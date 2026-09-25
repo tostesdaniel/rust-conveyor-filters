@@ -101,7 +101,7 @@ export default function ViewFilter({
 
   const handleOpenChange = (newOpen: boolean) => {
     if (newOpen && !open) {
-      trackEvent("filter_viewed", { filterId: filter.id });
+      trackEvent("filter_viewed", { filterId: filter.id, source: "card" });
       if (log) {
         logEvent("view", filter.id);
       }

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { api } from "@/trpc/react";
+import { trackEvent } from "@/utils/rybbit";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,6 +33,7 @@ export function CheckoutButton({
         if (!listenersBound.current) {
           PayNowJS.checkout.on("ready", () => setIsOpening(false));
           PayNowJS.checkout.on("completed", async () => {
+            trackEvent("checkout_completed", { interval });
             toast.success("Thanks for supporting the site!");
             await utils.billing.getMySubscription.invalidate();
             PayNowJS.checkout.close();
@@ -57,6 +59,7 @@ export function CheckoutButton({
 
   const handleClick = () => {
     onBeforeCheckout?.();
+    trackEvent("checkout_started", { interval });
     setIsOpening(true);
     createCheckout.mutate({ interval });
   };

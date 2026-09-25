@@ -15,7 +15,7 @@ export function PineCta({
       href={buildPineUrl()}
       target='_blank'
       rel='sponsored noopener'
-      data-rybbit-event='pine-click'
+      data-rybbit-event='pine_outbound_clicked'
       data-rybbit-prop-placement={placement}
       className={cn(
         "group inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all",

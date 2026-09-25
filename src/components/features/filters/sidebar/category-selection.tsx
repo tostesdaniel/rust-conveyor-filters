@@ -25,9 +25,9 @@ export function CategorySelection() {
     const isCurrentlySelected = currentCategories.includes(category);
 
     if (isCurrentlySelected) {
-      trackEvent("filter_category_toggled", {
+      trackEvent("browse_category_toggled", {
         category,
-        selected: false,
+        selected: "false",
       });
       setSearchParams({
         categories: currentCategories.filter((c) => c !== category),
@@ -42,9 +42,9 @@ export function CategorySelection() {
       return;
     }
 
-    trackEvent("filter_category_toggled", {
+    trackEvent("browse_category_toggled", {
       category,
-      selected: true,
+      selected: "true",
     });
     setSearchParams({
       categories: [...currentCategories, category],

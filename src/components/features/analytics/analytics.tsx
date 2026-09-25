@@ -1,15 +1,23 @@
 import Script from "next/script";
 
+const MASK_PATTERNS = JSON.stringify([
+  "/my-filters/edit/*",
+  "/auth/sign-in/**",
+]);
+
 export function Analytics() {
-  if (process.env.NODE_ENV !== "production") {
+  const host = process.env.NEXT_PUBLIC_RYBBIT_HOST;
+
+  if (process.env.NODE_ENV !== "production" || !host) {
     return null;
   }
 
   return (
     <Script
-      src={`${process.env.NEXT_PUBLIC_RYBBIT_HOST}/api/script.js`}
+      src='/analytics/script.js'
       data-site-id='1'
-      data-track-errors='true'
+      data-mask-patterns={MASK_PATTERNS}
+      data-tag={process.env.NEXT_PUBLIC_COMMIT_SHA?.slice(0, 7)}
       strategy='afterInteractive'
     />
   );

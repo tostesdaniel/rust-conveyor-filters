@@ -71,7 +71,7 @@ export function TagSelection() {
     const isSelected = current.includes(slug);
 
     if (isSelected) {
-      trackEvent("filter_tag_toggled", { tag: slug, selected: false });
+      trackEvent("browse_tag_toggled", { tag: slug, selected: "false" });
       setSearchParams({ tags: current.filter((t) => t !== slug) });
       return;
     }
@@ -83,7 +83,7 @@ export function TagSelection() {
       return;
     }
 
-    trackEvent("filter_tag_toggled", { tag: slug, selected: true });
+    trackEvent("browse_tag_toggled", { tag: slug, selected: "true" });
     setSearchParams({ tags: [...current, slug] });
   };
 

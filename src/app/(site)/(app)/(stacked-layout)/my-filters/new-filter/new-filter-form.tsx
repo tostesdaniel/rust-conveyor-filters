@@ -132,7 +132,10 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
 
   const mutation = api.filter.create.useMutation({
     onSuccess: async (_, variables) => {
-      trackEvent("filter_created");
+      trackEvent("filter_created", {
+        source: variables.forkedFromId ? "remix" : "scratch",
+        item_count: variables.items.length,
+      });
       trackAction("filterCreate");
 
       const { categoryId, subCategoryId } = variables.category;

@@ -5,8 +5,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { pineConfig } from "@/config/pine";
 import { useIsAdFree } from "@/hooks/use-is-ad-free";
 
-import { SidebarPromoCard } from "./sidebar-promo-card";
 import { rollPineBucket } from "./pine-bucket";
+import { SidebarPromoCard } from "./sidebar-promo-card";
 
 // `useIsAdFree` wraps Clerk's `useUser`, which needs a provider; mock the hook
 // so each test drives the audience split directly. `SidebarDonateCard` reads
@@ -81,7 +81,7 @@ describe("SidebarPromoCard", () => {
     // Internal link to /hosting, not an outbound affiliate URL.
     expect(link).toHaveAttribute("href", "/hosting");
     expect(link).not.toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine_promo_clicked");
     expect(link).toHaveAttribute("data-rybbit-prop-placement", "sidebar");
     expect(link).toHaveAttribute("data-rybbit-prop-audience", "adfree");
 
@@ -108,8 +108,9 @@ describe("SidebarPromoCard", () => {
     mockRollPineBucket.mockReturnValue(true);
     render(<SidebarPromoCard />);
 
-    expect(
-      screen.getByRole("link", { name: /subscribe/i }),
-    ).toHaveAttribute("href", "/donate");
+    expect(screen.getByRole("link", { name: /subscribe/i })).toHaveAttribute(
+      "href",
+      "/donate",
+    );
   });
 });

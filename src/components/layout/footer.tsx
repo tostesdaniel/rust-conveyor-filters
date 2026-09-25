@@ -29,7 +29,7 @@ const navigation: FooterLink[] = [
 function rybbitProps(placement: PinePlacement | undefined) {
   return placement
     ? {
-        "data-rybbit-event": "pine-click",
+        "data-rybbit-event": "pine_promo_clicked",
         "data-rybbit-prop-placement": placement,
       }
     : {};

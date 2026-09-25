@@ -52,7 +52,7 @@ export function PineBand({ placement, creative }: PineBandProps) {
       href={buildPineUrl()}
       target='_blank'
       rel='sponsored noopener'
-      data-rybbit-event='pine-click'
+      data-rybbit-event='pine_outbound_clicked'
       data-rybbit-prop-placement={placement}
       className='relative block w-full'
     >

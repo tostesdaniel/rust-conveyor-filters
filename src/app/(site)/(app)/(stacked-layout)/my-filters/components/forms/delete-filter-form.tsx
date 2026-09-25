@@ -35,7 +35,7 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
 
   const mutation = api.filter.delete.useMutation({
     onSuccess: () => {
-      trackEvent("my_filter_deleted", { filterId: cardId });
+      trackEvent("filter_deleted", { filterId: cardId });
       toast.success("Filter deleted successfully");
       utils.filter.getByCategory.invalidate();
       utils.filter.getAll.invalidate();

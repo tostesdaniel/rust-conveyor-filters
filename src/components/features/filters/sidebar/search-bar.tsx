@@ -26,8 +26,10 @@ export function SearchBar() {
 
   useEffect(() => {
     if (search !== previousSearchRef.current && search !== undefined) {
-      if (search.trim().length > 0) {
-        trackEvent("filter_search", { query: search });
+      const query = search.trim().toLowerCase();
+      if (query.length > 0) {
+        // Free text from strangers; Rybbit drops the whole event past 2 KB.
+        trackEvent("browse_searched", { query: query.slice(0, 100) });
       }
       previousSearchRef.current = search;
     }

@@ -13,6 +13,7 @@ import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { Nitro } from "@/lib/nitro";
 import { Analytics } from "@/components/features/analytics/analytics";
+import { PathnamePageviews } from "@/components/features/analytics/pathname-pageviews";
 import { SiteJsonLd } from "@/components/shared/site-json-ld";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -109,6 +110,7 @@ export default function RootLayout({
             <Toaster richColors />
           </TooltipProvider>
         </ThemeProvider>
+        <PathnamePageviews />
       </body>
     </html>
   );

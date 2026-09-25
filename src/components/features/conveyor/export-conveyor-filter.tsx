@@ -15,6 +15,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ExportConveyorFilterProps {
   type: "button" | "dropdown" | "icon";
+  source: "public_card" | "my_filters" | "bookmarks" | "editor";
   filter: FilterItemDTO[];
   filterId?: number;
   log?: boolean;
@@ -23,6 +24,7 @@ interface ExportConveyorFilterProps {
 
 export function ExportConveyorFilter({
   type,
+  source,
   filter,
   filterId,
   log = false,
@@ -42,11 +44,10 @@ export function ExportConveyorFilter({
         toast.success("Exported to clipboard", {
           description: "Paste it while holding SHIFT key to import in game",
         });
-        if (filterId) {
-          trackEvent("filter_exported", { filterId });
-        } else {
-          trackEvent("filter_exported");
-        }
+        trackEvent(
+          "filter_exported",
+          filterId ? { filterId, source } : { source },
+        );
         trackAction("filterCopy");
         if (log && filterId) {
           await logEvent("export", filterId);

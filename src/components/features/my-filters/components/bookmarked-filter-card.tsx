@@ -31,7 +31,11 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
         </div>
         <div className='space-x-2 pr-2'>
           <ViewFilter filter={filter} variant='icon' />
-          <ExportConveyorFilter type='icon' filter={filter.filterItems} />
+          <ExportConveyorFilter
+            type='icon'
+            source='bookmarks'
+            filter={filter.filterItems}
+          />
           <BookmarkToggle filterId={filter.id} initialBookmarked={true} />
         </div>
       </div>

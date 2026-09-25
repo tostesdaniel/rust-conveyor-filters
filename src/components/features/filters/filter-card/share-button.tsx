@@ -1,3 +1,4 @@
+import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
 import { Share } from "lucide-react";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ export function ShareButton({ filterId }: { filterId: number }) {
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Share link copied to clipboard");
+      trackEvent("filter_share_link_copied", { filterId });
     } catch (err) {
       toast.error("Failed to copy share link");
     }

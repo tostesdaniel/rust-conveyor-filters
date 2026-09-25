@@ -24,7 +24,7 @@ describe("Footer hosting link", () => {
     const link = screen.getByRole("link", {
       name: pineConfig.copy.footerLinkLabel,
     });
-    expect(link).toHaveAttribute("data-rybbit-event", "pine-click");
+    expect(link).toHaveAttribute("data-rybbit-event", "pine_promo_clicked");
     expect(link).toHaveAttribute("data-rybbit-prop-placement", "footer");
   });
 
@@ -35,9 +35,9 @@ describe("Footer hosting link", () => {
       name: pineConfig.copy.footerLinkLabel,
     });
     // The label is wrapped in a shimmer span; siblings stay plain text.
-    expect(
-      link.querySelector(".pine-shimmer"),
-    ).toHaveTextContent(pineConfig.copy.footerLinkLabel);
+    expect(link.querySelector(".pine-shimmer")).toHaveTextContent(
+      pineConfig.copy.footerLinkLabel,
+    );
 
     const donate = screen.getByRole("link", { name: "Donate" });
     expect(donate.querySelector(".pine-shimmer")).toBeNull();

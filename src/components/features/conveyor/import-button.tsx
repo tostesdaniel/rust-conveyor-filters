@@ -101,7 +101,6 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
         if (matchedItem) {
           return {
             itemId: matchedItem.id,
-            categoryId: null,
             name: matchedItem.name,
             shortname: matchedItem.shortname,
             category: matchedItem.category,
@@ -113,7 +112,6 @@ export function ImportButton({ onImport, ...props }: ImportButtonProps) {
           };
         } else if (matchedCategory) {
           return {
-            itemId: null,
             categoryId: matchedCategory.id,
             name: matchedCategory.name,
             max: item.MaxAmountInOutput,

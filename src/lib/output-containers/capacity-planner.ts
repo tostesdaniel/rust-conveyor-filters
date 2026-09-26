@@ -135,11 +135,18 @@ function divide(slots: number, indexes: number[]) {
   );
 }
 
-function withLimits(max: number, splitShare: number, rowCapacity: number) {
+// A row with zero slots still shares slots once given its stack.
+function withLimits(
+  max: number,
+  splitShare: number,
+  rowCapacity: number,
+  shareSlots: number,
+) {
   return {
     max: max > 0 ? Math.min(max, rowCapacity) : splitShare,
     splitShare,
     rowCapacity,
+    sharesSlots: shareSlots === 0 && max <= splitShare,
     aboveShare: max > splitShare,
     aboveCapacity: max > rowCapacity,
   };
@@ -250,13 +257,13 @@ export function planOutputContainer(
         row.max,
         Math.max(slots, 1) * placement.stackSize,
         capacityOf(index),
+        slots,
       ),
       slotGroup: placement.group.id,
       stackSize: placement.stackSize,
       notAccepted: false,
       goesToBox: false,
       stopsOven: false,
-      sharesSlots: row.max === 0 && slots === 0,
     };
   });
 
@@ -290,7 +297,7 @@ export function planOutputContainer(
     );
     plans[index] = {
       ...plans[index],
-      ...withLimits(row.max, splitShare, rowCapacity),
+      ...withLimits(row.max, splitShare, rowCapacity, atZero.get(index)!),
     };
   });
 

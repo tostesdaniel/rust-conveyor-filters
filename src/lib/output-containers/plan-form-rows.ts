@@ -73,3 +73,49 @@ export function planFormRows(
   });
   return result;
 }
+
+export interface FormSplit {
+  /** New Max per row, index for index. Null leaves the row alone. */
+  maxes: (number | null)[];
+  written: Map<string, number>;
+}
+
+/**
+ * A row still holding what the last split wrote hasn't been capped by the
+ * author, so it splits again like a row at 0.
+ */
+export function splitFormRows(
+  container: OutputContainer,
+  rows: readonly FormRow[],
+  catalogue: ReadonlyMap<number, CatalogueItem>,
+  lastWritten: ReadonlyMap<string, number>,
+): FormSplit {
+  const leftToSplit = (row: FormRow) => {
+    const max = maxOf(row);
+    return max === 0 || lastWritten.get(rowKey(row)) === max;
+  };
+  const plans = planFormRows(container, rows, catalogue, leftToSplit);
+
+  const written = new Map<string, number>();
+  const maxes = rows.map((row, index) => {
+    const plan = plans[index];
+    if (!plan) return null;
+    if (leftToSplit(row)) written.set(rowKey(row), plan.max);
+    return plan.max;
+  });
+  return { maxes, written };
+}
+
+export function fitAddedRow(
+  container: OutputContainer,
+  rows: readonly FormRow[],
+  added: FormRow,
+  catalogue: ReadonlyMap<number, CatalogueItem>,
+  lastWritten: ReadonlyMap<string, number>,
+): { max: number; written: Map<string, number> } {
+  const plan = planFormRows(container, [...rows, added], catalogue).at(-1);
+  const written = new Map(lastWritten);
+  if (!plan) return { max: maxOf(added), written };
+  written.set(rowKey(added), plan.max);
+  return { max: plan.max, written };
+}

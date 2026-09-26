@@ -114,6 +114,12 @@ export function ConveyorItem({
                 {rowPlan.plan.rowCapacity?.toLocaleString("en-US")}.
               </p>
             )}
+            {rowPlan?.plan.sharesSlots && (
+              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
+                Shares {slotsName(rowPlan.plan.slotGroup)} with other rows. The{" "}
+                {rowPlan.containerName} has none left for it.
+              </p>
+            )}
             {rowPlan?.plan.stopsOven && (
               <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
                 Once the box holds this many, results drop on the ground and the{" "}
@@ -177,6 +183,10 @@ function ovenRoute(rowPlan: ReturnType<typeof useRowPlan>, shortname: string) {
     };
   }
   return null;
+}
+
+function slotsName(slotGroup: string | null) {
+  return !slotGroup || slotGroup === "main" ? "slots" : `${slotGroup} slots`;
 }
 
 function aboveShareWarning(rowPlan: ReturnType<typeof useRowPlan>) {

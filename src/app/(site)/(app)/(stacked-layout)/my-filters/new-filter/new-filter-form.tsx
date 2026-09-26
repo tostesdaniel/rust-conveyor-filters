@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
 import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
+import { OutputContainerSplitProvider } from "@/components/features/conveyor/output-container-split";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 
@@ -321,19 +322,21 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
             )}
           />
         </div>
-        <OutputContainerField />
-        <FormFieldScope name='items'>
-          <FormItem>
-            <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
-              Items
-            </FormLabel>
-            <FormDescription>
-              Compose your conveyor by selecting items from the list.
-            </FormDescription>
-            <ConveyorCard />
-            <FormMessage />
-          </FormItem>
-        </FormFieldScope>
+        <OutputContainerSplitProvider>
+          <OutputContainerField />
+          <FormFieldScope name='items'>
+            <FormItem>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Items
+              </FormLabel>
+              <FormDescription>
+                Compose your conveyor by selecting items from the list.
+              </FormDescription>
+              <ConveyorCard />
+              <FormMessage />
+            </FormItem>
+          </FormFieldScope>
+        </OutputContainerSplitProvider>
         <Button type='submit' disabled={mutation.isPending}>
           {mutation.isPending
             ? "Submitting..."

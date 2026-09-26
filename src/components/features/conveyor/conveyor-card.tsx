@@ -19,6 +19,7 @@ import { ConveyorItemGrid } from "@/components/features/conveyor/conveyor-item-g
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import { ImportButton } from "@/components/features/conveyor/import-button";
 import { OutputContainerPlanProvider } from "@/components/features/conveyor/output-container-plan";
+import { useOutputContainerSplit } from "@/components/features/conveyor/output-container-split";
 import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
 
 export function ConveyorCard() {
@@ -28,9 +29,10 @@ export function ConveyorCard() {
     name: "items",
   });
   const filter: ItemWithFields[] = watch("items");
+  const split = useOutputContainerSplit();
 
   const handleAppend = (item: NewConveyorItem) => {
-    append(item, { shouldFocus: false });
+    append(split.fitNewRow(item), { shouldFocus: false });
   };
 
   return (

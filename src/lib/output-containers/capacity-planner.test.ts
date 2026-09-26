@@ -149,6 +149,52 @@ describe("planOutputContainer on a large wood box", () => {
   });
 });
 
+describe("planOutputContainer with a row added after a split", () => {
+  const split = () => [
+    fragments(5000),
+    wood(11000),
+    stones(11000),
+    sulfur(11000),
+    hqMetal(1000),
+  ];
+
+  it("gives a new row at 0 the slots left after the author lowered a row, and leaves the others alone", () => {
+    const rows = split();
+    rows[1] = wood(5000);
+    const plan = planOutputContainer(largeBox, [...rows, charcoal()]);
+
+    expect(plan.map((row) => row.max)).toEqual([
+      5000, 5000, 11000, 11000, 1000, 6000,
+    ]);
+    expect(plan[5].sharesSlots).toBe(false);
+  });
+
+  it("gives a new row one stack and the shares-slots flag once the split filled the box", () => {
+    const plan = planOutputContainer(largeBox, [...split(), charcoal()]);
+
+    expect(plan.map((row) => row.max)).toEqual([
+      5000, 11000, 11000, 11000, 1000, 1000,
+    ]);
+    expect(plan[5]).toMatchObject({ sharesSlots: true });
+  });
+
+  it("keeps the shares-slots flag on a row the split gave one stack", () => {
+    const plan = planOutputContainer(largeBox, [...split(), charcoal(1000)]);
+
+    expect(plan[5]).toMatchObject({
+      max: 1000,
+      sharesSlots: true,
+      aboveShare: false,
+    });
+  });
+
+  it("does not flag an ordinary capped row as sharing slots", () => {
+    const plan = planOutputContainer(largeBox, split());
+
+    expect(plan.some((row) => row.sharesSlots)).toBe(false);
+  });
+});
+
 describe("planOutputContainer on ovens", () => {
   it("caps wood by the furnace's fuel slot and ore by its input slots", () => {
     const plan = planOutputContainer(OUTPUT_CONTAINERS.furnace, [

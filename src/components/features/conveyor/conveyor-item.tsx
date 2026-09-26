@@ -3,7 +3,14 @@ import type {
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
 import { categoryMapping } from "@/utils/category-mapping";
-import { BanIcon, XIcon } from "lucide-react";
+import {
+  BanIcon,
+  FlameKindlingIcon,
+  FuelIcon,
+  PackageIcon,
+  StoneIcon,
+  XIcon,
+} from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
@@ -30,6 +37,7 @@ export function ConveyorItem({
 }: ConveyorItemProps) {
   const { trigger } = useFormContext();
   const rowPlan = useRowPlan(index);
+  const route = ovenRoute(rowPlan, item.shortname);
 
   function handleRemove() {
     onRemove(index);
@@ -79,6 +87,12 @@ export function ConveyorItem({
           Not accepted by {rowPlan.containerName}
         </p>
       )}
+      {route && (
+        <p className='mt-1 flex items-center gap-1 text-xs text-muted-foreground'>
+          <route.Icon className='size-3.5 shrink-0' />
+          {route.label}
+        </p>
+      )}
       <FormField
         control={control}
         name={`items.${index}.max`}
@@ -99,6 +113,12 @@ export function ConveyorItem({
               <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
                 A {rowPlan.containerName} holds at most{" "}
                 {rowPlan.plan.rowCapacity?.toLocaleString("en-US")}.
+              </p>
+            )}
+            {rowPlan?.plan.stopsOven && (
+              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
+                Once the box holds this many, results drop on the ground and the{" "}
+                {rowPlan.containerName} switches off.
               </p>
             )}
           </>
@@ -142,6 +162,22 @@ export function ConveyorItem({
       />
     </li>
   );
+}
+
+function ovenRoute(rowPlan: ReturnType<typeof useRowPlan>, shortname: string) {
+  if (rowPlan?.plan.goesToBox) {
+    return { Icon: PackageIcon, label: "Goes to the box" };
+  }
+  if (rowPlan?.plan.slotGroup === "fuel") {
+    return { Icon: FlameKindlingIcon, label: "Goes to the fuel slot" };
+  }
+  if (rowPlan?.plan.slotGroup === "input") {
+    return {
+      Icon: shortname === "crude.oil" ? FuelIcon : StoneIcon,
+      label: "Goes to the input slot",
+    };
+  }
+  return null;
 }
 
 function aboveShareWarning(rowPlan: ReturnType<typeof useRowPlan>) {

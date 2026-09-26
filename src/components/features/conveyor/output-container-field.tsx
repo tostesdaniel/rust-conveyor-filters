@@ -152,8 +152,8 @@ export function OutputContainerField() {
           <FieldContent>
             <FieldTitle>Output container</FieldTitle>
             <FieldDescription>
-              Fit every row&apos;s Max to the box this conveyor fills through a
-              Storage Adaptor. Ticking this rewrites your Max values.
+              Fit every row&apos;s Max to the container this conveyor fills
+              through a Storage Adaptor. Ticking this rewrites your Max values.
             </FieldDescription>
           </FieldContent>
         </Field>

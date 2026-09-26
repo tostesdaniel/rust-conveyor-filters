@@ -20,6 +20,8 @@ export interface RowPlan {
   splitShare: number | null;
   rowCapacity: number | null;
   notAccepted: boolean;
+  goesToBox: boolean;
+  stopsOven: boolean;
   sharesSlots: boolean;
   aboveShare: boolean;
   aboveCapacity: boolean;
@@ -34,7 +36,10 @@ export function acceptingGroup(
   // Water can't go in any of these containers.
   if (row.itemType === "Liquid") return null;
   return (
-    container.slotGroups.find((group) => group.accepts.kind === "any") ?? null
+    container.slotGroups.find(
+      ({ accepts }) =>
+        accepts.kind === "any" || accepts.shortnames.includes(row.shortname),
+    ) ?? null
   );
 }
 
@@ -99,12 +104,16 @@ export function planOutputContainer(
   return rows.map((row, index) => {
     const group = groups[index];
     if (row.kind === "category" || !group) {
+      const goesToBox =
+        row.kind === "item" && !!container.results?.includes(row.shortname);
       return {
         max: row.max,
         slotGroup: null,
         splitShare: null,
         rowCapacity: null,
-        notAccepted: row.kind === "item",
+        notAccepted: row.kind === "item" && !goesToBox,
+        goesToBox,
+        stopsOven: goesToBox && !!container.fuelOven && row.max > 0,
         sharesSlots: false,
         aboveShare: false,
         aboveCapacity: false,
@@ -121,6 +130,8 @@ export function planOutputContainer(
       splitShare,
       rowCapacity,
       notAccepted: false,
+      goesToBox: false,
+      stopsOven: false,
       sharesSlots: row.max === 0 && slots === 0,
       aboveShare: row.max > splitShare,
       aboveCapacity: row.max > rowCapacity,

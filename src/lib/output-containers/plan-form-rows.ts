@@ -1,3 +1,5 @@
+import { gameCategoryOf } from "@/utils/category-mapping";
+
 import {
   planOutputContainer,
   type PlannerRow,
@@ -8,7 +10,7 @@ import type { Item } from "@/db/schema";
 
 export type FormRow =
   | { itemId: number; max: number | string }
-  | { categoryId: number; max: number | string };
+  | { categoryId: number; name: string; max: number | string };
 
 export type CatalogueItem = Pick<
   Item,
@@ -25,8 +27,8 @@ export function rowKey(row: FormRow) {
 }
 
 /**
- * One plan per form row, index for index. A row whose item left the catalogue
- * gets null, since there's no stack size to plan it with.
+ * One plan per form row, index for index. A row whose item or category left
+ * the catalogue gets null, since there's no stack size to plan it with.
  */
 export function planFormRows(
   container: OutputContainer,
@@ -38,7 +40,12 @@ export function planFormRows(
   rows.forEach((row, index) => {
     const max = isUncapped(row) ? 0 : maxOf(row);
     if ("categoryId" in row) {
-      planned.push({ index, row: { kind: "category", max } });
+      const category = gameCategoryOf(row.name);
+      if (!category) return;
+      const items = [...catalogue.values()].filter(
+        (item) => item.category === category,
+      );
+      planned.push({ index, row: { kind: "category", category, items, max } });
       return;
     }
     const item = catalogue.get(row.itemId);

@@ -14,3 +14,9 @@ export const categoryMapping: Record<string, string> = {
   Electrical: "Electrical",
   Fun: "Fun",
 };
+
+export function gameCategoryOf(displayName: string) {
+  return Object.keys(categoryMapping).find(
+    (key) => categoryMapping[key] === displayName,
+  );
+}

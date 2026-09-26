@@ -1,3 +1,5 @@
+import bundledSnapshot from "@/db/item-snapshot.json";
+import type { ItemSnapshot } from "@/scripts/items/snapshot";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -398,5 +400,114 @@ describe("planOutputContainer on a locker", () => {
     const [plan] = planOutputContainer(locker, [clothing("wooden.shield", 0)]);
 
     expect(plan).toMatchObject({ max: 1, slotGroup: "backpack" });
+  });
+});
+
+describe("planOutputContainer with a category row", () => {
+  const snapshot = bundledSnapshot as ItemSnapshot;
+  const insertable = snapshot.items.filter((entry) => entry.insertable);
+  const category = (name: string, max = 0): PlannerRow => ({
+    kind: "category",
+    category: name,
+    items: insertable.filter((entry) => entry.category === name),
+    max,
+  });
+
+  it("counts the item rows of its category on top of its own share", () => {
+    const plan = planOutputContainer(largeBox, [
+      category("Resources"),
+      wood(10000),
+    ]);
+
+    expect(plan[0]).toMatchObject({
+      max: 48000,
+      slotGroup: "main",
+      stackSize: 1000,
+    });
+    expect(plan[1]).toMatchObject({ max: 10000 });
+  });
+
+  it("keeps the Max it proposed, unflagged, once the split writes it", () => {
+    const plan = planOutputContainer(largeBox, [
+      category("Resources", 48000),
+      wood(10000),
+    ]);
+
+    expect(plan[0]).toMatchObject({
+      max: 48000,
+      splitShare: 48000,
+      aboveShare: false,
+      aboveCapacity: false,
+    });
+    expect(plan[1]).toMatchObject({ max: 10000, aboveShare: false });
+  });
+
+  it("splits a capped category's slots with its item rows left at 0", () => {
+    const plan = planOutputContainer(largeBox, [
+      category("Resources", 20000),
+      wood(),
+      stones(),
+    ]);
+
+    expect(plan.map((row) => row.max)).toEqual([20000, 7000, 6000]);
+    expect(plan[0]).toMatchObject({
+      splitShare: 48000,
+      rowCapacity: 48000,
+      aboveShare: false,
+      aboveCapacity: false,
+    });
+  });
+
+  it("never holds more than the box when its item rows fill it", () => {
+    const [plan] = planOutputContainer(largeBox, [
+      category("Resources"),
+      wood(48000),
+    ]);
+
+    expect(plan).toMatchObject({
+      max: 48000,
+      splitShare: 48000,
+      rowCapacity: 48000,
+      sharesSlots: true,
+    });
+  });
+
+  it("lowers a category Max above what the box holds beside its item rows", () => {
+    const [plan] = planOutputContainer(largeBox, [
+      category("Resources", 60000),
+      wood(10000),
+    ]);
+
+    expect(plan).toMatchObject({
+      max: 48000,
+      rowCapacity: 48000,
+      aboveCapacity: true,
+    });
+  });
+
+  it("counts an Attire row in a locker against the clothing slots only", () => {
+    const plan = planOutputContainer(OUTPUT_CONTAINERS.locker, [
+      category("Attire"),
+      item("largebackpack", 1, 0, { category: "Attire" }),
+    ]);
+
+    expect(plan[0]).toMatchObject({
+      max: 7,
+      slotGroup: "clothing",
+      stackSize: 1,
+    });
+    expect(plan[1]).toMatchObject({ max: 1, slotGroup: "backpack" });
+  });
+
+  it("flags a Weapon row on a fridge as not accepted and keeps its Max", () => {
+    const [plan] = planOutputContainer(OUTPUT_CONTAINERS.fridge, [
+      category("Weapon", 5),
+    ]);
+
+    expect(plan).toMatchObject({
+      max: 5,
+      notAccepted: true,
+      slotGroup: null,
+    });
   });
 });

@@ -2,7 +2,7 @@ import type {
   CreateFilter,
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
-import { categoryMapping } from "@/utils/category-mapping";
+import { gameCategoryOf } from "@/utils/category-mapping";
 import {
   BanIcon,
   FlameKindlingIcon,
@@ -44,9 +44,7 @@ export function ConveyorItem({
     trigger("items");
   }
 
-  const categoryKey = Object.keys(categoryMapping).find(
-    (key) => categoryMapping[key] === item.name,
-  );
+  const categoryKey = gameCategoryOf(item.name);
   const isCategory = !item.itemId;
   const CategoryIcon = getCategoryIcon(categoryKey!);
 
@@ -104,6 +102,7 @@ export function ConveyorItem({
               index={index}
               property='max'
               warning={aboveShareWarning(rowPlan)}
+              note={isCategory ? assumedStackNote(rowPlan) : undefined}
               {...field}
             />
             <FormDescription className='sr-only'>
@@ -183,4 +182,9 @@ function ovenRoute(rowPlan: ReturnType<typeof useRowPlan>, shortname: string) {
 function aboveShareWarning(rowPlan: ReturnType<typeof useRowPlan>) {
   if (!rowPlan?.plan.aboveShare || rowPlan.plan.splitShare === null) return;
   return `Above this row's share of ${rowPlan.plan.splitShare.toLocaleString("en-US")}. Other rows may not fit once the ${rowPlan.containerName} fills up.`;
+}
+
+function assumedStackNote(rowPlan: ReturnType<typeof useRowPlan>) {
+  if (!rowPlan?.plan.stackSize) return;
+  return `Assumes ${rowPlan.plan.stackSize.toLocaleString("en-US")} per stack.`;
 }

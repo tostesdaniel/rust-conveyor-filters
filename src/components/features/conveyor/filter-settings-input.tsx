@@ -14,6 +14,7 @@ interface FilterSettingsInputProps {
   index: number;
   property: "max" | "min" | "buffer";
   warning?: string;
+  note?: string;
 }
 
 function getTooltipText(property: "max" | "min" | "buffer") {
@@ -32,6 +33,7 @@ export function FilterSettingsInput({
   index,
   property,
   warning,
+  note,
   ...field
 }: FilterSettingsInputProps) {
   const { setValue, getValues } = useFormContext();
@@ -63,7 +65,9 @@ export function FilterSettingsInput({
           {label}
         </FormLabel>
         <FilterSettingsTooltip
-          tooltipText={warning ?? getTooltipText(property)}
+          tooltipText={[warning ?? getTooltipText(property), note]
+            .filter(Boolean)
+            .join(" ")}
         >
           <FormControl>
             <Input

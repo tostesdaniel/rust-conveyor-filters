@@ -18,6 +18,7 @@ import { ConveyorCombobox } from "@/components/features/conveyor/conveyor-combob
 import { ConveyorItemGrid } from "@/components/features/conveyor/conveyor-item-grid";
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import { ImportButton } from "@/components/features/conveyor/import-button";
+import { OutputContainerPlanProvider } from "@/components/features/conveyor/output-container-plan";
 import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text";
 
 export function ConveyorCard() {
@@ -47,10 +48,12 @@ export function ConveyorCard() {
         </p>
       </CardHeader>
       <CardContent className='min-h-40 py-3'>
-        <ConveyorItemGrid
-          items={fields as ItemWithFields[]}
-          onRemove={remove}
-        />
+        <OutputContainerPlanProvider>
+          <ConveyorItemGrid
+            items={fields as ItemWithFields[]}
+            onRemove={remove}
+          />
+        </OutputContainerPlanProvider>
       </CardContent>
       <CardFooter className='flex-col gap-x-4 gap-y-3 min-[550px]:flex-row sm:justify-end'>
         <div className='order-last flex-1 self-start min-[550px]:order-0 min-[550px]:self-auto sm:flex-none'>

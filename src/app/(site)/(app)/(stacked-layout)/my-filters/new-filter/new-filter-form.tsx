@@ -19,6 +19,7 @@ import type { OwnerFilterDTO } from "@/types/filter";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
+import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
 import {
   getSavedSortPreference,
   sortFiltersByPreference,
@@ -36,6 +37,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
+import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 
@@ -61,6 +63,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
       description: "",
       items: [],
       isPublic: false,
+      outputContainer: null,
       forkedFromId: undefined,
     },
   });
@@ -92,6 +95,9 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
       imagePath: remixSource.imagePath,
       category: { categoryId: null, subCategoryId: null },
       isPublic: false,
+      outputContainer: toOutputContainerShortname(
+        remixSource.outputContainer?.shortname,
+      ),
       forkedFromId: remixOf,
       items: remixSource.filterItems
         .map((filterItem) => {
@@ -315,6 +321,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
             )}
           />
         </div>
+        <OutputContainerField />
         <FormFieldScope name='items'>
           <FormItem>
             <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>

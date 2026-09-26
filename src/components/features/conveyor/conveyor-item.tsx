@@ -3,7 +3,7 @@ import type {
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
 import { categoryMapping } from "@/utils/category-mapping";
-import { XIcon } from "lucide-react";
+import { BanIcon, XIcon } from "lucide-react";
 import { Control, useFormContext } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { FormDescription, FormField } from "@/components/ui/form";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { FilterSettingsInput } from "@/components/features/conveyor/filter-settings-input";
+import { useRowPlan } from "@/components/features/conveyor/output-container-plan";
 import { ItemIcon } from "@/components/shared/item-icon";
 
 interface ConveyorItemProps {
@@ -28,6 +29,7 @@ export function ConveyorItem({
   onRemove,
 }: ConveyorItemProps) {
   const { trigger } = useFormContext();
+  const rowPlan = useRowPlan(index);
 
   function handleRemove() {
     onRemove(index);
@@ -71,6 +73,12 @@ export function ConveyorItem({
       <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
         {item.name}
       </p>
+      {rowPlan?.plan.notAccepted && (
+        <p className='mt-1 flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400'>
+          <BanIcon className='size-3.5 shrink-0' />
+          Not accepted by {rowPlan.containerName}
+        </p>
+      )}
       <FormField
         control={control}
         name={`items.${index}.max`}
@@ -81,11 +89,18 @@ export function ConveyorItem({
               id={item.id}
               index={index}
               property='max'
+              warning={aboveShareWarning(rowPlan)}
               {...field}
             />
             <FormDescription className='sr-only'>
               {FilterSettingsFieldDescription["MAX"]}
             </FormDescription>
+            {rowPlan?.plan.aboveCapacity && (
+              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
+                A {rowPlan.containerName} holds at most{" "}
+                {rowPlan.plan.rowCapacity?.toLocaleString("en-US")}.
+              </p>
+            )}
           </>
         )}
       />
@@ -127,4 +142,9 @@ export function ConveyorItem({
       />
     </li>
   );
+}
+
+function aboveShareWarning(rowPlan: ReturnType<typeof useRowPlan>) {
+  if (!rowPlan?.plan.aboveShare || rowPlan.plan.splitShare === null) return;
+  return `Above this row's share of ${rowPlan.plan.splitShare.toLocaleString("en-US")}. Other rows may not fit once the ${rowPlan.containerName} fills up.`;
 }

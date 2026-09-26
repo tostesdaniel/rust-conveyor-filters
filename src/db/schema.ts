@@ -89,6 +89,11 @@ export const filters = pgTable(
     ),
     // Source author's Clerk id, kept even after the source filter is deleted.
     forkedFromAuthorId: varchar("forked_from_author_id", { length: 255 }),
+    // Null means the Output container card is off.
+    outputContainerId: integer("output_container_id").references(
+      () => items.id,
+      { onDelete: "set null" },
+    ),
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
@@ -139,6 +144,10 @@ export const filtersRelations = relations(filters, ({ many, one }) => ({
     references: [subCategories.id],
   }),
   tagAssignments: many(filterTagAssignments),
+  outputContainer: one(items, {
+    fields: [filters.outputContainerId],
+    references: [items.id],
+  }),
 }));
 
 export const filterItems = pgTable(

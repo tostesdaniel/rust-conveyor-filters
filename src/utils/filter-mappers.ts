@@ -3,10 +3,12 @@ import type { enrichWithAuthor } from "@/utils/enrich-filter";
 
 import type {
   ConveyorFilter,
+  OutputContainerDTO,
   OwnerFilterDTO,
   PublicFilterListDTO,
   SharedFilterDTO,
 } from "@/types/filter";
+import type { Item } from "@/db/schema";
 
 /**
  * Convert ConveyorFilter to OwnerFilterDTO
@@ -146,5 +148,18 @@ export function toPublicFilterDTO(
     // The data layer fills these in after enrichment.
     remixCount: 0,
     forkedFrom: null,
+  };
+}
+
+export function toOutputContainerDTO(
+  item: Item | null | undefined,
+): OutputContainerDTO | null {
+  if (!item) return null;
+  return {
+    id: item.id,
+    shortname: item.shortname,
+    name: item.name,
+    imagePath: item.imagePath,
+    iconVersion: item.iconVersion,
   };
 }

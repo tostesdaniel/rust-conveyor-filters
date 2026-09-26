@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
+import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -35,6 +36,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
+import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
@@ -138,6 +140,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         subCategoryId: null,
       },
       isPublic: false,
+      outputContainer: null,
       items: [],
     },
   });
@@ -212,6 +215,9 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         subCategoryId: data.subCategoryId,
       },
       isPublic: data.isPublic,
+      outputContainer: toOutputContainerShortname(
+        data.outputContainer?.shortname,
+      ),
       items: initialItemsData,
     });
 
@@ -310,6 +316,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             )}
           />
         </div>
+        <OutputContainerField />
         <FormFieldScope name='items'>
           <FormItem>
             <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>

@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 import { FilterSettingsFieldDescription } from "@/config/constants";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ interface FilterSettingsInputProps {
   id: string;
   index: number;
   property: "max" | "min" | "buffer";
+  warning?: string;
 }
 
 function getTooltipText(property: "max" | "min" | "buffer") {
@@ -29,6 +31,7 @@ export function FilterSettingsInput({
   id,
   index,
   property,
+  warning,
   ...field
 }: FilterSettingsInputProps) {
   const { setValue, getValues } = useFormContext();
@@ -59,13 +62,19 @@ export function FilterSettingsInput({
         <FormLabel className='inline-flex h-9 w-16 flex-none items-center rounded-l-md border border-r-0 border-input px-3 text-muted-foreground'>
           {label}
         </FormLabel>
-        <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
+        <FilterSettingsTooltip
+          tooltipText={warning ?? getTooltipText(property)}
+        >
           <FormControl>
             <Input
               type='text'
               id={id}
               placeholder='0'
-              className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset'
+              className={cn(
+                "rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset",
+                warning &&
+                  "text-yellow-600 underline decoration-dotted underline-offset-4 dark:text-yellow-400",
+              )}
               {...field}
               onFocus={handleInputFocus}
               onChange={handleInputChange}

@@ -36,3 +36,12 @@ export async function getItemIcons(): Promise<ItemIcons> {
 
   return itemIconsPromise;
 }
+
+export async function getOutputContainerItemId(shortname: string) {
+  const item = await db.query.items.findFirst({
+    columns: { id: true },
+    where: (items, { and, eq }) =>
+      and(eq(items.shortname, shortname), eq(items.insertable, true)),
+  });
+  return item?.id ?? null;
+}

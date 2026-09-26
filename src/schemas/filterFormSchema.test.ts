@@ -185,6 +185,48 @@ describe("createFilterSchema", () => {
   });
 });
 
+describe("Output container", () => {
+  it("is optional and stays undefined when omitted", () => {
+    const result = createFilterSchema.parse(validFilter());
+    expect(result.outputContainer).toBeUndefined();
+  });
+
+  it("accepts null, which means the card is off", () => {
+    const result = createFilterSchema.parse(
+      validFilter({ outputContainer: null }),
+    );
+    expect(result.outputContainer).toBeNull();
+  });
+
+  it("accepts a container from the container table", () => {
+    const result = createFilterSchema.parse(
+      validFilter({ outputContainer: "box.wooden.large" }),
+    );
+    expect(result.outputContainer).toBe("box.wooden.large");
+  });
+
+  it("rejects an item that isn't in the container table", () => {
+    expect(
+      createFilterSchema.safeParse(validFilter({ outputContainer: "rifle.ak" }))
+        .success,
+    ).toBe(false);
+  });
+
+  it("is left out of a partial update that doesn't mention it", () => {
+    const result = updateFilterSchema.parse({ name: "Renamed" });
+    expect(result).not.toHaveProperty("outputContainer");
+  });
+
+  it("can be cleared or switched by an update", () => {
+    expect(updateFilterSchema.parse({ outputContainer: null })).toEqual({
+      outputContainer: null,
+    });
+    expect(updateFilterSchema.parse({ outputContainer: "box.wooden" })).toEqual(
+      { outputContainer: "box.wooden" },
+    );
+  });
+});
+
 describe("updateFilterSchema", () => {
   it("accepts a single field without the rest", () => {
     const result = updateFilterSchema.safeParse({ name: "Renamed" });

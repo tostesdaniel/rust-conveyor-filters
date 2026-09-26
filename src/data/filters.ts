@@ -12,7 +12,11 @@ import {
   clerkUserToAuthorDisplay,
   enrichWithAuthor,
 } from "@/utils/enrich-filter";
-import { toOwnerFilterDTO, toPublicFilterDTO } from "@/utils/filter-mappers";
+import {
+  toOutputContainerDTO,
+  toOwnerFilterDTO,
+  toPublicFilterDTO,
+} from "@/utils/filter-mappers";
 import { createTsQuery } from "@/utils/text-search";
 import { clerkClient } from "@clerk/nextjs/server";
 import {
@@ -398,6 +402,7 @@ export async function getFilterById(filterId: number, userId: string) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
   });
 
@@ -405,7 +410,10 @@ export async function getFilterById(filterId: number, userId: string) {
     return null;
   }
 
-  return toOwnerFilterDTO(result, await getItemIcons());
+  return {
+    ...toOwnerFilterDTO(result, await getItemIcons()),
+    outputContainer: toOutputContainerDTO(result.outputContainer),
+  };
 }
 
 export async function getPublicFilter(filterId: number) {
@@ -417,6 +425,7 @@ export async function getPublicFilter(filterId: number) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
   });
 
@@ -437,6 +446,7 @@ export async function getPublicFilter(filterId: number) {
     tags: tagsByFilter.get(filter.id) ?? [],
     remixCount: remixCounts.get(filter.id) ?? 0,
     forkedFrom: forkAttributions.get(filter.id) ?? null,
+    outputContainer: toOutputContainerDTO(filter.outputContainer),
   };
 }
 

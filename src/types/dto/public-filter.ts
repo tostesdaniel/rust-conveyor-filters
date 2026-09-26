@@ -20,6 +20,14 @@ export interface FilterItemDTO {
   createdAt?: Date;
 }
 
+export interface OutputContainerDTO {
+  id: number;
+  shortname: string;
+  name: string;
+  imagePath: string;
+  iconVersion: string | null;
+}
+
 /**
  * Filter DTO for authenticated user's own filters
  * Includes owner-specific fields like isPublic, subCategoryId, and order

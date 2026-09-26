@@ -12,9 +12,12 @@ function item(
   shortname: string,
   stackSize: number,
   max = 0,
-  itemType: "Generic" | "Liquid" = "Generic",
+  {
+    category = "Resources",
+    itemType = "Generic",
+  }: { category?: string; itemType?: "Generic" | "Liquid" } = {},
 ): PlannerRow {
-  return { kind: "item", shortname, stackSize, itemType, max };
+  return { kind: "item", shortname, stackSize, itemType, category, max };
 }
 
 const fragments = (max = 0) => item("metal.fragments", 1000, max);
@@ -130,7 +133,7 @@ describe("planOutputContainer on a large wood box", () => {
 
   it("flags a water row as not accepted, keeps its Max and leaves it out of the split", () => {
     const plan = planOutputContainer(largeBox, [
-      item("water", 1000, 500, "Liquid"),
+      item("water", 1000, 500, { itemType: "Liquid" }),
       wood(),
     ]);
 
@@ -260,5 +263,140 @@ describe("planOutputContainer on ovens", () => {
     ]);
 
     expect(plan.map((row) => row.max)).toEqual([5000, 2000, 0]);
+  });
+});
+
+describe("planOutputContainer on a dropbox", () => {
+  it("fits any item in its 12 main slots", () => {
+    const plan = planOutputContainer(OUTPUT_CONTAINERS.dropbox, [
+      wood(),
+      item("rifle.ak", 1),
+    ]);
+
+    expect(plan.map((row) => row.max)).toEqual([6000, 6]);
+    expect(plan.some((row) => row.notAccepted)).toBe(false);
+  });
+});
+
+describe("planOutputContainer on fridges", () => {
+  it.each([
+    ["fridge", 240, 24],
+    ["mini fridge", 90, 9],
+  ] as const)(
+    "takes Food and the bota bag in a %s and flags the rest",
+    (shortname, apples, botabags) => {
+      const plan = planOutputContainer(OUTPUT_CONTAINERS[shortname], [
+        item("apple", 10, 0, { category: "Food" }),
+        item("botabag", 1, 0, { category: "Items" }),
+        item("rifle.ak", 1, 1, { category: "Weapon" }),
+      ]);
+
+      expect(plan[0]).toMatchObject({ notAccepted: false, slotGroup: "main" });
+      expect(plan[1]).toMatchObject({ notAccepted: false, slotGroup: "main" });
+      expect(plan[2]).toMatchObject({ max: 1, notAccepted: true });
+      expect(plan.slice(0, 2).map((row) => row.max)).toEqual([
+        apples,
+        botabags,
+      ]);
+    },
+  );
+});
+
+describe("planOutputContainer on a tool cupboard", () => {
+  const cupboard = OUTPUT_CONTAINERS["cupboard.tool"];
+
+  it("caps resources by the 24 resource slots and tools by the 5 tool slots", () => {
+    const plan = planOutputContainer(cupboard, [
+      wood(),
+      item("metal.fragments", 1000),
+      item("hammer", 1, 0, { category: "Tool" }),
+      item("wiretool", 1, 0, { category: "Electrical" }),
+    ]);
+
+    expect(plan.map((row) => row.max)).toEqual([12000, 12000, 3, 2]);
+    expect(plan.map((row) => row.slotGroup)).toEqual([
+      "resources",
+      "resources",
+      "tools",
+      "tools",
+    ]);
+  });
+
+  it("flags the blocked Resources and a weapon as not accepted", () => {
+    const plan = planOutputContainer(cupboard, [
+      sulfur(500),
+      sulfurOre(),
+      item("gunpowder", 1000, 0, { category: "Resources" }),
+      item("rifle.ak", 1, 1, { category: "Weapon" }),
+      wood(),
+    ]);
+
+    expect(plan.slice(0, 4).map((row) => row.notAccepted)).toEqual([
+      true,
+      true,
+      true,
+      true,
+    ]);
+    expect(plan[0].max).toBe(500);
+    expect(plan[4]).toMatchObject({ max: 24000, notAccepted: false });
+  });
+});
+
+describe("planOutputContainer on a locker", () => {
+  const locker = OUTPUT_CONTAINERS.locker;
+  const clothing = (shortname: string, max = 1) =>
+    item(shortname, 1, max, { category: "Attire" });
+  const kit = [
+    "metal.facemask",
+    "metal.plate.torso",
+    "roadsign.kilt",
+    "hoodie",
+    "pants",
+    "shoes.boots",
+    "roadsign.gloves",
+  ].map((shortname) => clothing(shortname));
+  const belt = [
+    item("rifle.ak", 1, 1, { category: "Weapon" }),
+    item("ammo.rifle", 128, 0, { category: "Ammunition" }),
+    item("syringe.medical", 2, 0, { category: "Medical" }),
+    item("largemedkit", 1, 0, { category: "Medical" }),
+    item("bandage", 3, 0, { category: "Medical" }),
+  ];
+
+  it("refills one kit: clothing, a backpack and six belt slots", () => {
+    const plan = planOutputContainer(locker, [
+      ...kit,
+      clothing("largebackpack"),
+      ...belt,
+    ]);
+
+    expect(plan.map((row) => row.max)).toEqual([
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 256, 2, 1, 3,
+    ]);
+    expect(plan.map((row) => row.slotGroup)).toEqual([
+      ...Array(7).fill("clothing"),
+      "backpack",
+      ...Array(5).fill("belt"),
+    ]);
+    expect(plan.some((row) => row.sharesSlots)).toBe(false);
+  });
+
+  it("gives an eighth clothing row one stack and the shares-slots flag", () => {
+    const plan = planOutputContainer(locker, [
+      ...kit,
+      clothing("tactical.gloves", 0),
+    ]);
+
+    expect(plan[7]).toMatchObject({
+      max: 1,
+      slotGroup: "clothing",
+      sharesSlots: true,
+    });
+  });
+
+  it("puts a shield in the backpack slot, which the game flags the same way", () => {
+    const [plan] = planOutputContainer(locker, [clothing("wooden.shield", 0)]);
+
+    expect(plan).toMatchObject({ max: 1, slotGroup: "backpack" });
   });
 });

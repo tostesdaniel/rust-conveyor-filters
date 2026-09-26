@@ -1,4 +1,5 @@
 import type {
+  AcceptRule,
   OutputContainer,
   SlotGroup,
 } from "@/lib/output-containers/container-table";
@@ -10,6 +11,7 @@ export type PlannerRow =
       shortname: string;
       stackSize: number;
       itemType: ItemType;
+      category: string;
       max: number;
     }
   | { kind: "category"; max: number };
@@ -29,17 +31,32 @@ export interface RowPlan {
 
 type ItemRow = Extract<PlannerRow, { kind: "item" }>;
 
+function ruleAccepts(rule: AcceptRule, row: ItemRow) {
+  switch (rule.kind) {
+    case "any":
+      return true;
+    case "items":
+      return rule.shortnames.includes(row.shortname);
+    case "category":
+      if (rule.alsoItems?.includes(row.shortname)) return true;
+      return (
+        row.category === rule.category && !rule.except?.includes(row.shortname)
+      );
+    case "notCategory":
+      return row.category !== rule.category;
+  }
+}
+
 export function acceptingGroup(
   container: OutputContainer,
   row: ItemRow,
 ): SlotGroup | null {
   // Water can't go in any of these containers.
   if (row.itemType === "Liquid") return null;
+  if (container.blockedItems?.includes(row.shortname)) return null;
   return (
-    container.slotGroups.find(
-      ({ accepts }) =>
-        accepts.kind === "any" || accepts.shortnames.includes(row.shortname),
-    ) ?? null
+    container.slotGroups.find((group) => ruleAccepts(group.accepts, row)) ??
+    null
   );
 }
 

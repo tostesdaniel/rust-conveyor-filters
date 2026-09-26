@@ -3,7 +3,14 @@ export const CONTAINER_TABLE_GAME_BUILD = "4222685261503300823";
 
 export type AcceptRule =
   | { kind: "any" }
-  | { kind: "items"; shortnames: readonly string[] };
+  | { kind: "items"; shortnames: readonly string[] }
+  | {
+      kind: "category";
+      category: string;
+      except?: readonly string[];
+      alsoItems?: readonly string[];
+    }
+  | { kind: "notCategory"; category: string };
 
 export interface SlotGroup {
   id: string;
@@ -26,6 +33,35 @@ function plainBox(slots: number): OutputContainer {
     slotGroups: [{ id: "main", slots, accepts: { kind: "any" } }],
   };
 }
+
+function fridge(slots: number): OutputContainer {
+  return {
+    capacityGroup: "Fridges",
+    slotGroups: [
+      {
+        id: "main",
+        slots,
+        accepts: { kind: "category", category: "Food", alsoItems: ["botabag"] },
+      },
+    ],
+  };
+}
+
+// Shields and diving tanks fit the backpack slot too.
+const BACKPACK_SLOT_ITEMS = [
+  "smallbackpack",
+  "largebackpack",
+  "kriegbackpack",
+  "parachute",
+  "diving.tank",
+  "diving.tank.double",
+  "wooden.shield",
+  "reinforced.wooden.shield",
+  "metal.shield",
+  "improvised.shield",
+  "twitchrivalsflag",
+  "minigunammopack",
+];
 
 const SMELT_INPUT = [
   "metal.ore",
@@ -109,6 +145,71 @@ export const OUTPUT_CONTAINERS = {
   "vending.machine": plainBox(30),
   "box.wooden": plainBox(18),
   "electric.wallcabinet": plainBox(18),
+  dropbox: plainBox(12),
+
+  fridge: fridge(48),
+  "mini fridge": fridge(18),
+  locker: {
+    capacityGroup: "Sorted slots",
+    slotGroups: [
+      {
+        id: "clothing",
+        slots: 7,
+        accepts: {
+          kind: "category",
+          category: "Attire",
+          except: BACKPACK_SLOT_ITEMS,
+        },
+      },
+      {
+        id: "backpack",
+        slots: 1,
+        accepts: { kind: "items", shortnames: BACKPACK_SLOT_ITEMS },
+      },
+      {
+        id: "belt",
+        slots: 6,
+        accepts: { kind: "notCategory", category: "Attire" },
+      },
+    ],
+  },
+  "cupboard.tool": {
+    capacityGroup: "Sorted slots",
+    slotGroups: [
+      {
+        id: "resources",
+        slots: 24,
+        accepts: { kind: "category", category: "Resources" },
+      },
+      {
+        id: "tools",
+        slots: 5,
+        accepts: {
+          kind: "items",
+          shortnames: [
+            "hammer",
+            "toolgun",
+            "building.planner",
+            "hosetool",
+            "wiretool",
+            "pipetool",
+            "spraycan",
+            "wallpaper.tool",
+            "boat.planner",
+          ],
+        },
+      },
+    ],
+    blockedItems: [
+      "gunpowder",
+      "sulfur",
+      "sulfur.ore",
+      "explosives",
+      "diesel_barrel",
+      "cctv.camera",
+      "targeting.computer",
+    ],
+  },
   // The skins share their base oven's prefab values and can't be picked in
   // the conveyor filter, so only the base items are listed.
   furnace: oven({

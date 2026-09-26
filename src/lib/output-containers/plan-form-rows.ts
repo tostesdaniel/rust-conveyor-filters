@@ -10,7 +10,10 @@ export type FormRow =
   | { itemId: number; max: number | string }
   | { categoryId: number; max: number | string };
 
-export type CatalogueItem = Pick<Item, "shortname" | "stackSize" | "itemType">;
+export type CatalogueItem = Pick<
+  Item,
+  "shortname" | "stackSize" | "itemType" | "category"
+>;
 
 // The settings input can leave a string behind mid-edit.
 export function maxOf(row: FormRow) {
@@ -47,6 +50,7 @@ export function planFormRows(
         shortname: item.shortname,
         stackSize: item.stackSize,
         itemType: item.itemType,
+        category: item.category,
         max,
       },
     });

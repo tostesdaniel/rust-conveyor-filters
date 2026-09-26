@@ -66,7 +66,7 @@ export function SidebarPromoCard({ className }: { className?: string }) {
   return (
     <div
       key={slot}
-      className={cn(mounted.current && "duration-150 animate-in fade-in-0")}
+      className={cn(mounted.current && "transition-opacity duration-150 ease-out-strong starting:opacity-0")}
     >
       {slot === "donate" ? (
         <SidebarDonateCard className={className} />

@@ -8,6 +8,7 @@ import {
 } from "nuqs/server";
 
 import { ITEM_CATEGORIES } from "@/config/constants";
+import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 
 export const searchParams = {
   search: parseAsString.withDefault(""),
@@ -20,6 +21,7 @@ export const searchParams = {
   items: parseAsArrayOf(parseAsString),
   categories: parseAsArrayOf(parseAsStringLiteral(ITEM_CATEGORIES)),
   tags: parseAsArrayOf(parseAsString),
+  container: parseAsStringLiteral(OUTPUT_CONTAINER_SHORTNAMES),
 };
 
 export const urlKeys = {
@@ -28,6 +30,7 @@ export const urlKeys = {
   items: "items",
   categories: "categories",
   tags: "tags",
+  container: "container",
 };
 
 export const loadSearchParams = createLoader(searchParams, { urlKeys });

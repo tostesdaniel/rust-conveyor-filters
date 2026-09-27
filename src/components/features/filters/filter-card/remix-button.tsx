@@ -51,10 +51,7 @@ export function RemixButton({
   }
 
   return (
-    <Link
-      href={href}
-      className={cn(buttonVariants(), className)}
-    >
+    <Link href={href} className={cn(buttonVariants(), className)}>
       <GitForkIcon />
       Remix
     </Link>

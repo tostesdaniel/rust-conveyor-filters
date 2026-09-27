@@ -10,8 +10,7 @@ export interface ConveyorFilterWithAuthor extends ConveyorFilter {
 
 export interface ConveyorFilter extends Filter {
   filterItems: ConveyorFilterItem[];
-  // Only the queries that load the relation fill it.
-  outputContainer?: Item | null;
+  outputContainer: Item | null;
 }
 
 export interface ConveyorFilterItem extends FilterItem {

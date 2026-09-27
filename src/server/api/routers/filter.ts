@@ -1,6 +1,7 @@
 import {
   getFilterById,
   getFiltersWithItems,
+  getPublicContainerCounts,
   getPublicFilter,
   getPublicFilters,
   getUserFiltersByCategory,
@@ -19,6 +20,7 @@ import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getClientIp } from "@/lib/client-ip";
+import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
 import { filterEvents, filterItems, filters } from "@/db/schema";
 
@@ -43,6 +45,7 @@ const publicListInput = z.object({
   categories: z.array(z.string()).max(20).optional(),
   items: z.array(z.string()).max(20).optional(),
   tags: z.array(z.string()).max(20).optional(),
+  container: z.enum(OUTPUT_CONTAINER_SHORTNAMES).optional(),
 });
 
 async function resolveOutputContainer(shortname: string | null) {
@@ -87,6 +90,10 @@ export const filterRouter = createTRPCRouter({
         cursor: decodedCursor ?? undefined,
       });
     }),
+
+  getContainerCounts: publicProcedure.query(async () => {
+    return getPublicContainerCounts();
+  }),
 
   getByCategory: protectedProcedure
     .input(

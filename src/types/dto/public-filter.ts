@@ -54,6 +54,7 @@ export interface OwnerFilterDTO {
    * "saved from a shared filter" note instead of public credit.
    */
   forkedFrom: ForkAttributionDTO | null;
+  outputContainer: OutputContainerDTO | null;
 }
 
 /** The public source a fork came from. Set only while that source is public. */
@@ -79,6 +80,7 @@ export interface SharedFilterDTO {
   createdAt: Date;
   updatedAt: Date;
   filterItems: FilterItemDTO[];
+  outputContainer: OutputContainerDTO | null;
 }
 
 /**
@@ -111,4 +113,5 @@ export interface PublicFilterListDTO {
   tags: FilterTagDTO[];
   remixCount: number;
   forkedFrom: ForkAttributionDTO | null;
+  outputContainer: OutputContainerDTO | null;
 }

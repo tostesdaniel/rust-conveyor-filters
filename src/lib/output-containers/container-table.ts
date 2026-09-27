@@ -245,10 +245,57 @@ export const OUTPUT_CONTAINER_SHORTNAMES = Object.keys(OUTPUT_CONTAINERS) as [
   ...OutputContainerShortname[],
 ];
 
+export function isOutputContainer(
+  shortname: string,
+): shortname is OutputContainerShortname {
+  return Object.hasOwn(OUTPUT_CONTAINERS, shortname);
+}
+
 export function toOutputContainerShortname(
   shortname: string | null | undefined,
 ): OutputContainerShortname | null {
-  return shortname && Object.hasOwn(OUTPUT_CONTAINERS, shortname)
-    ? (shortname as OutputContainerShortname)
-    : null;
+  return shortname && isOutputContainer(shortname) ? shortname : null;
+}
+
+function namesInRule(rule: AcceptRule) {
+  switch (rule.kind) {
+    case "any":
+      return { shortnames: [], categories: [] };
+    case "items":
+      return { shortnames: rule.shortnames, categories: [] };
+    case "category":
+      return {
+        shortnames: [...(rule.except ?? []), ...(rule.alsoItems ?? [])],
+        categories: [rule.category],
+      };
+    case "notCategory":
+      return { shortnames: [], categories: [rule.category] };
+  }
+}
+
+export function containersNaming() {
+  const byShortname = new Map<string, Set<OutputContainerShortname>>();
+  const byCategory = new Map<string, Set<OutputContainerShortname>>();
+  const add = (
+    index: Map<string, Set<OutputContainerShortname>>,
+    key: string,
+    container: OutputContainerShortname,
+  ) => index.set(key, (index.get(key) ?? new Set()).add(container));
+
+  for (const container of OUTPUT_CONTAINER_SHORTNAMES) {
+    const entry: OutputContainer = OUTPUT_CONTAINERS[container];
+    const shortnames = [
+      ...(entry.blockedItems ?? []),
+      ...(entry.results ?? []),
+    ];
+    for (const group of entry.slotGroups) {
+      const names = namesInRule(group.accepts);
+      shortnames.push(...names.shortnames);
+      for (const category of names.categories) {
+        add(byCategory, category, container);
+      }
+    }
+    for (const shortname of shortnames) add(byShortname, shortname, container);
+  }
+  return { byShortname, byCategory };
 }

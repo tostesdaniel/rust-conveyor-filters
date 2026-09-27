@@ -10,9 +10,19 @@ import { toast } from "sonner";
 import type { ConveyorFilterItem } from "@/types/filter";
 import { type NewConveyorItem } from "@/types/item";
 import { MAX_FILTER_ITEMS } from "@/config/constants";
+import { useCatalogue } from "@/hooks/use-catalogue";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import {
+  acceptanceOf,
+  type Acceptance,
+} from "@/lib/output-containers/capacity-planner";
+import {
+  OUTPUT_CONTAINERS,
+  toOutputContainerShortname,
+} from "@/lib/output-containers/container-table";
+import { cn } from "@/lib/utils";
 import { Item, type Category } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,6 +113,36 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
   const conveyorItems = useWatch({ control, name: "items" }) as
     | NewConveyorItem[]
     | undefined;
+  const containerShortname = toOutputContainerShortname(
+    useWatch({ control, name: "outputContainer" }) as string | undefined,
+  );
+  const catalogue = useCatalogue();
+  const containerName = containerShortname
+    ? (catalogue.byShortname.get(containerShortname)?.name ??
+      containerShortname)
+    : null;
+
+  const acceptance = React.useMemo(() => {
+    if (!containerShortname || !items) return null;
+    const container = OUTPUT_CONTAINERS[containerShortname];
+    const ofItem = new Map<number, Acceptance>();
+    const byCategory = new Map<string, Item[]>();
+    for (const item of items) {
+      ofItem.set(item.id, acceptanceOf(container, { ...item, kind: "item" }));
+      byCategory.set(item.category, [
+        ...(byCategory.get(item.category) ?? []),
+        item,
+      ]);
+    }
+    const ofCategory = new Map<string, Acceptance>();
+    for (const [category, members] of byCategory) {
+      ofCategory.set(
+        category,
+        acceptanceOf(container, { kind: "category", category, items: members }),
+      );
+    }
+    return { ofItem, ofCategory };
+  }, [containerShortname, items]);
 
   const { insertedItemIds, insertedCategoryIds } = React.useMemo(() => {
     const itemIds = new Set<number>();
@@ -180,6 +220,79 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
       {} as Record<string, Item[]>,
     );
 
+    const searchLower = search.toLowerCase();
+    const sections = categories.flatMap((category) => {
+      const categoryName = Object.keys(categoryMapping).find(
+        (key) => categoryMapping[key] === category.name,
+      );
+      if (!categoryName) return [];
+
+      const isCategoryMatch = Object.entries(categoryMapping).some(
+        ([key, value]) => {
+          return (
+            (key.toLowerCase().includes(searchLower) ||
+              value.toLowerCase().includes(searchLower)) &&
+            value === category.name
+          );
+        },
+      );
+
+      const matches = isCategoryMatch
+        ? []
+        : searchItems(categorizedItems[category.name], search);
+
+      if (search && !isCategoryMatch && matches.length === 0) return [];
+
+      const shown = isCategoryMatch
+        ? categorizedItems[category.name]
+        : matches.map(({ item }) => item);
+      return [{ category, categoryName, isCategoryMatch, shown }];
+    });
+
+    // No container means every item is accepted.
+    const itemIs = (item: Item, wanted: Acceptance) =>
+      (acceptance?.ofItem.get(item.id) ?? "accepted") === wanted;
+    const categoryIs = (categoryName: string, wanted: Acceptance) =>
+      (acceptance?.ofCategory.get(categoryName) ?? "accepted") === wanted;
+
+    const itemRow = (item: Item, dimmed = false) => (
+      <PickerItem
+        key={item.id}
+        item={item}
+        checked={insertedItemIds.has(item.id)}
+        dimmed={dimmed}
+        onSelect={() => insertItem(item)}
+      />
+    );
+    const categoryRow = (
+      category: Category,
+      categoryName: string,
+      dimmed = false,
+    ) => (
+      <PickerCategory
+        key={`category:${category.id}`}
+        category={category}
+        categoryName={categoryName}
+        checked={insertedCategoryIds.has(category.id)}
+        dimmed={dimmed}
+        onSelect={() => insertItem(category)}
+      />
+    );
+
+    const goesToBox = sections.flatMap(({ shown }) =>
+      shown.filter((item) => itemIs(item, "goesToBox")),
+    );
+    const notAcceptedRows = sections.flatMap(
+      ({ category, categoryName, isCategoryMatch, shown }) => [
+        ...(isCategoryMatch && !categoryIs(categoryName, "accepted")
+          ? [categoryRow(category, categoryName, true)]
+          : []),
+        ...shown
+          .filter((item) => itemIs(item, "notAccepted"))
+          .map((item) => itemRow(item, true)),
+      ],
+    );
+
     return (
       <>
         <SearchTipTooltip />
@@ -196,88 +309,103 @@ const ItemList = React.memo(({ onInsertItem }: ItemListProps) => {
           </div>
           <CommandList>
             <CommandEmpty>No items found</CommandEmpty>
-            {categories.map((category) => {
-              const categoryName = Object.keys(categoryMapping).find(
-                (key) => categoryMapping[key] === category.name,
-              );
-              if (!categoryName) return null;
-              const CategoryIcon = getCategoryIcon(categoryName);
+            {sections.map(
+              ({ category, categoryName, isCategoryMatch, shown }) => {
+                const withCategory =
+                  isCategoryMatch && categoryIs(categoryName, "accepted");
+                const accepted = shown.filter((item) =>
+                  itemIs(item, "accepted"),
+                );
+                if (!withCategory && accepted.length === 0) return null;
 
-              const searchLower = search.toLowerCase();
-              const isCategoryMatch = Object.entries(categoryMapping).some(
-                ([key, value]) => {
-                  return (
-                    (key.toLowerCase().includes(searchLower) ||
-                      value.toLowerCase().includes(searchLower)) &&
-                    value === category.name
-                  );
-                },
-              );
-
-              // A category hit lists the whole category, so the matcher only
-              // runs when the query has to pick items out of it.
-              const matches = isCategoryMatch
-                ? []
-                : searchItems(categorizedItems[category.name], search);
-
-              const showCategory =
-                !search || isCategoryMatch || matches.length > 0;
-
-              if (!showCategory) return null;
-
-              const shown = isCategoryMatch
-                ? categorizedItems[category.name]
-                : matches.map(({ item }) => item);
-
-              return (
-                <CommandGroup key={category.id} heading={categoryName}>
-                  {isCategoryMatch && (
-                    <CommandItem
-                      onSelect={() => insertItem(category)}
-                      data-checked={insertedCategoryIds.has(category.id)}
-                      className='mb-1 gap-x-2 rounded-b-none border-b pb-2 font-semibold tracking-wide'
-                    >
-                      <span className='size-6 shrink-0 rounded-sm border border-foreground p-px'>
-                        <CategoryIcon className='size-full' />
-                      </span>
-                      <p className='flex-1'>{category.name}</p>
-                      <span className='text-end text-xs text-muted-foreground'>
-                        CATEGORY
-                      </span>
-                    </CommandItem>
-                  )}
-
-                  {shown.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      className='flex items-center gap-x-2'
-                      data-checked={insertedItemIds.has(item.id)}
-                      onSelect={() => insertItem(item)}
-                    >
-                      <div className='relative size-6'>
-                        <ItemIcon
-                          imagePath={item.imagePath}
-                          version={item.iconVersion}
-                          size='tiny'
-                          alt={item.name}
-                          height={24}
-                          width={24}
-                          loading='lazy'
-                          unoptimized
-                          className='rounded-sm object-contain'
-                        />
-                      </div>
-                      <p className='min-w-0 flex-1 truncate'>{item.name}</p>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              );
-            })}
+                return (
+                  <CommandGroup key={category.id} heading={categoryName}>
+                    {withCategory && categoryRow(category, categoryName)}
+                    {accepted.map((item) => itemRow(item))}
+                  </CommandGroup>
+                );
+              },
+            )}
+            {goesToBox.length > 0 && (
+              <CommandGroup heading='Goes to the box'>
+                {goesToBox.map((item) => itemRow(item))}
+              </CommandGroup>
+            )}
+            {notAcceptedRows.length > 0 && (
+              <CommandGroup heading={`Not accepted by ${containerName}`}>
+                {notAcceptedRows}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </>
     );
   }
 });
+
+// Dimmed rows stay insertable, since the conveyor may feed other outputs too.
+const DIMMED = "opacity-50 data-selected:opacity-100";
+
+interface PickerRowProps {
+  checked: boolean;
+  dimmed: boolean;
+  onSelect: () => void;
+}
+
+function PickerItem({
+  item,
+  checked,
+  dimmed,
+  onSelect,
+}: PickerRowProps & { item: Item }) {
+  return (
+    <CommandItem
+      className={cn("flex items-center gap-x-2", dimmed && DIMMED)}
+      data-checked={checked}
+      onSelect={onSelect}
+    >
+      <div className='relative size-6'>
+        <ItemIcon
+          imagePath={item.imagePath}
+          version={item.iconVersion}
+          size='tiny'
+          alt={item.name}
+          height={24}
+          width={24}
+          loading='lazy'
+          unoptimized
+          className='rounded-sm object-contain'
+        />
+      </div>
+      <p className='min-w-0 flex-1 truncate'>{item.name}</p>
+    </CommandItem>
+  );
+}
+
+function PickerCategory({
+  category,
+  categoryName,
+  checked,
+  dimmed,
+  onSelect,
+}: PickerRowProps & { category: Category; categoryName: string }) {
+  const CategoryIcon = getCategoryIcon(categoryName);
+  return (
+    <CommandItem
+      onSelect={onSelect}
+      data-checked={checked}
+      className={cn(
+        "mb-1 gap-x-2 rounded-b-none border-b pb-2 font-semibold tracking-wide",
+        dimmed && DIMMED,
+      )}
+    >
+      <span className='size-6 shrink-0 rounded-sm border border-foreground p-px'>
+        <CategoryIcon className='size-full' />
+      </span>
+      <p className='flex-1'>{category.name}</p>
+      <span className='text-end text-xs text-muted-foreground'>CATEGORY</span>
+    </CommandItem>
+  );
+}
 
 ItemList.displayName = "ItemList";

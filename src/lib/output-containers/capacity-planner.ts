@@ -12,15 +12,18 @@ export interface PlannerItem {
   category: string;
 }
 
-export type PlannerRow =
-  | ({ kind: "item"; max: number } & PlannerItem)
+export type PlannerSubject =
+  | ({ kind: "item" } & PlannerItem)
   | {
       kind: "category";
       category: string;
       /** Insertable items only. */
       items: readonly PlannerItem[];
-      max: number;
     };
+
+export type PlannerRow = PlannerSubject & { max: number };
+
+export type Acceptance = "accepted" | "goesToBox" | "notAccepted";
 
 export interface RowPlan {
   max: number;
@@ -112,7 +115,7 @@ interface Placement {
 
 function placementOf(
   container: OutputContainer,
-  row: PlannerRow,
+  row: PlannerSubject,
 ): Placement | null {
   if (row.kind === "item") {
     const group = acceptingGroup(container, row);
@@ -121,6 +124,17 @@ function placementOf(
   const group = categoryGroup(container, row.items);
   const stackSize = mostCommonStackSize(row.items);
   return group && stackSize ? { group, stackSize } : null;
+}
+
+export function acceptanceOf(
+  container: OutputContainer,
+  subject: PlannerSubject,
+): Acceptance {
+  if (placementOf(container, subject)) return "accepted";
+  return subject.kind === "item" &&
+    container.results?.includes(subject.shortname)
+    ? "goesToBox"
+    : "notAccepted";
 }
 
 function divide(slots: number, indexes: number[]) {
@@ -233,8 +247,7 @@ export function planOutputContainer(
   const plans: RowPlan[] = rows.map((row, index) => {
     const placement = placements[index];
     if (!placement) {
-      const goesToBox =
-        row.kind === "item" && !!container.results?.includes(row.shortname);
+      const goesToBox = acceptanceOf(container, row) === "goesToBox";
       return {
         max: row.max,
         slotGroup: null,

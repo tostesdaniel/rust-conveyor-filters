@@ -3,6 +3,7 @@ import type { ItemSnapshot } from "@/scripts/items/snapshot";
 import { describe, expect, it } from "vitest";
 
 import {
+  acceptanceOf,
   planOutputContainer,
   type PlannerRow,
 } from "@/lib/output-containers/capacity-planner";
@@ -449,16 +450,17 @@ describe("planOutputContainer on a locker", () => {
   });
 });
 
-describe("planOutputContainer with a category row", () => {
-  const snapshot = bundledSnapshot as ItemSnapshot;
-  const insertable = snapshot.items.filter((entry) => entry.insertable);
-  const category = (name: string, max = 0): PlannerRow => ({
-    kind: "category",
-    category: name,
-    items: insertable.filter((entry) => entry.category === name),
-    max,
-  });
+const insertable = (bundledSnapshot as ItemSnapshot).items.filter(
+  (entry) => entry.insertable,
+);
+const category = (name: string, max = 0): PlannerRow => ({
+  kind: "category",
+  category: name,
+  items: insertable.filter((entry) => entry.category === name),
+  max,
+});
 
+describe("planOutputContainer with a category row", () => {
   it("counts the item rows of its category on top of its own share", () => {
     const plan = planOutputContainer(largeBox, [
       category("Resources"),
@@ -555,5 +557,57 @@ describe("planOutputContainer with a category row", () => {
       notAccepted: true,
       slotGroup: null,
     });
+  });
+});
+
+describe("acceptanceOf per container", () => {
+  const rifle = item("rifle.ak", 1, 0, { category: "Weapon" });
+
+  it("takes a furnace's fuel and ore, sends its results to the box and rejects the rest", () => {
+    const furnace = OUTPUT_CONTAINERS.furnace;
+
+    expect(acceptanceOf(furnace, wood())).toBe("accepted");
+    expect(acceptanceOf(furnace, metalOre())).toBe("accepted");
+    expect(acceptanceOf(furnace, fragments())).toBe("goesToBox");
+    expect(acceptanceOf(furnace, charcoal())).toBe("goesToBox");
+    expect(acceptanceOf(furnace, rifle)).toBe("notAccepted");
+  });
+
+  it("sends the electric furnace's results to the box but rejects wood and charcoal", () => {
+    const furnace = OUTPUT_CONTAINERS["electric.furnace"];
+
+    expect(acceptanceOf(furnace, fragments())).toBe("goesToBox");
+    expect(acceptanceOf(furnace, wood())).toBe("notAccepted");
+    expect(acceptanceOf(furnace, charcoal())).toBe("notAccepted");
+  });
+
+  it("takes Food and the bota bag in a fridge", () => {
+    const fridge = OUTPUT_CONTAINERS.fridge;
+
+    expect(
+      acceptanceOf(fridge, item("botabag", 1, 0, { category: "Items" })),
+    ).toBe("accepted");
+    expect(
+      acceptanceOf(fridge, item("apple", 10, 0, { category: "Food" })),
+    ).toBe("accepted");
+    expect(acceptanceOf(fridge, rifle)).toBe("notAccepted");
+  });
+
+  it("rejects water in every container", () => {
+    const water = item("water", 20000, 0, {
+      category: "Food",
+      itemType: "Liquid",
+    });
+
+    expect(acceptanceOf(largeBox, water)).toBe("notAccepted");
+    expect(acceptanceOf(OUTPUT_CONTAINERS.fridge, water)).toBe("notAccepted");
+  });
+
+  it("checks a category the way the planner places a category row", () => {
+    const fridge = OUTPUT_CONTAINERS.fridge;
+
+    expect(acceptanceOf(fridge, category("Food"))).toBe("accepted");
+    expect(acceptanceOf(fridge, category("Weapon"))).toBe("notAccepted");
+    expect(acceptanceOf(largeBox, category("Weapon"))).toBe("accepted");
   });
 });

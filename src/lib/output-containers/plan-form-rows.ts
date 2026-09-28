@@ -106,6 +106,24 @@ export function splitFormRows(
   return { maxes, written };
 }
 
+/**
+ * What the last split wrote isn't saved, so a reloaded row counts as
+ * split-owned only while it still holds what a fresh split gives it.
+ */
+export function seedWritten(
+  container: OutputContainer,
+  rows: readonly FormRow[],
+  catalogue: ReadonlyMap<number, CatalogueItem>,
+): Map<string, number> {
+  const plans = planFormRows(container, rows, catalogue, () => true);
+  const written = new Map<string, number>();
+  rows.forEach((row, index) => {
+    const plan = plans[index];
+    if (plan && plan.max === maxOf(row)) written.set(rowKey(row), plan.max);
+  });
+  return written;
+}
+
 export function fitAddedRow(
   container: OutputContainer,
   rows: readonly FormRow[],

@@ -18,6 +18,7 @@ import {
   fitAddedRow,
   maxOf,
   rowKey,
+  seedWritten,
   splitFormRows,
   type FormRow,
 } from "@/lib/output-containers/plan-form-rows";
@@ -26,12 +27,35 @@ type SplitWritten = React.RefObject<Map<string, number>>;
 
 const SplitWrittenContext = React.createContext<SplitWritten | null>(null);
 
+export interface LoadedValues {
+  outputContainer: OutputContainerShortname | null;
+  items: FormRow[];
+}
+
 export function OutputContainerSplitProvider({
+  saved,
   children,
 }: {
+  saved?: LoadedValues | null;
   children: React.ReactNode;
 }) {
-  const written = React.useRef(new Map<string, number>());
+  const [unseeded] = React.useState(() => new Map<string, number>());
+  const written = React.useRef(unseeded);
+  const catalogue = useCatalogue();
+
+  React.useEffect(() => {
+    if (!saved?.outputContainer) return;
+    // Wait for the catalogue, since seeding needs stack sizes.
+    if (catalogue.byId.size === 0) return;
+    // Skip seeding if a pick or added row already wrote.
+    if (written.current !== unseeded) return;
+    written.current = seedWritten(
+      OUTPUT_CONTAINERS[saved.outputContainer],
+      saved.items,
+      catalogue.byId,
+    );
+  }, [saved, catalogue, unseeded]);
+
   return <SplitWrittenContext value={written}>{children}</SplitWrittenContext>;
 }
 

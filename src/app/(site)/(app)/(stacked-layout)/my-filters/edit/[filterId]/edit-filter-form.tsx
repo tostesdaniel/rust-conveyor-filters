@@ -37,7 +37,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
 import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
-import { OutputContainerSplitProvider } from "@/components/features/conveyor/output-container-split";
+import {
+  OutputContainerSplitProvider,
+  type LoadedValues,
+} from "@/components/features/conveyor/output-container-split";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
@@ -148,6 +151,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const { dirtyFields } = useFormState({ control: form.control });
   const initialItemsRef = React.useRef<FilterItem[]>([]);
   const hydratedForFilterIdRef = React.useRef<number | null>(null);
+  const [saved, setSaved] = React.useState<LoadedValues | null>(null);
 
   const utils = api.useUtils();
   const { trackAction } = useEngagementScore();
@@ -207,6 +211,10 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       .filter((item): item is FilterItem => item !== null);
 
     initialItemsRef.current = initialItemsData;
+    const outputContainer = toOutputContainerShortname(
+      data.outputContainer?.shortname,
+    );
+    setSaved({ outputContainer, items: initialItemsData });
     form.reset({
       name: data.name,
       description: data.description ?? "",
@@ -216,9 +224,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         subCategoryId: data.subCategoryId,
       },
       isPublic: data.isPublic,
-      outputContainer: toOutputContainerShortname(
-        data.outputContainer?.shortname,
-      ),
+      outputContainer,
       items: initialItemsData,
     });
 
@@ -317,7 +323,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             )}
           />
         </div>
-        <OutputContainerSplitProvider>
+        <OutputContainerSplitProvider saved={saved}>
           <OutputContainerField />
           <FormFieldScope name='items'>
             <FormItem>

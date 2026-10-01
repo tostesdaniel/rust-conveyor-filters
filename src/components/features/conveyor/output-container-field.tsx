@@ -33,10 +33,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useOutputContainerSplit } from "@/components/features/conveyor/output-container-split";
+import { Switch } from "@/components/ui/switch";
+import {
+  useOutputContainerSplit,
+  usePerfectSmeltingSwitch,
+} from "@/components/features/conveyor/output-container-split";
 import { ItemIcon } from "@/components/shared/item-icon";
-
-const DEFAULT_CONTAINER: OutputContainerShortname = "box.wooden.large";
 
 type ContainerIconItem = Pick<Item, "name" | "imagePath" | "iconVersion">;
 type ContainerOption = ContainerIconItem & {
@@ -52,7 +54,9 @@ export function OutputContainerField() {
   const selected = useWatch({ control, name: "outputContainer" }) ?? null;
   const catalogue = useCatalogue();
   const checkboxId = React.useId();
+  const switchId = React.useId();
   const split = useOutputContainerSplit();
+  const perfectSmelting = usePerfectSmeltingSwitch();
 
   const options = React.useMemo(() => {
     const groups = new Map<string, ContainerOption[]>();
@@ -83,9 +87,7 @@ export function OutputContainerField() {
             checked={selected !== null}
             // Without the catalogue there are no stack sizes to split with.
             disabled={catalogue.byId.size === 0}
-            onCheckedChange={(checked) =>
-              split.pick(checked ? DEFAULT_CONTAINER : null)
-            }
+            onCheckedChange={split.setTicked}
           />
           <FieldContent>
             <FieldTitle>Output container</FieldTitle>
@@ -97,7 +99,7 @@ export function OutputContainerField() {
         </Field>
       </FieldLabel>
       {selected && (
-        <div className='flex items-center gap-2'>
+        <div className='flex flex-wrap items-center gap-x-2 gap-y-3'>
           <Select
             value={selected}
             onValueChange={(value) =>
@@ -139,6 +141,18 @@ export function OutputContainerField() {
             <SplitIcon />
             Re-split
           </Button>
+          {perfectSmelting.visible && (
+            <Field orientation='horizontal' className='w-auto'>
+              <Switch
+                id={switchId}
+                checked={perfectSmelting.on}
+                onCheckedChange={split.setPerfectSmelting}
+              />
+              <FieldLabel htmlFor={switchId} className='whitespace-nowrap'>
+                Perfect smelting
+              </FieldLabel>
+            </Field>
+          )}
         </div>
       )}
     </div>

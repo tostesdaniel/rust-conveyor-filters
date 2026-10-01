@@ -5,27 +5,61 @@ import type {
   CreateFilter,
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { type NewConveyorItem } from "@/types/item";
 import { useCatalogue } from "@/hooks/use-catalogue";
+import type { PerfectSmelting } from "@/lib/output-containers/capacity-planner";
 import {
   OUTPUT_CONTAINERS,
+  type OutputContainer,
   type OutputContainerShortname,
 } from "@/lib/output-containers/container-table";
 import {
   fitAddedRow,
   maxOf,
+  perfectSmeltingOfForm,
   rowKey,
   seedWritten,
   splitFormRows,
+  switchPerfectSmelting,
+  type CatalogueItem,
   type FormRow,
 } from "@/lib/output-containers/plan-form-rows";
 
-type SplitWritten = React.RefObject<Map<string, number>>;
+const DEFAULT_CONTAINER: OutputContainerShortname = "box.wooden.large";
 
-const SplitWrittenContext = React.createContext<SplitWritten | null>(null);
+interface SplitState {
+  written: React.RefObject<Map<string, number>>;
+  /** Container restored when the checkbox is ticked again. */
+  lastContainer: React.RefObject<OutputContainerShortname>;
+  /** Used when there is no oven or no Smelt rows. */
+  ownSwitch: boolean;
+  setOwnSwitch: (on: boolean) => void;
+}
+
+const SplitStateContext = React.createContext<SplitState | null>(null);
+
+const isOven = (
+  container: OutputContainer | null,
+): container is OutputContainer => !!container?.keepLitMax;
+
+const containerOf = (shortname: OutputContainerShortname | null) =>
+  shortname ? OUTPUT_CONTAINERS[shortname] : null;
+
+function checkFor(
+  container: OutputContainer | null,
+  rows: readonly FormRow[],
+  catalogue: ReadonlyMap<number, CatalogueItem>,
+): PerfectSmelting {
+  return isOven(container)
+    ? perfectSmeltingOfForm(container, rows, catalogue)
+    : "noSmeltRows";
+}
+
+const switchOnFor = (check: PerfectSmelting, ownSwitch: boolean) =>
+  check === "noSmeltRows" ? ownSwitch : check === "on";
 
 export interface LoadedValues {
   outputContainer: OutputContainerShortname | null;
@@ -41,6 +75,8 @@ export function OutputContainerSplitProvider({
 }) {
   const [unseeded] = React.useState(() => new Map<string, number>());
   const written = React.useRef(unseeded);
+  const lastContainer = React.useRef(DEFAULT_CONTAINER);
+  const [ownSwitch, setOwnSwitch] = React.useState(true);
   const catalogue = useCatalogue();
 
   React.useEffect(() => {
@@ -56,21 +92,51 @@ export function OutputContainerSplitProvider({
     );
   }, [saved, catalogue, unseeded]);
 
-  return <SplitWrittenContext value={written}>{children}</SplitWrittenContext>;
+  return (
+    <SplitStateContext
+      value={{ written, lastContainer, ownSwitch, setOwnSwitch }}
+    >
+      {children}
+    </SplitStateContext>
+  );
 }
 
-function useSplitWritten() {
-  const written = React.useContext(SplitWrittenContext);
-  if (!written) {
+function useSplitState() {
+  const state = React.useContext(SplitStateContext);
+  if (!state) {
     throw new Error(
-      "useOutputContainerSplit must be used within an OutputContainerSplitProvider",
+      "Output container hooks must be used within an OutputContainerSplitProvider",
     );
   }
-  return written;
+  return state;
+}
+
+export function usePerfectSmeltingSwitch() {
+  const { ownSwitch, setOwnSwitch } = useSplitState();
+  const { control } = useFormContext<
+    CreateFilterInput,
+    unknown,
+    CreateFilter
+  >();
+  const shortname = useWatch({ control, name: "outputContainer" }) ?? null;
+  const rows = useWatch({ control, name: "items" }) as FormRow[] | undefined;
+  const catalogue = useCatalogue();
+  const container = containerOf(shortname);
+  const check = checkFor(container, rows ?? [], catalogue.byId);
+
+  // Remember the rows' answer so removing Smelt rows keeps it.
+  React.useEffect(() => {
+    if (check !== "noSmeltRows") setOwnSwitch(check === "on");
+  }, [check, setOwnSwitch]);
+
+  return {
+    visible: isOven(container),
+    on: switchOnFor(check, ownSwitch),
+  };
 }
 
 export function useOutputContainerSplit() {
-  const written = useSplitWritten();
+  const { written, lastContainer, ownSwitch, setOwnSwitch } = useSplitState();
   const { getValues, setValue } = useFormContext<
     CreateFilterInput,
     unknown,
@@ -82,29 +148,54 @@ export function useOutputContainerSplit() {
     setValue(`items.${index}.max`, max, { shouldDirty: true });
   }
 
-  /** Splits every row, then offers an undo that puts the container back too. */
-  function pick(shortname: OutputContainerShortname | null) {
+  const formRows = () => getValues("items") as FormRow[];
+  const switchOn = (shortname: OutputContainerShortname | null) =>
+    switchOnFor(
+      checkFor(containerOf(shortname), formRows(), catalogue.byId),
+      ownSwitch,
+    );
+  const maxesByKey = (rows: readonly FormRow[]) =>
+    new Map(rows.map((row) => [rowKey(row), maxOf(row)]));
+
+  function applyMaxes(rows: readonly FormRow[], maxes: (number | null)[]) {
+    maxes.forEach((max, index) => {
+      if (max !== null && max !== maxOf(rows[index])) setMax(index, max);
+    });
+  }
+
+  // By key, since rows may have moved or gone since the rewrite.
+  function restoreMaxes(previous: ReadonlyMap<string, number>) {
+    formRows().forEach((row, index) => {
+      const max = previous.get(rowKey(row));
+      if (max !== undefined) setMax(index, max);
+    });
+  }
+
+  function fit(
+    shortname: OutputContainerShortname | null,
+    perfectSmelting: boolean,
+  ) {
     const containerBefore = getValues("outputContainer") ?? null;
     const writtenBefore = written.current;
     setValue("outputContainer", shortname, { shouldDirty: true });
     if (!shortname) {
+      if (containerBefore) lastContainer.current = containerBefore;
       written.current = new Map();
       return;
     }
 
-    const rows = getValues("items") as FormRow[];
+    const rows = formRows();
     if (rows.length === 0) return;
-    const previous = new Map(rows.map((row) => [rowKey(row), maxOf(row)]));
-    const split = splitFormRows(
+    const previous = maxesByKey(rows);
+    const planned = splitFormRows(
       OUTPUT_CONTAINERS[shortname],
       rows,
       catalogue.byId,
       written.current,
+      { perfectSmelting },
     );
-    written.current = split.written;
-    split.maxes.forEach((max, index) => {
-      if (max !== null && max !== maxOf(rows[index])) setMax(index, max);
-    });
+    written.current = planned.written;
+    applyMaxes(rows, planned.maxes);
 
     toast(`Max values fit to ${catalogue.byShortname.get(shortname)?.name}`, {
       action: {
@@ -112,34 +203,80 @@ export function useOutputContainerSplit() {
         onClick: () => {
           setValue("outputContainer", containerBefore, { shouldDirty: true });
           written.current = writtenBefore;
-          // By key, since rows may have moved or gone since the split.
-          (getValues("items") as FormRow[]).forEach((row, index) => {
-            const max = previous.get(rowKey(row));
-            if (max !== undefined) setMax(index, max);
-          });
+          restoreMaxes(previous);
         },
       },
     });
   }
 
+  function pick(shortname: OutputContainerShortname | null) {
+    const before = getValues("outputContainer") ?? null;
+    fit(shortname, isOven(containerOf(shortname)) && switchOn(before));
+  }
+
+  function setTicked(ticked: boolean) {
+    pick(ticked ? lastContainer.current : null);
+  }
+
+  // Perfect smelting off, so lowered Smelt rows are not overwritten.
   function resplit() {
     const shortname = getValues("outputContainer");
-    if (shortname) pick(shortname);
+    if (shortname) fit(shortname, false);
+  }
+
+  function setPerfectSmelting(on: boolean) {
+    const ownBefore = ownSwitch;
+    setOwnSwitch(on);
+    const shortname = getValues("outputContainer");
+    if (!shortname) return;
+
+    const container = OUTPUT_CONTAINERS[shortname];
+    const rows = formRows();
+    if (checkFor(container, rows, catalogue.byId) === "noSmeltRows") return;
+    const switched = switchPerfectSmelting(
+      container,
+      rows,
+      catalogue.byId,
+      written.current,
+      on,
+    );
+    const previous = maxesByKey(rows);
+    const writtenBefore = written.current;
+    written.current = switched.written;
+    applyMaxes(rows, switched.maxes);
+
+    const name = catalogue.byShortname.get(shortname)?.name;
+    toast(
+      on
+        ? `Max values fit to ${name} in Perfect smelting`
+        : `Max values fit to ${name}`,
+      {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            setOwnSwitch(ownBefore);
+            written.current = writtenBefore;
+            restoreMaxes(previous);
+          },
+        },
+      },
+    );
   }
 
   function fitNewRow<T extends NewConveyorItem>(item: T): T {
     const shortname = getValues("outputContainer");
     if (!shortname) return item;
-    const fit = fitAddedRow(
+    const added = fitAddedRow(
       OUTPUT_CONTAINERS[shortname],
-      getValues("items") as FormRow[],
+      formRows(),
       item,
       catalogue.byId,
       written.current,
+      { perfectSmelting: switchOn(shortname) },
     );
-    written.current = fit.written;
-    return { ...item, max: fit.max };
+    written.current = added.written;
+    return { ...item, max: added.max };
   }
 
-  return { pick, resplit, fitNewRow };
+  return { pick, setTicked, resplit, setPerfectSmelting, fitNewRow };
 }

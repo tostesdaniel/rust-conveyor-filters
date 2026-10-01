@@ -1,5 +1,5 @@
 // Last checked against this game build.
-export const CONTAINER_TABLE_GAME_BUILD = "4222685261503300823";
+export const CONTAINER_TABLE_GAME_BUILD = "4104490413532952882";
 
 export type AcceptRule =
   | { kind: "any" }
@@ -38,7 +38,7 @@ function plainBox(slots: number): OutputContainer {
 
 function fridge(slots: number): OutputContainer {
   return {
-    capacityGroup: "Fridges",
+    capacityGroup: "Food storage",
     slotGroups: [
       {
         id: "main",
@@ -159,6 +159,16 @@ export const OUTPUT_CONTAINERS = {
 
   fridge: fridge(48),
   "mini fridge": fridge(18),
+  hitchtroughcombo: {
+    capacityGroup: "Food storage",
+    slotGroups: [
+      {
+        id: "main",
+        slots: 6,
+        accepts: { kind: "category", category: "Food" },
+      },
+    ],
+  },
   locker: {
     capacityGroup: "Sorted slots",
     slotGroups: [

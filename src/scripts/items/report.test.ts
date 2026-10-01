@@ -153,7 +153,7 @@ describe("container table section", () => {
     const pie = item({ itemId: 13, shortname: "pie", category: "Items" });
     const text = report([baseline(pie, { category: "Food" })], [pie]);
     expect(text).toContain(
-      "- `pie` pie (named by `fridge`, `mini fridge`): moved from Food to Items",
+      "- `pie` pie (named by `fridge`, `mini fridge`, `hitchtroughcombo`): moved from Food to Items",
     );
   });
 

@@ -25,6 +25,11 @@ export type PlannerRow = PlannerSubject & { max: number };
 
 export type Acceptance = "accepted" | "goesToBox" | "notAccepted";
 
+export type PerfectSmelting = "on" | "off" | "noSmeltRows";
+
+// Extra wood for a server save stalling the conveyor, to prevent it from turning off.
+const WOOD_MARGIN = 0;
+
 export interface RowPlan {
   max: number;
   slotGroup: string | null;
@@ -137,6 +142,32 @@ export function acceptanceOf(
     : "notAccepted";
 }
 
+export function keepLitMaxOf(
+  container: OutputContainer,
+  subject: PlannerSubject,
+): number | null {
+  if (subject.kind !== "item") return null;
+  const keepLit = container.keepLitMax?.[subject.shortname];
+  if (keepLit === undefined) return null;
+  return subject.shortname === "wood" ? keepLit + WOOD_MARGIN : keepLit;
+}
+
+/** The filter stores no mode, so it is inferred from Smelt rows. */
+export function perfectSmeltingOf(
+  container: OutputContainer,
+  rows: readonly PlannerRow[],
+): PerfectSmelting {
+  if (!container.keepLitMax) return "off";
+  const smeltRows = rows.flatMap((row) => {
+    const keepLit = keepLitMaxOf(container, row);
+    return keepLit === null ? [] : [{ max: row.max, keepLit }];
+  });
+  if (smeltRows.length === 0) return "noSmeltRows";
+  return smeltRows.every(({ max, keepLit }) => max > 0 && max <= keepLit)
+    ? "on"
+    : "off";
+}
+
 function divide(slots: number, indexes: number[]) {
   const free = Math.max(0, slots);
   const base = Math.floor(free / indexes.length);
@@ -168,8 +199,16 @@ function withLimits(
 
 export function planOutputContainer(
   container: OutputContainer,
-  rows: PlannerRow[],
+  authoredRows: PlannerRow[],
+  { perfectSmelting = false }: { perfectSmelting?: boolean } = {},
 ): RowPlan[] {
+  // Smelt rows count as capped, so the other rows split the slots they leave.
+  const rows = perfectSmelting
+    ? authoredRows.map((row) => {
+        const keepLit = keepLitMaxOf(container, row);
+        return keepLit === null ? row : { ...row, max: keepLit };
+      })
+    : authoredRows;
   const placements = rows.map((row) => placementOf(container, row));
   const capacityOf = (index: number) =>
     placements[index]!.group.slots * placements[index]!.stackSize;

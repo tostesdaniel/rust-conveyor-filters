@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   acceptanceOf,
+  perfectSmeltingOf,
   planOutputContainer,
   type PlannerRow,
 } from "@/lib/output-containers/capacity-planner";
@@ -32,6 +33,7 @@ const metalOre = (max = 0) => item("metal.ore", 1000, max);
 const sulfurOre = (max = 0) => item("sulfur.ore", 1000, max);
 const hqOre = (max = 0) => item("hq.metal.ore", 100, max);
 const charcoal = (max = 0) => item("charcoal", 1000, max);
+const crudeOil = (max = 0) => item("crude.oil", 500, max);
 
 describe("planOutputContainer on plain boxes", () => {
   it.each([
@@ -609,5 +611,112 @@ describe("acceptanceOf per container", () => {
     expect(acceptanceOf(fridge, category("Food"))).toBe("accepted");
     expect(acceptanceOf(fridge, category("Weapon"))).toBe("notAccepted");
     expect(acceptanceOf(largeBox, category("Weapon"))).toBe("accepted");
+  });
+});
+
+describe("planOutputContainer in Perfect smelting", () => {
+  const perfect = { perfectSmelting: true };
+
+  it("gives a furnace's Smelt rows their Keep-lit Max and the rest the slots they leave", () => {
+    const plan = planOutputContainer(
+      OUTPUT_CONTAINERS.furnace,
+      [wood(), sulfurOre(), fragments(), item("can.beans.empty", 10)],
+      perfect,
+    );
+
+    expect(plan.map((row) => row.max)).toEqual([5, 6, 0, 10]);
+    expect(plan[2]).toMatchObject({ goesToBox: true });
+    expect(plan[3]).toMatchObject({ slotGroup: "input", sharesSlots: false });
+  });
+
+  it("uses the large furnace's values", () => {
+    const plan = planOutputContainer(
+      OUTPUT_CONTAINERS["furnace.large"],
+      [wood(), metalOre(), sulfurOre(), hqOre()],
+      perfect,
+    );
+
+    expect(plan.map((row) => row.max)).toEqual([5, 13, 24, 7]);
+  });
+
+  it("still rejects wood in the electric furnace and gives its ores their values", () => {
+    const plan = planOutputContainer(
+      OUTPUT_CONTAINERS["electric.furnace"],
+      [wood(), metalOre(), sulfurOre(), hqOre()],
+      perfect,
+    );
+
+    expect(plan[0]).toMatchObject({ max: 0, notAccepted: true });
+    expect(plan.slice(1).map((row) => row.max)).toEqual([5, 9, 3]);
+  });
+
+  it("uses the small oil refinery's values", () => {
+    const plan = planOutputContainer(
+      OUTPUT_CONTAINERS["small.oil.refinery"],
+      [wood(), crudeOil()],
+      perfect,
+    );
+
+    expect(plan.map((row) => row.max)).toEqual([7, 4]);
+  });
+
+  it("overwrites a Smelt row the author typed", () => {
+    const [plan] = planOutputContainer(
+      OUTPUT_CONTAINERS.furnace,
+      [wood(800)],
+      perfect,
+    );
+
+    expect(plan.max).toBe(5);
+  });
+
+  it("splits a category row covering ores as usual", () => {
+    const rows = [category("Resources")];
+
+    expect(
+      planOutputContainer(OUTPUT_CONTAINERS.furnace, rows, perfect),
+    ).toEqual(planOutputContainer(OUTPUT_CONTAINERS.furnace, rows));
+  });
+});
+
+describe("perfectSmeltingOf", () => {
+  const furnace = OUTPUT_CONTAINERS.furnace;
+
+  it("is on at the Keep-lit values", () => {
+    expect(perfectSmeltingOf(furnace, [wood(5), sulfurOre(6)])).toBe("on");
+  });
+
+  it("is on below a Keep-lit value", () => {
+    expect(perfectSmeltingOf(furnace, [wood(3), sulfurOre(6)])).toBe("on");
+  });
+
+  it("is off with a Smelt row above its Keep-lit Max", () => {
+    expect(perfectSmeltingOf(furnace, [wood(6), sulfurOre(6)])).toBe("off");
+  });
+
+  it("is off with a Smelt row at 0, which has no limit", () => {
+    expect(perfectSmeltingOf(furnace, [wood(0), sulfurOre(6)])).toBe("off");
+  });
+
+  it("is off on a container that isn't an oven", () => {
+    expect(perfectSmeltingOf(largeBox, [wood(5)])).toBe("off");
+  });
+
+  it("ignores rows that aren't Smelt rows", () => {
+    expect(
+      perfectSmeltingOf(furnace, [wood(5), fragments(5000), charcoal()]),
+    ).toBe("on");
+  });
+
+  it("has no Smelt rows to read when only a category covers the ores", () => {
+    expect(perfectSmeltingOf(furnace, [category("Resources", 10)])).toBe(
+      "noSmeltRows",
+    );
+  });
+
+  it("has no Smelt rows to read when the electric furnace only has wood", () => {
+    expect(
+      perfectSmeltingOf(OUTPUT_CONTAINERS["electric.furnace"], [wood(5)]),
+    ).toBe("noSmeltRows");
   });
 });

@@ -25,6 +25,8 @@ export interface OutputContainer {
   results?: readonly string[];
   /** A fuel oven with no room for its result switches off. */
   fuelOven?: boolean;
+  /** Smallest Max per Smelt item that lasts an oven through the slowest conveyor transfer (7.5s). */
+  keepLitMax?: Readonly<Record<string, number>>;
 }
 
 function plainBox(slots: number): OutputContainer {
@@ -100,11 +102,13 @@ function oven({
   inputSlots,
   input,
   results,
+  keepLitMax,
 }: {
   fuelSlots: number;
   inputSlots: number;
   input: readonly string[];
   results: readonly string[];
+  keepLitMax: Readonly<Record<string, number>>;
 }): OutputContainer {
   const inputGroup: SlotGroup = {
     id: "input",
@@ -112,7 +116,12 @@ function oven({
     accepts: { kind: "items", shortnames: input },
   };
   if (fuelSlots === 0) {
-    return { capacityGroup: "Ovens", slotGroups: [inputGroup], results };
+    return {
+      capacityGroup: "Ovens",
+      slotGroups: [inputGroup],
+      results,
+      keepLitMax,
+    };
   }
   return {
     capacityGroup: "Ovens",
@@ -126,6 +135,7 @@ function oven({
     ],
     results: [...results, "charcoal"],
     fuelOven: true,
+    keepLitMax,
   };
 }
 
@@ -210,31 +220,38 @@ export const OUTPUT_CONTAINERS = {
       "targeting.computer",
     ],
   },
-  // The skins share their base oven's prefab values and can't be picked in
-  // the conveyor filter, so only the base items are listed.
   furnace: oven({
     fuelSlots: 1,
     inputSlots: 2,
     input: SMELT_INPUT,
     results: SMELT_RESULTS,
+    keepLitMax: { wood: 5, "metal.ore": 4, "sulfur.ore": 6, "hq.metal.ore": 3 },
   }),
   "furnace.large": oven({
     fuelSlots: 2,
     inputSlots: 5,
     input: SMELT_INPUT,
     results: SMELT_RESULTS,
+    keepLitMax: {
+      wood: 5,
+      "metal.ore": 13,
+      "sulfur.ore": 24,
+      "hq.metal.ore": 7,
+    },
   }),
   "small.oil.refinery": oven({
     fuelSlots: 1,
     inputSlots: 1,
     input: REFINE_INPUT,
     results: REFINE_RESULTS,
+    keepLitMax: { wood: 7, "crude.oil": 4 },
   }),
   "electric.furnace": oven({
     fuelSlots: 0,
     inputSlots: 2,
     input: SMELT_INPUT,
     results: SMELT_RESULTS,
+    keepLitMax: { "metal.ore": 5, "sulfur.ore": 9, "hq.metal.ore": 3 },
   }),
 } as const satisfies Record<string, OutputContainer>;
 

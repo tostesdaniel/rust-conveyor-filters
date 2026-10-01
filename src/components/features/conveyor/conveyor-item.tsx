@@ -15,11 +15,17 @@ import { Control, useFormContext } from "react-hook-form";
 
 import { type ItemWithFields } from "@/types/item";
 import { FilterSettingsFieldDescription } from "@/config/constants";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { FormDescription, FormField } from "@/components/ui/form";
 import { getCategoryIcon } from "@/components/features/conveyor/category-icons";
 import { FilterSettingsInput } from "@/components/features/conveyor/filter-settings-input";
 import { useRowPlan } from "@/components/features/conveyor/output-container-plan";
+import {
+  ImageBadges,
+  type ImageBadge,
+  type RowMessage,
+} from "@/components/features/conveyor/row-status";
 import { ItemIcon } from "@/components/shared/item-icon";
 
 interface ConveyorItemProps {
@@ -37,7 +43,7 @@ export function ConveyorItem({
 }: ConveyorItemProps) {
   const { trigger } = useFormContext();
   const rowPlan = useRowPlan(index);
-  const route = ovenRoute(rowPlan, item.shortname);
+  const badges = imageBadges(rowPlan, item.shortname);
 
   function handleRemove() {
     onRemove(index);
@@ -51,19 +57,27 @@ export function ConveyorItem({
   return (
     <li key={`${isCategory ? "category" : "item"} - ${item.id}`}>
       <div className='relative h-40 w-auto'>
-        {isCategory ? (
-          <CategoryIcon className='h-full w-full' />
-        ) : (
-          <ItemIcon
-            imagePath={item.imagePath}
-            version={item.iconVersion}
-            size='full'
-            alt={item.name}
-            fill
-            sizes='160px'
-            className='object-contain'
-          />
-        )}
+        <div
+          className={cn(
+            "absolute inset-0 transition-[opacity,filter] duration-200",
+            rowPlan?.plan.notAccepted && "opacity-40 grayscale",
+          )}
+        >
+          {isCategory ? (
+            <CategoryIcon className='h-full w-full' />
+          ) : (
+            <ItemIcon
+              imagePath={item.imagePath}
+              version={item.iconVersion}
+              size='full'
+              alt={item.name}
+              fill
+              sizes='160px'
+              className='object-contain'
+            />
+          )}
+        </div>
+        <ImageBadges badges={badges} />
         <div className='absolute inset-y-0 right-0'>
           <Button
             type='button'
@@ -79,18 +93,6 @@ export function ConveyorItem({
       <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
         {item.name}
       </p>
-      {rowPlan?.plan.notAccepted && (
-        <p className='mt-1 flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400'>
-          <BanIcon className='size-3.5 shrink-0' />
-          Not accepted by {rowPlan.containerName}
-        </p>
-      )}
-      {route && (
-        <p className='mt-1 flex items-center gap-1 text-xs text-muted-foreground'>
-          <route.Icon className='size-3.5 shrink-0' />
-          {route.label}
-        </p>
-      )}
       <FormField
         control={control}
         name={`items.${index}.max`}
@@ -101,38 +103,12 @@ export function ConveyorItem({
               id={item.id}
               index={index}
               property='max'
-              warning={aboveShareWarning(rowPlan)}
-              note={
-                isCategory ? assumedStackNote(rowPlan) : keepUpNote(rowPlan)
-              }
+              messages={maxMessages(rowPlan, isCategory)}
               {...field}
             />
             <FormDescription className='sr-only'>
               {FilterSettingsFieldDescription["MAX"]}
             </FormDescription>
-            {rowPlan?.plan.aboveCapacity && (
-              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
-                A {rowPlan.containerName} holds at most{" "}
-                {rowPlan.plan.rowCapacity?.toLocaleString("en-US")}.
-              </p>
-            )}
-            {rowPlan?.plan.sharesSlots && (
-              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
-                Shares {slotsName(rowPlan.plan.slotGroup)} with other rows. The{" "}
-                {rowPlan.containerName} has none left for it.
-              </p>
-            )}
-            {rowPlan?.plan.belowKeepLit && (
-              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
-                Below what keeps the oven running between conveyor runs.
-              </p>
-            )}
-            {rowPlan?.plan.stopsOven && (
-              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
-                Once the box holds this many, results drop on the ground and the{" "}
-                {rowPlan.containerName} switches off.
-              </p>
-            )}
           </>
         )}
       />
@@ -176,20 +152,71 @@ export function ConveyorItem({
   );
 }
 
-function ovenRoute(rowPlan: ReturnType<typeof useRowPlan>, shortname: string) {
-  if (rowPlan?.plan.goesToBox) {
-    return { Icon: PackageIcon, label: "Goes to the box" };
+function imageBadges(
+  rowPlan: ReturnType<typeof useRowPlan>,
+  shortname: string,
+): ImageBadge[] {
+  if (!rowPlan) return [];
+  const { plan, containerName } = rowPlan;
+  const badges: ImageBadge[] = [];
+  if (plan.notAccepted) {
+    badges.push({
+      key: "rejected",
+      Icon: BanIcon,
+      tone: "warning",
+      text: `Not accepted by ${containerName}`,
+    });
   }
-  if (rowPlan?.plan.slotGroup === "fuel") {
-    return { Icon: FlameKindlingIcon, label: "Goes to the fuel slot" };
-  }
-  if (rowPlan?.plan.slotGroup === "input") {
-    return {
+  if (plan.goesToBox) {
+    badges.push({
+      key: "route",
+      Icon: PackageIcon,
+      tone: "note",
+      text: "Goes to the box",
+    });
+  } else if (plan.slotGroup === "fuel") {
+    badges.push({
+      key: "route",
+      Icon: FlameKindlingIcon,
+      tone: "note",
+      text: "Goes to the fuel slot",
+    });
+  } else if (plan.slotGroup === "input") {
+    badges.push({
+      key: "route",
       Icon: shortname === "crude.oil" ? FuelIcon : StoneIcon,
-      label: "Goes to the input slot",
-    };
+      tone: "note",
+      text: "Goes to the input slot",
+    });
   }
-  return null;
+  return badges;
+}
+
+function maxMessages(
+  rowPlan: ReturnType<typeof useRowPlan>,
+  isCategory: boolean,
+): RowMessage[] {
+  if (!rowPlan) return [];
+  const { plan, containerName } = rowPlan;
+  const warnings = [
+    plan.aboveCapacity &&
+      `A ${containerName} holds at most ${plan.rowCapacity?.toLocaleString("en-US")}.`,
+    plan.sharesSlots &&
+      `Shares ${slotsName(plan.slotGroup)} with other rows. The ${containerName} has none left for it.`,
+    plan.belowKeepLit &&
+      "Below what keeps the oven running between conveyor runs.",
+    plan.stopsOven &&
+      `Once the box holds this many, results drop on the ground and the ${containerName} switches off.`,
+    aboveShareWarning(rowPlan),
+  ];
+  const notes = [isCategory ? assumedStackNote(rowPlan) : keepUpNote(rowPlan)];
+  const tagged =
+    (tone: RowMessage["tone"]) => (text: string | false | undefined) =>
+      text ? [{ tone, text }] : [];
+  return [
+    ...warnings.flatMap(tagged("warning")),
+    ...notes.flatMap(tagged("note")),
+  ];
 }
 
 function slotsName(slotGroup: string | null) {

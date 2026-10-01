@@ -720,3 +720,93 @@ describe("perfectSmeltingOf", () => {
     ).toBe("noSmeltRows");
   });
 });
+
+describe("planOutputContainer keep-up count", () => {
+  const perfect = { perfectSmelting: true };
+  const keepUpAtKeepLit = (
+    shortname: keyof typeof OUTPUT_CONTAINERS,
+    rows: PlannerRow[],
+  ) =>
+    planOutputContainer(OUTPUT_CONTAINERS[shortname], rows, perfect).map(
+      (row) => row.keepUpCount,
+    );
+
+  it("is the most ovens getting their Keep-lit Max from one stack's split", () => {
+    expect(keepUpAtKeepLit("furnace", [wood(), sulfurOre()])).toEqual([24, 20]);
+    expect(
+      keepUpAtKeepLit("furnace.large", [
+        wood(),
+        metalOre(),
+        sulfurOre(),
+        hqOre(),
+      ]),
+    ).toEqual([24, 8, 4, 13]);
+    expect(
+      keepUpAtKeepLit("electric.furnace", [metalOre(), sulfurOre()]),
+    ).toEqual([24, 13]);
+    expect(keepUpAtKeepLit("small.oil.refinery", [wood()])).toEqual([17]);
+  });
+
+  it("stops at 31 for rows the output limit holds back", () => {
+    expect(keepUpAtKeepLit("furnace", [metalOre(), hqOre()])).toEqual([31, 31]);
+    expect(keepUpAtKeepLit("electric.furnace", [hqOre()])).toEqual([31]);
+    expect(keepUpAtKeepLit("small.oil.refinery", [crudeOil()])).toEqual([31]);
+  });
+
+  it("follows the Max the author typed", () => {
+    const [plan] = planOutputContainer(OUTPUT_CONTAINERS.furnace, [
+      sulfurOre(10),
+    ]);
+
+    expect(plan.keepUpCount).toBe(11);
+  });
+
+  it("is 0 when one stack can't even fill one oven's Max", () => {
+    const [plan] = planOutputContainer(OUTPUT_CONTAINERS.furnace, [wood(200)]);
+
+    expect(plan.keepUpCount).toBe(0);
+  });
+
+  it("is null on a Smelt row at 0, which has no limit to keep up with", () => {
+    const [plan] = planOutputContainer(OUTPUT_CONTAINERS.furnace, [wood()]);
+
+    expect(plan.keepUpCount).toBeNull();
+  });
+
+  it("is null on rows that aren't Smelt rows", () => {
+    const plan = planOutputContainer(OUTPUT_CONTAINERS.furnace, [
+      fragments(10),
+      category("Resources", 10),
+    ]);
+
+    expect(plan.map((row) => row.keepUpCount)).toEqual([null, null]);
+    expect(
+      planOutputContainer(largeBox, [wood(5)]).map((row) => row.keepUpCount),
+    ).toEqual([null]);
+  });
+});
+
+describe("planOutputContainer below Keep-lit Max", () => {
+  const furnace = OUTPUT_CONTAINERS.furnace;
+  const belowKeepLit = (rows: PlannerRow[]) =>
+    planOutputContainer(furnace, rows).map((row) => row.belowKeepLit);
+
+  it("flags a Smelt row under its Keep-lit Max", () => {
+    expect(belowKeepLit([wood(3), sulfurOre(6)])).toEqual([true, false]);
+  });
+
+  it("leaves rows at or above Keep-lit Max, and rows at 0, alone", () => {
+    expect(belowKeepLit([wood(5), sulfurOre(7), metalOre()])).toEqual([
+      false,
+      false,
+      false,
+    ]);
+  });
+
+  it("leaves rows that aren't Smelt rows alone", () => {
+    expect(belowKeepLit([fragments(1)])).toEqual([false]);
+    expect(
+      planOutputContainer(largeBox, [wood(1)]).map((row) => row.belowKeepLit),
+    ).toEqual([false]);
+  });
+});

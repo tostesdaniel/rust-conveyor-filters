@@ -102,7 +102,9 @@ export function ConveyorItem({
               index={index}
               property='max'
               warning={aboveShareWarning(rowPlan)}
-              note={isCategory ? assumedStackNote(rowPlan) : undefined}
+              note={
+                isCategory ? assumedStackNote(rowPlan) : keepUpNote(rowPlan)
+              }
               {...field}
             />
             <FormDescription className='sr-only'>
@@ -118,6 +120,11 @@ export function ConveyorItem({
               <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
                 Shares {slotsName(rowPlan.plan.slotGroup)} with other rows. The{" "}
                 {rowPlan.containerName} has none left for it.
+              </p>
+            )}
+            {rowPlan?.plan.belowKeepLit && (
+              <p className='mt-1 text-xs text-yellow-600 dark:text-yellow-400'>
+                Below what keeps the oven running between conveyor runs.
               </p>
             )}
             {rowPlan?.plan.stopsOven && (
@@ -197,4 +204,9 @@ function aboveShareWarning(rowPlan: ReturnType<typeof useRowPlan>) {
 function assumedStackNote(rowPlan: ReturnType<typeof useRowPlan>) {
   if (!rowPlan?.plan.stackSize) return;
   return `Assumes ${rowPlan.plan.stackSize.toLocaleString("en-US")} per stack.`;
+}
+
+function keepUpNote(rowPlan: ReturnType<typeof useRowPlan>) {
+  if (rowPlan?.plan.keepUpCount == null) return;
+  return `One stack in the box keeps up with ${rowPlan.plan.keepUpCount} of these.`;
 }

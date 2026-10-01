@@ -30,6 +30,11 @@ export type PerfectSmelting = "on" | "off" | "noSmeltRows";
 // Extra wood for a server save stalling the conveyor, to prevent it from turning off.
 const WOOD_MARGIN = 0;
 
+// A conveyor moves up to 128 of any stack at a time, split evenly across up to 32 outputs,
+// one of which is the box.
+const CONVEYOR_MOVE_LIMIT = 128;
+const MAX_OVENS = 31;
+
 export interface RowPlan {
   max: number;
   slotGroup: string | null;
@@ -43,6 +48,9 @@ export interface RowPlan {
   sharesSlots: boolean;
   aboveShare: boolean;
   aboveCapacity: boolean;
+  /** Ovens one source stack keeps at this Max. Null unless a capped Smelt row. */
+  keepUpCount: number | null;
+  belowKeepLit: boolean;
 }
 
 function ruleAccepts(rule: AcceptRule, item: PlannerItem) {
@@ -166,6 +174,22 @@ export function perfectSmeltingOf(
   return smeltRows.every(({ max, keepLit }) => max > 0 && max <= keepLit)
     ? "on"
     : "off";
+}
+
+function ovensKeptUp(stackSize: number, max: number) {
+  const perRun = Math.min(CONVEYOR_MOVE_LIMIT, stackSize);
+  return Math.min(MAX_OVENS, Math.max(0, Math.floor(perRun / max) - 1));
+}
+
+function smeltPlan(container: OutputContainer, row: PlannerRow) {
+  const keepLit = keepLitMaxOf(container, row);
+  if (keepLit === null || row.kind !== "item" || row.max === 0) {
+    return { keepUpCount: null, belowKeepLit: false };
+  }
+  return {
+    keepUpCount: ovensKeptUp(row.stackSize, row.max),
+    belowKeepLit: row.max < keepLit,
+  };
 }
 
 function divide(slots: number, indexes: number[]) {
@@ -299,6 +323,7 @@ export function planOutputContainer(
         sharesSlots: false,
         aboveShare: false,
         aboveCapacity: false,
+        ...smeltPlan(container, row),
       };
     }
 
@@ -316,6 +341,7 @@ export function planOutputContainer(
       notAccepted: false,
       goesToBox: false,
       stopsOven: false,
+      ...smeltPlan(container, row),
     };
   });
 

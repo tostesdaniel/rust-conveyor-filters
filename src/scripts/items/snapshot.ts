@@ -33,6 +33,7 @@ export interface SnapshotItem {
 export interface GameBuild {
   manifestId: string;
   itemDataHash: string;
+  itemJsonHash?: string;
 }
 
 export interface ItemSnapshot {
@@ -101,21 +102,25 @@ export function buildItems(
   return items.sort((a, b) => a.shortname.localeCompare(b.shortname, "en"));
 }
 
-/**
- * A local icon run compares its install's hash against the snapshot's to
- * prove Steam already patched it to that build.
- */
+/** Leaves the bundle out of jsonHash because client and server bundles differ. */
 export async function hashItemData(itemsDir: string, bundlePath: string) {
   const files = (await fs.readdir(itemsDir))
     .filter((f) => f.endsWith(".json"))
     .sort();
   const hash = createHash("sha256");
+  const jsonHash = createHash("sha256");
   for (const file of files) {
     const content = await fs.readFile(path.join(itemsDir, file));
-    hash.update(file).update("\0").update(content).update("\0");
+    for (const h of [hash, jsonHash]) {
+      h.update(file).update("\0").update(content).update("\0");
+    }
   }
   hash.update(await fs.readFile(bundlePath));
-  return { hash: hash.digest("hex"), fileCount: files.length };
+  return {
+    hash: hash.digest("hex"),
+    jsonHash: jsonHash.digest("hex"),
+    fileCount: files.length,
+  };
 }
 
 export async function readItemJson(itemsDir: string) {

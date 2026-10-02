@@ -30,13 +30,19 @@ async function main() {
   let iconChanges;
   if (values.local) {
     const itemsDir = path.join(RUST_DIR, "Bundles", "items");
-    const { hash } = await hashItemData(
+    const expected = snapshot.gameBuild.itemJsonHash;
+    if (!expected) {
+      throw new Error(
+        "the snapshot has no item JSON hash yet, run items:update --force",
+      );
+    }
+    const { jsonHash } = await hashItemData(
       itemsDir,
       path.join(RUST_DIR, "Bundles", "shared", "items.preload.bundle"),
     );
     // An install Steam hasn't patched yet would stamp last month's sprites as
     // fresh, and the CDN could then never replace them.
-    if (hash !== snapshot.gameBuild.itemDataHash) {
+    if (jsonHash !== expected) {
       throw new Error(
         `the item data in ${itemsDir} doesn't match game build ${snapshot.gameBuild.manifestId}. ` +
           "Update Rust in Steam, or run items:update if the snapshot is behind.",

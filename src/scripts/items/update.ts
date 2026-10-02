@@ -61,7 +61,10 @@ async function main() {
   }
 
   const { manifestId, itemsDir, bundlePath } = await fetchItemFiles();
-  const { hash: itemDataHash } = await hashItemData(itemsDir, bundlePath);
+  const { hash: itemDataHash, jsonHash: itemJsonHash } = await hashItemData(
+    itemsDir,
+    bundlePath,
+  );
 
   if (
     previous &&
@@ -85,7 +88,10 @@ async function main() {
   );
   const iconChanges = await takeCdnIcons(items);
 
-  await writeSnapshot({ gameBuild: { manifestId, itemDataHash }, items });
+  await writeSnapshot({
+    gameBuild: { manifestId, itemDataHash, itemJsonHash },
+    items,
+  });
 
   const baseline = values.baseline
     ? await readBaseline(values.baseline)

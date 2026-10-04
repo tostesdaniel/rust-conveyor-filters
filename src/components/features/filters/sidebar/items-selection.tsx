@@ -201,10 +201,12 @@ function ItemsCombobox({
   );
 
   const trigger = (
-    <SidebarMenuButton
+    <Button
+      type='button'
       variant='outline'
+      size='sm'
       className={cn(
-        "w-full justify-start border text-muted-foreground dark:border-input",
+        "w-full justify-start gap-2 px-2 font-normal text-muted-foreground",
         className,
       )}
       disabled={isLoading}

@@ -18,12 +18,14 @@ function PopoverContent({
   alignOffset = 0,
   side = "bottom",
   sideOffset = 4,
+  arrow = false,
+  children,
   ...props
 }: PopoverPrimitive.Popup.Props &
   Pick<
     PopoverPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset"
-  >) {
+  > & { arrow?: boolean }) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -40,7 +42,12 @@ function PopoverContent({
             className
           )}
           {...props}
-        />
+        >
+          {children}
+          {arrow && (
+            <PopoverPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-xs bg-popover fill-popover ring-1 ring-foreground/10 data-[side=bottom]:top-1 data-[side=bottom]:[clip-path:polygon(-50%_-50%,150%_-50%,-50%_150%)] data-[side=inline-end]:top-1/2! data-[side=inline-end]:-left-1 data-[side=inline-end]:-translate-y-1/2 data-[side=inline-end]:[clip-path:polygon(-50%_-50%,-50%_150%,150%_150%)] data-[side=inline-start]:top-1/2! data-[side=inline-start]:-right-1 data-[side=inline-start]:-translate-y-1/2 data-[side=inline-start]:[clip-path:polygon(-50%_-50%,150%_-50%,150%_150%)] data-[side=left]:top-1/2! data-[side=left]:-right-1 data-[side=left]:-translate-y-1/2 data-[side=left]:[clip-path:polygon(-50%_-50%,150%_-50%,150%_150%)] data-[side=right]:top-1/2! data-[side=right]:-left-1 data-[side=right]:-translate-y-1/2 data-[side=right]:[clip-path:polygon(-50%_-50%,-50%_150%,150%_150%)] data-[side=top]:-bottom-2.5 data-[side=top]:[clip-path:polygon(150%_150%,-50%_150%,150%_-50%)]" />
+          )}
+        </PopoverPrimitive.Popup>
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
   )

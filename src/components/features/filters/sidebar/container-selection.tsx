@@ -4,9 +4,11 @@ import { useRef } from "react";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { XIcon } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { useCatalogue } from "@/hooks/use-catalogue";
 import { useSearchParams } from "@/hooks/useSearchParams";
+import { EASE_OUT_STRONG } from "@/lib/motion";
 import type { OutputContainerShortname } from "@/lib/output-containers/container-table";
 import { cn } from "@/lib/utils";
 import type { Item } from "@/db/schema";
@@ -35,6 +37,7 @@ export function ContainerSelection() {
   const [{ container }, setSearchParams] = useSearchParams();
   const catalogue = useCatalogue();
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotion();
   const { data: counts, isPending } = api.filter.getContainerCounts.useQuery(
     undefined,
     {
@@ -53,6 +56,8 @@ export function ContainerSelection() {
     trackEvent("browse_container_changed", { container: shortname ?? "none" });
     setSearchParams({ container: shortname });
   };
+
+  const collapsed = reduceMotion ? { opacity: 0 } : { width: 0, opacity: 0 };
 
   return (
     <SidebarGroup>
@@ -87,20 +92,38 @@ export function ContainerSelection() {
                     )}
                   </SelectValue>
                 </SelectTrigger>
-                {container && (
-                  <Button
-                    type='button'
-                    variant='outline'
-                    size='icon-sm'
-                    aria-label='Clear container'
-                    onClick={() => {
-                      handleChange(null);
-                      triggerRef.current?.focus();
-                    }}
-                  >
-                    <XIcon />
-                  </Button>
-                )}
+                <AnimatePresence initial={false}>
+                  {container && (
+                    <Button
+                      key='clear'
+                      type='button'
+                      variant='outline'
+                      size='icon-sm'
+                      aria-label='Clear container'
+                      className='overflow-hidden'
+                      render={
+                        <motion.button
+                          initial={collapsed}
+                          animate={{ width: "2rem", opacity: 1 }}
+                          exit={{
+                            ...collapsed,
+                            transition: {
+                              duration: 0.15,
+                              ease: EASE_OUT_STRONG,
+                            },
+                          }}
+                          transition={{ duration: 0.2, ease: EASE_OUT_STRONG }}
+                        />
+                      }
+                      onClick={() => {
+                        handleChange(null);
+                        triggerRef.current?.focus();
+                      }}
+                    >
+                      <XIcon />
+                    </Button>
+                  )}
+                </AnimatePresence>
               </ButtonGroup>
               <SelectContent
                 align='start'

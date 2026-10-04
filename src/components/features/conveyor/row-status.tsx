@@ -4,6 +4,7 @@ import * as React from "react";
 import { CircleAlertIcon, CircleHelpIcon, type LucideIcon } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { EASE_OUT_STRONG } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -15,8 +16,6 @@ export interface RowMessage {
   tone: "warning" | "note";
   text: string;
 }
-
-const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
 const TONE_CLASS = {
   warning: "text-yellow-600 dark:text-yellow-400",
@@ -38,8 +37,8 @@ function useIconMotion() {
   return {
     initial: hidden,
     animate: { opacity: 1, transform: "scale(1)", filter: "blur(0px)" },
-    exit: { ...hidden, transition: { duration: 0.12, ease: EASE_OUT } },
-    transition: { duration: 0.2, ease: EASE_OUT },
+    exit: { ...hidden, transition: { duration: 0.12, ease: EASE_OUT_STRONG } },
+    transition: { duration: 0.2, ease: EASE_OUT_STRONG },
   };
 }
 

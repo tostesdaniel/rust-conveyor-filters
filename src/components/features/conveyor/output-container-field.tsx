@@ -10,6 +10,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { useCatalogue } from "@/hooks/use-catalogue";
+import { EASE_OUT_STRONG } from "@/lib/motion";
 import {
   OUTPUT_CONTAINER_SHORTNAMES,
   OUTPUT_CONTAINERS,
@@ -40,8 +41,6 @@ import {
   usePerfectSmeltingSwitch,
 } from "@/components/features/conveyor/output-container-split";
 import { ItemIcon } from "@/components/shared/item-icon";
-
-const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
 type ContainerIconItem = Pick<Item, "name" | "imagePath" | "iconVersion">;
 type ContainerOption = ContainerIconItem & {
@@ -113,9 +112,9 @@ export function OutputContainerField() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{
               ...collapsed,
-              transition: { duration: 0.15, ease: EASE_OUT },
+              transition: { duration: 0.15, ease: EASE_OUT_STRONG },
             }}
-            transition={{ duration: 0.22, ease: EASE_OUT }}
+            transition={{ duration: 0.22, ease: EASE_OUT_STRONG }}
             className='overflow-hidden'
           >
             <div className='flex flex-wrap items-center gap-x-2 gap-y-3 border-t bg-muted/30 px-4 py-3'>

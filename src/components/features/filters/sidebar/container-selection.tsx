@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { XIcon } from "lucide-react";
@@ -7,11 +8,14 @@ import { XIcon } from "lucide-react";
 import { useCatalogue } from "@/hooks/use-catalogue";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import type { OutputContainerShortname } from "@/lib/output-containers/container-table";
+import { cn } from "@/lib/utils";
 import type { Item } from "@/db/schema";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -30,6 +34,7 @@ type ContainerIconItem = Pick<Item, "name" | "imagePath" | "iconVersion">;
 export function ContainerSelection() {
   const [{ container }, setSearchParams] = useSearchParams();
   const catalogue = useCatalogue();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const { data: counts, isPending } = api.filter.getContainerCounts.useQuery(
     undefined,
     {
@@ -59,13 +64,15 @@ export function ContainerSelection() {
         </SidebarMenuItem>
         <SidebarMenuItem className='px-2'>
           {isPending ? (
-            <Skeleton className='h-9 w-full' />
+            <Skeleton className='h-8 w-full' />
           ) : (
-            <div className='flex items-center gap-1'>
-              <Select value={container} onValueChange={handleChange}>
+            <Select value={container} onValueChange={handleChange}>
+              <ButtonGroup className='w-full'>
                 <SelectTrigger
+                  ref={triggerRef}
+                  size='sm'
                   aria-label='Output container'
-                  className='h-auto! min-h-9 min-w-0 flex-1 py-1.5'
+                  className={cn("min-w-0 flex-1 py-0.5", current && "pl-1.5")}
                 >
                   <SelectValue>
                     {current ? (
@@ -80,7 +87,26 @@ export function ContainerSelection() {
                     )}
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent>
+                {container && (
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='icon-sm'
+                    aria-label='Clear container'
+                    onClick={() => {
+                      handleChange(null);
+                      triggerRef.current?.focus();
+                    }}
+                  >
+                    <XIcon />
+                  </Button>
+                )}
+              </ButtonGroup>
+              <SelectContent
+                align='start'
+                className='w-auto min-w-(--anchor-width)'
+              >
+                <SelectGroup>
                   {options.map((option) => (
                     <SelectItem
                       key={option.shortname}
@@ -96,21 +122,9 @@ export function ContainerSelection() {
                       </span>
                     </SelectItem>
                   ))}
-                </SelectContent>
-              </Select>
-              {container && (
-                <Button
-                  type='button'
-                  variant='ghost'
-                  size='icon'
-                  className='size-8 shrink-0'
-                  aria-label='Clear container'
-                  onClick={() => handleChange(null)}
-                >
-                  <XIcon />
-                </Button>
-              )}
-            </div>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           )}
         </SidebarMenuItem>
       </SidebarMenu>

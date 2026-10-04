@@ -10,9 +10,9 @@ import { ShareButton } from "@/components/features/filters/filter-card/share-but
 
 export function FilterCardHeader({ filter }: { filter: PublicFilterListDTO }) {
   return (
-    <CardHeader className='flex-1'>
-      <div className='flex items-center justify-between'>
-        <CardTitle className='overflow-hidden text-2xl text-ellipsis'>
+    <CardHeader className='grid-cols-1 content-start'>
+      <div className='flex items-center justify-between gap-2'>
+        <CardTitle className='min-w-0 text-2xl wrap-break-word'>
           {filter.name}
         </CardTitle>
         <div className='-mr-3 flex items-center gap-1 self-start'>

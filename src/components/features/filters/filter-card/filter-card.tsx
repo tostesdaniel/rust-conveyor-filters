@@ -14,7 +14,10 @@ export function FilterCard({
 }) {
   return (
     <Card
-      className={cn("flex h-full max-w-(--breakpoint-sm) flex-col", className)}
+      className={cn(
+        "row-span-3 grid max-w-(--breakpoint-sm) grid-cols-1 grid-rows-subgrid",
+        className,
+      )}
     >
       <FilterCardHeader filter={filter} />
       <FilterCardContent filter={filter} />

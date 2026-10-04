@@ -94,14 +94,13 @@ export function FilterGrid() {
                 />
               </div>
             ) : (
-              <div
+              <FilterCard
                 key={item.filter.id}
+                filter={item.filter}
                 className={`transition-opacity duration-300 ${
                   isPlaceholderData ? "opacity-50" : "opacity-100"
                 }`}
-              >
-                <FilterCard filter={item.filter} />
-              </div>
+              />
             ),
           )}
           {isFetchingNextPage &&

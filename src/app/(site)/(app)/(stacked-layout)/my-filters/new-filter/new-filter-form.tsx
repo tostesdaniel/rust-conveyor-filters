@@ -44,6 +44,7 @@ import {
 } from "@/components/features/conveyor/output-container-split";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
+import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),
@@ -331,6 +332,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
         </div>
         <OutputContainerSplitProvider saved={saved}>
           <OutputContainerField />
+          <FilterFormTourDemo />
           <FormFieldScope name='items'>
             <FormItem>
               <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>

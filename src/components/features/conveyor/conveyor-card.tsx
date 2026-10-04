@@ -49,7 +49,7 @@ export function ConveyorCard() {
           {fields.length}/{MAX_FILTER_ITEMS} filters
         </p>
       </CardHeader>
-      <CardContent className='min-h-40 py-3'>
+      <CardContent data-tour='conveyor-items' className='min-h-40 py-3'>
         <OutputContainerPlanProvider>
           <ConveyorItemGrid
             items={fields as ItemWithFields[]}

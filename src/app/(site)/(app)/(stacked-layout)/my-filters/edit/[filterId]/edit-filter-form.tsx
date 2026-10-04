@@ -44,6 +44,7 @@ import {
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
+import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
 
 interface FilterItemBase {
   name: string;
@@ -325,6 +326,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         </div>
         <OutputContainerSplitProvider saved={saved}>
           <OutputContainerField />
+          <FilterFormTourDemo />
           <FormFieldScope name='items'>
             <FormItem>
               <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>

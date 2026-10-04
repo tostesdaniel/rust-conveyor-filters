@@ -84,7 +84,10 @@ export function OutputContainerField() {
   const collapsed = reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 };
 
   return (
-    <div className='overflow-hidden rounded-xl bg-card shadow-xs ring-1 ring-foreground/10'>
+    <div
+      data-tour='output-container'
+      className='overflow-hidden rounded-xl bg-card shadow-xs ring-1 ring-foreground/10'
+    >
       <FieldLabel
         htmlFor={checkboxId}
         className='w-full cursor-pointer items-start gap-3 px-4 py-3.5'
@@ -156,6 +159,7 @@ export function OutputContainerField() {
                 </SelectContent>
               </Select>
               <Button
+                data-tour='resplit'
                 type='button'
                 variant='outline'
                 aria-label='Re-split'
@@ -167,6 +171,7 @@ export function OutputContainerField() {
               </Button>
               {perfectSmelting.visible && (
                 <Field
+                  data-tour='perfect-smelting'
                   orientation='horizontal'
                   className='w-auto basis-full sm:ml-auto sm:basis-auto'
                 >
@@ -188,7 +193,11 @@ export function OutputContainerField() {
   );
 }
 
-function ContainerIcon({ name, imagePath, iconVersion }: ContainerIconItem) {
+export function ContainerIcon({
+  name,
+  imagePath,
+  iconVersion,
+}: ContainerIconItem) {
   return (
     <ItemIcon
       imagePath={imagePath}

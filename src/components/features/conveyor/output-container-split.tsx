@@ -27,8 +27,11 @@ import {
   type CatalogueItem,
   type FormRow,
 } from "@/lib/output-containers/plan-form-rows";
+import { maxChanges } from "@/lib/tours";
 
 const DEFAULT_CONTAINER: OutputContainerShortname = "box.wooden.large";
+
+type PickListener = (shortname: OutputContainerShortname | null) => void;
 
 interface SplitState {
   written: React.RefObject<Map<string, number>>;
@@ -37,6 +40,7 @@ interface SplitState {
   /** Used when there is no oven or no Smelt rows. */
   ownSwitch: boolean;
   setOwnSwitch: (on: boolean) => void;
+  pickListeners: React.RefObject<Set<PickListener>>;
 }
 
 const SplitStateContext = React.createContext<SplitState | null>(null);
@@ -77,6 +81,7 @@ export function OutputContainerSplitProvider({
   const written = React.useRef(unseeded);
   const lastContainer = React.useRef(DEFAULT_CONTAINER);
   const [ownSwitch, setOwnSwitch] = React.useState(true);
+  const pickListeners = React.useRef(new Set<PickListener>());
   const catalogue = useCatalogue();
 
   React.useEffect(() => {
@@ -94,7 +99,7 @@ export function OutputContainerSplitProvider({
 
   return (
     <SplitStateContext
-      value={{ written, lastContainer, ownSwitch, setOwnSwitch }}
+      value={{ written, lastContainer, ownSwitch, setOwnSwitch, pickListeners }}
     >
       {children}
     </SplitStateContext>
@@ -109,6 +114,23 @@ function useSplitState() {
     );
   }
   return state;
+}
+
+/** Called when the user picks a container or ticks the card, not on loads. */
+export function useOnContainerPick(listener: PickListener) {
+  const { pickListeners } = useSplitState();
+  const latest = React.useRef(listener);
+  React.useEffect(() => {
+    latest.current = listener;
+  });
+  React.useEffect(() => {
+    const listeners = pickListeners.current;
+    const call: PickListener = (shortname) => latest.current(shortname);
+    listeners.add(call);
+    return () => {
+      listeners.delete(call);
+    };
+  }, [pickListeners]);
 }
 
 export function usePerfectSmeltingSwitch() {
@@ -135,9 +157,22 @@ export function usePerfectSmeltingSwitch() {
   };
 }
 
+export interface PreviewRows {
+  items: CreateFilterInput["items"];
+  written: Map<string, number>;
+}
+
+export interface SplitSnapshot {
+  values: CreateFilterInput;
+  written: Map<string, number>;
+  lastContainer: OutputContainerShortname;
+  ownSwitch: boolean;
+}
+
 export function useOutputContainerSplit() {
-  const { written, lastContainer, ownSwitch, setOwnSwitch } = useSplitState();
-  const { getValues, setValue } = useFormContext<
+  const { written, lastContainer, ownSwitch, setOwnSwitch, pickListeners } =
+    useSplitState();
+  const { getValues, setValue, reset } = useFormContext<
     CreateFilterInput,
     unknown,
     CreateFilter
@@ -212,6 +247,7 @@ export function useOutputContainerSplit() {
   function pick(shortname: OutputContainerShortname | null) {
     const before = getValues("outputContainer") ?? null;
     fit(shortname, isOven(containerOf(shortname)) && switchOn(before));
+    for (const listener of pickListeners.current) listener(shortname);
   }
 
   function setTicked(ticked: boolean) {
@@ -278,5 +314,57 @@ export function useOutputContainerSplit() {
     return { ...item, max: added.max };
   }
 
-  return { pick, setTicked, resplit, setPerfectSmelting, fitNewRow };
+  function snapshot(): SplitSnapshot {
+    return {
+      values: structuredClone(getValues()),
+      written: written.current,
+      lastContainer: lastContainer.current,
+      ownSwitch,
+    };
+  }
+
+  function restore(saved: SplitSnapshot) {
+    reset(saved.values, {
+      keepDefaultValues: true,
+      keepErrors: true,
+      keepTouched: true,
+      keepIsSubmitted: true,
+      keepSubmitCount: true,
+    });
+    written.current = saved.written;
+    lastContainer.current = saved.lastContainer;
+    setOwnSwitch(saved.ownSwitch);
+  }
+
+  /** Shows a container with no toast or Undo. Without rows, each Max stays. */
+  function preview(
+    shortname: OutputContainerShortname | null,
+    rows?: PreviewRows,
+  ) {
+    setValue("outputContainer", shortname);
+    if (!rows) return;
+    written.current = rows.written;
+    const current = formRows();
+    const next = rows.items as FormRow[];
+    const changes = maxChanges(current, next);
+    if (!changes) {
+      setValue("items", rows.items);
+      return;
+    }
+    // Per row, so the inputs stay mounted.
+    for (const index of changes) {
+      setValue(`items.${index}.max`, maxOf(next[index]));
+    }
+  }
+
+  return {
+    pick,
+    setTicked,
+    resplit,
+    setPerfectSmelting,
+    fitNewRow,
+    snapshot,
+    restore,
+    preview,
+  };
 }

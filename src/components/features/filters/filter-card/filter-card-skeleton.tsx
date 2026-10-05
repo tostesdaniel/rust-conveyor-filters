@@ -8,8 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function FilterCardSkeleton() {
   return (
-    <Card className='flex h-full max-w-(--breakpoint-sm) flex-col'>
-      <CardHeader>
+    <Card className='row-span-3 grid max-w-(--breakpoint-sm) grid-cols-1 grid-rows-subgrid'>
+      <CardHeader className='content-start'>
         <div className='flex items-center justify-between'>
           <Skeleton className='h-6 w-3/5' />
           <div className='flex items-center gap-1.5'>

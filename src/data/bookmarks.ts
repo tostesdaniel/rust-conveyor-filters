@@ -42,6 +42,7 @@ export async function getBookmarkedFilters(
             where: filterItemsWhere,
             orderBy: filterItemsOrderBy,
           },
+          outputContainer: true,
         },
       },
     },

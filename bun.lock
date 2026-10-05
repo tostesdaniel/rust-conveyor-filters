@@ -45,6 +45,7 @@
         "nanoid": "^6.0.1",
         "next": "^15.5.26",
         "next-themes": "^0.4.6",
+        "nextstepjs": "^2.3.0",
         "nuqs": "^2.10.1",
         "octokit": "^5.0.5",
         "pg": "^8.23.0",
@@ -1685,6 +1686,8 @@
     "next": ["next@15.5.26", "", { "dependencies": { "@next/env": "15.5.26", "@swc/helpers": "0.5.15", "caniuse-lite": "^1.0.30001579", "postcss": "8.4.31", "styled-jsx": "5.1.6" }, "optionalDependencies": { "@next/swc-darwin-arm64": "15.5.26", "@next/swc-darwin-x64": "15.5.26", "@next/swc-linux-arm64-gnu": "15.5.26", "@next/swc-linux-arm64-musl": "15.5.26", "@next/swc-linux-x64-gnu": "15.5.26", "@next/swc-linux-x64-musl": "15.5.26", "@next/swc-win32-arm64-msvc": "15.5.26", "@next/swc-win32-x64-msvc": "15.5.26", "sharp": "^0.34.3 || ^0.35.4" }, "peerDependencies": { "@opentelemetry/api": "^1.1.0", "@playwright/test": "^1.51.1", "babel-plugin-react-compiler": "*", "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", "sass": "^1.3.0" }, "optionalPeers": ["@opentelemetry/api", "@playwright/test", "babel-plugin-react-compiler", "sass"], "bin": { "next": "dist/bin/next" } }, "sha512-EVCqhvq8Hs+nX9udH2VzE/iXAg9QodZBZnwVJTuAMl386GIYvlJtYhFytV9nSlDYxKw3kEyv8I2dCQs0+on0sQ=="],
 
     "next-themes": ["next-themes@0.4.6", "", { "peerDependencies": { "react": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc", "react-dom": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc" } }, "sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA=="],
+
+    "nextstepjs": ["nextstepjs@2.3.0", "", { "peerDependencies": { "@remix-run/react": ">=1.0.0", "motion": ">=11", "next": ">=13.0.0", "react": ">=18", "react-dom": ">=18", "react-router": ">=7.0.0" }, "optionalPeers": ["@remix-run/react", "next", "react-router"] }, "sha512-EiIszwnflzj3L6LgUE1Dwcwchx1Uy5qZNQjiUsxuQzUeiZ/6Y4UG6KmtLA84wrgRAczu4eQMI3by36gZzuvecA=="],
 
     "node-releases": ["node-releases@2.0.56", "", {}, "sha512-x0InOIyzgdk+eyaWaRJFH5snEtiImgBgblZ2CyPrLmqqcuMQkEvcDPHbzqbD8eDsSeJbVOjn+crzyzHaM4D+/A=="],
 

@@ -14,4 +14,9 @@ declare global {
     /** PayNow customer id linked to this Clerk user */
     paynowCustomerId?: string;
   }
+
+  interface UserUnsafeMetadata {
+    /** Ids of onboarding tours the user finished or skipped */
+    seenTours?: string[];
+  }
 }

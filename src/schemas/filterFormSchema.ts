@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { MAX_FILTER_ITEMS } from "@/config/constants";
+import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 
 // Base schema without superRefine - used for partial updates
 const baseFilterSchema = z.object({
@@ -22,6 +23,8 @@ const baseFilterSchema = z.object({
   // No default: updateFilter treats undefined as "not supplied", so a default
   // false unpublishes a public filter on every rename.
   isPublic: z.boolean().optional(),
+  // No default, for the same reason as isPublic.
+  outputContainer: z.enum(OUTPUT_CONTAINER_SHORTNAMES).nullable().optional(),
   items: z
     .array(
       z.union([

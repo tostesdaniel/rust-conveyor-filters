@@ -18,14 +18,18 @@ import {
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
+export const itemTypeEnum = pgEnum("item_type_enum", ["Generic", "Liquid"]);
+export type ItemType = (typeof itemTypeEnum.enumValues)[number];
+
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
   itemId: integer("itemid").notNull().unique(),
   shortname: varchar("shortname", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
-  // Longest is 415 chars today, so text and not the varchar the rest use.
   description: text("description").notNull().default(""),
   category: varchar("category", { length: 255 }).notNull(),
+  stackSize: integer("stack_size").notNull().default(1),
+  itemType: itemTypeEnum("item_type").notNull().default("Generic"),
   imagePath: varchar("image_path", { length: 255 }).notNull(),
   insertable: boolean("insertable").notNull().default(true),
   // The snapshot's icon fingerprint. Icon URLs carry it so a redrawn icon
@@ -85,6 +89,11 @@ export const filters = pgTable(
     ),
     // Source author's Clerk id, kept even after the source filter is deleted.
     forkedFromAuthorId: varchar("forked_from_author_id", { length: 255 }),
+    // Null means the Output container card is off.
+    outputContainerId: integer("output_container_id").references(
+      () => items.id,
+      { onDelete: "set null" },
+    ),
     viewCount: integer("view_count").default(0),
     exportCount: integer("export_count").default(0),
     popularityScore: integer("popularity_score").default(0),
@@ -135,6 +144,10 @@ export const filtersRelations = relations(filters, ({ many, one }) => ({
     references: [subCategories.id],
   }),
   tagAssignments: many(filterTagAssignments),
+  outputContainer: one(items, {
+    fields: [filters.outputContainerId],
+    references: [items.id],
+  }),
 }));
 
 export const filterItems = pgTable(

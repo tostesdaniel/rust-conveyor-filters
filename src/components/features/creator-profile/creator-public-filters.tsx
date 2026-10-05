@@ -31,7 +31,10 @@ function FilterGrid({ filters }: { filters: PublicFilterListDTO[] }) {
   return (
     <ul className='mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2'>
       {filters.map((filter) => (
-        <li key={filter.id}>
+        <li
+          key={filter.id}
+          className='row-span-3 grid grid-cols-1 grid-rows-subgrid'
+        >
           <FilterCard filter={filter} />
         </li>
       ))}

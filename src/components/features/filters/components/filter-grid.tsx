@@ -21,7 +21,8 @@ export function FilterGrid() {
     triggerOnce: false,
     threshold: 0.5,
   });
-  const [{ sort, search, categories, items, tags }] = useSearchParams();
+  const [{ sort, search, categories, items, tags, container }] =
+    useSearchParams();
 
   const {
     data,
@@ -32,7 +33,7 @@ export function FilterGrid() {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
-  } = useFilters(sort, search, categories, items, tags);
+  } = useFilters(sort, search, categories, items, tags, container);
 
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -94,14 +95,13 @@ export function FilterGrid() {
                 />
               </div>
             ) : (
-              <div
+              <FilterCard
                 key={item.filter.id}
+                filter={item.filter}
                 className={`transition-opacity duration-300 ${
                   isPlaceholderData ? "opacity-50" : "opacity-100"
                 }`}
-              >
-                <FilterCard filter={item.filter} />
-              </div>
+              />
             ),
           )}
           {isFetchingNextPage &&

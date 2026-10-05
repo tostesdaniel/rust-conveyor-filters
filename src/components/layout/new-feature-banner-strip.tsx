@@ -65,14 +65,14 @@ export function NewFeatureBannerStrip({
     <div
       ref={outerRef}
       data-state={state}
-      className='group/banner sticky top-0 z-100 grid grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] data-[state=closing]:grid-rows-[0fr]'
+      className='group/banner sticky top-0 z-100 grid grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-out-strong data-[state=closing]:grid-rows-[0fr]'
     >
       <div className='min-h-0 overflow-hidden'>
         <div
           className={cn(
             "boost-banner relative isolate flex items-center gap-x-4 px-4 py-2.5 text-(--boost-title) sm:px-6",
             "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-(--boost-wash)",
-            "transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=closing]/banner:-translate-y-full group-data-[state=closing]/banner:opacity-0 motion-reduce:group-data-[state=closing]/banner:translate-y-0",
+            "transition-[transform,opacity] duration-200 ease-out-strong group-data-[state=closing]/banner:-translate-y-full group-data-[state=closing]/banner:opacity-0 motion-reduce:group-data-[state=closing]/banner:translate-y-0",
             className,
           )}
         >

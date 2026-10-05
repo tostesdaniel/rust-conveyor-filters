@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { api, HydrateClient } from "@/trpc/server";
 import { auth } from "@clerk/nextjs/server";
 
+import { FilterFormTour } from "@/components/features/my-filters/filter-form-tour";
 import { Typography } from "@/components/shared/typography";
 
 import NewFilterForm from "./new-filter-form";
@@ -36,7 +37,9 @@ export default async function NewFilterPage({
         {validRemixId ? "Remix Filter" : "New Filter"}
       </Typography>
       <HydrateClient>
-        <NewFilterForm remixOf={validRemixId} />
+        <FilterFormTour>
+          <NewFilterForm remixOf={validRemixId} />
+        </FilterFormTour>
       </HydrateClient>
     </>
   );

@@ -1,11 +1,12 @@
 import {
   getFilterById,
   getFiltersWithItems,
+  getPublicContainerCounts,
   getPublicFilter,
   getPublicFilters,
   getUserFiltersByCategory,
 } from "@/data/filters";
-import { getItemIcons } from "@/data/items";
+import { getItemIcons, getOutputContainerItemId } from "@/data/items";
 import { db } from "@/db";
 import {
   createFilterSchema,
@@ -19,6 +20,7 @@ import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getClientIp } from "@/lib/client-ip";
+import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
 import { filterEvents, filterItems, filters } from "@/db/schema";
 
@@ -43,7 +45,20 @@ const publicListInput = z.object({
   categories: z.array(z.string()).max(20).optional(),
   items: z.array(z.string()).max(20).optional(),
   tags: z.array(z.string()).max(20).optional(),
+  container: z.enum(OUTPUT_CONTAINER_SHORTNAMES).optional(),
 });
+
+async function resolveOutputContainer(shortname: string | null) {
+  if (shortname === null) return null;
+  const id = await getOutputContainerItemId(shortname);
+  if (id === null) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Invalid output container",
+    });
+  }
+  return id;
+}
 
 export const filterRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -75,6 +90,10 @@ export const filterRouter = createTRPCRouter({
         cursor: decodedCursor ?? undefined,
       });
     }),
+
+  getContainerCounts: publicProcedure.query(async () => {
+    return getPublicContainerCounts();
+  }),
 
   getByCategory: protectedProcedure
     .input(
@@ -168,6 +187,10 @@ export const filterRouter = createTRPCRouter({
         });
       }
 
+      const outputContainerId = await resolveOutputContainer(
+        newFilter.outputContainer ?? null,
+      );
+
       const { category } = parsed.data;
       const maxOrder = await db.query.filters.findFirst({
         where: and(
@@ -197,6 +220,7 @@ export const filterRouter = createTRPCRouter({
             order: maxOrder ? maxOrder.order + 1 : 0,
             forkedFromId: forkLineage?.forkedFromId ?? null,
             forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
+            outputContainerId,
           })
           .returning();
 
@@ -308,8 +332,14 @@ export const filterRouter = createTRPCRouter({
         categoryId: number | null;
         subCategoryId: number | null;
         isPublic: boolean | undefined;
+        outputContainerId: number | null;
         updatedAt: Date;
       }> = {};
+      if (data.outputContainer !== undefined) {
+        updateData.outputContainerId = await resolveOutputContainer(
+          data.outputContainer,
+        );
+      }
       if (data.name) updateData.name = data.name;
       if (data.description !== undefined)
         updateData.description = data.description;

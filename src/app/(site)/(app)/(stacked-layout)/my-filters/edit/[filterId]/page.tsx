@@ -5,6 +5,7 @@ import { api, HydrateClient } from "@/trpc/server";
 import { auth } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 
+import { FilterFormTour } from "@/components/features/my-filters/filter-form-tour";
 import { Typography } from "@/components/shared/typography";
 import { EditFilterForm } from "@/app/(site)/(app)/(stacked-layout)/my-filters/edit/[filterId]/edit-filter-form";
 
@@ -75,7 +76,9 @@ export default async function EditFilterPage(props: {
     <>
       <Typography variant='h1'>Edit Filter</Typography>
       <HydrateClient>
-        <EditFilterForm filterId={filterId} />
+        <FilterFormTour>
+          <EditFilterForm filterId={filterId} />
+        </FilterFormTour>
       </HydrateClient>
     </>
   );

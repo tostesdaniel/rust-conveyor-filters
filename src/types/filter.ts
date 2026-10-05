@@ -10,6 +10,7 @@ export interface ConveyorFilterWithAuthor extends ConveyorFilter {
 
 export interface ConveyorFilter extends Filter {
   filterItems: ConveyorFilterItem[];
+  outputContainer: Item | null;
 }
 
 export interface ConveyorFilterItem extends FilterItem {
@@ -23,6 +24,7 @@ export type {
   FilterTagDTO,
   ForkAttributionDTO,
   OwnerFilterDTO,
+  OutputContainerDTO,
   SharedFilterDTO,
 } from "@/types/dto/public-filter";
 export type { BookmarkDTO } from "@/types/dto/bookmark";

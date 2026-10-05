@@ -15,8 +15,10 @@ export default async function FiltersLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Prefetch items data to eliminate loading state
-  await api.stats.getItems.prefetch();
+  await Promise.all([
+    api.stats.getItems.prefetch(),
+    api.filter.getContainerCounts.prefetch(),
+  ]);
 
   return (
     <>

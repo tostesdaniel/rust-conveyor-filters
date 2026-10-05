@@ -5,6 +5,7 @@ export type RybbitEvent =
   | "browse_tag_toggled"
   | "browse_item_added"
   | "browse_item_removed"
+  | "browse_container_changed"
   | "filter_viewed"
   | "filter_exported"
   | "filter_bookmark_toggled"

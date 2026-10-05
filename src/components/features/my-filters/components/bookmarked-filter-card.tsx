@@ -2,6 +2,7 @@ import type { PublicFilterListDTO } from "@/types/filter";
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import ViewFilter from "@/components/features/filters/components/view-filter";
 import { BookmarkToggle } from "@/components/features/filters/filter-card/bookmark-toggle";
+import { OutputContainerIcon } from "@/components/features/filters/filter-card/output-container-icon";
 import { ItemIcon } from "@/components/shared/item-icon";
 
 interface BookmarkedFilterCardProps {
@@ -27,7 +28,10 @@ export function BookmarkedFilterCard({ filter }: BookmarkedFilterCardProps) {
           <p className='overflow-hidden font-medium text-ellipsis'>
             {filter.name}
           </p>
-          <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
+          <div className='flex items-center gap-1.5'>
+            <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
+            <OutputContainerIcon container={filter.outputContainer} />
+          </div>
         </div>
         <div className='space-x-2 pr-2'>
           <ViewFilter filter={filter} variant='icon' />

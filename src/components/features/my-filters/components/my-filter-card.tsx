@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ExportConveyorFilter } from "@/components/features/conveyor/export-conveyor-filter";
 import ViewFilter from "@/components/features/filters/components/view-filter";
+import { OutputContainerIcon } from "@/components/features/filters/filter-card/output-container-icon";
 import { CategoryDropdownCheckbox } from "@/components/features/my-filters/categories/category-dropdown-checkbox";
 import { ClearFilterCategory } from "@/components/features/my-filters/categories/clear-filter-category";
 import { filterDraggableId } from "@/components/features/my-filters/hooks/use-sortable-hierarchy";
@@ -170,7 +171,10 @@ export function MyFilterCard({
               {filter.name}
             </Link>
           )}
-          <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
+          <div className='flex items-center gap-1.5'>
+            <p className='text-muted-foreground'>{`${filter.filterItems.length} items`}</p>
+            <OutputContainerIcon container={filter.outputContainer} />
+          </div>
           {showSharedSourceNote && (
             <p className='truncate text-xs text-muted-foreground/75'>
               Saved from a filter shared with you

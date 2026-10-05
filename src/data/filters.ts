@@ -31,6 +31,10 @@ import {
 
 import type { DbTransaction } from "@/types/db-transaction";
 import {
+  toOutputContainerShortname,
+  type OutputContainerShortname,
+} from "@/lib/output-containers/container-table";
+import {
   categories as categoriesTable,
   filterItems,
   filters,
@@ -376,6 +380,7 @@ export async function getFiltersWithItems(userId: string) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
   });
 
@@ -398,6 +403,7 @@ export async function getFilterById(filterId: number, userId: string) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
   });
 
@@ -417,6 +423,7 @@ export async function getPublicFilter(filterId: number) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
   });
 
@@ -448,6 +455,7 @@ export interface GetPublicFiltersOptions {
   categories?: string[];
   items?: string[];
   tags?: string[];
+  container?: OutputContainerShortname;
 }
 
 /**
@@ -497,6 +505,7 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
     categories,
     items,
     tags,
+    container,
   } = options;
 
   const searchConditions = [
@@ -556,6 +565,17 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
                   eq(filterTags.status, "active"),
                 ),
               ),
+          ),
+        ]
+      : []),
+    ...(container
+      ? [
+          inArray(
+            filters.outputContainerId,
+            db
+              .select({ id: itemsTable.id })
+              .from(itemsTable)
+              .where(eq(itemsTable.shortname, container)),
           ),
         ]
       : []),
@@ -642,6 +662,7 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
     orderBy,
   });
@@ -704,6 +725,27 @@ export async function getPublicFilters(options: GetPublicFiltersOptions) {
   };
 }
 
+export async function getPublicContainerCounts() {
+  const rows = await db
+    .select({
+      shortname: itemsTable.shortname,
+      name: itemsTable.name,
+      imagePath: itemsTable.imagePath,
+      iconVersion: itemsTable.iconVersion,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(filters)
+    .innerJoin(itemsTable, eq(filters.outputContainerId, itemsTable.id))
+    .where(eq(filters.isPublic, true))
+    .groupBy(itemsTable.id)
+    .orderBy(desc(sql`count(*)`), asc(itemsTable.name));
+
+  return rows.flatMap((row) => {
+    const shortname = toOutputContainerShortname(row.shortname);
+    return shortname ? [{ ...row, shortname }] : [];
+  });
+}
+
 export async function getUserFiltersByCategory(
   userId: string,
   categoryId: number | null,
@@ -721,6 +763,7 @@ export async function getUserFiltersByCategory(
         where: filterItemsWhere,
         orderBy: filterItemsOrderBy,
       },
+      outputContainer: true,
     },
     orderBy: filters.order,
   });

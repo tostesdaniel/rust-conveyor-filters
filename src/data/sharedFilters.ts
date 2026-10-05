@@ -41,6 +41,7 @@ export async function findSharedFilters(shareTokenId: number) {
             where: filterItemsWhere,
             orderBy: filterItemsOrderBy,
           },
+          outputContainer: true,
           userCategory: {
             columns: {
               id: true,

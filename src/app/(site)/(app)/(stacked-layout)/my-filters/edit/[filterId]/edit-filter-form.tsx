@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
+import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -35,9 +36,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
+import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
+import {
+  OutputContainerSplitProvider,
+  type LoadedValues,
+} from "@/components/features/conveyor/output-container-split";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
+import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
 
 interface FilterItemBase {
   name: string;
@@ -138,12 +145,14 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         subCategoryId: null,
       },
       isPublic: false,
+      outputContainer: null,
       items: [],
     },
   });
   const { dirtyFields } = useFormState({ control: form.control });
   const initialItemsRef = React.useRef<FilterItem[]>([]);
   const hydratedForFilterIdRef = React.useRef<number | null>(null);
+  const [saved, setSaved] = React.useState<LoadedValues | null>(null);
 
   const utils = api.useUtils();
   const { trackAction } = useEngagementScore();
@@ -203,6 +212,10 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       .filter((item): item is FilterItem => item !== null);
 
     initialItemsRef.current = initialItemsData;
+    const outputContainer = toOutputContainerShortname(
+      data.outputContainer?.shortname,
+    );
+    setSaved({ outputContainer, items: initialItemsData });
     form.reset({
       name: data.name,
       description: data.description ?? "",
@@ -212,6 +225,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         subCategoryId: data.subCategoryId,
       },
       isPublic: data.isPublic,
+      outputContainer,
       items: initialItemsData,
     });
 
@@ -310,18 +324,22 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             )}
           />
         </div>
-        <FormFieldScope name='items'>
-          <FormItem>
-            <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
-              Items
-            </FormLabel>
-            <FormDescription>
-              Compose your conveyor by selecting items from the list.
-            </FormDescription>
-            <ConveyorCard />
-            <FormMessage />
-          </FormItem>
-        </FormFieldScope>
+        <OutputContainerSplitProvider saved={saved}>
+          <OutputContainerField />
+          <FilterFormTourDemo />
+          <FormFieldScope name='items'>
+            <FormItem>
+              <FormLabel className='after:ml-0.5 after:text-destructive after:content-["*"]'>
+                Items
+              </FormLabel>
+              <FormDescription>
+                Compose your conveyor by selecting items from the list.
+              </FormDescription>
+              <ConveyorCard />
+              <FormMessage />
+            </FormItem>
+          </FormFieldScope>
+        </OutputContainerSplitProvider>
         <Button
           type='submit'
           disabled={mutation.isPending || !form.formState.isDirty}

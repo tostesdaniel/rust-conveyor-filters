@@ -1,0 +1,383 @@
+import type {
+  AcceptRule,
+  OutputContainer,
+  SlotGroup,
+} from "@/lib/output-containers/container-table";
+import type { ItemType } from "@/db/schema";
+
+export interface PlannerItem {
+  shortname: string;
+  stackSize: number;
+  itemType: ItemType;
+  category: string;
+}
+
+export type PlannerSubject =
+  | ({ kind: "item" } & PlannerItem)
+  | {
+      kind: "category";
+      category: string;
+      /** Insertable items only. */
+      items: readonly PlannerItem[];
+    };
+
+export type PlannerRow = PlannerSubject & { max: number };
+
+export type Acceptance = "accepted" | "goesToBox" | "notAccepted";
+
+export type PerfectSmelting = "on" | "off" | "noSmeltRows";
+
+// Extra wood for a server save stalling the conveyor, to prevent it from turning off.
+const WOOD_MARGIN = 0;
+
+// A conveyor moves up to 128 of any stack at a time, split evenly across up to 32 outputs,
+// one of which is the box.
+const CONVEYOR_MOVE_LIMIT = 128;
+const MAX_OVENS = 31;
+
+export interface RowPlan {
+  max: number;
+  slotGroup: string | null;
+  /** A category row assumes its category's most common stack size. */
+  stackSize: number | null;
+  splitShare: number | null;
+  rowCapacity: number | null;
+  notAccepted: boolean;
+  goesToBox: boolean;
+  stopsOven: boolean;
+  sharesSlots: boolean;
+  aboveShare: boolean;
+  aboveCapacity: boolean;
+  /** Ovens one source stack keeps at this Max. Null unless a capped Smelt row. */
+  keepUpCount: number | null;
+  belowKeepLit: boolean;
+}
+
+function ruleAccepts(rule: AcceptRule, item: PlannerItem) {
+  switch (rule.kind) {
+    case "any":
+      return true;
+    case "items":
+      return rule.shortnames.includes(item.shortname);
+    case "category":
+      if (rule.alsoItems?.includes(item.shortname)) return true;
+      return (
+        item.category === rule.category &&
+        !rule.except?.includes(item.shortname)
+      );
+    case "notCategory":
+      return item.category !== rule.category;
+  }
+}
+
+export function acceptingGroup(
+  container: OutputContainer,
+  item: PlannerItem,
+): SlotGroup | null {
+  // Water can't go in any of these containers.
+  if (item.itemType === "Liquid") return null;
+  if (container.blockedItems?.includes(item.shortname)) return null;
+  return (
+    container.slotGroups.find((group) => ruleAccepts(group.accepts, item)) ??
+    null
+  );
+}
+
+// On a tie, assume the bigger stack so the row doesn't stop early.
+function mostCommonStackSize(items: readonly PlannerItem[]) {
+  const counts = new Map<number, number>();
+  for (const item of items) {
+    if (item.itemType === "Liquid") continue;
+    counts.set(item.stackSize, (counts.get(item.stackSize) ?? 0) + 1);
+  }
+  let best: { size: number; count: number } | null = null;
+  for (const [size, count] of counts) {
+    if (
+      !best ||
+      count > best.count ||
+      (count === best.count && size > best.size)
+    ) {
+      best = { size, count };
+    }
+  }
+  return best?.size ?? null;
+}
+
+function categoryGroup(
+  container: OutputContainer,
+  items: readonly PlannerItem[],
+) {
+  const counts = new Map<SlotGroup, number>();
+  for (const item of items) {
+    const group = acceptingGroup(container, item);
+    if (group) counts.set(group, (counts.get(group) ?? 0) + 1);
+  }
+  let best: SlotGroup | null = null;
+  for (const group of container.slotGroups) {
+    if ((counts.get(group) ?? 0) > (best ? counts.get(best)! : 0)) {
+      best = group;
+    }
+  }
+  return best;
+}
+
+interface Placement {
+  group: SlotGroup;
+  stackSize: number;
+}
+
+function placementOf(
+  container: OutputContainer,
+  row: PlannerSubject,
+): Placement | null {
+  if (row.kind === "item") {
+    const group = acceptingGroup(container, row);
+    return group && { group, stackSize: row.stackSize };
+  }
+  const group = categoryGroup(container, row.items);
+  const stackSize = mostCommonStackSize(row.items);
+  return group && stackSize ? { group, stackSize } : null;
+}
+
+export function acceptanceOf(
+  container: OutputContainer,
+  subject: PlannerSubject,
+): Acceptance {
+  if (placementOf(container, subject)) return "accepted";
+  return subject.kind === "item" &&
+    container.results?.includes(subject.shortname)
+    ? "goesToBox"
+    : "notAccepted";
+}
+
+export function keepLitMaxOf(
+  container: OutputContainer,
+  subject: PlannerSubject,
+): number | null {
+  if (subject.kind !== "item") return null;
+  const keepLit = container.keepLitMax?.[subject.shortname];
+  if (keepLit === undefined) return null;
+  return subject.shortname === "wood" ? keepLit + WOOD_MARGIN : keepLit;
+}
+
+/** The filter stores no mode, so it is inferred from Smelt rows. */
+export function perfectSmeltingOf(
+  container: OutputContainer,
+  rows: readonly PlannerRow[],
+): PerfectSmelting {
+  if (!container.keepLitMax) return "off";
+  const smeltRows = rows.flatMap((row) => {
+    const keepLit = keepLitMaxOf(container, row);
+    return keepLit === null ? [] : [{ max: row.max, keepLit }];
+  });
+  if (smeltRows.length === 0) return "noSmeltRows";
+  return smeltRows.every(({ max, keepLit }) => max > 0 && max <= keepLit)
+    ? "on"
+    : "off";
+}
+
+function ovensKeptUp(stackSize: number, max: number) {
+  const perRun = Math.min(CONVEYOR_MOVE_LIMIT, stackSize);
+  return Math.min(MAX_OVENS, Math.max(0, Math.floor(perRun / max) - 1));
+}
+
+function smeltPlan(container: OutputContainer, row: PlannerRow) {
+  const keepLit = keepLitMaxOf(container, row);
+  if (keepLit === null || row.kind !== "item" || row.max === 0) {
+    return { keepUpCount: null, belowKeepLit: false };
+  }
+  return {
+    keepUpCount: ovensKeptUp(row.stackSize, row.max),
+    belowKeepLit: row.max < keepLit,
+  };
+}
+
+function divide(slots: number, indexes: number[]) {
+  const free = Math.max(0, slots);
+  const base = Math.floor(free / indexes.length);
+  const remainder = free % indexes.length;
+  return new Map(
+    indexes.map((index, position) => [
+      index,
+      base + (position < remainder ? 1 : 0),
+    ]),
+  );
+}
+
+// A row with zero slots still shares slots once given its stack.
+function withLimits(
+  max: number,
+  splitShare: number,
+  rowCapacity: number,
+  shareSlots: number,
+) {
+  return {
+    max: max > 0 ? Math.min(max, rowCapacity) : splitShare,
+    splitShare,
+    rowCapacity,
+    sharesSlots: shareSlots === 0 && max <= splitShare,
+    aboveShare: max > splitShare,
+    aboveCapacity: max > rowCapacity,
+  };
+}
+
+export function planOutputContainer(
+  container: OutputContainer,
+  authoredRows: PlannerRow[],
+  { perfectSmelting = false }: { perfectSmelting?: boolean } = {},
+): RowPlan[] {
+  // Smelt rows count as capped, so the other rows split the slots they leave.
+  const rows = perfectSmelting
+    ? authoredRows.map((row) => {
+        const keepLit = keepLitMaxOf(container, row);
+        return keepLit === null ? row : { ...row, max: keepLit };
+      })
+    : authoredRows;
+  const placements = rows.map((row) => placementOf(container, row));
+  const capacityOf = (index: number) =>
+    placements[index]!.group.slots * placements[index]!.stackSize;
+  const cappedMax = (index: number) =>
+    Math.min(rows[index].max, capacityOf(index));
+
+  // Item rows of a category row's group count against its Max.
+  const categoryOf = new Map<number, number>();
+  rows.forEach((row, category) => {
+    if (row.kind !== "category" || !placements[category]) return;
+    rows.forEach((other, index) => {
+      if (
+        other.kind === "item" &&
+        other.category === row.category &&
+        placements[index]?.group === placements[category]!.group
+      ) {
+        categoryOf.set(index, category);
+      }
+    });
+  });
+  const membersOf = (category: number) =>
+    [...categoryOf].flatMap(([index, of]) => (of === category ? [index] : []));
+
+  /** asUncapped splits as if that row's Max were 0. */
+  function split(group: SlotGroup, asUncapped?: number) {
+    const isCapped = (index: number) =>
+      index !== asUncapped && rows[index].max > 0;
+    const inGroup = rows.flatMap((_, index) =>
+      placements[index]?.group === group ? [index] : [],
+    );
+    const slotsUsed = (index: number) => {
+      const cappedMembers = membersOf(index)
+        .filter(isCapped)
+        .reduce((sum, member) => sum + cappedMax(member), 0);
+      const own = Math.max(0, cappedMax(index) - cappedMembers);
+      return Math.ceil(own / placements[index]!.stackSize);
+    };
+    // Uncapped members of a capped category share the category's slots.
+    const isNested = (index: number) => {
+      const category = categoryOf.get(index);
+      return category !== undefined && isCapped(category);
+    };
+
+    const used = inGroup
+      .filter(isCapped)
+      .reduce((sum, index) => sum + slotsUsed(index), 0);
+    const shares = divide(
+      group.slots - used,
+      inGroup.filter((index) => !isCapped(index) && !isNested(index)),
+    );
+    for (const category of inGroup.filter(isCapped)) {
+      const nested = membersOf(category).filter((index) => !isCapped(index));
+      if (nested.length === 0) continue;
+      const inside = divide(
+        slotsUsed(category),
+        [...nested, category].sort((a, b) => a - b),
+      );
+      for (const index of nested) shares.set(index, inside.get(index)!);
+    }
+    return shares;
+  }
+
+  const shareSlots = new Map<number, number>();
+  for (const group of container.slotGroups) {
+    const shares = split(group);
+    rows.forEach((_, index) => {
+      if (placements[index]?.group !== group) return;
+      shareSlots.set(
+        index,
+        shares.get(index) ?? split(group, index).get(index)!,
+      );
+    });
+  }
+
+  const plans: RowPlan[] = rows.map((row, index) => {
+    const placement = placements[index];
+    if (!placement) {
+      const goesToBox = acceptanceOf(container, row) === "goesToBox";
+      return {
+        max: row.max,
+        slotGroup: null,
+        stackSize: null,
+        splitShare: null,
+        rowCapacity: null,
+        notAccepted: !goesToBox,
+        goesToBox,
+        stopsOven: goesToBox && !!container.fuelOven && row.max > 0,
+        sharesSlots: false,
+        aboveShare: false,
+        aboveCapacity: false,
+        ...smeltPlan(container, row),
+      };
+    }
+
+    const slots = shareSlots.get(index)!;
+    return {
+      // A 0 Max means no limit, so a row squeezed out still gets one stack.
+      ...withLimits(
+        row.max,
+        Math.max(slots, 1) * placement.stackSize,
+        capacityOf(index),
+        slots,
+      ),
+      slotGroup: placement.group.id,
+      stackSize: placement.stackSize,
+      notAccepted: false,
+      goesToBox: false,
+      stopsOven: false,
+      ...smeltPlan(container, row),
+    };
+  });
+
+  // Members may stack higher, so their Max is added, not slots.
+  rows.forEach((row, index) => {
+    const placement = placements[index];
+    if (row.kind !== "category" || !placement) return;
+    const { group, stackSize } = placement;
+    const members = membersOf(index);
+    const memberSlots = members.reduce(
+      (sum, member) =>
+        sum + Math.ceil(plans[member].max / plans[member].stackSize!),
+      0,
+    );
+    const rowCapacity =
+      Math.max(0, group.slots - memberSlots) * stackSize +
+      members.reduce((sum, member) => sum + plans[member].max, 0);
+
+    const atZero = split(group, index);
+    const membersAtZero = members.reduce(
+      (sum, member) =>
+        sum +
+        (rows[member].max > 0
+          ? cappedMax(member)
+          : Math.max(atZero.get(member)!, 1) * plans[member].stackSize!),
+      0,
+    );
+    const splitShare = Math.min(
+      Math.max(atZero.get(index)!, 1) * stackSize + membersAtZero,
+      rowCapacity,
+    );
+    plans[index] = {
+      ...plans[index],
+      ...withLimits(row.max, splitShare, rowCapacity, atZero.get(index)!),
+    };
+  });
+
+  return plans;
+}

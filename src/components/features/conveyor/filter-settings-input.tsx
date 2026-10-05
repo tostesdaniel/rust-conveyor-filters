@@ -2,16 +2,22 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 import { FilterSettingsFieldDescription } from "@/config/constants";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FilterSettingsTooltip } from "@/components/features/conveyor/filter-settings-tooltip";
+import {
+  RowStatusIcon,
+  type RowMessage,
+} from "@/components/features/conveyor/row-status";
 
 interface FilterSettingsInputProps {
   label: string;
   id: string;
   index: number;
   property: "max" | "min" | "buffer";
+  messages?: readonly RowMessage[];
 }
 
 function getTooltipText(property: "max" | "min" | "buffer") {
@@ -29,9 +35,11 @@ export function FilterSettingsInput({
   id,
   index,
   property,
+  messages = [],
   ...field
 }: FilterSettingsInputProps) {
   const { setValue, getValues } = useFormContext();
+  const warned = messages.some((message) => message.tone === "warning");
 
   const handleValueChange = (
     index: number,
@@ -59,19 +67,25 @@ export function FilterSettingsInput({
         <FormLabel className='inline-flex h-9 w-16 flex-none items-center rounded-l-md border border-r-0 border-input px-3 text-muted-foreground'>
           {label}
         </FormLabel>
-        <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
-          <FormControl>
-            <Input
-              type='text'
-              id={id}
-              placeholder='0'
-              className='rounded-none border-r-0 text-end focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset'
-              {...field}
-              onFocus={handleInputFocus}
-              onChange={handleInputChange}
-            />
-          </FormControl>
-        </FilterSettingsTooltip>
+        <div className='relative min-w-0 flex-1'>
+          <FilterSettingsTooltip tooltipText={getTooltipText(property)}>
+            <FormControl>
+              <Input
+                type='text'
+                id={id}
+                placeholder='0'
+                className={cn(
+                  "rounded-none border-r-0 pl-7 text-end focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-inset",
+                  warned && "text-yellow-600 dark:text-yellow-400",
+                )}
+                {...field}
+                onFocus={handleInputFocus}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </FilterSettingsTooltip>
+          <RowStatusIcon label={label} messages={messages} />
+        </div>
         <div className='flex flex-col justify-center'>
           <Button
             type='button'

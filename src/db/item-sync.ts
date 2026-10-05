@@ -50,6 +50,8 @@ export function toRow(item: SnapshotItem): NewItem {
     name: item.name,
     description: item.description,
     category: item.category,
+    stackSize: item.stackSize,
+    itemType: item.itemType,
     imagePath: item.shortname,
     insertable: item.insertable,
     iconVersion: item.icon?.fingerprint ?? null,
@@ -62,6 +64,8 @@ function sameRow(a: NewItem, b: Item) {
     a.name === b.name &&
     a.description === b.description &&
     a.category === b.category &&
+    a.stackSize === b.stackSize &&
+    a.itemType === b.itemType &&
     a.imagePath === b.imagePath &&
     a.insertable === b.insertable &&
     a.iconVersion === b.iconVersion
@@ -158,6 +162,8 @@ async function applyPlan(tx: Db, plan: ItemSyncPlan) {
           name: sql`excluded.name`,
           description: sql`excluded.description`,
           category: sql`excluded.category`,
+          stackSize: sql`excluded.stack_size`,
+          itemType: sql`excluded.item_type`,
           imagePath: sql`excluded.image_path`,
           insertable: sql`excluded.insertable`,
           iconVersion: sql`excluded.icon_version`,

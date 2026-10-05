@@ -11,6 +11,8 @@ function item(
     name: overrides.shortname.toUpperCase(),
     description: `A ${overrides.shortname}.`,
     category: "Items",
+    stackSize: 1,
+    itemType: "Generic",
     insertable: true,
     hidden: false,
     redirectTo: null,
@@ -83,6 +85,30 @@ describe("planItemSync", () => {
       new Set(),
     );
     expect(plan.updates).toEqual([toRow(redLight)]);
+  });
+
+  it("writes the stack size and item type", () => {
+    const water = item({
+      itemId: 6,
+      shortname: "water",
+      stackSize: 2147483647,
+      itemType: "Liquid",
+    });
+    expect(toRow(water)).toMatchObject({
+      stackSize: 2147483647,
+      itemType: "Liquid",
+    });
+  });
+
+  it("updates an item whose stack size or item type changed", () => {
+    const stacked = { ...light, stackSize: 10 };
+    const liquid = { ...redLight, itemType: "Liquid" as const };
+    const plan = planItemSync(
+      [stacked, liquid],
+      [row(light, 1), row(redLight, 2)],
+      new Set(),
+    );
+    expect(plan.updates).toEqual([toRow(stacked), toRow(liquid)]);
   });
 
   it("updates an item whose icon was redrawn", () => {

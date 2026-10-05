@@ -38,7 +38,7 @@ export function startAiCategorizeCron(): Cron {
         const result = await processPendingBatch({ batchSize: BATCH_SIZE });
         if (result.processed > 0) {
           console.log(
-            `[cron:${JOB_NAME}] processed=${result.processed} succeeded=${result.succeeded} failed=${result.failed}`,
+            `[cron:${JOB_NAME}] processed=${result.processed} succeeded=${result.succeeded} failed=${result.failed} inputTokens=${result.inputTokens} outputTokens=${result.outputTokens}`,
           );
         }
       } catch (error) {

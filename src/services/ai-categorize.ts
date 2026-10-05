@@ -21,6 +21,8 @@ export interface CategorizeAndStoreResult {
   assignedTags: Array<{ slug: string; label: string; rank: number }>;
   proposalCount: number;
   provider: "google" | "groq";
+  inputTokens: number;
+  outputTokens: number;
 }
 
 /**
@@ -207,6 +209,8 @@ export async function categorizeAndStore(
     assignedTags,
     proposalCount: result.proposals.length,
     provider: result.provider,
+    inputTokens: result.usage?.inputTokens ?? 0,
+    outputTokens: result.usage?.outputTokens ?? 0,
   };
 }
 
@@ -261,6 +265,8 @@ export async function processPendingBatch(options: {
   processed: number;
   succeeded: number;
   failed: number;
+  inputTokens: number;
+  outputTokens: number;
 }> {
   const batchSize = options.batchSize ?? 10;
   const maxAttempts = options.maxAttempts ?? 5;
@@ -285,16 +291,29 @@ export async function processPendingBatch(options: {
 
   const ids = (claimed.rows as Array<{ id: number }>).map((r) => r.id);
   if (ids.length === 0) {
-    return { processed: 0, succeeded: 0, failed: 0 };
+    return {
+      processed: 0,
+      succeeded: 0,
+      failed: 0,
+      inputTokens: 0,
+      outputTokens: 0,
+    };
   }
 
   let succeeded = 0;
   let failed = 0;
+  let inputTokens = 0;
+  let outputTokens = 0;
 
   for (const id of ids) {
     try {
-      await categorizeAndStore({ filterId: id, allowProposals: true });
+      const result = await categorizeAndStore({
+        filterId: id,
+        allowProposals: true,
+      });
       succeeded += 1;
+      inputTokens += result.inputTokens;
+      outputTokens += result.outputTokens;
     } catch (err) {
       failed += 1;
       const message = err instanceof Error ? err.message : String(err);
@@ -309,7 +328,13 @@ export async function processPendingBatch(options: {
     }
   }
 
-  return { processed: ids.length, succeeded, failed };
+  return {
+    processed: ids.length,
+    succeeded,
+    failed,
+    inputTokens,
+    outputTokens,
+  };
 }
 
 /**
@@ -347,6 +372,8 @@ export async function bootstrapFromPopular(options: {
   let succeeded = 0;
   let failed = 0;
   let proposalsAdded = 0;
+  let inputTokens = 0;
+  let outputTokens = 0;
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
@@ -357,6 +384,8 @@ export async function bootstrapFromPopular(options: {
       });
       succeeded += 1;
       proposalsAdded += result.proposalCount;
+      inputTokens += result.inputTokens;
+      outputTokens += result.outputTokens;
       console.log(
         `  [${i + 1}/${rows.length}] filter ${row.id} "${row.name}" -> ` +
           `${result.assignedTags.map((p) => p.slug).join(", ")}` +
@@ -377,7 +406,7 @@ export async function bootstrapFromPopular(options: {
   }
 
   console.log(
-    `Bootstrap done. succeeded=${succeeded} failed=${failed} proposals=${proposalsAdded}`,
+    `Bootstrap done. succeeded=${succeeded} failed=${failed} proposals=${proposalsAdded} inputTokens=${inputTokens} outputTokens=${outputTokens}`,
   );
   return { succeeded, failed, proposalsAdded };
 }

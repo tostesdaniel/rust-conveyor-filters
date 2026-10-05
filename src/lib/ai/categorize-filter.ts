@@ -1,6 +1,12 @@
 import { createGoogle } from "@ai-sdk/google";
 import { createGroq } from "@ai-sdk/groq";
-import { generateText, type LanguageModel, Output } from "ai";
+import {
+  APICallError,
+  generateText,
+  type LanguageModel,
+  Output,
+  RetryError,
+} from "ai";
 import { z } from "zod";
 
 import {
@@ -10,7 +16,7 @@ import {
 } from "./rust-knowledge";
 import { MAX_FILTER_TAGS } from "./tag-limits";
 
-export const AI_MODEL_VERSION = "gemini-2.5-flash@v1";
+const PROMPT_VERSION = "v2";
 
 const PRIMARY_MODEL_ID = "gemini-2.5-flash";
 const DEFAULT_GROQ_FALLBACK_MODEL = "openai/gpt-oss-20b";
@@ -106,7 +112,7 @@ function getGoogleModel() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) return null;
   const google = createGoogle({ apiKey });
-  return google(PRIMARY_MODEL_ID);
+  return { modelId: PRIMARY_MODEL_ID, model: google(PRIMARY_MODEL_ID) };
 }
 
 function getGroqModel() {
@@ -116,25 +122,15 @@ function getGroqModel() {
     process.env.GROQ_CATEGORIZATION_MODEL?.trim() ||
     DEFAULT_GROQ_FALLBACK_MODEL;
   const groq = createGroq({ apiKey });
-  return groq(modelId);
+  return { modelId, model: groq(modelId) };
 }
 
 /**
- * Errors that should trigger a model fallback.
+ * Quota, rate-limit, server and connection errors trigger a model fallback.
  */
 function shouldFallback(err: unknown): boolean {
-  if (!(err instanceof Error)) return false;
-  const msg = err.message.toLowerCase();
-  return (
-    msg.includes("429") ||
-    msg.includes("quota") ||
-    msg.includes("rate") ||
-    msg.includes("overload") ||
-    msg.includes("unavailable") ||
-    msg.includes("5xx") ||
-    msg.includes("timeout") ||
-    /\b5\d\d\b/.test(msg)
-  );
+  const cause = RetryError.isInstance(err) ? err.lastError : err;
+  return APICallError.isInstance(cause) && cause.isRetryable;
 }
 
 /**
@@ -146,6 +142,7 @@ function normalizeResult(
     proposals: Array<{ slug: string; label: string; rationale: string }>;
   },
   provider: "google" | "groq",
+  modelVersion: string,
 ): Omit<CategorizationResult, "usage"> {
   const seen = new Set<string>();
   const tags: Array<{ slug: string; confidence: number }> = [];
@@ -174,7 +171,7 @@ function normalizeResult(
     });
   }
 
-  return { tags, proposals, provider, modelVersion: AI_MODEL_VERSION };
+  return { tags, proposals, provider, modelVersion };
 }
 
 /**
@@ -200,10 +197,11 @@ export async function categorizeFilter(
   // the shared LanguageModel.
   const attempts: Array<{
     provider: "google" | "groq";
+    modelId: string;
     model: LanguageModel;
   }> = [];
-  if (primary) attempts.push({ provider: "google", model: primary });
-  if (fallback) attempts.push({ provider: "groq", model: fallback });
+  if (primary) attempts.push({ provider: "google", ...primary });
+  if (fallback) attempts.push({ provider: "groq", ...fallback });
 
   let lastError: unknown;
   for (let i = 0; i < attempts.length; i++) {
@@ -224,6 +222,7 @@ export async function categorizeFilter(
           proposals: Array<{ slug: string; label: string; rationale: string }>;
         },
         attempt.provider,
+        `${attempt.modelId}@${PROMPT_VERSION}`,
       );
 
       return {

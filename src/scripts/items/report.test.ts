@@ -149,6 +149,13 @@ describe("container table section", () => {
     );
   });
 
+  it("flags a new item a container's accept list names", () => {
+    const text = report([], [hammer]);
+    expect(text).toContain(
+      "- `hammer` Hammer (named by `cupboard.tool`): new in this game build",
+    );
+  });
+
   it("flags an item moving into or out of a category a container accepts", () => {
     const pie = item({ itemId: 13, shortname: "pie", category: "Items" });
     const text = report([baseline(pie, { category: "Food" })], [pie]);

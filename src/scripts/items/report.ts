@@ -146,6 +146,7 @@ function containerTableChanges(diff: ItemDiff) {
     flagged.set(item.itemId, entry);
   }
 
+  for (const i of diff.added) flag(i, "new in this game build");
   for (const i of diff.nowInsertable) flag(i, "insertable again");
   for (const i of diff.noLongerInsertable) flag(i, "no longer insertable");
   for (const i of diff.missingFromBuild) flag(i, "not in this game build");

@@ -1,7 +1,7 @@
 "use client";
 
 import type { NitroAdOptions } from "@/types/nitro";
-import { useIsDonator } from "@/hooks/use-is-donator";
+import { useIsAdFree } from "@/hooks/use-is-ad-free";
 import { useNitroPlacement } from "@/components/nitro/use-nitro-placement";
 
 const ANCHOR_MOBILE_ID = "filters-anchor-mobile";
@@ -22,12 +22,12 @@ const OPTIONS: NitroAdOptions = {
 };
 
 export function FiltersAnchorMobile() {
-  const isDonator = useIsDonator();
+  const isAdFree = useIsAdFree();
 
   useNitroPlacement({
     id: ANCHOR_MOBILE_ID,
     options: OPTIONS,
-    enabled: !isDonator,
+    enabled: !isAdFree,
   });
 
   return null;

@@ -11,6 +11,8 @@ declare global {
     isSubscriber?: boolean;
     /** Server boosters - badge + ad-free while the boost lasts */
     isServerBooster?: boolean;
+    /** Ad-free with no badge */
+    isAdFree?: boolean;
     /** PayNow customer id linked to this Clerk user */
     paynowCustomerId?: string;
   }

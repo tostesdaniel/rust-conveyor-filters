@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { EngagementPill } from "@/components/features/donation/engagement-pill";
@@ -7,6 +7,7 @@ import { DesktopNav } from "@/components/layout/desktop-nav";
 import { HeaderAuth } from "@/components/layout/header-auth";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Icons } from "@/components/shared/icons";
+import { Logo, LogoMark } from "@/components/shared/logo";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { RepoStarsButton } from "@/components/shared/repo-stars-button";
 
@@ -27,17 +28,9 @@ export function Header() {
     <header className='sticky top-0 z-50 border-b border-border/40 bg-background'>
       <div className='mx-auto flex h-16 max-w-(--breakpoint-2xl) items-center px-4 sm:px-6 lg:px-8'>
         <div className='mr-6 shrink-0'>
-          <Link href='/' className='flex items-center gap-x-2'>
-            <Image
-              src='/logo.webp'
-              width={40}
-              height={40}
-              alt='Logo'
-              priority
-            />
-            <span className='hidden font-semibold tracking-tighter min-[414px]:inline-block'>
-              {siteConfig.name}
-            </span>
+          <Link href='/' aria-label={siteConfig.name}>
+            <Logo className='hidden min-[414px]:flex' />
+            <LogoMark className='min-[414px]:hidden' />
           </Link>
         </div>
         <DesktopNav className='hidden lg:ml-6 lg:flex lg:gap-x-8' />

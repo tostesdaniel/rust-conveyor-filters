@@ -41,6 +41,8 @@
 
   --radius: 0.5rem;
 
+  --brand: #16a34a;
+
   --sidebar: oklch(0.984 0.003 247.858);
   --sidebar-foreground: oklch(0.129 0.042 264.695);
   --sidebar-primary: oklch(0.208 0.042 265.755);
@@ -82,6 +84,9 @@
   --border: oklch(0.279 0.041 260.031);
   --input: oklch(0.279 0.041 260.031);
   --ring: oklch(0.446 0.043 257.281);
+
+  --brand: #5cff6a;
+
   --sidebar: oklch(0.208 0.042 265.755);
   --sidebar-foreground: oklch(0.984 0.003 247.858);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -159,6 +164,8 @@
 
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+
+  --color-brand: var(--brand);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);

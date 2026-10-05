@@ -38,7 +38,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { ConveyorCard } from "@/components/features/conveyor/conveyor-card";
 import { OutputContainerField } from "@/components/features/conveyor/output-container-field";
-import { OutputContainerSplitProvider } from "@/components/features/conveyor/output-container-split";
+import {
+  OutputContainerSplitProvider,
+  type LoadedValues,
+} from "@/components/features/conveyor/output-container-split";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 
@@ -77,6 +80,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
       { enabled: !!remixOf },
     );
   const hydratedRef = React.useRef(false);
+  const [saved, setSaved] = React.useState<LoadedValues | null>(null);
 
   React.useEffect(() => {
     if (!remixOf || hydratedRef.current) return;
@@ -90,44 +94,47 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
       return;
     }
 
+    const items = remixSource.filterItems
+      .map((filterItem) => {
+        if (filterItem.item && filterItem.itemId) {
+          return {
+            name: filterItem.item.name,
+            // shortname must ride along in form state: the in-editor export
+            // reads it, and without it remixed items export with empty names.
+            shortname: filterItem.item.shortname ?? "",
+            imagePath: filterItem.item.imagePath,
+            iconVersion: filterItem.item.iconVersion,
+            itemId: filterItem.itemId,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+          };
+        }
+        if (filterItem.category && filterItem.categoryId) {
+          return {
+            name: filterItem.category.name,
+            categoryId: filterItem.categoryId,
+            max: filterItem.max,
+            buffer: filterItem.buffer,
+            min: filterItem.min,
+          };
+        }
+        return null;
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
+    const outputContainer = toOutputContainerShortname(
+      remixSource.outputContainer?.shortname,
+    );
+    setSaved({ outputContainer, items });
     form.reset({
       name: remixSource.name,
       description: remixSource.description ?? "",
       imagePath: remixSource.imagePath,
       category: { categoryId: null, subCategoryId: null },
       isPublic: false,
-      outputContainer: toOutputContainerShortname(
-        remixSource.outputContainer?.shortname,
-      ),
+      outputContainer,
       forkedFromId: remixOf,
-      items: remixSource.filterItems
-        .map((filterItem) => {
-          if (filterItem.item && filterItem.itemId) {
-            return {
-              name: filterItem.item.name,
-              // shortname must ride along in form state: the in-editor export
-              // reads it, and without it remixed items export with empty names.
-              shortname: filterItem.item.shortname ?? "",
-              imagePath: filterItem.item.imagePath,
-              iconVersion: filterItem.item.iconVersion,
-              itemId: filterItem.itemId,
-              max: filterItem.max,
-              buffer: filterItem.buffer,
-              min: filterItem.min,
-            };
-          }
-          if (filterItem.category && filterItem.categoryId) {
-            return {
-              name: filterItem.category.name,
-              categoryId: filterItem.categoryId,
-              max: filterItem.max,
-              buffer: filterItem.buffer,
-              min: filterItem.min,
-            };
-          }
-          return null;
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null),
+      items,
     });
 
     void form.trigger();
@@ -322,7 +329,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
             )}
           />
         </div>
-        <OutputContainerSplitProvider>
+        <OutputContainerSplitProvider saved={saved}>
           <OutputContainerField />
           <FormFieldScope name='items'>
             <FormItem>

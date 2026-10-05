@@ -16,7 +16,7 @@ export function SiteJsonLd() {
         "@id": ORGANIZATION_ID,
         name: siteConfig.name,
         url: siteConfig.url,
-        logo: `${siteConfig.url}/logo.webp`,
+        logo: `${siteConfig.url}/logo.png`,
         sameAs: [
           siteConfig.links.gitHub,
           siteConfig.links.discord,

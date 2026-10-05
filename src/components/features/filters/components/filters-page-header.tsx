@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ClerkLoaded, ClerkLoading, Show, SignInButton } from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 
@@ -9,6 +8,7 @@ import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { UserMenu } from "@/components/layout/user-menu";
 import { Icons } from "@/components/shared/icons";
+import { LogoMark } from "@/components/shared/logo";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { RepoStarsButton } from "@/components/shared/repo-stars-button";
 import { Typography } from "@/components/shared/typography";
@@ -27,14 +27,7 @@ export function FiltersPageHeader({
     >
       <div className='flex flex-1 items-center justify-between'>
         <div className='flex shrink-0 items-center gap-2'>
-          <Image
-            src='/logo.webp'
-            alt='Conveyor'
-            width={40}
-            height={40}
-            className='md:hidden'
-            priority
-          />
+          <LogoMark className='md:hidden' />
           <Typography variant='h3' as='h1' className='hidden flex-1 sm:block'>
             Browse Filters
           </Typography>

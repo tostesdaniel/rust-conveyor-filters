@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -27,6 +26,7 @@ import {
 import { EngagementPill } from "@/components/features/donation/engagement-pill";
 import { MobileFiltersSidebar } from "@/components/features/filters/sidebar/mobile-filters-sidebar";
 import { SITE_NAV_ITEMS, type Navigation } from "@/components/layout/header";
+import { LogoMark } from "@/components/shared/logo";
 
 type MobileNavigation = Navigation & {
   readonly icon: LucideIcon;
@@ -78,14 +78,7 @@ export function MobileNav() {
           </SheetDescription>
         </div>
         <div className='flex h-16 shrink-0 items-center'>
-          <Image
-            src='/logo.webp'
-            width={40}
-            height={40}
-            alt='Logo'
-            quality={100}
-            priority
-          />
+          <LogoMark />
         </div>
         <nav className='flex flex-1 flex-col'>
           <ul className='flex flex-1 flex-col'>

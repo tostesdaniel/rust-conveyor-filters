@@ -1,29 +1,43 @@
 import Link from "next/link";
+import type { ItemIconRow } from "@/data/items";
 import { Show, SignUpButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { DonateCTA } from "@/components/features/donation/donate-cta";
+import { ItemIcon } from "@/components/shared/item-icon";
 import { Typography } from "@/components/shared/typography";
 
-export function HeroContent() {
+export function HeroContent({ furnace }: { furnace?: ItemIconRow }) {
   return (
     <div className='mx-auto max-w-2xl shrink-0 lg:mx-0 lg:max-w-xl'>
       <div className='mt-8 sm:mt-12 lg:mt-16'>
         <Link
-          href='/users/rustconveyorfilters'
+          href='/my-filters/new-filter'
           className='group mb-8 flex max-w-fit items-center justify-center overflow-hidden rounded-full border border-border bg-background/80 px-7 py-2 shadow-md backdrop-blur transition-colors hover:bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none'
         >
-          <p className='text-sm font-semibold text-muted-foreground'>
-            <span
-              role='img'
-              aria-label='Party Popper emoji'
-              className='select-none'
-            >
-              🎉
-            </span>{" "}
-            User Profiles are here!
+          <p className='flex items-center text-sm font-semibold text-muted-foreground'>
+            {furnace && (
+              <ItemIcon
+                imagePath={furnace.imagePath}
+                version={furnace.iconVersion}
+                size='small'
+                alt=''
+                width={24}
+                height={24}
+                unoptimized
+                className='-my-1 mr-1.5 size-6 shrink-0 object-contain select-none'
+              />
+            )}
+            <span>
+              Output containers
+              <span className='hidden sm:inline'>
+                {" "}
+                and Perfect smelting
+              </span>{" "}
+              are here!
+            </span>
             <span className='ml-1 inline-flex items-center gap-1'>
               <span className='bg-linear-to-br from-[#4cc9f0] to-[#4361ee] bg-clip-text text-transparent'>
                 Try it

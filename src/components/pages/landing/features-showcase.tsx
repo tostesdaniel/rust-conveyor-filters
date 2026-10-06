@@ -2,15 +2,19 @@ import Image, { type StaticImageData } from "next/image";
 import filterBuilderImage from "@/../public/images/features/filter-builder.webp";
 import filterCategoriesImage from "@/../public/images/features/filter-categories.webp";
 import filterSharingImage from "@/../public/images/features/filter-sharing.webp";
+import perfectSmeltingImage from "@/../public/images/features/perfect-smelting.webp";
+import type { ItemIconRow } from "@/data/items";
 import * as motion from "motion/react-client";
 
 import { cn } from "@/lib/utils";
 import { HeaderSectionContainer } from "@/components/layout/header-sections";
+import { ItemIcon } from "@/components/shared/item-icon";
 
 interface Feature {
   title: string;
   description: string;
   image: StaticImageData;
+  iconShortname?: string;
 }
 
 const features: Feature[] = [
@@ -32,13 +36,22 @@ const features: Feature[] = [
       "Share your filters with your friends and team members. Got any team mates that help set up the filters? Let them use the same filters as you.",
     image: filterSharingImage,
   },
+  {
+    title: "Perfect Smelting",
+    description:
+      "Pick a furnace as the Output container and turn on Perfect smelting. Each Smelt row gets its Keep-lit Max, the least that keeps the furnace lit between conveyor runs.",
+    image: perfectSmeltingImage,
+    iconShortname: "furnace.large",
+  },
 ];
 
 export function FeatureItem({
   feature,
+  icon,
   invert = false,
 }: {
   feature: Feature;
+  icon?: ItemIconRow;
   invert?: boolean;
 }) {
   return (
@@ -79,6 +92,18 @@ export function FeatureItem({
             invert && "lg:text-right",
           )}
         >
+          {icon && (
+            <ItemIcon
+              imagePath={icon.imagePath}
+              version={icon.iconVersion}
+              size='full'
+              alt=''
+              width={56}
+              height={56}
+              unoptimized
+              className={cn("size-14 object-contain", invert && "lg:ml-auto")}
+            />
+          )}
           <h3 className='text-3xl font-bold sm:text-4xl'>{feature.title}</h3>
           <p
             className={cn(
@@ -126,7 +151,11 @@ export function FeatureItem({
   );
 }
 
-export function FeaturesShowcase() {
+export function FeaturesShowcase({
+  icons,
+}: {
+  icons: ReadonlyMap<string, ItemIconRow>;
+}) {
   return (
     <HeaderSectionContainer>
       {
@@ -135,6 +164,11 @@ export function FeaturesShowcase() {
             <FeatureItem
               key={feature.title}
               feature={feature}
+              icon={
+                feature.iconShortname
+                  ? icons.get(feature.iconShortname)
+                  : undefined
+              }
               invert={idx % 2 === 1}
             />
           ))}

@@ -20,7 +20,10 @@ export function useAdblockDetected(): boolean | null {
   const [blocked, setBlocked] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (window.nitroAds?.loaded === true) {
+    if (
+      process.env.NODE_ENV === "development" ||
+      window.nitroAds?.loaded === true
+    ) {
       setBlocked(false);
       return;
     }

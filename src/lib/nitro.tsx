@@ -1,6 +1,10 @@
 import Script from "next/script";
 
 export function Nitro() {
+  if (process.env.NODE_ENV === "development") {
+    return null;
+  }
+
   return (
     <>
       <Script

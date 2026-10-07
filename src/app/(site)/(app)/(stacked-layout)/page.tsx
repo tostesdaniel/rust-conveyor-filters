@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function HomePage() {
+export default function HomePage() {
   const icons = new Map(
-    (
-      await getItemIconRows([STRIP_FEATURED_CONTAINER, ...STRIP_CONTAINERS])
-    ).map((row) => [row.shortname, row]),
+    getItemIconRows([STRIP_FEATURED_CONTAINER, ...STRIP_CONTAINERS]).map(
+      (row) => [row.shortname, row],
+    ),
   );
   const furnace = icons.get(STRIP_FEATURED_CONTAINER);
 

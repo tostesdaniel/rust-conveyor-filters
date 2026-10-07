@@ -1,6 +1,8 @@
 import "server-only";
 
 import { db } from "@/db";
+import bundledSnapshot from "@/db/item-snapshot.json";
+import type { ItemSnapshot } from "@/scripts/items/snapshot";
 
 import type { Item } from "@/db/schema";
 
@@ -44,27 +46,22 @@ export type ItemIconRow = Pick<
   "shortname" | "name" | "imagePath" | "iconVersion"
 >;
 
-/** Icon rows for the given shortnames, in the order asked. */
-export async function getItemIconRows(
-  shortnames: readonly string[],
-): Promise<ItemIconRow[]> {
-  const rows = await db.query.items.findMany({
-    columns: {
-      shortname: true,
-      name: true,
-      imagePath: true,
-      iconVersion: true,
-    },
-    where: (items, { and, eq, inArray }) =>
-      and(
-        inArray(items.shortname, [...shortnames]),
-        eq(items.insertable, true),
-      ),
-  });
-  const byShortname = new Map(rows.map((row) => [row.shortname, row]));
+/** Icon rows in the order asked from the snapshot. */
+export function getItemIconRows(shortnames: readonly string[]): ItemIconRow[] {
+  const { items } = bundledSnapshot as ItemSnapshot;
   return shortnames.flatMap((shortname) => {
-    const row = byShortname.get(shortname);
-    return row ? [row] : [];
+    const item = items.find(
+      (item) => item.shortname === shortname && item.insertable,
+    );
+    if (!item) return [];
+    return [
+      {
+        shortname: item.shortname,
+        name: item.name,
+        imagePath: item.shortname,
+        iconVersion: item.icon?.fingerprint ?? null,
+      },
+    ];
   });
 }
 

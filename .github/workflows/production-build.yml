@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/rust-conveyor-filters
@@ -37,6 +41,9 @@ jobs:
     name: Build & Push Docker image
     needs: upload-icons
     runs-on: ubuntu-24.04
+    environment:
+      name: production
+      url: https://rustconveyorfilters.com
     permissions:
       contents: read
       packages: write
@@ -75,6 +82,12 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Deploy
+        run: .github/scripts/dokploy.sh deploy "${{ vars.DOKPLOY_FRONTEND_APP_ID }}"
+        env:
+          DOKPLOY_URL: ${{ secrets.DEPLOY_API_URL }}
+          DOKPLOY_TOKEN: ${{ secrets.DEPLOY_API_TOKEN }}
+
   build-and-push-bot:
     name: Build & Push bot image
     runs-on: ubuntu-24.04
@@ -106,3 +119,9 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-bot:${{ github.sha }}
           cache-from: type=gha,scope=bot
           cache-to: type=gha,mode=max,scope=bot
+
+      - name: Deploy
+        run: .github/scripts/dokploy.sh deploy "${{ vars.DOKPLOY_BOT_APP_ID }}"
+        env:
+          DOKPLOY_URL: ${{ secrets.DEPLOY_API_URL }}
+          DOKPLOY_TOKEN: ${{ secrets.DEPLOY_API_TOKEN }}

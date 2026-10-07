@@ -7,17 +7,19 @@ import {
 import { describe, expect, it } from "vitest";
 
 describe("filterItemsOrderBy", () => {
-  it("orders by id first, then createdAt (insertion order)", () => {
+  it("orders by position, then id and createdAt (insertion order)", () => {
+    const position = { column: "position" };
     const id = { column: "id" };
     const createdAt = { column: "createdAt" };
 
     // The relational query builder calls the callback with the table's columns.
     const result = filterItemsOrderBy({
+      position: position as never,
       id: id as never,
       createdAt: createdAt as never,
     });
 
-    expect(result).toEqual([id, createdAt]);
+    expect(result).toEqual([position, id, createdAt]);
   });
 });
 

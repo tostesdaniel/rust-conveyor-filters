@@ -166,6 +166,7 @@ export const filterItems = pgTable(
     max: integer("max").notNull().default(0),
     buffer: integer("buffer").notNull().default(0),
     min: integer("min").notNull().default(0),
+    position: integer("position").notNull().default(0),
     createdAt: timestamp("created_at")
       .notNull()
       .default(sql`now()`),

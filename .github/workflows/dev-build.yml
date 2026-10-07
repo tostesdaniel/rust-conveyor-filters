@@ -25,6 +25,8 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -61,3 +63,4 @@ jobs:
         env:
           DOKPLOY_URL: ${{ secrets.DEPLOY_API_URL }}
           DOKPLOY_TOKEN: ${{ secrets.DEPLOY_API_TOKEN }}
+          DEPLOY_TITLE: "Dev ${{ github.sha }}"

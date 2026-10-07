@@ -52,10 +52,10 @@ jobs:
             NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_DEV_CLERK_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_RYBBIT_HOST=${{ vars.NEXT_PUBLIC_RYBBIT_HOST }}
             NEXT_PUBLIC_PAYNOW_ENABLED=${{ vars.NEXT_PUBLIC_PAYNOW_ENABLED }}
+            STEAM_ID=${{ vars.STEAM_ID }}
             NEXT_PUBLIC_COMMIT_SHA=${{ github.sha }}
           secrets: |
             STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}
-            STEAM_ID=${{ secrets.STEAM_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

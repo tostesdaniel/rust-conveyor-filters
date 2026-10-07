@@ -12,7 +12,13 @@ interface SiteLayoutProps {
 
 export default function SiteLayout({ children }: SiteLayoutProps) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      signInUrl='/auth/sign-in'
+      signInForceRedirectUrl='/my-filters'
+      signInFallbackRedirectUrl='/my-filters'
+      signUpForceRedirectUrl='/filters'
+      signUpFallbackRedirectUrl='/filters'
+    >
       <TRPCReactProvider>
         <div className='isolate flex min-h-svh flex-col'>{children}</div>
         <SessionTick />

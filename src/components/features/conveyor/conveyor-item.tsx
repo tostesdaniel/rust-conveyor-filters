@@ -3,6 +3,8 @@ import type {
   CreateFilterInput,
 } from "@/schemas/filterFormSchema";
 import { gameCategoryOf } from "@/utils/category-mapping";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   BanIcon,
   FlameKindlingIcon,
@@ -44,111 +46,146 @@ export function ConveyorItem({
   const { trigger } = useFormContext();
   const rowPlan = useRowPlan(index);
   const badges = imageBadges(rowPlan, item.shortname);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: item.id,
+    attributes: { role: "listitem", roleDescription: "draggable item" },
+  });
 
   function handleRemove() {
     onRemove(index);
     trigger("items");
   }
 
-  const categoryKey = gameCategoryOf(item.name);
-  const isCategory = !item.itemId;
-  const CategoryIcon = getCategoryIcon(categoryKey!);
-
   return (
-    <li key={`${isCategory ? "category" : "item"} - ${item.id}`}>
-      <div className='relative h-40 w-auto'>
-        <div
-          className={cn(
-            "absolute inset-0 transition-[opacity,filter] duration-200",
-            rowPlan?.plan.notAccepted && "opacity-40 grayscale",
-          )}
-        >
-          {isCategory ? (
-            <CategoryIcon className='h-full w-full' />
-          ) : (
-            <ItemIcon
-              imagePath={item.imagePath}
-              version={item.iconVersion}
-              size='full'
-              alt={item.name}
-              fill
-              sizes='160px'
-              className='object-contain'
-            />
-          )}
-        </div>
-        <ImageBadges badges={badges} />
-        <div className='absolute inset-y-0 right-0'>
-          <Button
-            type='button'
-            variant='destructive'
-            size='icon'
-            className='mt-2 size-5'
-            onClick={handleRemove}
+    <li
+      ref={setNodeRef}
+      style={{ transform: CSS.Translate.toString(transform), transition }}
+      className={cn(
+        "relative -m-1.5 cursor-grab rounded-lg p-1.5 transition-colors outline-none select-none hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        isDragging &&
+          "z-10 cursor-grabbing bg-primary/5 outline-2 -outline-offset-2 outline-primary/50 outline-dashed hover:bg-primary/5",
+      )}
+      {...attributes}
+      {...listeners}
+    >
+      <div inert={isDragging} className={cn(isDragging && "opacity-40")}>
+        <div className='relative h-40 w-auto'>
+          <div
+            className={cn(
+              "absolute inset-0 transition-[opacity,filter] duration-200",
+              rowPlan?.plan.notAccepted && "opacity-40 grayscale",
+            )}
           >
-            <XIcon className='size-4' />
-          </Button>
+            <ConveyorItemArt item={item} />
+          </div>
+          <ImageBadges badges={badges} />
+          <div className='absolute inset-y-0 right-0'>
+            <Button
+              type='button'
+              variant='destructive'
+              size='icon'
+              className='mt-2 size-5'
+              onClick={handleRemove}
+            >
+              <XIcon className='size-4' />
+            </Button>
+          </div>
         </div>
+        <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
+          {item.name}
+        </p>
+        <FormField
+          control={control}
+          name={`items.${index}.max`}
+          render={({ field }) => (
+            <>
+              <FilterSettingsInput
+                label='Max'
+                id={item.id}
+                index={index}
+                property='max'
+                messages={maxMessages(rowPlan, !item.itemId)}
+                {...field}
+              />
+              <FormDescription className='sr-only'>
+                {FilterSettingsFieldDescription["MAX"]}
+              </FormDescription>
+            </>
+          )}
+        />
+        <FormField
+          control={control}
+          name={`items.${index}.buffer`}
+          render={({ field }) => (
+            <>
+              <FilterSettingsInput
+                label='Buffer'
+                id={item.id}
+                index={index}
+                property='buffer'
+                {...field}
+              />
+              <FormDescription className='sr-only'>
+                {FilterSettingsFieldDescription["BUFFER"]}
+              </FormDescription>
+            </>
+          )}
+        />
+        <FormField
+          control={control}
+          name={`items.${index}.min`}
+          render={({ field }) => (
+            <>
+              <FilterSettingsInput
+                label='Min'
+                id={item.id}
+                index={index}
+                property='min'
+                {...field}
+              />
+              <FormDescription className='sr-only'>
+                {FilterSettingsFieldDescription["MIN"]}
+              </FormDescription>
+            </>
+          )}
+        />
       </div>
-      <p className='pointer-events-none mt-2 truncate text-sm font-medium text-foreground/80'>
-        {item.name}
-      </p>
-      <FormField
-        control={control}
-        name={`items.${index}.max`}
-        render={({ field }) => (
-          <>
-            <FilterSettingsInput
-              label='Max'
-              id={item.id}
-              index={index}
-              property='max'
-              messages={maxMessages(rowPlan, isCategory)}
-              {...field}
-            />
-            <FormDescription className='sr-only'>
-              {FilterSettingsFieldDescription["MAX"]}
-            </FormDescription>
-          </>
-        )}
-      />
-      <FormField
-        control={control}
-        name={`items.${index}.buffer`}
-        render={({ field }) => (
-          <>
-            <FilterSettingsInput
-              label='Buffer'
-              id={item.id}
-              index={index}
-              property='buffer'
-              {...field}
-            />
-            <FormDescription className='sr-only'>
-              {FilterSettingsFieldDescription["BUFFER"]}
-            </FormDescription>
-          </>
-        )}
-      />
-      <FormField
-        control={control}
-        name={`items.${index}.min`}
-        render={({ field }) => (
-          <>
-            <FilterSettingsInput
-              label='Min'
-              id={item.id}
-              index={index}
-              property='min'
-              {...field}
-            />
-            <FormDescription className='sr-only'>
-              {FilterSettingsFieldDescription["MIN"]}
-            </FormDescription>
-          </>
-        )}
-      />
     </li>
+  );
+}
+
+function ConveyorItemArt({ item }: { item: ItemWithFields }) {
+  if (!item.itemId) {
+    const CategoryIcon = getCategoryIcon(gameCategoryOf(item.name)!);
+    return <CategoryIcon className='h-full w-full' />;
+  }
+  return (
+    <ItemIcon
+      imagePath={item.imagePath}
+      version={item.iconVersion}
+      size='full'
+      alt={item.name}
+      fill
+      sizes='160px'
+      className='object-contain'
+    />
+  );
+}
+
+export function ConveyorItemPreview({ item }: { item: ItemWithFields }) {
+  return (
+    <div className='scale-105 rotate-3 cursor-grabbing p-1.5 drop-shadow-xl'>
+      <div className='relative h-40 w-auto'>
+        <ConveyorItemArt item={item} />
+      </div>
+    </div>
   );
 }
 

@@ -11,9 +11,10 @@ import { items } from "@/db/schema";
  * source, shared-with-me, bookmarks, creator profiles).
  */
 export const filterItemsOrderBy = (fields: {
+  position: AnyColumn;
   id: AnyColumn;
   createdAt: AnyColumn;
-}) => [fields.id, fields.createdAt];
+}) => [fields.position, fields.id, fields.createdAt];
 
 const checked = sql.identifier("insertable_check");
 

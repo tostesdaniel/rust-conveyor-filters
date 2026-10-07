@@ -271,13 +271,14 @@ export async function createForkedFilter({
 
   if (sourceItems.length > 0) {
     await db.insert(filterItems).values(
-      sourceItems.map((item) => ({
+      sourceItems.map((item, position) => ({
         filterId: insertedFilter.id,
         itemId: item.itemId,
         categoryId: item.categoryId,
         max: item.max,
         buffer: item.buffer,
         min: item.min,
+        position,
       })),
     );
   }

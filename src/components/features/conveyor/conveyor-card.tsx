@@ -24,7 +24,7 @@ import { CheckboxWithDescription } from "@/components/shared/checkbox-with-text"
 
 export function ConveyorCard() {
   const { control, watch, trigger } = useFormContext();
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove, replace, move } = useFieldArray({
     control,
     name: "items",
   });
@@ -54,6 +54,7 @@ export function ConveyorCard() {
           <ConveyorItemGrid
             items={fields as ItemWithFields[]}
             onRemove={remove}
+            onMove={move}
           />
         </OutputContainerPlanProvider>
       </CardContent>

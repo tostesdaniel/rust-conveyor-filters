@@ -1,7 +1,7 @@
 import type { CreateFilterInput } from "@/schemas/filterFormSchema";
 import { describe, expect, it } from "vitest";
 
-import { reconcileFilterDraft } from "./filter-draft";
+import { filterDraftBase, reconcileFilterDraft } from "./filter-draft";
 
 const catalogue = [
   {
@@ -96,9 +96,63 @@ describe("reconcileFilterDraft", () => {
     expect(result.values.imagePath).toBe("");
   });
 
+  it("keeps the filter's saved cover even if its item left the game", () => {
+    const result = reconcileFilterDraft(
+      draft({ imagePath: "gone.png" }),
+      catalogue,
+      "gone.png",
+    );
+
+    expect(result.values.imagePath).toBe("gone.png");
+  });
+
   it("keeps a cover image that still exists", () => {
     const result = reconcileFilterDraft(draft(), catalogue);
 
     expect(result.values.imagePath).toBe("metal.ore.png");
+  });
+});
+
+describe("filterDraftBase", () => {
+  const itemRow = {
+    ...row,
+    itemId: 1,
+    name: "Metal Ore",
+    imagePath: "metal.ore.png",
+  };
+
+  it("ignores item names and icons", () => {
+    const renamed = { ...itemRow, name: "Renamed", iconVersion: "v9" };
+
+    expect(filterDraftBase(draft({ items: [renamed] }))).toBe(
+      filterDraftBase(draft({ items: [itemRow] })),
+    );
+  });
+
+  it("changes when a setting the draft overwrites changes", () => {
+    const before = filterDraftBase(draft({ items: [itemRow] }));
+
+    expect(
+      filterDraftBase(draft({ name: "Other", items: [itemRow] })),
+    ).not.toBe(before);
+    expect(
+      filterDraftBase(draft({ items: [{ ...itemRow, max: 10 }] })),
+    ).not.toBe(before);
+    expect(
+      filterDraftBase(
+        draft({
+          category: { categoryId: 3, subCategoryId: null },
+          items: [itemRow],
+        }),
+      ),
+    ).not.toBe(before);
+  });
+
+  it("changes when items are reordered", () => {
+    const other = { ...row, categoryId: 5, name: "Resources" };
+
+    expect(filterDraftBase(draft({ items: [itemRow, other] }))).not.toBe(
+      filterDraftBase(draft({ items: [other, itemRow] })),
+    );
   });
 });

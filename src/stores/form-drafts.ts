@@ -6,11 +6,13 @@ const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 export interface FormDraft<T = unknown> {
   values: T;
   savedAt: number;
+  /** What the form started from when the draft was saved. */
+  base?: string;
 }
 
 interface FormDraftState {
   drafts: Record<string, FormDraft>;
-  saveDraft: (key: string, values: unknown) => void;
+  saveDraft: (key: string, values: unknown, base?: string) => void;
   removeDraft: (key: string) => void;
 }
 
@@ -22,9 +24,12 @@ export const useFormDraftStore = create<FormDraftState>()(
   persist(
     (set) => ({
       drafts: {},
-      saveDraft: (key, values) =>
+      saveDraft: (key, values, base) =>
         set((state) => ({
-          drafts: { ...state.drafts, [key]: { values, savedAt: Date.now() } },
+          drafts: {
+            ...state.drafts,
+            [key]: { values, savedAt: Date.now(), base },
+          },
         })),
       removeDraft: (key) =>
         set((state) => {

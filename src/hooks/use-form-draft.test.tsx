@@ -14,12 +14,16 @@ interface Values {
 const KEY = "test:new";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-function setup(key: string | null = KEY) {
+function setup(key: string | null = KEY, base?: string) {
   return renderHook(
     ({ draftKey }) => {
       const form = useForm<Values>({ defaultValues: { name: "", tags: [] } });
       const { isDirty } = form.formState;
-      return { form, isDirty, formDraft: useFormDraft(form, draftKey) };
+      return {
+        form,
+        isDirty,
+        formDraft: useFormDraft(form, draftKey, { base }),
+      };
     },
     { initialProps: { draftKey: key } },
   );
@@ -174,5 +178,42 @@ describe("useFormDraft", () => {
 
     expect(result.current.formDraft.draft).toBeNull();
     expect(storedDraft()?.values.name).toBe("Old");
+  });
+
+  it("stores the base with the draft", () => {
+    const { result } = setup(KEY, "v1");
+
+    act(() => {
+      result.current.form.setValue("name", "Ore sorter", { shouldDirty: true });
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(storedDraft()?.base).toBe("v1");
+  });
+
+  it("leaves another key's draft alone when the key changes", () => {
+    const otherKey = "test:other";
+    useFormDraftStore
+      .getState()
+      .saveDraft(otherKey, { name: "Other", tags: [] });
+    const { result, rerender } = setup();
+
+    act(() => {
+      result.current.form.setValue("name", "Ore sorter", { shouldDirty: true });
+    });
+    rerender({ draftKey: otherKey });
+    act(() => {
+      result.current.form.reset({ name: "", tags: [] });
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(useFormDraftStore.getState().drafts[otherKey]?.values).toEqual({
+      name: "Other",
+      tags: [],
+    });
+    expect(result.current.formDraft.draft?.values).toEqual({
+      name: "Other",
+      tags: [],
+    });
   });
 });

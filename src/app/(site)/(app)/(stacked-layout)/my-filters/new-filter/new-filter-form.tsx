@@ -13,16 +13,16 @@ import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from "motion/react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { OwnerFilterDTO } from "@/types/filter";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
-import { useFormDraft } from "@/hooks/use-form-draft";
+import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
-import { reconcileFilterDraft } from "@/lib/utils/filter-draft";
 import {
   getSavedSortPreference,
   sortFiltersByPreference,
@@ -150,27 +150,9 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
     userId && !isRemixLoading
       ? `filter:${userId}:${remixOf ? `remix:${remixOf}` : "new"}`
       : null;
-  const formDraft = useFormDraft(form, draftKey);
-
-  function restoreDraft() {
-    if (!formDraft.draft) return;
-    const { values, droppedCount } = reconcileFilterDraft(
-      formDraft.draft.values,
-      items ?? [],
-    );
-    setSaved({
-      outputContainer: values.outputContainer ?? null,
-      items: values.items,
-    });
-    formDraft.restore(values);
-    if (droppedCount > 0) {
-      toast.info(
-        droppedCount === 1
-          ? "Left out 1 item that is no longer insertable."
-          : `Left out ${droppedCount} items that are no longer insertable.`,
-      );
-    }
-  }
+  const formDraft = useFilterFormDraft(form, draftKey, {
+    onRestore: setSaved,
+  });
 
   const utils = api.useUtils();
   const updateOrderMutation = api.filter.updateOrder.useMutation();
@@ -266,13 +248,17 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 py-6'>
-        {formDraft.draft && (
-          <DraftRestoreBanner
-            savedAt={formDraft.draft.savedAt}
-            onRestore={restoreDraft}
-            onDiscard={formDraft.discard}
-          />
-        )}
+        <AnimatePresence>
+          {formDraft.draft && (
+            <DraftRestoreBanner
+              key='draft'
+              savedAt={formDraft.draft.savedAt}
+              onRestore={formDraft.restore}
+              onDiscard={formDraft.discard}
+              className='mb-0 *:mb-6'
+            />
+          )}
+        </AnimatePresence>
         {remixSource && (
           <div className='rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground'>
             Remixing{" "}

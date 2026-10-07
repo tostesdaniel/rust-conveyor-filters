@@ -19,14 +19,24 @@ type Status = "loading" | "pending" | "active" | "cleared";
 
 /**
  * Saves unsubmitted changes under `key` and offers them back on the next
- * visit. Pass a null key until the form holds its starting values.
+ * visit. Pass a null key until the form holds its starting values. `base`
+ * is saved with each draft so callers can tell when the source changed.
  */
 export function useFormDraft<T extends FieldValues, TContext, TOutput>(
   form: UseFormReturn<T, TContext, TOutput>,
   key: string | null,
+  { base }: { base?: string } = {},
 ) {
-  const [status, setStatus] = React.useState<Status>("loading");
-  const [draft, setDraft] = React.useState<FormDraft<T> | null>(null);
+  // Keyed so a new key reads as "loading" on its first render, before the
+  // read effect runs.
+  const [state, setState] = React.useState<{
+    key: string;
+    status: Status;
+    draft: FormDraft<T> | null;
+  } | null>(null);
+  const current = key && state?.key === key ? state : null;
+  const status = current?.status ?? "loading";
+  const draft = current?.draft ?? null;
   const clearedRef = React.useRef(false);
 
   // Read once in an effect rather than subscribing, so the server render and
@@ -40,8 +50,11 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
       removeDraft(key);
       stored = null;
     }
-    setDraft(stored as FormDraft<T> | null);
-    setStatus(stored ? "pending" : "active");
+    setState({
+      key,
+      status: stored ? "pending" : "active",
+      draft: stored as FormDraft<T> | null,
+    });
   }, [key]);
 
   // Only subscribe once the stored draft is settled, so the form's own
@@ -57,7 +70,7 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
       timer = undefined;
       if (!latest || clearedRef.current) return;
       const { saveDraft, removeDraft } = useFormDraftStore.getState();
-      if (latest.isDirty) saveDraft(key, latest.values);
+      if (latest.isDirty) saveDraft(key, latest.values, base);
       else removeDraft(key);
       latest = null;
     };
@@ -83,35 +96,34 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
       document.removeEventListener("visibilitychange", onHide);
       flush();
     };
-  }, [form, key, status]);
+  }, [form, key, status, base]);
 
   const restore = React.useCallback(
     (values: T | undefined = draft?.values) => {
-      if (!values) return;
+      if (!key || !values) return;
       for (const name of Object.keys(values) as Path<T>[]) {
         form.setValue(name, values[name] as PathValue<T, Path<T>>, {
           shouldDirty: true,
           shouldValidate: true,
         });
       }
-      setDraft(null);
-      setStatus("active");
+      setState({ key, status: "active", draft: null });
     },
-    [form, draft],
+    [form, key, draft],
   );
 
   const discard = React.useCallback(() => {
-    if (key) useFormDraftStore.getState().removeDraft(key);
-    setDraft(null);
-    setStatus("active");
+    if (!key) return;
+    useFormDraftStore.getState().removeDraft(key);
+    setState({ key, status: "active", draft: null });
   }, [key]);
 
   /** Call after a successful submit. Stops saving until the next visit. */
   const clear = React.useCallback(() => {
     clearedRef.current = true;
-    if (key) useFormDraftStore.getState().removeDraft(key);
-    setDraft(null);
-    setStatus("cleared");
+    if (!key) return;
+    useFormDraftStore.getState().removeDraft(key);
+    setState({ key, status: "cleared", draft: null });
   }, [key]);
 
   return {

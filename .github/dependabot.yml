@@ -2,6 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "bun" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     groups:

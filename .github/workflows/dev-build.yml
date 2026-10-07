@@ -1,27 +1,32 @@
-name: Preview Deploy
+name: Dev Deploy
 
 on:
   push:
     branches:
       - dev
-      - feat-pine-hosting-promo
+
+concurrency:
+  group: dev-deploy
+  cancel-in-progress: true
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/rust-conveyor-filters
-  BRANCH_NAME: ${{ github.ref_name }}
 
 jobs:
-  build-and-push:
-    name: Build & Push Docker image
+  build-and-deploy:
+    name: Build & deploy dev
     runs-on: ubuntu-24.04
+    environment:
+      name: dev
+      url: https://dev.rustconveyorfilters.com
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -41,9 +46,8 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.BRANCH_NAME }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.BRANCH_NAME }}-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev-${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_DEV_CLERK_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_RYBBIT_HOST=${{ vars.NEXT_PUBLIC_RYBBIT_HOST }}
@@ -54,13 +58,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Trigger deployment
-        if: success()
-        run: |
-          curl -X POST "${{ secrets.DEPLOY_API_URL }}/api/application.deploy" \
-            -H "accept: application/json" \
-            -H "Content-Type: application/json" \
-            -H "x-api-key: ${{ secrets.DEPLOY_API_TOKEN }}" \
-            -d '{
-              "applicationId": "${{ secrets.DEPLOY_APP_ID }}"
-            }'
+      - name: Deploy
+        run: .github/scripts/dokploy.sh deploy "${{ vars.DOKPLOY_DEV_APP_ID }}"
+        env:
+          DOKPLOY_URL: ${{ secrets.DEPLOY_API_URL }}
+          DOKPLOY_TOKEN: ${{ secrets.DEPLOY_API_TOKEN }}
+          DEPLOY_TITLE: "Dev ${{ github.sha }}"

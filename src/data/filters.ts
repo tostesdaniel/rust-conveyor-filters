@@ -159,7 +159,6 @@ export async function moveFilterToCategory(
       categoryId: targetCategoryId,
       subCategoryId: null, // Clear subcategory
       order: newOrder,
-      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
@@ -191,7 +190,6 @@ export async function moveFilterToSubCategory(
       subCategoryId: targetSubCategoryId,
       categoryId: parentCategoryId,
       order: newOrder,
-      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }
@@ -215,7 +213,6 @@ export async function moveFilterToUncategorized(
       categoryId: null,
       subCategoryId: null,
       order: newOrder,
-      updatedAt: sql`now()`,
     })
     .where(and(eq(filters.id, filterId), eq(filters.authorId, authorId)));
 }

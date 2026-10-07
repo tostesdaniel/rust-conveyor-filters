@@ -6,6 +6,8 @@ import { startRevokeExpiredSubscriptionsCron } from "@/server/crons/revoke-expir
 import { startSyncServerBoostersCron } from "@/server/crons/sync-server-boosters";
 import { postPendingItemUpdates } from "@/services/item-update-announcer";
 
+import { deployEnv } from "@/lib/deploy-env";
+
 if (process.env.NODE_ENV === "production") {
   try {
     await runMigrations();
@@ -37,6 +39,8 @@ try {
   console.error("items: announcement failed", err);
 }
 
-startRevokeExpiredSubscriptionsCron();
-startSyncServerBoostersCron();
-startAiCategorizeCron();
+if (deployEnv !== "preview") {
+  startRevokeExpiredSubscriptionsCron();
+  startSyncServerBoostersCron();
+  startAiCategorizeCron();
+}

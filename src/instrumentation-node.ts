@@ -1,9 +1,21 @@
 import { db } from "@/db";
 import { syncItemSnapshot } from "@/db/item-sync";
+import { runMigrations } from "@/db/migrate";
 import { startAiCategorizeCron } from "@/server/crons/ai-categorize";
 import { startRevokeExpiredSubscriptionsCron } from "@/server/crons/revoke-expired-subscriptions";
 import { startSyncServerBoostersCron } from "@/server/crons/sync-server-boosters";
 import { postPendingItemUpdates } from "@/services/item-update-announcer";
+
+import { deployEnv } from "@/lib/deploy-env";
+
+if (process.env.NODE_ENV === "production") {
+  try {
+    await runMigrations();
+  } catch (err) {
+    console.error("db: migration failed", err);
+    process.exit(1);
+  }
+}
 
 // Awaited so the first request already sees this build's catalogue. A failed
 // sync leaves last build's items up rather than taking the site down, and the
@@ -27,6 +39,8 @@ try {
   console.error("items: announcement failed", err);
 }
 
-startRevokeExpiredSubscriptionsCron();
-startSyncServerBoostersCron();
-startAiCategorizeCron();
+if (deployEnv !== "preview") {
+  startRevokeExpiredSubscriptionsCron();
+  startSyncServerBoostersCron();
+  startAiCategorizeCron();
+}

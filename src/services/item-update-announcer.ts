@@ -9,6 +9,7 @@ import type { PgDatabase } from "drizzle-orm/pg-core";
 
 import { itemAnnouncements } from "@/db/schema";
 import type * as schema from "@/db/schema";
+import { isProductionDeploy } from "@/lib/deploy-env";
 
 import { buildIconGrid, type GridEntry } from "./item-icon-grid";
 import { fetchLatestRustNews, type RustNewsPost } from "./rust-news";
@@ -210,7 +211,7 @@ async function publish(messageId: string) {
  * the sync, so a post that failed last time gets another try.
  */
 export async function postPendingItemUpdates(db: Db) {
-  if (!DISCORD_TOKEN || !CHANNEL_ID) return;
+  if (!isProductionDeploy || !DISCORD_TOKEN || !CHANNEL_ID) return;
 
   await db.transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(${ANNOUNCE_LOCK})`);

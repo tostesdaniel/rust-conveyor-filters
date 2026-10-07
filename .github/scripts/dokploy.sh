@@ -72,7 +72,10 @@ preview_up() {
   fi
 
   local env
-  env=$(api_get "application.one?applicationId=$template_app_id" | jq -r '.env // ""')
+  env=$(api_get "application.one?applicationId=$template_app_id" | jq -r '
+    (.env // "") | split("\n")
+    | map(select(startswith("DEPLOY_ENV=") | not)) + ["DEPLOY_ENV=preview"]
+    | join("\n")')
   api_post application.saveEnvironment "$(jq -n --arg id "$app_id" --arg env "$env" \
     '{applicationId: $id, env: $env, buildArgs: null, buildSecrets: null, createEnvFile: false}')" >/dev/null
 

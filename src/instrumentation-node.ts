@@ -5,6 +5,8 @@ import { startRevokeExpiredSubscriptionsCron } from "@/server/crons/revoke-expir
 import { startSyncServerBoostersCron } from "@/server/crons/sync-server-boosters";
 import { postPendingItemUpdates } from "@/services/item-update-announcer";
 
+import { deployEnv } from "@/lib/deploy-env";
+
 // Awaited so the first request already sees this build's catalogue. A failed
 // sync leaves last build's items up rather than taking the site down, and the
 // next boot tries again.
@@ -27,6 +29,8 @@ try {
   console.error("items: announcement failed", err);
 }
 
-startRevokeExpiredSubscriptionsCron();
-startSyncServerBoostersCron();
-startAiCategorizeCron();
+if (deployEnv !== "preview") {
+  startRevokeExpiredSubscriptionsCron();
+  startSyncServerBoostersCron();
+  startAiCategorizeCron();
+}

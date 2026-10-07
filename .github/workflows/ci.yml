@@ -27,6 +27,8 @@ jobs:
 
       - run: bun run lint
 
+      - run: bunx next typegen
+
       - run: bun run type-check
 
       - run: bun run test

@@ -44,21 +44,49 @@ export function reconcileFilterDraft(
 
 /** The fields a draft overwrites, so a draft can tell if the filter changed. */
 export function filterDraftBase(values: CreateFilterInput): string {
-  return JSON.stringify([
-    values.name,
-    values.description,
-    values.imagePath,
-    values.category.categoryId ?? null,
-    values.category.subCategoryId ?? null,
-    values.isPublic ?? null,
-    values.outputContainer ?? null,
-    values.items.map((row) => [
+  const base: DraftBase = {
+    fields: [
+      values.name,
+      values.description,
+      values.imagePath,
+      values.category.categoryId ?? null,
+      values.category.subCategoryId ?? null,
+      values.isPublic ?? null,
+      values.outputContainer ?? null,
+    ],
+    items: values.items.map((row) => [
       "itemId" in row ? row.itemId : `category:${row.categoryId}`,
       row.max,
       row.buffer,
       row.min,
     ]),
-  ]);
+  };
+  return JSON.stringify(base);
+}
+
+interface DraftBase {
+  fields: unknown[];
+  items: [number | string, number, number, number][];
+}
+
+/** Ignores rows of items missing from the catalogue, which the saved filter hides. */
+export function isFilterDraftStale(
+  draftBase: string | undefined,
+  base: string,
+  catalogue: readonly Pick<CatalogueItem, "id">[],
+): boolean {
+  if (draftBase === undefined) return true;
+  const insertable = new Set(catalogue.map((item) => item.id));
+  const withoutRemoved = (json: string) => {
+    const { fields, items } = JSON.parse(json) as DraftBase;
+    return JSON.stringify({
+      fields,
+      items: items.filter(
+        ([id]) => typeof id !== "number" || insertable.has(id),
+      ),
+    });
+  };
+  return withoutRemoved(draftBase) !== withoutRemoved(base);
 }
 
 export type FilterDraftTarget =

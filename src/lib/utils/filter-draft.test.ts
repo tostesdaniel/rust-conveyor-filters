@@ -5,6 +5,7 @@ import {
   filterDraftBase,
   filterDraftHref,
   filterDraftKey,
+  isFilterDraftStale,
   parseFilterDraftKey,
   reconcileFilterDraft,
   type FilterDraftTarget,
@@ -161,6 +162,42 @@ describe("filterDraftBase", () => {
     expect(filterDraftBase(draft({ items: [itemRow, other] }))).not.toBe(
       filterDraftBase(draft({ items: [other, itemRow] })),
     );
+  });
+});
+
+describe("isFilterDraftStale", () => {
+  const metal = {
+    ...row,
+    itemId: 1,
+    name: "Metal Ore",
+    imagePath: "metal.ore.png",
+  };
+  const gone = { ...row, itemId: 99, name: "Gone", imagePath: "gone.png" };
+
+  it("is fresh when the filter hasn't changed", () => {
+    const base = filterDraftBase(draft({ items: [metal] }));
+
+    expect(isFilterDraftStale(base, base, catalogue)).toBe(false);
+  });
+
+  it("is fresh when the only missing row is an item that is no longer insertable", () => {
+    const draftBase = filterDraftBase(draft({ items: [metal, gone] }));
+    const base = filterDraftBase(draft({ items: [metal] }));
+
+    expect(isFilterDraftStale(draftBase, base, catalogue)).toBe(false);
+  });
+
+  it("is stale when the filter changed since the draft", () => {
+    const draftBase = filterDraftBase(draft({ items: [metal, gone] }));
+    const base = filterDraftBase(draft({ items: [{ ...metal, max: 10 }] }));
+
+    expect(isFilterDraftStale(draftBase, base, catalogue)).toBe(true);
+  });
+
+  it("is stale when the draft has no base", () => {
+    const base = filterDraftBase(draft());
+
+    expect(isFilterDraftStale(undefined, base, catalogue)).toBe(true);
   });
 });
 

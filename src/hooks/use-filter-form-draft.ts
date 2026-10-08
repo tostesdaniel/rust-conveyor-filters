@@ -10,7 +10,10 @@ import { toast } from "sonner";
 
 import { useFormDraft } from "@/hooks/use-form-draft";
 import { useGetItems } from "@/hooks/use-get-items";
-import { reconcileFilterDraft } from "@/lib/utils/filter-draft";
+import {
+  isFilterDraftStale,
+  reconcileFilterDraft,
+} from "@/lib/utils/filter-draft";
 import type { LoadedValues } from "@/components/features/conveyor/output-container-split";
 
 function perfectSmeltingOf(extra: unknown) {
@@ -45,7 +48,10 @@ export function useFilterFormDraft(
     base,
     extra,
   });
-  const isStale = !!draft && base !== undefined && draft.base !== base;
+  const isStale =
+    !!draft &&
+    base !== undefined &&
+    (items ? isFilterDraftStale(draft.base, base, items) : draft.base !== base);
 
   const restoreDraft = React.useCallback(() => {
     if (!draft) return;

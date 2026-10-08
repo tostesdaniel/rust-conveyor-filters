@@ -145,7 +145,7 @@ export function EditFilterForm({
   const router = useRouter();
   const { userId } = useAuth();
   const { data: items } = useGetItems();
-  const { data, isError, error, isLoading, refetch } =
+  const { data, isError, error, isFetchedAfterMount, refetch } =
     useGetUserFilter(filterId);
 
   const form = useForm<CreateFilterInput, unknown, CreateFilter>({
@@ -214,7 +214,8 @@ export function EditFilterForm({
   }, [filterId]);
 
   React.useEffect(() => {
-    if (!data || data.id !== filterId) return;
+    // Cached data may predate edits made in another tab.
+    if (!data || data.id !== filterId || !isFetchedAfterMount) return;
     if (hydratedForFilterIdRef.current === filterId) return;
 
     hydratedForFilterIdRef.current = filterId;
@@ -267,7 +268,7 @@ export function EditFilterForm({
     setLoadedBase({ filterId, base: filterDraftBase(loaded) });
 
     void form.trigger();
-  }, [data, filterId, form]);
+  }, [data, filterId, form, isFetchedAfterMount]);
 
   const { isDirty } = form.formState;
   useBeforeUnloadWarning(isDirty && !mutation.isPending && !mutation.isSuccess);
@@ -294,7 +295,7 @@ export function EditFilterForm({
     return <div>Error: {error.message}</div>;
   }
 
-  if (isLoading) {
+  if (draftBase === undefined) {
     return <FormSkeleton />;
   }
 

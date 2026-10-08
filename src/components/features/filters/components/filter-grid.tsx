@@ -40,12 +40,18 @@ export function FilterGrid() {
   }, [sort]);
 
   React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage && !isPlaceholderData) {
       fetchNextPage().catch((err) => {
         console.error("Failed to fetch next page:", err);
       });
     }
-  }, [fetchNextPage, hasNextPage, inView, isFetchingNextPage]);
+  }, [
+    fetchNextPage,
+    hasNextPage,
+    inView,
+    isFetchingNextPage,
+    isPlaceholderData,
+  ]);
 
   if (isError) {
     return (

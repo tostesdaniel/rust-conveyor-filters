@@ -16,6 +16,7 @@ import {
 } from "@/schemas/filterFormSchema";
 import { enqueueFilterIfChanged } from "@/services/ai-categorize";
 import { decodeCursor } from "@/utils/cursor";
+import { changedItemRows, isContentChange } from "@/utils/filter-changes";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -391,7 +392,41 @@ export const filterRouter = createTRPCRouter({
         updateData.subCategoryId = data.category.subCategoryId;
       }
       if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
-      updateData.updatedAt = new Date();
+
+      const existingItems = data.items
+        ? await db.query.filterItems.findMany({
+            where: eq(filterItems.filterId, filterId),
+            columns: {
+              itemId: true,
+              categoryId: true,
+              max: true,
+              buffer: true,
+              min: true,
+              position: true,
+            },
+          })
+        : [];
+      const editedItems = changedItemRows(
+        existingItems,
+        (data.items ?? []).map((item, position) => ({
+          filterId,
+          itemId: "itemId" in item ? item.itemId : null,
+          categoryId: "categoryId" in item ? item.categoryId : null,
+          max: item.max,
+          buffer: item.buffer,
+          min: item.min,
+          position,
+        })),
+      );
+
+      if (
+        isContentChange(currentFilter, updateData) ||
+        editedItems.length > 0 ||
+        (addedItems?.length ?? 0) > 0 ||
+        (removedItems?.length ?? 0) > 0
+      ) {
+        updateData.updatedAt = new Date();
+      }
 
       try {
         if (Object.keys(updateData).length > 0) {
@@ -401,26 +436,13 @@ export const filterRouter = createTRPCRouter({
             .where(eq(filters.id, filterId));
         }
 
-        if (data.items) {
-          const filterItemsData = data.items.map((item, position) => {
-            return {
-              filterId: filterId,
-              itemId: "itemId" in item ? item.itemId : null,
-              categoryId: "categoryId" in item ? item.categoryId : null,
-              max: item.max,
-              buffer: item.buffer,
-              min: item.min,
-              position,
-              updatedAt: new Date(),
-            };
-          });
-
+        if (editedItems.length > 0) {
           await Promise.all(
-            filterItemsData.map((item) => {
+            editedItems.map((item) => {
               const isCategory = item.categoryId !== null;
               return db
                 .update(filterItems)
-                .set(item)
+                .set({ ...item, updatedAt: new Date() })
                 .where(
                   and(
                     eq(filterItems.filterId, item.filterId),
@@ -562,10 +584,7 @@ export const filterRouter = createTRPCRouter({
           const updatePromises = filterUpdates.map(({ filterId, order }) =>
             tx
               .update(filters)
-              .set({
-                order,
-                updatedAt: sql`now()`,
-              })
+              .set({ order })
               .where(
                 and(
                   eq(filters.id, filterId),
@@ -651,7 +670,6 @@ export const filterRouter = createTRPCRouter({
               categoryId: destCategoryId,
               subCategoryId: destSubCategoryId,
               order: clampedIndex,
-              updatedAt: sql`now()`,
             })
             .where(
               and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),

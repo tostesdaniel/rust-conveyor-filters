@@ -25,6 +25,7 @@ export function useFilters(
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30,
       refetchOnWindowFocus: false,
     },
   );

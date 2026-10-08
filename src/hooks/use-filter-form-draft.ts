@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import type {
   CreateFilter,
   CreateFilterInput,
@@ -18,17 +19,21 @@ export function useFilterFormDraft(
   {
     base,
     savedCover,
+    autoRestore = false,
     onRestore,
   }: {
     base?: string;
     savedCover?: string;
+    /** Restore without asking, unless the filter changed since the draft. */
+    autoRestore?: boolean;
     onRestore: (loaded: LoadedValues) => void;
   },
 ) {
   const { data: items } = useGetItems();
   const { draft, restore, discard, clear } = useFormDraft(form, key, { base });
+  const isStale = !!draft && base !== undefined && draft.base !== base;
 
-  function restoreDraft() {
+  const restoreDraft = React.useCallback(() => {
     if (!draft) return;
     const { values, droppedCount } = reconcileFilterDraft(
       draft.values,
@@ -47,11 +52,22 @@ export function useFilterFormDraft(
           : `Left out ${droppedCount} items that are no longer insertable.`,
       );
     }
-  }
+  }, [draft, items, savedCover, onRestore, restore]);
+
+  const autoRestoredRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!autoRestore || autoRestoredRef.current) return;
+    if (!draft || isStale || !items) return;
+    autoRestoredRef.current = true;
+    restoreDraft();
+    const url = new URL(window.location.href);
+    url.searchParams.delete("draft");
+    window.history.replaceState(window.history.state, "", url);
+  }, [autoRestore, draft, isStale, items, restoreDraft]);
 
   return {
     draft,
-    isStale: !!draft && base !== undefined && draft.base !== base,
+    isStale,
     restore: restoreDraft,
     discard,
     clear,

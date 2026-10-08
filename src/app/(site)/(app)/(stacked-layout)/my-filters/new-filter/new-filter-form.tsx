@@ -24,6 +24,7 @@ import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
+import { filterDraftKey } from "@/lib/utils/filter-draft";
 import {
   getSavedSortPreference,
   sortFiltersByPreference,
@@ -57,7 +58,13 @@ const DevTool = dynamic(
   { ssr: false },
 );
 
-export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
+export default function NewFilterForm({
+  remixOf,
+  restoreDraft = false,
+}: {
+  remixOf?: number;
+  restoreDraft?: boolean;
+}) {
   const router = useRouter();
   const { userId } = useAuth();
   const { data: items } = useGetItems();
@@ -150,9 +157,13 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
 
   const draftKey =
     userId && !isRemixLoading
-      ? `filter:${userId}:${remixOf ? `remix:${remixOf}` : "new"}`
+      ? filterDraftKey(
+          userId,
+          remixOf ? { kind: "remix", filterId: remixOf } : { kind: "new" },
+        )
       : null;
   const formDraft = useFilterFormDraft(form, draftKey, {
+    autoRestore: restoreDraft,
     onRestore: setSaved,
   });
 

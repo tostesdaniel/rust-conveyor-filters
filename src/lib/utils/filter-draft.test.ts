@@ -1,7 +1,14 @@
 import type { CreateFilterInput } from "@/schemas/filterFormSchema";
 import { describe, expect, it } from "vitest";
 
-import { filterDraftBase, reconcileFilterDraft } from "./filter-draft";
+import {
+  filterDraftBase,
+  filterDraftHref,
+  filterDraftKey,
+  parseFilterDraftKey,
+  reconcileFilterDraft,
+  type FilterDraftTarget,
+} from "./filter-draft";
 
 const catalogue = [
   {
@@ -153,6 +160,43 @@ describe("filterDraftBase", () => {
 
     expect(filterDraftBase(draft({ items: [itemRow, other] }))).not.toBe(
       filterDraftBase(draft({ items: [other, itemRow] })),
+    );
+  });
+});
+
+describe("filter draft keys", () => {
+  const targets: FilterDraftTarget[] = [
+    { kind: "new" },
+    { kind: "remix", filterId: 12 },
+    { kind: "edit", filterId: 34 },
+  ];
+
+  it.each(targets)("round-trips $kind", (target) => {
+    expect(
+      parseFilterDraftKey(filterDraftKey("user_1", target), "user_1"),
+    ).toEqual(target);
+  });
+
+  it("ignores another user's drafts", () => {
+    expect(
+      parseFilterDraftKey(filterDraftKey("user_2", { kind: "new" }), "user_1"),
+    ).toBeNull();
+  });
+
+  it("ignores keys that aren't filter drafts", () => {
+    expect(parseFilterDraftKey("feedback:user_1", "user_1")).toBeNull();
+    expect(parseFilterDraftKey("filter:user_1:edit:abc", "user_1")).toBeNull();
+  });
+
+  it("links each draft back to its form with restore on", () => {
+    expect(filterDraftHref({ kind: "new" })).toBe(
+      "/my-filters/new-filter?draft=restore",
+    );
+    expect(filterDraftHref({ kind: "remix", filterId: 12 })).toBe(
+      "/my-filters/new-filter?remixOf=12&draft=restore",
+    );
+    expect(filterDraftHref({ kind: "edit", filterId: 34 })).toBe(
+      "/my-filters/edit/34?draft=restore",
     );
   });
 });

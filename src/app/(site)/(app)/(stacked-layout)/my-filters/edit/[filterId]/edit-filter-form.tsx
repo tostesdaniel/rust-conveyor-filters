@@ -27,7 +27,7 @@ import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
-import { filterDraftBase } from "@/lib/utils/filter-draft";
+import { filterDraftBase, filterDraftKey } from "@/lib/utils/filter-draft";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -134,7 +134,13 @@ function getAddedItems(initialItems: FilterItem[], currentItems: FilterItem[]) {
   });
 }
 
-export function EditFilterForm({ filterId }: { filterId: number }) {
+export function EditFilterForm({
+  filterId,
+  restoreDraft = false,
+}: {
+  filterId: number;
+  restoreDraft?: boolean;
+}) {
   const router = useRouter();
   const { userId } = useAuth();
   const { data: items } = useGetItems();
@@ -169,9 +175,14 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const formDraft = useFilterFormDraft(
     form,
     userId && draftBase !== undefined
-      ? `filter:${userId}:edit:${filterId}`
+      ? filterDraftKey(userId, { kind: "edit", filterId })
       : null,
-    { base: draftBase, savedCover: data?.imagePath, onRestore: setSaved },
+    {
+      base: draftBase,
+      savedCover: data?.imagePath,
+      autoRestore: restoreDraft,
+      onRestore: setSaved,
+    },
   );
 
   const utils = api.useUtils();

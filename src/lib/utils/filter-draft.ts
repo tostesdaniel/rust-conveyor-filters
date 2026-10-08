@@ -60,3 +60,38 @@ export function filterDraftBase(values: CreateFilterInput): string {
     ]),
   ]);
 }
+
+export type FilterDraftTarget =
+  | { kind: "new" }
+  | { kind: "remix"; filterId: number }
+  | { kind: "edit"; filterId: number };
+
+export function filterDraftKey(userId: string, target: FilterDraftTarget) {
+  const suffix =
+    target.kind === "new" ? "new" : `${target.kind}:${target.filterId}`;
+  return `filter:${userId}:${suffix}`;
+}
+
+export function parseFilterDraftKey(
+  key: string,
+  userId: string,
+): FilterDraftTarget | null {
+  const prefix = `filter:${userId}:`;
+  if (!key.startsWith(prefix)) return null;
+  const rest = key.slice(prefix.length);
+  if (rest === "new") return { kind: "new" };
+  const match = /^(remix|edit):(\d+)$/.exec(rest);
+  if (!match) return null;
+  return { kind: match[1] as "remix" | "edit", filterId: Number(match[2]) };
+}
+
+/** Where to pick a draft back up. `?draft=restore` restores it on arrival. */
+export function filterDraftHref(target: FilterDraftTarget) {
+  if (target.kind === "edit") {
+    return `/my-filters/edit/${target.filterId}?draft=restore`;
+  }
+  if (target.kind === "remix") {
+    return `/my-filters/new-filter?remixOf=${target.filterId}&draft=restore`;
+  }
+  return "/my-filters/new-filter?draft=restore";
+}

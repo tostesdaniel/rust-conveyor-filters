@@ -22,8 +22,8 @@ export function ShareTokenDisplay() {
     api.shareToken.revoke.useMutation({
       onSuccess: () => {
         toast.success("New token generated");
-        utils.shareToken.get.invalidate();
         setIsVisible(true);
+        return utils.shareToken.get.invalidate();
       },
       onError: () => {
         toast.error("Failed to generate new token");

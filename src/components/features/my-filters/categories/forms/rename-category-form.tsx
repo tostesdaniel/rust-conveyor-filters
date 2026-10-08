@@ -60,8 +60,10 @@ export function RenameCategoryForm({
     api.category.rename.useMutation({
       onSuccess: () => {
         toast.success("Category renamed successfully");
-        utils.category.getHierarchy.invalidate();
-        utils.category.getAll.invalidate();
+        return Promise.all([
+          utils.category.getHierarchy.invalidate(),
+          utils.category.getAll.invalidate(),
+        ]);
       },
       onError: () => {
         toast.error("Failed to rename category");

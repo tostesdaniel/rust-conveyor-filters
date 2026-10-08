@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { ChevronsDown } from "lucide-react";
 import { toast } from "sonner";
@@ -36,8 +37,7 @@ export function CategoryDropdownCheckbox({
     api.category.manageFilterCategory.useMutation({
       onSuccess: () => {
         toast.success(`Added to ${category.name}`);
-        utils.filter.getByCategory.invalidate({ categoryId: null });
-        utils.category.getHierarchy.invalidate();
+        return invalidateMyFilters(utils);
       },
       onError: () => {
         toast.error("Failed to update category");

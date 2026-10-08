@@ -1,5 +1,6 @@
 "use client";
 
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { ListXIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -21,8 +22,7 @@ export function ClearFilterCategory({
     api.category.clearFilterCategory.useMutation({
       onSuccess: () => {
         toast.success("Filter category cleared");
-        utils.filter.getByCategory.invalidate({ categoryId: null });
-        utils.category.getHierarchy.invalidate();
+        return invalidateMyFilters(utils);
       },
       onError: () => {
         toast.error("Failed to clear filter category");

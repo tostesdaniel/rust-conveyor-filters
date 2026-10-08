@@ -35,8 +35,8 @@ export function DeleteSharedFilterDialog({
   const utils = api.useUtils();
   const mutation = api.sharedFilter.delete.useMutation({
     onSuccess: () => {
-      utils.sharedFilter.getAll.invalidate();
       toast.success("Filter removed from shared filters");
+      return utils.sharedFilter.getAll.invalidate();
     },
     onError: (error) => {
       toast.error(error.message);

@@ -8,6 +8,7 @@ import {
   type CreateFilter,
   type CreateFilterInput,
 } from "@/schemas/filterFormSchema";
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -131,8 +132,7 @@ function getAddedItems(initialItems: FilterItem[], currentItems: FilterItem[]) {
 export function EditFilterForm({ filterId }: { filterId: number }) {
   const router = useRouter();
   const { data: items } = useGetItems();
-  const { data, isError, error, isLoading, refetch } =
-    useGetUserFilter(filterId);
+  const { data, isError, error, isLoading } = useGetUserFilter(filterId);
 
   const form = useForm<CreateFilterInput, unknown, CreateFilter>({
     resolver: zodResolver(createFilterSchema),
@@ -158,17 +158,20 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.update.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       trackEvent("filter_updated", { filterId });
       trackAction("filterEdit");
       toast.success("Filter updated successfully");
-      utils.filter.getByCategory.invalidate();
-      refetch();
+      await Promise.all([
+        invalidateMyFilters(utils),
+        utils.filter.getById.invalidate({ filterId }, { refetchType: "none" }),
+        utils.filter.getPublic.invalidate({ filterId }),
+        utils.filter.getPublicListInfinite.invalidate(),
+      ]);
       router.push("/my-filters");
     },
     onError: (err) => {
       toast.error(err.message);
-      refetch();
     },
   });
 

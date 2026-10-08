@@ -1,5 +1,6 @@
 "use client";
 
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 
@@ -30,9 +31,10 @@ export function DeleteCategoryDialog({
           ? "Subcategory deleted successfully"
           : "Category deleted successfully",
       );
-      utils.filter.getByCategory.invalidate({ categoryId: null });
-      utils.category.getAll.invalidate();
-      utils.category.getHierarchy.invalidate();
+      return Promise.all([
+        invalidateMyFilters(utils),
+        utils.category.getAll.invalidate(),
+      ]);
     },
     onError: () => {
       toast.error(

@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 export default async function NewFilterPage({
   searchParams,
 }: {
-  searchParams: Promise<{ remixOf?: string }>;
+  searchParams: Promise<{ remixOf?: string; draft?: string }>;
 }) {
   await auth.protect();
 
-  const { remixOf } = await searchParams;
+  const { remixOf, draft } = await searchParams;
   const remixOfId = remixOf ? Number(remixOf) : undefined;
   const validRemixId =
     remixOfId !== undefined && Number.isInteger(remixOfId) && remixOfId > 0
@@ -38,7 +38,10 @@ export default async function NewFilterPage({
       </Typography>
       <HydrateClient>
         <FilterFormTour>
-          <NewFilterForm remixOf={validRemixId} />
+          <NewFilterForm
+            remixOf={validRemixId}
+            restoreDraft={draft === "restore"}
+          />
         </FilterFormTour>
       </HydrateClient>
     </>

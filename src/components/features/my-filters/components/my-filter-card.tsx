@@ -121,6 +121,7 @@ export function MyFilterCard({
   return (
     <li
       ref={setNodeRef}
+      data-filter-id={filter.id}
       style={style}
       className='relative col-span-1 flex min-w-[300px] overflow-visible rounded-md shadow-xs'
     >

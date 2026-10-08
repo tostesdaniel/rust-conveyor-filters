@@ -33,4 +33,13 @@ jobs:
 
       - run: bun run type-check
 
+      - name: Check migrations match the schema
+        run: |
+          bunx drizzle-kit generate
+          if [ -n "$(git status --porcelain src/db/migrations)" ]; then
+            echo "::error::src/db/schema.ts changed without a migration. Run 'bun db:generate' and commit the result."
+            git status --porcelain src/db/migrations
+            exit 1
+          fi
+
       - run: bun run test

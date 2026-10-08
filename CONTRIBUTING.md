@@ -266,7 +266,7 @@ npm run db:seed
 
 Note: The seed script will clear all existing data before seeding.
 
-For initial setup, you can use the convenience script that combines database push and seeding:
+For initial setup, you can use the convenience script that combines migrating and seeding the database:
 
 ```bash
 # Using Bun (recommended)
@@ -277,6 +277,13 @@ npm run db:setup
 ```
 
 This will set up your database schema and populate it with the development data in one command.
+
+### Changing the schema
+
+After editing `src/db/schema.ts`, run `bun run db:generate` and commit the new
+file in `src/db/migrations`. Apply it locally with `bun run db:migrate`.
+Deployed containers apply pending migrations on boot. CI fails if the schema
+and migrations disagree.
 
 ## Commit Guidelines
 

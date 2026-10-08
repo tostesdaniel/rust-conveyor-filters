@@ -20,6 +20,7 @@ import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { getClientIp } from "@/lib/client-ip";
 import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
@@ -37,6 +38,18 @@ const logEventLimit: RateLimitSpec = {
   tokens: 1,
   window: "5m",
 };
+
+type FilterRow = { itemId: number } | { categoryId: number };
+
+function positionIn(rows: FilterRow[] | undefined, row: FilterRow) {
+  const index =
+    rows?.findIndex((other) =>
+      "itemId" in row
+        ? "itemId" in other && other.itemId === row.itemId
+        : "categoryId" in other && other.categoryId === row.categoryId,
+    ) ?? -1;
+  return index === -1 ? MAX_FILTER_ITEMS : index;
+}
 
 const publicListInput = z.object({
   sort: z.enum(["popular", "new", "updated", "mostUsed"]),
@@ -226,7 +239,7 @@ export const filterRouter = createTRPCRouter({
           .returning();
 
         const filterItemsData = newFilter.items.map(
-          (item: (typeof newFilter.items)[0]) => {
+          (item: (typeof newFilter.items)[0], position) => {
             if ("itemId" in item) {
               return {
                 filterId: insertedFilter.id,
@@ -235,6 +248,7 @@ export const filterRouter = createTRPCRouter({
                 max: item.max,
                 buffer: item.buffer,
                 min: item.min,
+                position,
               };
             } else {
               return {
@@ -244,6 +258,7 @@ export const filterRouter = createTRPCRouter({
                 max: item.max,
                 buffer: item.buffer,
                 min: item.min,
+                position,
               };
             }
           },
@@ -360,18 +375,20 @@ export const filterRouter = createTRPCRouter({
               max: true,
               buffer: true,
               min: true,
+              position: true,
             },
           })
         : [];
       const editedItems = changedItemRows(
         existingItems,
-        (data.items ?? []).map((item) => ({
+        (data.items ?? []).map((item, position) => ({
           filterId,
           itemId: "itemId" in item ? item.itemId : null,
           categoryId: "categoryId" in item ? item.categoryId : null,
           max: item.max,
           buffer: item.buffer,
           min: item.min,
+          position,
         })),
       );
 
@@ -443,6 +460,7 @@ export const filterRouter = createTRPCRouter({
             max: item.max,
             buffer: item.buffer,
             min: item.min,
+            position: positionIn(data.items, item),
           }));
 
           await db.insert(filterItems).values(addedItemsData);

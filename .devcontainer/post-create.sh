@@ -17,8 +17,8 @@ fi
 echo "==> installing dependencies"
 bun install --frozen-lockfile
 
-echo "==> pushing schema to postgres"
-bun run db:push
+echo "==> migrating postgres"
+bun run db:migrate
 
 # Placeholder Clerk keys give a 500 on every route, not a degraded app.
 clerk_ready=1

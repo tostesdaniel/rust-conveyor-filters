@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { renameCategory } from "@/components/features/my-filters/hierarchy-cache";
 
 const formSchema = z.object({
   name: z
@@ -58,12 +59,20 @@ export function RenameCategoryForm({
 
   const { mutateAsync: renameCategoryMutation, isPending } =
     api.category.rename.useMutation({
-      onSuccess: () => {
+      onSuccess: (_data, { categoryId, isSubCategory, name }) => {
         toast.success("Category renamed successfully");
-        return Promise.all([
-          utils.category.getHierarchy.invalidate(),
-          utils.category.getAll.invalidate(),
-        ]);
+        utils.category.getHierarchy.setData(
+          undefined,
+          (categories) =>
+            categories &&
+            renameCategory(categories, categoryId, isSubCategory, name),
+        );
+        utils.category.getAll.setData(
+          undefined,
+          (categories) =>
+            categories &&
+            renameCategory(categories, categoryId, isSubCategory, name),
+        );
       },
       onError: () => {
         toast.error("Failed to rename category");

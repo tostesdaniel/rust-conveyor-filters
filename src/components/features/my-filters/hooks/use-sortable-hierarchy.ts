@@ -16,10 +16,9 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { useQueryClient } from "@tanstack/react-query";
-import { getMutationKey } from "@trpc/react-query";
 import { toast } from "sonner";
 
+import { useHierarchyCache } from "@/components/features/my-filters/hooks/use-hierarchy-cache";
 import { useUpdatePreferences } from "@/components/features/my-filters/hooks/use-update-preferences";
 
 type Hierarchy = RouterOutputs["category"]["getHierarchy"];
@@ -29,12 +28,6 @@ type FilterNode = CategoryNode["filters"][number];
 type UncategorizedFilters = RouterOutputs["filter"]["getByCategory"];
 
 export const UNCATEGORIZED_BUCKET_ID = "bucket-uncat";
-
-const REORDER_MUTATION_KEYS = [
-  getMutationKey(api.filter.moveToPosition),
-  getMutationKey(api.category.updateOrder),
-  getMutationKey(api.category.updateSubCategoryOrder),
-];
 
 export function categoryBucketId(categoryId: number) {
   return `bucket-cat-${categoryId}`;
@@ -91,7 +84,6 @@ function parseBucketId(id: string): BucketLocation | null {
 }
 
 export function useSortableHierarchy() {
-  const utils = api.useUtils();
   const hierarchyQuery = api.category.getHierarchy.useQuery();
   const uncategorizedQuery = api.filter.getByCategory.useQuery({
     categoryId: null,
@@ -131,50 +123,31 @@ export function useSortableHierarchy() {
     }),
   );
 
-  const queryClient = useQueryClient();
-
-  const cancelHierarchyFetches = () =>
-    Promise.all([
-      utils.category.getHierarchy.cancel(),
-      utils.filter.getByCategory.cancel({ categoryId: null }),
-    ]);
-
-  const refetchHierarchy = () => {
-    const savingReorders = REORDER_MUTATION_KEYS.reduce(
-      (count, mutationKey) => count + queryClient.isMutating({ mutationKey }),
-      0,
-    );
-    // Another reorder is still saving; it refetches when it settles.
-    if (savingReorders > 1) return;
-    return Promise.all([
-      utils.category.getHierarchy.invalidate(),
-      utils.filter.getByCategory.invalidate({ categoryId: null }),
-    ]);
-  };
+  const hierarchyCache = useHierarchyCache();
 
   const moveFilter = api.filter.moveToPosition.useMutation({
-    onMutate: cancelHierarchyFetches,
+    onMutate: hierarchyCache.cancel,
     onError: (err) => {
       toast.error(err.message || "Failed to move filter");
     },
-    onSettled: refetchHierarchy,
+    onSettled: hierarchyCache.refetch,
   });
 
   const updateCategoryOrder = api.category.updateOrder.useMutation({
-    onMutate: cancelHierarchyFetches,
+    onMutate: hierarchyCache.cancel,
     onError: (err) => {
       toast.error(err.message || "Failed to reorder categories");
     },
-    onSettled: refetchHierarchy,
+    onSettled: hierarchyCache.refetch,
   });
 
   const updateSubCategoryOrder =
     api.category.updateSubCategoryOrder.useMutation({
-      onMutate: cancelHierarchyFetches,
+      onMutate: hierarchyCache.cancel,
       onError: (err) => {
         toast.error(err.message || "Failed to reorder subcategories");
       },
-      onSettled: refetchHierarchy,
+      onSettled: hierarchyCache.refetch,
     });
 
   const updatePreferences = useUpdatePreferences();

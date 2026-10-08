@@ -13,6 +13,7 @@ import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { skipToken } from "@tanstack/react-query";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -73,10 +74,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
   // Remix prefills the editor from a public source. Nothing saves until the
   // user submits; forkedFromId rides along in form state.
   const { data: remixSource, isLoading: isRemixLoading } =
-    api.filter.getPublic.useQuery(
-      { filterId: remixOf ?? 0 },
-      { enabled: !!remixOf },
-    );
+    api.filter.getPublic.useQuery(remixOf ? { filterId: remixOf } : skipToken);
   const hydratedRef = React.useRef(false);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
 

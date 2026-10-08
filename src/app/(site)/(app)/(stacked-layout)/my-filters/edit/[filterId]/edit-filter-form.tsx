@@ -21,6 +21,7 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useBeforeUnloadWarning } from "@/hooks/use-before-unload-warning";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetItems } from "@/hooks/use-get-items";
@@ -45,6 +46,7 @@ import {
   OutputContainerSplitProvider,
   type LoadedValues,
 } from "@/components/features/conveyor/output-container-split";
+import { CancelFilterFormButton } from "@/components/features/my-filters/components/cancel-filter-form-button";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
@@ -251,6 +253,14 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     void form.trigger();
   }, [data, filterId, form]);
 
+  const { isDirty } = form.formState;
+  useBeforeUnloadWarning(isDirty && !mutation.isPending && !mutation.isSuccess);
+
+  function leave() {
+    formDraft.clear();
+    router.push("/my-filters");
+  }
+
   async function onSubmit(data: CreateFilter) {
     const dirtyData = getDirtyData(data, dirtyFields);
     const removedItems = getRemovedItems(initialItemsRef.current, data.items);
@@ -371,12 +381,17 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             </FormItem>
           </FormFieldScope>
         </OutputContainerSplitProvider>
-        <Button
-          type='submit'
-          disabled={mutation.isPending || !form.formState.isDirty}
-        >
-          {mutation.isPending ? "Updating..." : "Update Filter"}
-        </Button>
+        <div className='flex gap-x-2'>
+          <Button type='submit' disabled={mutation.isPending || !isDirty}>
+            {mutation.isPending ? "Updating..." : "Update Filter"}
+          </Button>
+          {isDirty && (
+            <CancelFilterFormButton
+              disabled={mutation.isPending}
+              onLeave={leave}
+            />
+          )}
+        </div>
       </form>
       {process.env.NODE_ENV === "development" && (
         <DevTool control={form.control as unknown as Control<FieldValues>} />

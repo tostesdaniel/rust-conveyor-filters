@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
+import { FILTER_SORT_TYPES } from "@/lib/utils/filter-sorting";
 
 // Base schema without superRefine - used for partial updates
 const baseFilterSchema = z.object({
@@ -124,6 +125,11 @@ export const createFilterSchema = createBaseSchema.superRefine((data, ctx) => {
 // coming out. Form state holds the input, submit handlers get the output.
 export type CreateFilterInput = z.input<typeof createFilterSchema>;
 export type CreateFilter = z.output<typeof createFilterSchema>;
+
+// When sort is set, the server re-sorts the filter's category by it after insert.
+export const createFilterRequestSchema = createFilterSchema.safeExtend({
+  sort: z.enum(FILTER_SORT_TYPES).optional(),
+});
 
 /**
  * Zod schema for updating existing filters with partial validation.

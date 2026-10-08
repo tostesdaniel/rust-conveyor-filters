@@ -1,4 +1,5 @@
 import { api } from "@/trpc/react";
+import { keepPreviousData } from "@tanstack/react-query";
 import type { inferParserType } from "nuqs";
 
 import type { FilterSortOption } from "@/types/filter-sorting";
@@ -24,6 +25,7 @@ export function useFilters(
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
+      placeholderData: keepPreviousData,
       staleTime: 1000 * 60 * 5, // 5 minutes
       gcTime: 1000 * 60 * 30,
       refetchOnWindowFocus: false,

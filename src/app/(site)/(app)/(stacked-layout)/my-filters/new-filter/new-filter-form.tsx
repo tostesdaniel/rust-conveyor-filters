@@ -9,15 +9,16 @@ import {
   type CreateFilter,
   type CreateFilterInput,
 } from "@/schemas/filterFormSchema";
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { skipToken } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { OwnerFilterDTO } from "@/types/filter";
 import { useBeforeUnloadWarning } from "@/hooks/use-before-unload-warning";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
 import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
@@ -25,10 +26,7 @@ import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
 import { filterDraftKey } from "@/lib/utils/filter-draft";
-import {
-  getSavedSortPreference,
-  sortFiltersByPreference,
-} from "@/lib/utils/filter-sorting";
+import { getSavedSortPreference } from "@/lib/utils/filter-sorting";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -91,10 +89,7 @@ export default function NewFilterForm({
   // Remix prefills the editor from a public source. Nothing saves until the
   // user submits; forkedFromId rides along in form state.
   const { data: remixSource, isLoading: isRemixLoading } =
-    api.filter.getPublic.useQuery(
-      { filterId: remixOf ?? 0 },
-      { enabled: !!remixOf },
-    );
+    api.filter.getPublic.useQuery(remixOf ? { filterId: remixOf } : skipToken);
   const hydratedRef = React.useRef(false);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
   const [perfectSmelting, setPerfectSmelting] = React.useState(true);
@@ -172,7 +167,6 @@ export default function NewFilterForm({
   });
 
   const utils = api.useUtils();
-  const updateOrderMutation = api.filter.updateOrder.useMutation();
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.create.useMutation({
@@ -184,78 +178,12 @@ export default function NewFilterForm({
         item_count: variables.items.length,
       });
       trackAction("filterCreate");
-
-      const { categoryId, subCategoryId } = variables.category;
-      // Normalize undefined to null for type safety
-      const normalizedCategoryId = categoryId ?? null;
-      const normalizedSubCategoryId = subCategoryId ?? null;
-
-      // Invalidate queries first to ensure fresh data
-      await Promise.all([
-        utils.filter.getByCategory.invalidate({
-          categoryId: normalizedCategoryId,
-        }),
-        utils.category.getHierarchy.invalidate(),
-      ]);
-
-      // Get the sort preference for this category/subcategory
-      const sortPreference = getSavedSortPreference(
-        normalizedCategoryId,
-        normalizedSubCategoryId,
-      );
-
-      try {
-        let filtersToSort: OwnerFilterDTO[] = [];
-
-        if (normalizedSubCategoryId) {
-          // For subcategories, fetch the hierarchy and extract filters
-          const hierarchy = await utils.category.getHierarchy.fetch();
-          const subCategory = hierarchy
-            ?.flatMap((cat) => cat.subCategories)
-            .find((sub) => sub.id === normalizedSubCategoryId);
-          filtersToSort = subCategory?.filters || [];
-        } else {
-          // For uncategorized and main categories, use getByCategory
-          filtersToSort = await utils.filter.getByCategory.fetch({
-            categoryId: normalizedCategoryId,
-          });
-        }
-
-        // Only sort if there are 2+ filters
-        if (filtersToSort.length >= 2) {
-          const sortedFilters = sortFiltersByPreference(
-            filtersToSort,
-            sortPreference,
-          );
-
-          const filterUpdates = sortedFilters.map((filter, index) => ({
-            filterId: filter.id,
-            order: index,
-          }));
-
-          await updateOrderMutation.mutateAsync({
-            filters: filterUpdates,
-            categoryId: normalizedCategoryId,
-            subCategoryId: normalizedSubCategoryId,
-          });
-        }
-
-        toast.success("Filter created successfully");
-        router.push("/my-filters");
-      } catch (error) {
-        // If sorting fails, still show success but log the error
-        console.error("Failed to sort filters after creation:", error);
-        toast.success("Filter created successfully");
-        router.push("/my-filters");
-      }
+      await invalidateMyFilters(utils);
+      toast.success("Filter created successfully");
+      router.push("/my-filters");
     },
     onError: (err) => {
       toast.error(err.message);
-    },
-    onSettled: (_, __, variables) => {
-      const { categoryId } = variables.category;
-      utils.filter.getByCategory.invalidate({ categoryId: categoryId ?? null });
-      utils.category.getHierarchy.invalidate();
     },
   });
 
@@ -268,7 +196,13 @@ export default function NewFilterForm({
   }
 
   function onSubmit(data: CreateFilter) {
-    mutation.mutate(data);
+    mutation.mutate({
+      ...data,
+      sort: getSavedSortPreference(
+        data.category.categoryId,
+        data.category.subCategoryId,
+      ),
+    });
   }
 
   return (

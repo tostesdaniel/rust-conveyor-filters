@@ -2,16 +2,14 @@ import { reassignSharedFiltersToToken } from "@/data/sharedFilters";
 import {
   createShareToken,
   findShareToken,
-  findTokenRevocationStatus,
   revokeShareToken,
 } from "@/data/shareTokens";
 import { db } from "@/db";
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
 
 import { checkRateLimit } from "@/lib/rate-limit";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const shareTokenRouter = createTRPCRouter({
   get: protectedProcedure.query(async ({ ctx }) => {
@@ -79,41 +77,4 @@ export const shareTokenRouter = createTRPCRouter({
       });
     }
   }),
-
-  validate: publicProcedure
-    .input(
-      z.object({
-        token: z.string(),
-      }),
-    )
-    .query(async ({ input }) => {
-      try {
-        const token = await findTokenRevocationStatus(input.token);
-
-        if (!token) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Token invalid or does not exist",
-          });
-        }
-
-        if (token.revoked) {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "Token has been revoked",
-          });
-        }
-
-        return { valid: true };
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error;
-        }
-
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Please try again or request support on Discord.",
-        });
-      }
-    }),
 });

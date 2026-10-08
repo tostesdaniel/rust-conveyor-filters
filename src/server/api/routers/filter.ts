@@ -9,6 +9,7 @@ import {
 import { getItemIcons, getOutputContainerItemId } from "@/data/items";
 import { db } from "@/db";
 import {
+  createFilterRequestSchema,
   createFilterSchema,
   updateFilterInputSchema,
   validatePublicFilterLatinChars,
@@ -23,6 +24,7 @@ import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { getClientIp } from "@/lib/client-ip";
 import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
+import { sortFiltersByPreference } from "@/lib/utils/filter-sorting";
 import { filterEvents, filterItems, filters } from "@/db/schema";
 
 import {
@@ -131,7 +133,7 @@ export const filterRouter = createTRPCRouter({
     }),
 
   create: protectedProcedure
-    .input(createFilterSchema)
+    .input(createFilterRequestSchema)
     .mutation(async ({ ctx, input }) => {
       const parsed = createFilterSchema.safeParse(input);
 
@@ -205,65 +207,90 @@ export const filterRouter = createTRPCRouter({
       );
 
       const { category } = parsed.data;
-      const maxOrder = await db.query.filters.findFirst({
-        where: and(
-          eq(filters.authorId, ctx.userId),
-          category.categoryId
-            ? eq(filters.categoryId, category.categoryId)
-            : isNull(filters.categoryId),
-          category.subCategoryId
-            ? eq(filters.subCategoryId, category.subCategoryId)
-            : isNull(filters.subCategoryId),
-        ),
-        columns: { order: true },
-        orderBy: desc(filters.order),
-      });
+      const inCategory = and(
+        eq(filters.authorId, ctx.userId),
+        category.categoryId
+          ? eq(filters.categoryId, category.categoryId)
+          : isNull(filters.categoryId),
+        category.subCategoryId
+          ? eq(filters.subCategoryId, category.subCategoryId)
+          : isNull(filters.subCategoryId),
+      );
 
       try {
-        const [insertedFilter] = await db
-          .insert(filters)
-          .values({
-            name: newFilter.name,
-            description: newFilter.description,
-            authorId: ctx.userId,
-            imagePath: newFilter.imagePath,
-            categoryId: newFilter.category.categoryId,
-            subCategoryId: newFilter.category.subCategoryId,
-            isPublic: newFilter.isPublic,
-            order: maxOrder ? maxOrder.order + 1 : 0,
-            forkedFromId: forkLineage?.forkedFromId ?? null,
-            forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
-            outputContainerId,
-          })
-          .returning();
+        const insertedFilter = await db.transaction(async (tx) => {
+          const maxOrder = await tx.query.filters.findFirst({
+            where: inCategory,
+            columns: { order: true },
+            orderBy: desc(filters.order),
+          });
 
-        const filterItemsData = newFilter.items.map(
-          (item: (typeof newFilter.items)[0], position) => {
-            if ("itemId" in item) {
-              return {
-                filterId: insertedFilter.id,
-                itemId: item.itemId,
-                categoryId: null,
-                max: item.max,
-                buffer: item.buffer,
-                min: item.min,
-                position,
-              };
-            } else {
-              return {
-                filterId: insertedFilter.id,
-                itemId: null,
-                categoryId: item.categoryId,
-                max: item.max,
-                buffer: item.buffer,
-                min: item.min,
-                position,
-              };
-            }
-          },
-        );
+          const [inserted] = await tx
+            .insert(filters)
+            .values({
+              name: newFilter.name,
+              description: newFilter.description,
+              authorId: ctx.userId,
+              imagePath: newFilter.imagePath,
+              categoryId: newFilter.category.categoryId,
+              subCategoryId: newFilter.category.subCategoryId,
+              isPublic: newFilter.isPublic,
+              order: maxOrder ? maxOrder.order + 1 : 0,
+              forkedFromId: forkLineage?.forkedFromId ?? null,
+              forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
+              outputContainerId,
+            })
+            .returning();
 
-        await db.insert(filterItems).values(filterItemsData);
+          const filterItemsData = newFilter.items.map(
+            (item: (typeof newFilter.items)[0], position) => {
+              if ("itemId" in item) {
+                return {
+                  filterId: inserted.id,
+                  itemId: item.itemId,
+                  categoryId: null,
+                  max: item.max,
+                  buffer: item.buffer,
+                  min: item.min,
+                  position,
+                };
+              } else {
+                return {
+                  filterId: inserted.id,
+                  itemId: null,
+                  categoryId: item.categoryId,
+                  max: item.max,
+                  buffer: item.buffer,
+                  min: item.min,
+                  position,
+                };
+              }
+            },
+          );
+
+          await tx.insert(filterItems).values(filterItemsData);
+
+          if (!input.sort) return inserted;
+
+          const siblings = await tx.query.filters.findMany({
+            where: inCategory,
+            columns: { id: true, name: true, createdAt: true },
+          });
+          const sorted = sortFiltersByPreference(siblings, input.sort);
+          await Promise.all(
+            sorted.map((filter, order) =>
+              tx
+                .update(filters)
+                .set({ order })
+                .where(eq(filters.id, filter.id)),
+            ),
+          );
+
+          return {
+            ...inserted,
+            order: sorted.findIndex((filter) => filter.id === inserted.id),
+          };
+        });
 
         if (insertedFilter.isPublic) {
           try {

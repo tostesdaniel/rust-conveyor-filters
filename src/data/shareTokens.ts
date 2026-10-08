@@ -41,15 +41,6 @@ export async function findShareTokenByToken(token: string) {
   });
 }
 
-export async function findTokenRevocationStatus(token: string) {
-  return await db.query.shareTokens.findFirst({
-    where: eq(shareTokens.token, token),
-    columns: {
-      revoked: true,
-    },
-  });
-}
-
 export async function revokeShareToken(token: string, tx?: DbTransaction) {
   const dbInstance = tx || db;
 

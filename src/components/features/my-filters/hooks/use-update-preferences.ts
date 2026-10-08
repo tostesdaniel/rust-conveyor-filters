@@ -23,7 +23,7 @@ export function useUpdatePreferences() {
       toast.error(err.message || "Failed to update preference");
     },
     onSettled: () => {
-      utils.userPreferences.get.invalidate();
+      return utils.userPreferences.get.invalidate();
     },
   });
 }

@@ -8,6 +8,7 @@ import {
   type CreateFilter,
   type CreateFilterInput,
 } from "@/schemas/filterFormSchema";
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useAuth } from "@clerk/nextjs";
@@ -145,7 +146,7 @@ export function EditFilterForm({
   const router = useRouter();
   const { userId } = useAuth();
   const { data: items } = useGetItems();
-  const { data, isError, error, isFetchedAfterMount, refetch } =
+  const { data, isError, error, isFetchedAfterMount } =
     useGetUserFilter(filterId);
 
   const form = useForm<CreateFilterInput, unknown, CreateFilter>({
@@ -193,19 +194,22 @@ export function EditFilterForm({
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.update.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       formDraft.clear();
       trackEvent("filter_updated", { filterId });
       trackAction("filterEdit");
       toast.success("Filter updated successfully");
-      utils.filter.getByCategory.invalidate();
-      refetch();
+      await Promise.all([
+        invalidateMyFilters(utils),
+        utils.filter.getById.invalidate({ filterId }, { refetchType: "none" }),
+        utils.filter.getPublic.invalidate({ filterId }),
+        utils.filter.getPublicListInfinite.invalidate(),
+      ]);
       returnToFilter(filterId);
       router.push("/my-filters");
     },
     onError: (err) => {
       toast.error(err.message);
-      refetch();
     },
   });
 

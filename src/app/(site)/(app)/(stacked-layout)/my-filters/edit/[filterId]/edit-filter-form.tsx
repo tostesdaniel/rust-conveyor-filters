@@ -167,6 +167,7 @@ export function EditFilterForm({
   const initialItemsRef = React.useRef<FilterItem[]>([]);
   const hydratedForFilterIdRef = React.useRef<number | null>(null);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
+  const [perfectSmelting, setPerfectSmelting] = React.useState(true);
   const [loadedBase, setLoadedBase] = React.useState<{
     filterId: number;
     base: string;
@@ -182,7 +183,9 @@ export function EditFilterForm({
       base: draftBase,
       savedCover: data?.imagePath,
       autoRestore: restoreDraft,
+      perfectSmelting,
       onRestore: setSaved,
+      onRestorePerfectSmelting: setPerfectSmelting,
     },
   );
 
@@ -379,7 +382,11 @@ export function EditFilterForm({
             )}
           />
         </div>
-        <OutputContainerSplitProvider saved={saved}>
+        <OutputContainerSplitProvider
+          saved={saved}
+          perfectSmelting={perfectSmelting}
+          onPerfectSmeltingChange={setPerfectSmelting}
+        >
           <OutputContainerField />
           <FilterFormTourDemo />
           <FormFieldScope name='items'>

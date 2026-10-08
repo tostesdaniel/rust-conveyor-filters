@@ -13,6 +13,12 @@ import { useGetItems } from "@/hooks/use-get-items";
 import { reconcileFilterDraft } from "@/lib/utils/filter-draft";
 import type { LoadedValues } from "@/components/features/conveyor/output-container-split";
 
+function perfectSmeltingOf(extra: unknown) {
+  if (typeof extra !== "object" || extra === null) return true;
+  const { perfectSmelting } = extra as { perfectSmelting?: unknown };
+  return typeof perfectSmelting === "boolean" ? perfectSmelting : true;
+}
+
 export function useFilterFormDraft(
   form: UseFormReturn<CreateFilterInput, unknown, CreateFilter>,
   key: string | null,
@@ -20,17 +26,25 @@ export function useFilterFormDraft(
     base,
     savedCover,
     autoRestore = false,
+    perfectSmelting,
     onRestore,
+    onRestorePerfectSmelting,
   }: {
     base?: string;
     savedCover?: string;
     /** Restore without asking, unless the filter changed since the draft. */
     autoRestore?: boolean;
+    perfectSmelting: boolean;
     onRestore: (loaded: LoadedValues) => void;
+    onRestorePerfectSmelting: (on: boolean) => void;
   },
 ) {
   const { data: items } = useGetItems();
-  const { draft, restore, discard, clear } = useFormDraft(form, key, { base });
+  const extra = React.useMemo(() => ({ perfectSmelting }), [perfectSmelting]);
+  const { draft, restore, discard, clear } = useFormDraft(form, key, {
+    base,
+    extra,
+  });
   const isStale = !!draft && base !== undefined && draft.base !== base;
 
   const restoreDraft = React.useCallback(() => {
@@ -44,6 +58,7 @@ export function useFilterFormDraft(
       outputContainer: values.outputContainer ?? null,
       items: values.items,
     });
+    onRestorePerfectSmelting(perfectSmeltingOf(draft.extra));
     restore(values);
     if (droppedCount > 0) {
       toast.info(
@@ -52,7 +67,7 @@ export function useFilterFormDraft(
           : `Left out ${droppedCount} items that are no longer insertable.`,
       );
     }
-  }, [draft, items, savedCover, onRestore, restore]);
+  }, [draft, items, savedCover, onRestore, onRestorePerfectSmelting, restore]);
 
   const autoRestoredRef = React.useRef(false);
   React.useEffect(() => {

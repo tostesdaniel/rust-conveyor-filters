@@ -21,11 +21,12 @@ type Status = "loading" | "pending" | "active" | "cleared";
  * Saves unsubmitted changes under `key` and offers them back on the next
  * visit. Pass a null key until the form holds its starting values. `base`
  * is saved with each draft so callers can tell when the source changed.
+ * `extra` is saved too, for state kept outside the form; it must be JSON.
  */
 export function useFormDraft<T extends FieldValues, TContext, TOutput>(
   form: UseFormReturn<T, TContext, TOutput>,
   key: string | null,
-  { base }: { base?: string } = {},
+  { base, extra }: { base?: string; extra?: unknown } = {},
 ) {
   // Keyed so a new key reads as "loading" on its first render, before the
   // read effect runs.
@@ -38,6 +39,8 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
   const status = current?.status ?? "loading";
   const draft = current?.draft ?? null;
   const clearedRef = React.useRef(false);
+  const extraJson = extra === undefined ? undefined : JSON.stringify(extra);
+  const savedExtraJson = React.useRef(extraJson);
 
   // Read once in an effect rather than subscribing, so the server render and
   // the first client render agree.
@@ -70,8 +73,14 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
       timer = undefined;
       if (!latest || clearedRef.current) return;
       const { saveDraft, removeDraft } = useFormDraftStore.getState();
-      if (latest.isDirty) saveDraft(key, latest.values, base);
-      else removeDraft(key);
+      if (latest.isDirty) {
+        saveDraft(
+          key,
+          latest.values,
+          base,
+          extraJson === undefined ? undefined : JSON.parse(extraJson),
+        );
+      } else removeDraft(key);
       latest = null;
     };
 
@@ -83,6 +92,14 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
         timer = setTimeout(flush, SAVE_DELAY_MS);
       },
     });
+
+    if (savedExtraJson.current !== extraJson) {
+      savedExtraJson.current = extraJson;
+      if (form.formState.isDirty) {
+        latest = { values: form.getValues(), isDirty: true };
+        timer = setTimeout(flush, SAVE_DELAY_MS);
+      }
+    }
 
     const onHide = () => {
       if (document.visibilityState === "hidden") flush();
@@ -96,7 +113,7 @@ export function useFormDraft<T extends FieldValues, TContext, TOutput>(
       document.removeEventListener("visibilitychange", onHide);
       flush();
     };
-  }, [form, key, status, base]);
+  }, [form, key, status, base, extraJson]);
 
   const restore = React.useCallback(
     (values: T | undefined = draft?.values) => {

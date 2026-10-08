@@ -14,18 +14,23 @@ interface Values {
 const KEY = "test:new";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-function setup(key: string | null = KEY, base?: string) {
+interface Props {
+  draftKey: string | null;
+  extra?: unknown;
+}
+
+function setup(key: string | null = KEY, base?: string, extra?: unknown) {
   return renderHook(
-    ({ draftKey }) => {
+    ({ draftKey, extra }: Props) => {
       const form = useForm<Values>({ defaultValues: { name: "", tags: [] } });
       const { isDirty } = form.formState;
       return {
         form,
         isDirty,
-        formDraft: useFormDraft(form, draftKey, { base }),
+        formDraft: useFormDraft(form, draftKey, { base, extra }),
       };
     },
-    { initialProps: { draftKey: key } },
+    { initialProps: { draftKey: key, extra } as Props },
   );
 }
 
@@ -215,5 +220,38 @@ describe("useFormDraft", () => {
       name: "Other",
       tags: [],
     });
+  });
+
+  it("stores extra state with the draft", () => {
+    const { result } = setup(KEY, undefined, { smelting: false });
+
+    act(() => {
+      result.current.form.setValue("name", "Ore sorter", { shouldDirty: true });
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(storedDraft()?.extra).toEqual({ smelting: false });
+  });
+
+  it("saves when only the extra state changes on a dirty form", () => {
+    const { result, rerender } = setup(KEY, undefined, { smelting: true });
+
+    act(() => {
+      result.current.form.setValue("name", "Ore sorter", { shouldDirty: true });
+      vi.advanceTimersByTime(500);
+    });
+    rerender({ draftKey: KEY, extra: { smelting: false } });
+    act(() => vi.advanceTimersByTime(500));
+
+    expect(storedDraft()?.extra).toEqual({ smelting: false });
+  });
+
+  it("does not save extra state alone while the form is clean", () => {
+    const { rerender } = setup(KEY, undefined, { smelting: true });
+
+    rerender({ draftKey: KEY, extra: { smelting: false } });
+    act(() => vi.advanceTimersByTime(500));
+
+    expect(storedDraft()).toBeUndefined();
   });
 });

@@ -70,17 +70,21 @@ export interface LoadedValues {
   items: FormRow[];
 }
 
+/** `perfectSmelting` is the switch state kept for when no Smelt rows decide it. */
 export function OutputContainerSplitProvider({
   saved,
+  perfectSmelting: ownSwitch,
+  onPerfectSmeltingChange: setOwnSwitch,
   children,
 }: {
   saved?: LoadedValues | null;
+  perfectSmelting: boolean;
+  onPerfectSmeltingChange: (on: boolean) => void;
   children: React.ReactNode;
 }) {
   const [unseeded] = React.useState(() => new Map<string, number>());
   const written = React.useRef(unseeded);
   const lastContainer = React.useRef(DEFAULT_CONTAINER);
-  const [ownSwitch, setOwnSwitch] = React.useState(true);
   const pickListeners = React.useRef(new Set<PickListener>());
   const catalogue = useCatalogue();
 

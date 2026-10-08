@@ -8,11 +8,18 @@ export interface FormDraft<T = unknown> {
   savedAt: number;
   /** What the form started from when the draft was saved. */
   base?: string;
+  /** Form state that lives outside the form values. */
+  extra?: unknown;
 }
 
 interface FormDraftState {
   drafts: Record<string, FormDraft>;
-  saveDraft: (key: string, values: unknown, base?: string) => void;
+  saveDraft: (
+    key: string,
+    values: unknown,
+    base?: string,
+    extra?: unknown,
+  ) => void;
   removeDraft: (key: string) => void;
 }
 
@@ -24,11 +31,11 @@ export const useFormDraftStore = create<FormDraftState>()(
   persist(
     (set) => ({
       drafts: {},
-      saveDraft: (key, values, base) =>
+      saveDraft: (key, values, base, extra) =>
         set((state) => ({
           drafts: {
             ...state.drafts,
-            [key]: { values, savedAt: Date.now(), base },
+            [key]: { values, savedAt: Date.now(), base, extra },
           },
         })),
       removeDraft: (key) =>

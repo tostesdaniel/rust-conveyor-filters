@@ -97,6 +97,7 @@ export default function NewFilterForm({
     );
   const hydratedRef = React.useRef(false);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
+  const [perfectSmelting, setPerfectSmelting] = React.useState(true);
 
   React.useEffect(() => {
     if (!remixOf || hydratedRef.current) return;
@@ -165,7 +166,9 @@ export default function NewFilterForm({
       : null;
   const formDraft = useFilterFormDraft(form, draftKey, {
     autoRestore: restoreDraft,
+    perfectSmelting,
     onRestore: setSaved,
+    onRestorePerfectSmelting: setPerfectSmelting,
   });
 
   const utils = api.useUtils();
@@ -378,7 +381,11 @@ export default function NewFilterForm({
             )}
           />
         </div>
-        <OutputContainerSplitProvider saved={saved}>
+        <OutputContainerSplitProvider
+          saved={saved}
+          perfectSmelting={perfectSmelting}
+          onPerfectSmeltingChange={setPerfectSmelting}
+        >
           <OutputContainerField />
           <FilterFormTourDemo />
           <FormFieldScope name='items'>

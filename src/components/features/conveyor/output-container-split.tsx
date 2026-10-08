@@ -82,24 +82,30 @@ export function OutputContainerSplitProvider({
   onPerfectSmeltingChange: (on: boolean) => void;
   children: React.ReactNode;
 }) {
-  const [unseeded] = React.useState(() => new Map<string, number>());
-  const written = React.useRef(unseeded);
+  const unseeded = React.useRef(new Map<string, number>());
+  const written = React.useRef(unseeded.current);
   const lastContainer = React.useRef(DEFAULT_CONTAINER);
   const pickListeners = React.useRef(new Set<PickListener>());
   const catalogue = useCatalogue();
 
   React.useEffect(() => {
+    if (!saved) return;
+    unseeded.current = new Map();
+    written.current = unseeded.current;
+  }, [saved]);
+
+  React.useEffect(() => {
     if (!saved?.outputContainer) return;
     // Wait for the catalogue, since seeding needs stack sizes.
     if (catalogue.byId.size === 0) return;
-    // Skip seeding if a pick or added row already wrote.
-    if (written.current !== unseeded) return;
+    // Skip seeding if a pick or added row wrote since these rows loaded.
+    if (written.current !== unseeded.current) return;
     written.current = seedWritten(
       OUTPUT_CONTAINERS[saved.outputContainer],
       saved.items,
       catalogue.byId,
     );
-  }, [saved, catalogue, unseeded]);
+  }, [saved, catalogue]);
 
   return (
     <SplitStateContext

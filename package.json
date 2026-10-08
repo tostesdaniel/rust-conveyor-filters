@@ -89,7 +89,7 @@
     "pg": "^8.23.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-hook-form": "^7.87.0",
+    "react-hook-form": "^7.89.0",
     "react-intersection-observer": "^11.0.1",
     "server-only": "^0.0.1",
     "sharp": "^0.35.4",

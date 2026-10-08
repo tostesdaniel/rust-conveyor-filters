@@ -51,6 +51,7 @@ import { CancelFilterFormButton } from "@/components/features/my-filters/compone
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
+import { returnToFilter } from "@/components/features/my-filters/hooks/use-return-to-filter";
 import { DraftRestoreBanner } from "@/components/shared/draft-restore-banner";
 
 const DevTool = dynamic(
@@ -172,8 +173,9 @@ export default function NewFilterForm({
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.create.useMutation({
-    onSuccess: async (_, variables) => {
+    onSuccess: async (created, variables) => {
       formDraft.clear();
+      returnToFilter(created.id);
       trackEvent("filter_created", {
         source: variables.forkedFromId ? "remix" : "scratch",
         item_count: variables.items.length,

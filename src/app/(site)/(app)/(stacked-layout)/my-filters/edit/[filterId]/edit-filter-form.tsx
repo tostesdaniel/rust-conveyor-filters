@@ -51,6 +51,7 @@ import { FilterCategoryCombobox } from "@/components/features/my-filters/compone
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
 import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
+import { returnToFilter } from "@/components/features/my-filters/hooks/use-return-to-filter";
 import { DraftRestoreBanner } from "@/components/shared/draft-restore-banner";
 
 interface FilterItemBase {
@@ -196,6 +197,7 @@ export function EditFilterForm({
       toast.success("Filter updated successfully");
       utils.filter.getByCategory.invalidate();
       refetch();
+      returnToFilter(filterId);
       router.push("/my-filters");
     },
     onError: (err) => {
@@ -269,6 +271,7 @@ export function EditFilterForm({
 
   function leave() {
     formDraft.clear();
+    returnToFilter(filterId);
     router.push("/my-filters");
   }
 

@@ -70,9 +70,11 @@ export function BookmarkToggle({
       }
     },
     onSettled: () => {
-      utils.bookmark.getAll.invalidate();
+      return utils.bookmark.getAll.invalidate();
     },
   });
+
+  const showBookmarked = mutation.isPending ? !isBookmarked : isBookmarked;
 
   return (
     <Tooltip>
@@ -80,8 +82,10 @@ export function BookmarkToggle({
         <Toggle
           aria-label='Bookmark filter'
           className='group hover:bg-muted/50 aria-pressed:bg-transparent hover:aria-pressed:bg-muted/50'
-          onPressedChange={() => mutation.mutate({ filterId: filterId })}
-          pressed={isBookmarked}
+          onPressedChange={() => {
+            if (!mutation.isPending) mutation.mutate({ filterId });
+          }}
+          pressed={showBookmarked}
           {...props}
         >
           {isLoading ? (
@@ -92,7 +96,7 @@ export function BookmarkToggle({
         </Toggle>
       </TooltipTrigger>
       <TooltipContent>
-        {isBookmarked ? "Remove bookmark" : "Bookmark filter"}
+        {showBookmarked ? "Remove bookmark" : "Bookmark filter"}
       </TooltipContent>
     </Tooltip>
   );

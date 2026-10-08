@@ -70,7 +70,10 @@ export default async function EditFilterPage(props: {
     notFound();
   }
 
-  await api.stats.getItems.prefetch();
+  await Promise.all([
+    api.stats.getItems.prefetch(),
+    api.filter.getById.prefetch({ filterId }),
+  ]);
 
   return (
     <>

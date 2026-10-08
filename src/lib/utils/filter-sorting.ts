@@ -1,10 +1,11 @@
-import type { OwnerFilterDTO, SharedFilterDTO } from "@/types/filter";
+export const FILTER_SORT_TYPES = [
+  "nameAsc",
+  "nameDesc",
+  "dateAsc",
+  "dateDesc",
+] as const;
 
-export type FilterSortTypeValue =
-  | "nameAsc"
-  | "nameDesc"
-  | "dateAsc"
-  | "dateDesc";
+export type FilterSortTypeValue = (typeof FILTER_SORT_TYPES)[number];
 
 export const SORT_PREFERENCE_KEY = "filter-sort-preferences";
 
@@ -59,10 +60,9 @@ export function saveSortPreference(
 /**
  * Sort an array of filters according to a sort type
  */
-export function sortFiltersByPreference(
-  filters: (OwnerFilterDTO | SharedFilterDTO)[],
-  sortType: FilterSortTypeValue,
-): (OwnerFilterDTO | SharedFilterDTO)[] {
+export function sortFiltersByPreference<
+  T extends { name: string; createdAt: Date },
+>(filters: T[], sortType: FilterSortTypeValue): T[] {
   return filters.toSorted((a, b) => {
     switch (sortType) {
       case "nameAsc":

@@ -11,7 +11,9 @@ import {
 import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
+import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from "motion/react";
 import {
   useForm,
   useFormState,
@@ -20,10 +22,13 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useBeforeUnloadWarning } from "@/hooks/use-before-unload-warning";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
+import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetItems } from "@/hooks/use-get-items";
 import { useGetUserFilter } from "@/hooks/use-get-user-filter";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
+import { filterDraftBase, filterDraftKey } from "@/lib/utils/filter-draft";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -42,17 +47,19 @@ import {
   OutputContainerSplitProvider,
   type LoadedValues,
 } from "@/components/features/conveyor/output-container-split";
+import { CancelFilterFormButton } from "@/components/features/my-filters/components/cancel-filter-form-button";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FormSkeleton } from "@/components/features/my-filters/components/form-skeleton";
 import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
+import { returnToFilter } from "@/components/features/my-filters/hooks/use-return-to-filter";
+import { DraftRestoreBanner } from "@/components/shared/draft-restore-banner";
 
 interface FilterItemBase {
   name: string;
   max: number;
   buffer: number;
   min: number;
-  createdAt?: Date | string;
 }
 
 interface ItemFilterItem extends FilterItemBase {
@@ -129,10 +136,18 @@ function getAddedItems(initialItems: FilterItem[], currentItems: FilterItem[]) {
   });
 }
 
-export function EditFilterForm({ filterId }: { filterId: number }) {
+export function EditFilterForm({
+  filterId,
+  restoreDraft = false,
+}: {
+  filterId: number;
+  restoreDraft?: boolean;
+}) {
   const router = useRouter();
+  const { userId } = useAuth();
   const { data: items } = useGetItems();
-  const { data, isError, error, isLoading } = useGetUserFilter(filterId);
+  const { data, isError, error, isFetchedAfterMount } =
+    useGetUserFilter(filterId);
 
   const form = useForm<CreateFilterInput, unknown, CreateFilter>({
     resolver: zodResolver(createFilterSchema),
@@ -153,12 +168,34 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   const initialItemsRef = React.useRef<FilterItem[]>([]);
   const hydratedForFilterIdRef = React.useRef<number | null>(null);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
+  const [perfectSmelting, setPerfectSmelting] = React.useState(true);
+  const [loadedBase, setLoadedBase] = React.useState<{
+    filterId: number;
+    base: string;
+  } | null>(null);
+  const draftBase =
+    loadedBase?.filterId === filterId ? loadedBase.base : undefined;
+  const formDraft = useFilterFormDraft(
+    form,
+    userId && draftBase !== undefined
+      ? filterDraftKey(userId, { kind: "edit", filterId })
+      : null,
+    {
+      base: draftBase,
+      savedCover: data?.imagePath,
+      autoRestore: restoreDraft,
+      perfectSmelting,
+      onRestore: setSaved,
+      onRestorePerfectSmelting: setPerfectSmelting,
+    },
+  );
 
   const utils = api.useUtils();
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.update.useMutation({
     onSuccess: async () => {
+      formDraft.clear();
       trackEvent("filter_updated", { filterId });
       trackAction("filterEdit");
       toast.success("Filter updated successfully");
@@ -168,6 +205,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
         utils.filter.getPublic.invalidate({ filterId }),
         utils.filter.getPublicListInfinite.invalidate(),
       ]);
+      returnToFilter(filterId);
       router.push("/my-filters");
     },
     onError: (err) => {
@@ -180,7 +218,8 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
   }, [filterId]);
 
   React.useEffect(() => {
-    if (!data || data.id !== filterId) return;
+    // Cached data may predate edits made in another tab.
+    if (!data || data.id !== filterId || !isFetchedAfterMount) return;
     if (hydratedForFilterIdRef.current === filterId) return;
 
     hydratedForFilterIdRef.current = filterId;
@@ -198,7 +237,6 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             max: filterItem.max,
             buffer: filterItem.buffer,
             min: filterItem.min,
-            createdAt: filterItem.createdAt,
           };
         } else if (filterItem.category && filterItem.categoryId) {
           return {
@@ -207,7 +245,6 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             max: filterItem.max,
             buffer: filterItem.buffer,
             min: filterItem.min,
-            createdAt: filterItem.createdAt,
           };
         }
         return null;
@@ -219,7 +256,7 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       data.outputContainer?.shortname,
     );
     setSaved({ outputContainer, items: initialItemsData });
-    form.reset({
+    const loaded: CreateFilterInput = {
       name: data.name,
       description: data.description ?? "",
       imagePath: data.imagePath,
@@ -230,10 +267,21 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
       isPublic: data.isPublic,
       outputContainer,
       items: initialItemsData,
-    });
+    };
+    form.reset(loaded);
+    setLoadedBase({ filterId, base: filterDraftBase(loaded) });
 
     void form.trigger();
-  }, [data, filterId, form]);
+  }, [data, filterId, form, isFetchedAfterMount]);
+
+  const { isDirty } = form.formState;
+  useBeforeUnloadWarning(isDirty && !mutation.isPending && !mutation.isSuccess);
+
+  function leave() {
+    formDraft.clear();
+    returnToFilter(filterId);
+    router.push("/my-filters");
+  }
 
   async function onSubmit(data: CreateFilter) {
     const dirtyData = getDirtyData(data, dirtyFields);
@@ -251,13 +299,25 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
     return <div>Error: {error.message}</div>;
   }
 
-  if (isLoading) {
+  if (draftBase === undefined) {
     return <FormSkeleton />;
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 py-6'>
+        <AnimatePresence>
+          {formDraft.draft && (
+            <DraftRestoreBanner
+              key='draft'
+              savedAt={formDraft.draft.savedAt}
+              stale={formDraft.isStale}
+              onRestore={formDraft.restore}
+              onDiscard={formDraft.discard}
+              className='mb-0 pb-6'
+            />
+          )}
+        </AnimatePresence>
         <FormField
           control={form.control}
           name='name'
@@ -327,7 +387,11 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             )}
           />
         </div>
-        <OutputContainerSplitProvider saved={saved}>
+        <OutputContainerSplitProvider
+          saved={saved}
+          perfectSmelting={perfectSmelting}
+          onPerfectSmeltingChange={setPerfectSmelting}
+        >
           <OutputContainerField />
           <FilterFormTourDemo />
           <FormFieldScope name='items'>
@@ -343,12 +407,17 @@ export function EditFilterForm({ filterId }: { filterId: number }) {
             </FormItem>
           </FormFieldScope>
         </OutputContainerSplitProvider>
-        <Button
-          type='submit'
-          disabled={mutation.isPending || !form.formState.isDirty}
-        >
-          {mutation.isPending ? "Updating..." : "Update Filter"}
-        </Button>
+        <div className='flex gap-x-2'>
+          <Button type='submit' disabled={mutation.isPending || !isDirty}>
+            {mutation.isPending ? "Updating..." : "Update Filter"}
+          </Button>
+          {isDirty && (
+            <CancelFilterFormButton
+              disabled={mutation.isPending}
+              onLeave={leave}
+            />
+          )}
+        </div>
       </form>
       {process.env.NODE_ENV === "development" && (
         <DevTool control={form.control as unknown as Control<FieldValues>} />

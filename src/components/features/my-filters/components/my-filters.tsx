@@ -18,6 +18,7 @@ import { FolderPlusIcon, GripVertical, PlusIcon } from "lucide-react";
 import type { OwnerFilterDTO } from "@/types/filter";
 import { CategoryHeading } from "@/components/features/my-filters/categories/category-heading";
 import { MyFilterCard as FilterCard } from "@/components/features/my-filters/components/my-filter-card";
+import { useScrollToReturnedFilter } from "@/components/features/my-filters/hooks/use-return-to-filter";
 import {
   categoryBucketId,
   categoryDraggableId,
@@ -43,6 +44,7 @@ export function MyFilters() {
     onDragEnd,
     onDragCancel,
   } = useSortableHierarchy();
+  useScrollToReturnedFilter();
 
   const hasFilters = uncategorizedFilters.length > 0 || categories.length > 0;
 

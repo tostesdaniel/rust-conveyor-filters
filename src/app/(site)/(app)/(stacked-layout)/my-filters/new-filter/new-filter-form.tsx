@@ -12,15 +12,20 @@ import {
 import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
+import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { skipToken } from "@tanstack/react-query";
+import { AnimatePresence } from "motion/react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useBeforeUnloadWarning } from "@/hooks/use-before-unload-warning";
 import { useEngagementScore } from "@/hooks/use-engagement-score";
+import { useFilterFormDraft } from "@/hooks/use-filter-form-draft";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useGetItems } from "@/hooks/use-get-items";
 import { toOutputContainerShortname } from "@/lib/output-containers/container-table";
+import { filterDraftKey } from "@/lib/utils/filter-draft";
 import { getSavedSortPreference } from "@/lib/utils/filter-sorting";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,17 +45,27 @@ import {
   OutputContainerSplitProvider,
   type LoadedValues,
 } from "@/components/features/conveyor/output-container-split";
+import { CancelFilterFormButton } from "@/components/features/my-filters/components/cancel-filter-form-button";
 import { FilterCategoryCombobox } from "@/components/features/my-filters/components/filter-category-combobox";
 import { FilterImageCombobox } from "@/components/features/my-filters/components/filter-image-combobox";
 import { FilterFormTourDemo } from "@/components/features/my-filters/filter-form-tour";
+import { returnToFilter } from "@/components/features/my-filters/hooks/use-return-to-filter";
+import { DraftRestoreBanner } from "@/components/shared/draft-restore-banner";
 
 const DevTool = dynamic(
   () => import("@hookform/devtools").then((module) => module.DevTool),
   { ssr: false },
 );
 
-export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
+export default function NewFilterForm({
+  remixOf,
+  restoreDraft = false,
+}: {
+  remixOf?: number;
+  restoreDraft?: boolean;
+}) {
   const router = useRouter();
+  const { userId } = useAuth();
   const { data: items } = useGetItems();
   const { data: _categories } = useGetCategories();
 
@@ -77,6 +92,7 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
     api.filter.getPublic.useQuery(remixOf ? { filterId: remixOf } : skipToken);
   const hydratedRef = React.useRef(false);
   const [saved, setSaved] = React.useState<LoadedValues | null>(null);
+  const [perfectSmelting, setPerfectSmelting] = React.useState(true);
 
   React.useEffect(() => {
     if (!remixOf || hydratedRef.current) return;
@@ -136,11 +152,27 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
     void form.trigger();
   }, [remixOf, remixSource, isRemixLoading, form]);
 
+  const draftKey =
+    userId && !isRemixLoading
+      ? filterDraftKey(
+          userId,
+          remixOf ? { kind: "remix", filterId: remixOf } : { kind: "new" },
+        )
+      : null;
+  const formDraft = useFilterFormDraft(form, draftKey, {
+    autoRestore: restoreDraft,
+    perfectSmelting,
+    onRestore: setSaved,
+    onRestorePerfectSmelting: setPerfectSmelting,
+  });
+
   const utils = api.useUtils();
   const { trackAction } = useEngagementScore();
 
   const mutation = api.filter.create.useMutation({
-    onSuccess: async (_, variables) => {
+    onSuccess: async (created, variables) => {
+      formDraft.clear();
+      returnToFilter(created.id);
       trackEvent("filter_created", {
         source: variables.forkedFromId ? "remix" : "scratch",
         item_count: variables.items.length,
@@ -155,6 +187,14 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
     },
   });
 
+  const { isDirty } = form.formState;
+  useBeforeUnloadWarning(isDirty && !mutation.isPending && !mutation.isSuccess);
+
+  function leave() {
+    formDraft.clear();
+    router.push("/my-filters");
+  }
+
   function onSubmit(data: CreateFilter) {
     mutation.mutate({
       ...data,
@@ -168,6 +208,17 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 py-6'>
+        <AnimatePresence>
+          {formDraft.draft && (
+            <DraftRestoreBanner
+              key='draft'
+              savedAt={formDraft.draft.savedAt}
+              onRestore={formDraft.restore}
+              onDiscard={formDraft.discard}
+              className='mb-0 *:mb-6'
+            />
+          )}
+        </AnimatePresence>
         {remixSource && (
           <div className='rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground'>
             Remixing{" "}
@@ -264,7 +315,11 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
             )}
           />
         </div>
-        <OutputContainerSplitProvider saved={saved}>
+        <OutputContainerSplitProvider
+          saved={saved}
+          perfectSmelting={perfectSmelting}
+          onPerfectSmeltingChange={setPerfectSmelting}
+        >
           <OutputContainerField />
           <FilterFormTourDemo />
           <FormFieldScope name='items'>
@@ -280,13 +335,21 @@ export default function NewFilterForm({ remixOf }: { remixOf?: number }) {
             </FormItem>
           </FormFieldScope>
         </OutputContainerSplitProvider>
-        <Button type='submit' disabled={mutation.isPending}>
-          {mutation.isPending
-            ? "Submitting..."
-            : remixOf
-              ? "Save Remix"
-              : "Create Filter"}
-        </Button>
+        <div className='flex gap-x-2'>
+          <Button type='submit' disabled={mutation.isPending}>
+            {mutation.isPending
+              ? "Submitting..."
+              : remixOf
+                ? "Save Remix"
+                : "Create Filter"}
+          </Button>
+          {isDirty && (
+            <CancelFilterFormButton
+              disabled={mutation.isPending}
+              onLeave={leave}
+            />
+          )}
+        </div>
       </form>
       {process.env.NODE_ENV === "development" && (
         <DevTool control={form.control as unknown as Control<FieldValues>} />

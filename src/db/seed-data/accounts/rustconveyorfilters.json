@@ -1,0 +1,2488 @@
+{
+  "account": {
+    "username": "rustconveyorfilters",
+    "firstName": "Rust Conveyor Filters",
+    "email": "rcf@rcf.com",
+    "password": "rcf@rcf",
+    "verifiedType": "official"
+  },
+  "categories": [
+    {
+      "name": "Electrical",
+      "subCategories": []
+    },
+    {
+      "name": "Combat Kits",
+      "subCategories": ["Combat Kits (Boxes)", "Hazmat Lockers", "Hide Locker"]
+    },
+    {
+      "name": "Farm Stuff",
+      "subCategories": []
+    },
+    {
+      "name": "Components",
+      "subCategories": []
+    },
+    {
+      "name": "Clothing",
+      "subCategories": []
+    },
+    {
+      "name": "Automation",
+      "subCategories": []
+    },
+    {
+      "name": "Weapons",
+      "subCategories": ["Ammo"]
+    },
+    {
+      "name": "Tools",
+      "subCategories": []
+    },
+    {
+      "name": "Workbench",
+      "subCategories": []
+    }
+  ],
+  "filters": [
+    {
+      "key": "crafting-materials",
+      "name": "Crafting Materials",
+      "imagePath": "cloth",
+      "isPublic": true,
+      "views": 103,
+      "exports": 66,
+      "createdAt": "2024-08-12T13:31:44Z",
+      "updatedAt": "2026-10-07T22:30:17Z",
+      "tags": ["resources"],
+      "items": [
+        {
+          "item": "fat.animal"
+        },
+        {
+          "item": "cloth"
+        },
+        {
+          "item": "leather"
+        },
+        {
+          "item": "lowgradefuel"
+        },
+        {
+          "item": "metal.fragments"
+        }
+      ]
+    },
+    {
+      "key": "locker-hide-custom-smg",
+      "name": "Locker (Hide + Custom SMG)",
+      "imagePath": "smg.2",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hide Locker",
+      "outputContainer": "locker",
+      "views": 11,
+      "exports": 1,
+      "createdAt": "2026-10-07T22:30:16Z",
+      "updatedAt": "2026-10-07T22:30:28Z",
+      "tags": ["auto_locker", "pvp", "guns_t2"],
+      "items": [
+        {
+          "item": "ammo.pistol",
+          "max": 80
+        },
+        {
+          "item": "smg.2",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        },
+        {
+          "item": "hat.wolf",
+          "max": 1
+        },
+        {
+          "item": "mask.bandana",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.poncho",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.vest",
+          "max": 1
+        },
+        {
+          "item": "wood.armor.pants",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.pants",
+          "max": 1
+        },
+        {
+          "item": "burlap.gloves",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "electrical-components-lights",
+      "name": "Electrical Components - Lights",
+      "description": "Better have a cozy and well-lit base, huh?",
+      "imagePath": "ceilinglight",
+      "isPublic": true,
+      "category": "Electrical",
+      "views": 63,
+      "exports": 28,
+      "createdAt": "2024-08-24T21:59:14Z",
+      "updatedAt": "2026-09-26T09:02:58Z",
+      "tags": ["electrical_box", "deployables_box"],
+      "items": [
+        {
+          "item": "ceilinglight"
+        },
+        {
+          "item": "xmas.lightstring.advanced"
+        },
+        {
+          "item": "electric.flasherlight"
+        },
+        {
+          "item": "industrial.wall.light"
+        },
+        {
+          "item": "sign.neon.xl.animated"
+        },
+        {
+          "item": "sign.neon.xl"
+        },
+        {
+          "item": "sign.neon.125x215.animated"
+        },
+        {
+          "item": "sign.neon.125x215"
+        },
+        {
+          "item": "searchlight"
+        },
+        {
+          "item": "electric.sirenlight"
+        },
+        {
+          "item": "sign.neon.125x125"
+        },
+        {
+          "item": "strobelight"
+        },
+        {
+          "item": "gunrack.horizontal"
+        },
+        {
+          "item": "gunrack_tall.horizontal"
+        },
+        {
+          "item": "gunrack_wide.horizontal"
+        },
+        {
+          "item": "electric.bulbstringlights"
+        },
+        {
+          "item": "electric.fairylights"
+        },
+        {
+          "item": "electric.fluorescentlight"
+        },
+        {
+          "item": "electric.simplelight"
+        },
+        {
+          "item": "electric.spotlight"
+        },
+        {
+          "item": "electric.spotlight.tripod"
+        },
+        {
+          "item": "laserlight"
+        },
+        {
+          "item": "soundlight"
+        },
+        {
+          "item": "xmas.lightstring"
+        },
+        {
+          "item": "xmas.decoration.lights"
+        },
+        {
+          "item": "electric.tablelight"
+        },
+        {
+          "item": "neonsigntr"
+        }
+      ]
+    },
+    {
+      "key": "electrical-components-industrial",
+      "name": "Electrical Components - Industrial",
+      "description": "Thats why I created Rust Conveyor Filters",
+      "imagePath": "industrial.conveyor",
+      "isPublic": true,
+      "category": "Electrical",
+      "views": 198,
+      "exports": 78,
+      "createdAt": "2026-04-22T10:40:27Z",
+      "updatedAt": "2026-04-22T10:40:39Z",
+      "tags": ["industrial_box", "electrical_box"],
+      "items": [
+        {
+          "item": "electric.furnace"
+        },
+        {
+          "item": "storageadaptor"
+        },
+        {
+          "item": "industrial.conveyor"
+        },
+        {
+          "item": "industrial.splitter"
+        },
+        {
+          "item": "industrial.combiner"
+        },
+        {
+          "item": "industrial.crafter"
+        }
+      ]
+    },
+    {
+      "key": "electrical-components-water",
+      "name": "Electrical Components - Water",
+      "description": "Who doesn't like some crops?",
+      "imagePath": "electric.sprinkler",
+      "isPublic": true,
+      "category": "Electrical",
+      "views": 72,
+      "exports": 37,
+      "createdAt": "2024-08-24T22:16:50Z",
+      "updatedAt": "2026-04-22T10:38:18Z",
+      "tags": ["electrical_box", "farming_box"],
+      "items": [
+        {
+          "item": "fluid.combiner"
+        },
+        {
+          "item": "fluid.splitter"
+        },
+        {
+          "item": "fluid.switch"
+        },
+        {
+          "item": "powered.water.purifier"
+        },
+        {
+          "item": "electric.sprinkler"
+        },
+        {
+          "item": "waterpump"
+        },
+        {
+          "item": "water.catcher.large"
+        },
+        {
+          "item": "water.catcher.small"
+        }
+      ]
+    },
+    {
+      "key": "electrical-components-power-logic",
+      "name": "Electrical Components - Power & Logic",
+      "description": "You'll drive your electrician crazy with this box",
+      "imagePath": "electrical.combiner",
+      "isPublic": true,
+      "category": "Electrical",
+      "views": 322,
+      "exports": 182,
+      "createdAt": "2026-04-22T10:38:18Z",
+      "updatedAt": "2026-05-28T21:10:57Z",
+      "tags": ["electrical_box"],
+      "items": [
+        {
+          "item": "electric.timer"
+        },
+        {
+          "item": "electric.solarpanel.large"
+        },
+        {
+          "item": "electric.battery.rechargable.large"
+        },
+        {
+          "item": "electrical.memorycell"
+        },
+        {
+          "item": "electric.rf.broadcaster"
+        },
+        {
+          "item": "generator.wind.scrap"
+        },
+        {
+          "item": "electric.rf.receiver"
+        },
+        {
+          "item": "electric.hbhfsensor"
+        },
+        {
+          "item": "electric.splitter"
+        },
+        {
+          "item": "electric.blocker"
+        },
+        {
+          "item": "electrical.combiner"
+        },
+        {
+          "item": "electric.random.switch"
+        },
+        {
+          "item": "electric.teslacoil"
+        },
+        {
+          "item": "electric.laserdetector"
+        },
+        {
+          "item": "electric.xorswitch"
+        },
+        {
+          "item": "electric.battery.rechargable.small"
+        },
+        {
+          "item": "electric.orswitch"
+        },
+        {
+          "item": "electrical.branch"
+        },
+        {
+          "item": "electric.counter"
+        },
+        {
+          "item": "electric.fuelgenerator.small"
+        },
+        {
+          "item": "electric.button"
+        },
+        {
+          "item": "electric.doorcontroller"
+        },
+        {
+          "item": "electric.andswitch"
+        },
+        {
+          "item": "electric.battery.rechargable.medium"
+        },
+        {
+          "item": "smart.switch"
+        },
+        {
+          "item": "smart.alarm"
+        },
+        {
+          "item": "storage.monitor"
+        },
+        {
+          "item": "electric.switch"
+        },
+        {
+          "item": "electric.seismicsensor"
+        }
+      ]
+    },
+    {
+      "key": "metal-combat-kit",
+      "name": "Metal Combat Kit",
+      "description": "Suitable for your full kit desires",
+      "imagePath": "metal.facemask",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "outputContainer": "box.wooden.large",
+      "views": 575,
+      "exports": 269,
+      "createdAt": "2026-04-22T10:26:31Z",
+      "updatedAt": "2026-10-07T22:24:48Z",
+      "tags": ["metal_kit_locker", "auto_locker", "pvp"],
+      "items": [
+        {
+          "item": "ammo.rifle",
+          "max": 512
+        },
+        {
+          "item": "rifle.ak",
+          "max": 2
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 18
+        },
+        {
+          "item": "metal.facemask",
+          "max": 2
+        },
+        {
+          "item": "metal.plate.torso",
+          "max": 2
+        },
+        {
+          "item": "hoodie",
+          "max": 2
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 2
+        },
+        {
+          "item": "pants",
+          "max": 2
+        },
+        {
+          "item": "shoes.boots",
+          "max": 2
+        },
+        {
+          "item": "tactical.gloves",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 24
+        },
+        {
+          "item": "bandage",
+          "max": 18
+        },
+        {
+          "item": "medical.honey.bandage",
+          "max": 12
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-revolver",
+      "name": "Locker (Hazmat + Revolver)",
+      "imagePath": "pistol.revolver",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 6,
+      "exports": 1,
+      "createdAt": "2026-10-07T21:41:49Z",
+      "updatedAt": "2026-10-07T22:22:10Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t1"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 48
+        },
+        {
+          "item": "pistol.revolver",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hide-revolver",
+      "name": "Locker (Hide + Revolver)",
+      "imagePath": "pistol.revolver",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hide Locker",
+      "outputContainer": "locker",
+      "views": 1,
+      "exports": 0,
+      "createdAt": "2026-10-07T22:18:09Z",
+      "updatedAt": "2026-10-07T22:26:13Z",
+      "tags": ["auto_locker", "pvp", "guns_t1"],
+      "items": [
+        {
+          "item": "ammo.pistol",
+          "max": 64
+        },
+        {
+          "item": "pistol.revolver",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        },
+        {
+          "item": "hat.wolf",
+          "max": 1
+        },
+        {
+          "item": "mask.bandana",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.poncho",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.vest",
+          "max": 1
+        },
+        {
+          "item": "wood.armor.pants",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.pants",
+          "max": 1
+        },
+        {
+          "item": "burlap.gloves",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "ballistic-combat-kit",
+      "name": "Ballistic Combat Kit",
+      "description": "Facepunch remove this armor from the game.",
+      "imagePath": "ballistic.helmet",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "outputContainer": "box.wooden.large",
+      "views": 6,
+      "exports": 3,
+      "createdAt": "2026-10-07T21:12:15Z",
+      "updatedAt": "2026-10-07T22:26:36Z",
+      "tags": ["metal_kit_locker", "auto_locker", "pvp"],
+      "items": [
+        {
+          "item": "ammo.rifle",
+          "max": 512
+        },
+        {
+          "item": "rifle.ak",
+          "max": 2
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 18
+        },
+        {
+          "item": "ballistic.helmet",
+          "max": 2
+        },
+        {
+          "item": "ballistic.vest",
+          "max": 2
+        },
+        {
+          "item": "hoodie",
+          "max": 2
+        },
+        {
+          "item": "ballistic.legarmor",
+          "max": 2
+        },
+        {
+          "item": "pants",
+          "max": 2
+        },
+        {
+          "item": "shoes.boots",
+          "max": 2
+        },
+        {
+          "item": "tactical.gloves",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 24
+        },
+        {
+          "item": "bandage",
+          "max": 18
+        },
+        {
+          "item": "medical.honey.bandage",
+          "max": 12
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-semi-auto-pistol",
+      "name": "Locker (Hazmat + Semi-Auto Pistol)",
+      "imagePath": "pistol.semiauto",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 5,
+      "exports": 0,
+      "createdAt": "2026-10-07T21:41:08Z",
+      "updatedAt": "2026-10-07T22:22:13Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 64
+        },
+        {
+          "item": "pistol.semiauto",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hide-semi-auto-pistol",
+      "name": "Locker (Hide + Semi-Auto Pistol)",
+      "imagePath": "pistol.semiauto",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hide Locker",
+      "outputContainer": "locker",
+      "views": 2,
+      "exports": 1,
+      "createdAt": "2026-10-07T22:19:19Z",
+      "updatedAt": "2026-10-07T22:26:15Z",
+      "tags": ["auto_locker", "pvp", "guns_t2"],
+      "items": [
+        {
+          "item": "ammo.pistol",
+          "max": 64
+        },
+        {
+          "item": "pistol.semiauto",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        },
+        {
+          "item": "hat.wolf",
+          "max": 1
+        },
+        {
+          "item": "mask.bandana",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.poncho",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.vest",
+          "max": 1
+        },
+        {
+          "item": "wood.armor.pants",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.pants",
+          "max": 1
+        },
+        {
+          "item": "burlap.gloves",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-python",
+      "name": "Locker (Hazmat + Python)",
+      "imagePath": "pistol.python",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 2,
+      "exports": 0,
+      "createdAt": "2026-10-07T21:23:38Z",
+      "updatedAt": "2026-10-07T22:22:15Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 80
+        },
+        {
+          "item": "pistol.python",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hide-python",
+      "name": "Locker (Hide + Python)",
+      "imagePath": "pistol.python",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hide Locker",
+      "outputContainer": "locker",
+      "views": 3,
+      "exports": 2,
+      "createdAt": "2026-10-07T22:21:08Z",
+      "updatedAt": "2026-10-07T22:21:10Z",
+      "tags": ["auto_locker", "pvp", "guns_t2"],
+      "items": [
+        {
+          "item": "ammo.pistol",
+          "max": 64
+        },
+        {
+          "item": "pistol.python",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        },
+        {
+          "item": "hat.wolf",
+          "max": 1
+        },
+        {
+          "item": "mask.bandana",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.poncho",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.vest",
+          "max": 1
+        },
+        {
+          "item": "wood.armor.pants",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.pants",
+          "max": 1
+        },
+        {
+          "item": "burlap.gloves",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-custom-smg",
+      "name": "Locker (Hazmat + Custom SMG)",
+      "imagePath": "smg.2",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 1,
+      "exports": 2,
+      "createdAt": "2026-10-07T21:23:00Z",
+      "updatedAt": "2026-10-07T21:41:10Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 80
+        },
+        {
+          "item": "smg.2",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hide-semi-rifle",
+      "name": "Locker (Hide + Semi Rifle)",
+      "imagePath": "rifle.semiauto",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hide Locker",
+      "outputContainer": "locker",
+      "views": 10,
+      "exports": 3,
+      "createdAt": "2026-10-07T22:21:47Z",
+      "updatedAt": "2026-10-07T22:26:24Z",
+      "tags": ["auto_locker", "pvp", "guns_t2"],
+      "items": [
+        {
+          "item": "ammo.rifle",
+          "max": 80
+        },
+        {
+          "item": "rifle.semiauto",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        },
+        {
+          "item": "hat.wolf",
+          "max": 1
+        },
+        {
+          "item": "mask.bandana",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.poncho",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.vest",
+          "max": 1
+        },
+        {
+          "item": "wood.armor.pants",
+          "max": 1
+        },
+        {
+          "item": "attire.hide.pants",
+          "max": 1
+        },
+        {
+          "item": "burlap.gloves",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-thompson",
+      "name": "Locker (Hazmat + Thompson)",
+      "imagePath": "smg.thompson",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 0,
+      "exports": 4,
+      "createdAt": "2026-10-07T21:21:45Z",
+      "updatedAt": "2026-10-07T22:22:18Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 80
+        },
+        {
+          "item": "smg.thompson",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-high-cal",
+      "name": "Locker (Hazmat + High Cal.)",
+      "imagePath": "revolver.hc",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 3,
+      "exports": 1,
+      "createdAt": "2026-10-07T21:35:31Z",
+      "updatedAt": "2026-10-07T21:41:10Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 48
+        },
+        {
+          "item": "revolver.hc",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "locker-hazmat-semi-rifle",
+      "name": "Locker (Hazmat + Semi Rifle)",
+      "imagePath": "rifle.semiauto",
+      "isPublic": true,
+      "category": "Combat Kits",
+      "subCategory": "Hazmat Lockers",
+      "outputContainer": "locker",
+      "views": 10,
+      "exports": 2,
+      "createdAt": "2026-10-07T21:39:19Z",
+      "updatedAt": "2026-10-07T22:25:57Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 64
+        },
+        {
+          "item": "rifle.semiauto",
+          "max": 1
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 2
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "cloth",
+          "max": 32
+        }
+      ]
+    },
+    {
+      "key": "tea-box",
+      "name": "Tea Box",
+      "description": "That Tea guy would be proud",
+      "imagePath": "oretea.pure",
+      "isPublic": true,
+      "category": "Farm Stuff",
+      "outputContainer": "wicker.barrel",
+      "views": 200,
+      "exports": 142,
+      "createdAt": "2024-08-24T20:55:57Z",
+      "updatedAt": "2026-10-07T05:34:31Z",
+      "tags": ["food_box"],
+      "items": [
+        {
+          "item": "radiationresisttea.advanced",
+          "max": 20
+        },
+        {
+          "item": "healingtea.advanced",
+          "max": 20
+        },
+        {
+          "item": "maxhealthtea.advanced",
+          "max": 20
+        },
+        {
+          "item": "oretea.advanced",
+          "max": 20
+        },
+        {
+          "item": "scraptea.advanced",
+          "max": 20
+        },
+        {
+          "item": "woodtea.advanced",
+          "max": 20
+        },
+        {
+          "item": "radiationresisttea",
+          "max": 20
+        },
+        {
+          "item": "healingtea",
+          "max": 20
+        },
+        {
+          "item": "maxhealthtea",
+          "max": 20
+        },
+        {
+          "item": "oretea",
+          "max": 20
+        },
+        {
+          "item": "scraptea",
+          "max": 20
+        },
+        {
+          "item": "woodtea",
+          "max": 20
+        },
+        {
+          "item": "radiationresisttea.pure",
+          "max": 20
+        },
+        {
+          "item": "healingtea.pure",
+          "max": 20
+        },
+        {
+          "item": "maxhealthtea.pure",
+          "max": 20
+        },
+        {
+          "item": "oretea.pure",
+          "max": 20
+        },
+        {
+          "item": "scraptea.pure",
+          "max": 20
+        },
+        {
+          "item": "woodtea.pure",
+          "max": 20
+        },
+        {
+          "item": "advancedcoolingtea",
+          "max": 10
+        },
+        {
+          "item": "advancedcraftingtea_quality",
+          "max": 10
+        },
+        {
+          "item": "advanceharvestingtea",
+          "max": 10
+        },
+        {
+          "item": "advancedwarmingtea",
+          "max": 10
+        },
+        {
+          "item": "coolingtea",
+          "max": 10
+        },
+        {
+          "item": "craftingtea_quality",
+          "max": 10
+        },
+        {
+          "item": "harvestingtea",
+          "max": 10
+        },
+        {
+          "item": "purecoolingtea",
+          "max": 10
+        },
+        {
+          "item": "purecraftingtea_quality",
+          "max": 10
+        },
+        {
+          "item": "pureharvestingtea",
+          "max": 10
+        },
+        {
+          "item": "purewarmingtea",
+          "max": 10
+        },
+        {
+          "item": "warmingtea",
+          "max": 10
+        }
+      ]
+    },
+    {
+      "key": "fish",
+      "name": "Fish",
+      "description": "Since fish are giving so much scrap, it's better to have a box of fish, right?",
+      "imagePath": "fish.smallshark",
+      "isPublic": true,
+      "category": "Farm Stuff",
+      "views": 23,
+      "exports": 20,
+      "createdAt": "2024-08-24T20:58:33Z",
+      "updatedAt": "2026-09-26T09:02:03Z",
+      "tags": ["food_box"],
+      "items": [
+        {
+          "item": "fish.catfish"
+        },
+        {
+          "item": "fish.herring"
+        },
+        {
+          "item": "fish.orangeroughy"
+        },
+        {
+          "item": "fish.salmon"
+        },
+        {
+          "item": "fish.sardine"
+        },
+        {
+          "item": "fish.smallshark"
+        },
+        {
+          "item": "fish.troutsmall"
+        },
+        {
+          "item": "fish.yellowperch"
+        },
+        {
+          "item": "fish.anchovy"
+        },
+        {
+          "item": "fish.raw"
+        }
+      ]
+    },
+    {
+      "key": "all-components",
+      "name": "All Components",
+      "description": "Can't make guns without it",
+      "imagePath": "metalpipe",
+      "isPublic": true,
+      "category": "Components",
+      "views": 952,
+      "exports": 720,
+      "createdAt": "2026-04-22T10:35:32Z",
+      "updatedAt": "2026-10-07T20:52:56Z",
+      "tags": ["components_box"],
+      "items": [
+        {
+          "item": "propanetank"
+        },
+        {
+          "item": "gears"
+        },
+        {
+          "item": "metalblade"
+        },
+        {
+          "item": "metalpipe"
+        },
+        {
+          "item": "metalspring"
+        },
+        {
+          "item": "riflebody"
+        },
+        {
+          "item": "roadsigns"
+        },
+        {
+          "item": "rope"
+        },
+        {
+          "item": "smgbody"
+        },
+        {
+          "item": "semibody"
+        },
+        {
+          "item": "sewingkit"
+        },
+        {
+          "item": "sheetmetal"
+        },
+        {
+          "item": "tarp"
+        },
+        {
+          "item": "techparts"
+        },
+        {
+          "item": "targeting.computer"
+        },
+        {
+          "item": "cctv.camera"
+        },
+        {
+          "item": "fuse"
+        },
+        {
+          "item": "fuse.highgrade"
+        }
+      ]
+    },
+    {
+      "key": "vehicle-parts",
+      "name": "Vehicle Parts",
+      "description": "No more vehicle parts lying around",
+      "imagePath": "piston3",
+      "isPublic": true,
+      "category": "Components",
+      "views": 56,
+      "exports": 39,
+      "createdAt": "2024-08-24T20:51:42Z",
+      "updatedAt": "2026-10-07T20:52:26Z",
+      "tags": ["vehicle_parts"],
+      "items": [
+        {
+          "item": "vehicle.1mod.cockpit.armored"
+        },
+        {
+          "item": "vehicle.1mod.passengers.armored"
+        },
+        {
+          "item": "vehicle.2mod.camper"
+        },
+        {
+          "item": "vehicle.1mod.cockpit"
+        },
+        {
+          "item": "vehicle.1mod.cockpit.with.engine"
+        },
+        {
+          "item": "vehicle.1mod.engine"
+        },
+        {
+          "item": "vehicle.1mod.flatbed"
+        },
+        {
+          "item": "vehicle.2mod.fuel.tank"
+        },
+        {
+          "item": "carburetor3"
+        },
+        {
+          "item": "crankshaft3"
+        },
+        {
+          "item": "piston3"
+        },
+        {
+          "item": "sparkplug3"
+        },
+        {
+          "item": "valve3"
+        },
+        {
+          "item": "vehicle.2mod.flatbed"
+        },
+        {
+          "item": "carburetor1"
+        },
+        {
+          "item": "crankshaft1"
+        },
+        {
+          "item": "piston1"
+        },
+        {
+          "item": "sparkplug1"
+        },
+        {
+          "item": "valve1"
+        },
+        {
+          "item": "carburetor2"
+        },
+        {
+          "item": "crankshaft2"
+        },
+        {
+          "item": "piston2"
+        },
+        {
+          "item": "sparkplug2"
+        },
+        {
+          "item": "valve2"
+        },
+        {
+          "item": "vehicle.2mod.passengers"
+        },
+        {
+          "item": "vehicle.1mod.rear.seats"
+        },
+        {
+          "item": "vehicle.1mod.storage"
+        },
+        {
+          "item": "vehicle.1mod.taxi"
+        },
+        {
+          "item": "modularcarlift"
+        },
+        {
+          "item": "vehicle.car_radio"
+        }
+      ]
+    },
+    {
+      "key": "diving-gear",
+      "name": "Diving Gear",
+      "description": "All you need for \"sharking\" Oil Rig",
+      "imagePath": "hat.wolf",
+      "isPublic": true,
+      "category": "Clothing",
+      "views": 123,
+      "exports": 95,
+      "createdAt": "2024-07-27T04:43:15Z",
+      "updatedAt": "2026-04-22T10:34:26Z",
+      "tags": ["clothing_box", "guns_t1"],
+      "items": [
+        {
+          "item": "diving.wetsuit"
+        },
+        {
+          "item": "diving.mask"
+        },
+        {
+          "item": "diving.tank"
+        },
+        {
+          "item": "diving.fins"
+        },
+        {
+          "item": "speargun"
+        },
+        {
+          "item": "speargun.spear"
+        },
+        {
+          "item": "knife.combat"
+        },
+        {
+          "item": "grenade.f1"
+        }
+      ]
+    },
+    {
+      "key": "heavy-plate-sets",
+      "name": "Heavy Plate Sets",
+      "description": "Sometimes we gotta defend a raid",
+      "imagePath": "heavy.plate.helmet",
+      "isPublic": true,
+      "category": "Clothing",
+      "views": 22,
+      "exports": 18,
+      "createdAt": "2024-07-27T07:08:37Z",
+      "updatedAt": "2026-04-22T10:34:26Z",
+      "tags": ["armor_box", "raid_defense_kit"],
+      "items": [
+        {
+          "item": "heavy.plate.helmet"
+        },
+        {
+          "item": "heavy.plate.jacket"
+        },
+        {
+          "item": "heavy.plate.pants"
+        },
+        {
+          "item": "shoes.boots"
+        }
+      ]
+    },
+    {
+      "key": "roadsign-kits",
+      "name": "Roadsign Kits",
+      "description": "Difference between life and death",
+      "imagePath": "roadsign.jacket",
+      "isPublic": true,
+      "category": "Clothing",
+      "views": 412,
+      "exports": 186,
+      "createdAt": "2026-04-22T10:34:25Z",
+      "updatedAt": "2026-04-22T10:36:19Z",
+      "tags": ["roadsign_kit_locker", "armor_box", "pvp"],
+      "items": [
+        {
+          "item": "coffeecan.helmet",
+          "max": 6
+        },
+        {
+          "item": "pants",
+          "max": 6
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 6
+        },
+        {
+          "item": "roadsign.jacket",
+          "max": 6
+        },
+        {
+          "item": "roadsign.gloves",
+          "max": 60
+        },
+        {
+          "item": "shoes.boots",
+          "max": 6
+        },
+        {
+          "item": "hoodie",
+          "max": 6
+        }
+      ]
+    },
+    {
+      "key": "auto-ore-smelter-large-furnace-input-conveyor",
+      "name": "Auto Ore Smelter (Large Furnace) - Input Conveyor",
+      "imagePath": "furnace.large",
+      "isPublic": true,
+      "category": "Automation",
+      "outputContainer": "furnace.large",
+      "views": 4,
+      "exports": 1,
+      "createdAt": "2026-10-07T20:59:30Z",
+      "updatedAt": "2026-10-07T21:03:13Z",
+      "tags": ["ore_smelting_box", "industrial_box"],
+      "items": [
+        {
+          "item": "metal.ore",
+          "max": 13
+        },
+        {
+          "item": "sulfur"
+        },
+        {
+          "item": "sulfur.ore",
+          "max": 24
+        },
+        {
+          "item": "wood",
+          "max": 5
+        },
+        {
+          "item": "hq.metal.ore",
+          "max": 7
+        }
+      ]
+    },
+    {
+      "key": "auto-ore-smelter-large-furnace-single-conveyor",
+      "name": "Auto Ore Smelter (Large Furnace) - Single Conveyor",
+      "description": "For circuits with Large Furnaces",
+      "imagePath": "furnace.large",
+      "isPublic": true,
+      "category": "Automation",
+      "outputContainer": "furnace.large",
+      "views": 502,
+      "exports": 336,
+      "createdAt": "2026-04-22T10:29:41Z",
+      "updatedAt": "2026-10-07T21:03:13Z",
+      "tags": ["ore_smelting_box", "industrial_box"],
+      "items": [
+        {
+          "item": "charcoal"
+        },
+        {
+          "item": "metal.fragments"
+        },
+        {
+          "item": "metal.ore",
+          "max": 13
+        },
+        {
+          "item": "metal.refined"
+        },
+        {
+          "item": "sulfur"
+        },
+        {
+          "item": "sulfur.ore",
+          "max": 24
+        },
+        {
+          "item": "wood",
+          "max": 5
+        },
+        {
+          "item": "hq.metal.ore",
+          "max": 7
+        }
+      ]
+    },
+    {
+      "key": "auto-refinery-perfect-smelting",
+      "name": "Auto Refinery (Perfect Smelting)",
+      "description": "Your aircraft need fuel, don't they?",
+      "imagePath": "small.oil.refinery",
+      "isPublic": true,
+      "category": "Automation",
+      "outputContainer": "small.oil.refinery",
+      "views": 34,
+      "exports": 11,
+      "createdAt": "2024-07-27T04:38:11Z",
+      "updatedAt": "2026-10-07T21:03:13Z",
+      "tags": ["ore_smelting_box", "resources"],
+      "items": [
+        {
+          "item": "crude.oil",
+          "max": 4
+        },
+        {
+          "item": "wood",
+          "max": 7
+        }
+      ]
+    },
+    {
+      "key": "auto-smelter-electric-furnace-single-conveyor",
+      "name": "Auto Smelter (Electric+Furnace) - Single Conveyor",
+      "imagePath": "electric.furnace",
+      "isPublic": true,
+      "category": "Automation",
+      "outputContainer": "electric.furnace",
+      "views": 5,
+      "exports": 2,
+      "createdAt": "2026-10-07T21:03:12Z",
+      "updatedAt": "2026-10-07T21:03:13Z",
+      "tags": ["ore_smelting_box", "industrial_box"],
+      "items": [
+        {
+          "item": "charcoal"
+        },
+        {
+          "item": "metal.fragments"
+        },
+        {
+          "item": "metal.ore",
+          "max": 13
+        },
+        {
+          "item": "metal.refined"
+        },
+        {
+          "item": "sulfur"
+        },
+        {
+          "item": "sulfur.ore",
+          "max": 24
+        },
+        {
+          "item": "wood",
+          "max": 5
+        },
+        {
+          "item": "hq.metal.ore",
+          "max": 7
+        }
+      ]
+    },
+    {
+      "key": "auto-smelter-large-furnace-refinery",
+      "name": "Auto Smelter (Large Furnace + Refinery)",
+      "description": "For circuits with Large Furnaces + Oil Refinery",
+      "imagePath": "small.oil.refinery",
+      "isPublic": true,
+      "category": "Automation",
+      "outputContainer": "small.oil.refinery",
+      "views": 164,
+      "exports": 83,
+      "createdAt": "2026-04-22T10:33:11Z",
+      "updatedAt": "2026-10-07T21:03:13Z",
+      "tags": ["ore_smelting_box", "resources"],
+      "items": [
+        {
+          "item": "crude.oil",
+          "max": 4
+        },
+        {
+          "item": "lowgradefuel"
+        },
+        {
+          "item": "wood",
+          "max": 7
+        },
+        {
+          "item": "charcoal"
+        },
+        {
+          "item": "metal.ore",
+          "max": 13
+        },
+        {
+          "item": "metal.fragments"
+        },
+        {
+          "item": "sulfur.ore",
+          "max": 24
+        },
+        {
+          "item": "sulfur"
+        },
+        {
+          "item": "hq.metal.ore",
+          "max": 7
+        },
+        {
+          "item": "metal.refined"
+        }
+      ]
+    },
+    {
+      "key": "ammo-firearms",
+      "name": "Ammo (Firearms)",
+      "description": "No explosives",
+      "imagePath": "ammo.rifle",
+      "isPublic": true,
+      "category": "Weapons",
+      "subCategory": "Ammo",
+      "views": 28,
+      "exports": 14,
+      "createdAt": "2025-12-21T16:50:32Z",
+      "updatedAt": "2026-05-28T21:05:24Z",
+      "tags": ["ammo_t1", "ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.shotgun"
+        },
+        {
+          "item": "ammo.shotgun.fire"
+        },
+        {
+          "item": "ammo.shotgun.slug"
+        },
+        {
+          "item": "ammo.grenadelauncher.buckshot"
+        },
+        {
+          "item": "ammo.grenadelauncher.smoke"
+        },
+        {
+          "item": "ammo.rifle"
+        },
+        {
+          "item": "ammo.rifle.hv"
+        },
+        {
+          "item": "ammo.pistol.hv"
+        },
+        {
+          "item": "ammo.rifle.incendiary"
+        },
+        {
+          "item": "ammo.pistol.fire"
+        },
+        {
+          "item": "ammo.pistol"
+        }
+      ]
+    },
+    {
+      "key": "tier-3-weapons",
+      "name": "Tier 3 Weapons",
+      "imagePath": "m16a2",
+      "isPublic": true,
+      "category": "Weapons",
+      "views": 34,
+      "exports": 19,
+      "createdAt": "2025-12-21T16:55:02Z",
+      "updatedAt": "2026-09-26T08:57:45Z",
+      "tags": ["guns_t3"],
+      "items": [
+        {
+          "item": "rifle.ak"
+        },
+        {
+          "item": "rifle.bolt"
+        },
+        {
+          "item": "hmlmg"
+        },
+        {
+          "item": "rifle.l96"
+        },
+        {
+          "item": "rifle.lr300"
+        },
+        {
+          "item": "lmg.m249"
+        },
+        {
+          "item": "shotgun.m4"
+        },
+        {
+          "item": "minigun"
+        },
+        {
+          "item": "smg.mp5"
+        },
+        {
+          "item": "multiplegrenadelauncher"
+        },
+        {
+          "item": "rifle.sks"
+        },
+        {
+          "item": "m16a2"
+        }
+      ]
+    },
+    {
+      "key": "all-ammo-prim-t2",
+      "name": "All Ammo (Prim + T2)",
+      "description": "No explosive ammunition",
+      "imagePath": "ammo.pistol",
+      "isPublic": true,
+      "category": "Weapons",
+      "subCategory": "Ammo",
+      "views": 30,
+      "exports": 10,
+      "createdAt": "2025-12-21T16:48:00Z",
+      "updatedAt": "2025-12-21T17:48:07Z",
+      "tags": ["ammo_t1", "ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.shotgun"
+        },
+        {
+          "item": "ammo.shotgun.fire"
+        },
+        {
+          "item": "ammo.shotgun.slug"
+        },
+        {
+          "item": "ammo.grenadelauncher.buckshot"
+        },
+        {
+          "item": "ammo.grenadelauncher.smoke"
+        },
+        {
+          "item": "ammo.rifle"
+        },
+        {
+          "item": "arrow.bone"
+        },
+        {
+          "item": "arrow.fire"
+        },
+        {
+          "item": "ammo.handmade.shell"
+        },
+        {
+          "item": "arrow.hv"
+        },
+        {
+          "item": "ammo.rocket.seeker"
+        },
+        {
+          "item": "ammo.rifle.hv"
+        },
+        {
+          "item": "ammo.pistol.hv"
+        },
+        {
+          "item": "dart.incapacitate"
+        },
+        {
+          "item": "ammo.rifle.incendiary"
+        },
+        {
+          "item": "ballista.bolt.incendiary"
+        },
+        {
+          "item": "ammo.pistol.fire"
+        },
+        {
+          "item": "ammo.nailgun.nails"
+        },
+        {
+          "item": "ammo.pistol"
+        },
+        {
+          "item": "dart.radiation"
+        },
+        {
+          "item": "dart.scatter"
+        },
+        {
+          "item": "dart.wood"
+        },
+        {
+          "item": "arrow.wooden"
+        }
+      ]
+    },
+    {
+      "key": "t2-weapons",
+      "name": "T2 Weapons",
+      "imagePath": "rifle.semiauto",
+      "isPublic": true,
+      "category": "Weapons",
+      "views": 42,
+      "exports": 24,
+      "createdAt": "2025-12-21T16:53:57Z",
+      "updatedAt": "2026-05-28T21:52:32Z",
+      "tags": ["guns_t2"],
+      "items": [
+        {
+          "item": "smg.2"
+        },
+        {
+          "item": "revolver.hc"
+        },
+        {
+          "item": "pistol.m92"
+        },
+        {
+          "item": "pistol.prototype17"
+        },
+        {
+          "item": "shotgun.pump"
+        },
+        {
+          "item": "pistol.python"
+        },
+        {
+          "item": "pistol.semiauto"
+        },
+        {
+          "item": "rifle.semiauto"
+        },
+        {
+          "item": "smg.thompson"
+        }
+      ]
+    },
+    {
+      "key": "primitive-weapons",
+      "name": "Primitive weapons",
+      "description": "Can't leave your base without one",
+      "imagePath": "pistol.nailgun",
+      "isPublic": true,
+      "category": "Weapons",
+      "views": 145,
+      "exports": 74,
+      "createdAt": "2024-07-14T02:51:35Z",
+      "updatedAt": "2026-09-13T07:18:45Z",
+      "tags": ["guns_t1", "ammo_t1"],
+      "items": [
+        {
+          "item": "bow.hunting"
+        },
+        {
+          "item": "bow.compound"
+        },
+        {
+          "item": "crossbow"
+        },
+        {
+          "item": "pistol.nailgun"
+        },
+        {
+          "item": "ammo.nailgun.nails"
+        },
+        {
+          "item": "pistol.eoka"
+        },
+        {
+          "item": "ammo.handmade.shell"
+        },
+        {
+          "item": "arrow.fire"
+        },
+        {
+          "item": "arrow.wooden"
+        },
+        {
+          "item": "minicrossbow"
+        }
+      ]
+    },
+    {
+      "key": "oil-rig-labs-diving",
+      "name": "Oil Rig & Labs Diving",
+      "description": "Wish I was as good as Oilrats",
+      "imagePath": "speargun",
+      "isPublic": true,
+      "category": "Weapons",
+      "subCategory": "Ammo",
+      "views": 57,
+      "exports": 33,
+      "createdAt": "2024-07-27T04:43:55Z",
+      "updatedAt": "2026-10-07T22:25:17Z",
+      "tags": ["pvp", "clothing_box", "meds_box"],
+      "items": [
+        {
+          "item": "diving.wetsuit"
+        },
+        {
+          "item": "diving.mask"
+        },
+        {
+          "item": "diving.tank"
+        },
+        {
+          "item": "diving.fins"
+        },
+        {
+          "item": "speargun"
+        },
+        {
+          "item": "speargun.spear"
+        },
+        {
+          "item": "knife.combat"
+        },
+        {
+          "item": "grenade.f1"
+        },
+        {
+          "item": "hazmatsuit"
+        },
+        {
+          "item": "largemedkit"
+        }
+      ]
+    },
+    {
+      "key": "doorcamping",
+      "name": "Doorcamping",
+      "description": "Please don't do that. Just don't.",
+      "imagePath": "shotgun.double",
+      "isPublic": true,
+      "category": "Weapons",
+      "views": 26,
+      "exports": 7,
+      "createdAt": "2024-07-27T05:05:36Z",
+      "updatedAt": "2026-10-07T21:04:26Z",
+      "tags": ["pvp", "guns_t1", "ammo_t1"],
+      "items": [
+        {
+          "item": "shotgun.double"
+        },
+        {
+          "item": "shotgun.waterpipe"
+        },
+        {
+          "item": "shotgun.pump"
+        },
+        {
+          "item": "ammo.shotgun"
+        },
+        {
+          "item": "ammo.shotgun.fire"
+        },
+        {
+          "item": "ammo.handmade.shell"
+        },
+        {
+          "item": "pistol.nailgun"
+        },
+        {
+          "item": "ammo.nailgun.nails"
+        }
+      ]
+    },
+    {
+      "key": "12g-ammo",
+      "name": "12G Ammo",
+      "description": "Just the good shells. No handmade shell here.",
+      "imagePath": "ammo.shotgun",
+      "isPublic": true,
+      "category": "Tools",
+      "views": 13,
+      "exports": 12,
+      "createdAt": "2024-07-16T19:24:51Z",
+      "updatedAt": "2026-05-29T01:51:09Z",
+      "tags": ["ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.shotgun.fire"
+        },
+        {
+          "item": "ammo.shotgun.slug"
+        },
+        {
+          "item": "ammo.shotgun"
+        }
+      ]
+    },
+    {
+      "key": "builder-tools",
+      "name": "Builder Tools",
+      "description": "Don't throw them away! Be nice to your builder",
+      "imagePath": "hammer",
+      "isPublic": true,
+      "category": "Tools",
+      "views": 77,
+      "exports": 33,
+      "createdAt": "2024-07-27T04:52:52Z",
+      "updatedAt": "2026-05-28T21:52:46Z",
+      "tags": ["tools_box", "construction_box"],
+      "items": [
+        {
+          "item": "building.planner"
+        },
+        {
+          "item": "hammer"
+        },
+        {
+          "item": "toolgun"
+        },
+        {
+          "item": "hat.candle"
+        },
+        {
+          "item": "hat.miner"
+        },
+        {
+          "item": "hosetool"
+        },
+        {
+          "item": "pipetool"
+        },
+        {
+          "item": "wiretool"
+        },
+        {
+          "item": "wallpaper.tool"
+        }
+      ]
+    },
+    {
+      "key": "farming-tools",
+      "name": "Farming Tools",
+      "description": "Where's my farmbot?",
+      "imagePath": "icepick.salvaged",
+      "isPublic": true,
+      "category": "Tools",
+      "views": 18,
+      "exports": 12,
+      "createdAt": "2025-12-21T16:52:16Z",
+      "updatedAt": "2026-10-07T21:14:45Z",
+      "tags": ["tools_box"],
+      "items": [
+        {
+          "item": "jackhammer"
+        },
+        {
+          "item": "icepick.salvaged"
+        },
+        {
+          "item": "pickaxe"
+        },
+        {
+          "item": "chainsaw"
+        },
+        {
+          "item": "axe.salvaged"
+        },
+        {
+          "item": "hatchet"
+        }
+      ]
+    },
+    {
+      "key": "ammo-primitive",
+      "name": "Ammo (Primitive)",
+      "description": "Arrows for everyone!",
+      "imagePath": "arrow.wooden",
+      "isPublic": true,
+      "category": "Tools",
+      "views": 17,
+      "exports": 5,
+      "createdAt": "2025-12-21T16:48:57Z",
+      "updatedAt": "2026-09-21T13:26:40Z",
+      "tags": ["ammo_t1"],
+      "items": [
+        {
+          "item": "arrow.bone"
+        },
+        {
+          "item": "arrow.fire"
+        },
+        {
+          "item": "ammo.handmade.shell"
+        },
+        {
+          "item": "arrow.hv"
+        },
+        {
+          "item": "ammo.nailgun.nails"
+        },
+        {
+          "item": "ammo.pistol"
+        },
+        {
+          "item": "dart.radiation"
+        },
+        {
+          "item": "dart.scatter"
+        },
+        {
+          "item": "dart.wood"
+        },
+        {
+          "item": "arrow.wooden"
+        }
+      ]
+    },
+    {
+      "key": "workbench-box-basic",
+      "name": "Workbench Box (Basic)",
+      "description": "Perfectly tailored to craft basic recipes",
+      "imagePath": "workbench1",
+      "isPublic": true,
+      "category": "Workbench",
+      "outputContainer": "box.wooden",
+      "views": 250,
+      "exports": 112,
+      "createdAt": "2026-04-22T11:12:53Z",
+      "updatedAt": "2026-10-07T20:49:55Z",
+      "tags": ["resources", "components_box"],
+      "items": [
+        {
+          "item": "cloth",
+          "max": 1000
+        },
+        {
+          "item": "metal.fragments",
+          "max": 2000
+        },
+        {
+          "item": "lowgradefuel",
+          "max": 500
+        },
+        {
+          "item": "leather",
+          "max": 1000
+        },
+        {
+          "item": "bone.fragments",
+          "max": 1000
+        },
+        {
+          "item": "sulfur",
+          "max": 1000
+        },
+        {
+          "item": "charcoal",
+          "max": 2000
+        },
+        {
+          "item": "gunpowder",
+          "max": 1000
+        },
+        {
+          "item": "scrap",
+          "max": 1000
+        },
+        {
+          "item": "fat.animal",
+          "max": 1000
+        },
+        {
+          "item": "sewingkit",
+          "max": 20
+        },
+        {
+          "item": "metalpipe",
+          "max": 20
+        },
+        {
+          "item": "metal.refined",
+          "max": 25
+        },
+        {
+          "item": "wood",
+          "max": 1000
+        },
+        {
+          "item": "stones",
+          "max": 1000
+        }
+      ]
+    },
+    {
+      "key": "workbench-box-tier-2",
+      "name": "Workbench Box (Tier 2)",
+      "description": "Enough to craft Ammo, Meds, Kits and Tier 2 Guns",
+      "imagePath": "workbench2",
+      "isPublic": true,
+      "category": "Workbench",
+      "outputContainer": "box.wooden",
+      "views": 202,
+      "exports": 73,
+      "createdAt": "2026-04-22T11:19:27Z",
+      "updatedAt": "2026-10-07T21:15:09Z",
+      "tags": ["components_box", "resources", "guns_t2"],
+      "items": [
+        {
+          "item": "cloth",
+          "max": 1000
+        },
+        {
+          "item": "metal.fragments",
+          "max": 2000
+        },
+        {
+          "item": "lowgradefuel",
+          "max": 500
+        },
+        {
+          "item": "sulfur",
+          "max": 1000
+        },
+        {
+          "item": "charcoal",
+          "max": 2000
+        },
+        {
+          "item": "gunpowder",
+          "max": 1000
+        },
+        {
+          "item": "leather",
+          "max": 1000
+        },
+        {
+          "item": "sewingkit",
+          "max": 20
+        },
+        {
+          "item": "roadsigns",
+          "max": 20
+        },
+        {
+          "item": "metalpipe",
+          "max": 20
+        },
+        {
+          "item": "semibody",
+          "max": 10
+        },
+        {
+          "item": "smgbody",
+          "max": 10
+        },
+        {
+          "item": "metalspring",
+          "max": 20
+        },
+        {
+          "item": "scrap",
+          "max": 1000
+        },
+        {
+          "item": "metal.refined",
+          "max": 100
+        },
+        {
+          "item": "wood",
+          "max": 1000
+        }
+      ]
+    },
+    {
+      "key": "workbench-box-tier-3",
+      "name": "Workbench Box (Tier 3)",
+      "description": "Craft even boom with this intelligent workbench box",
+      "imagePath": "workbench3",
+      "isPublic": true,
+      "category": "Workbench",
+      "outputContainer": "box.wooden",
+      "views": 306,
+      "exports": 127,
+      "createdAt": "2026-04-22T11:25:04Z",
+      "updatedAt": "2026-10-07T21:15:36Z",
+      "tags": ["components_box", "resources", "guns_t3"],
+      "items": [
+        {
+          "item": "cloth",
+          "max": 1000
+        },
+        {
+          "item": "metal.fragments",
+          "max": 2000
+        },
+        {
+          "item": "lowgradefuel",
+          "max": 500
+        },
+        {
+          "item": "sulfur",
+          "max": 1000
+        },
+        {
+          "item": "charcoal",
+          "max": 2000
+        },
+        {
+          "item": "leather",
+          "max": 1000
+        },
+        {
+          "item": "sewingkit",
+          "max": 20
+        },
+        {
+          "item": "roadsigns",
+          "max": 20
+        },
+        {
+          "item": "gunpowder",
+          "max": 1000
+        },
+        {
+          "item": "metal.refined",
+          "max": 100
+        },
+        {
+          "item": "metalpipe",
+          "max": 20
+        },
+        {
+          "item": "riflebody",
+          "max": 10
+        },
+        {
+          "item": "semibody",
+          "max": 10
+        },
+        {
+          "item": "smgbody",
+          "max": 10
+        },
+        {
+          "item": "metalspring",
+          "max": 20
+        },
+        {
+          "item": "scrap",
+          "max": 1000
+        }
+      ]
+    }
+  ],
+  "shares": [
+    {
+      "to": "developer",
+      "filters": [
+        "metal-combat-kit",
+        "all-components",
+        "auto-ore-smelter-large-furnace-single-conveyor"
+      ]
+    }
+  ]
+}

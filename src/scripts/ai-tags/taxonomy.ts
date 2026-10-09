@@ -11,6 +11,12 @@ export const SEED_TAGS: SeedTag[] = [
     description: "Generalistic tag for pvp kit lockers.",
   },
   {
+    slug: "weapon_attachments",
+    label: "Attachments",
+    description:
+      "Weapon mods: flashlight, lasersight, extended magazine, holosight, simple sight, gas compression overdrive, targetting attachment, silencers",
+  },
+  {
     slug: "hazmat_kit_locker",
     label: "Hazmat Kit",
     description:

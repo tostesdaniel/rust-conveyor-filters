@@ -1,0 +1,167 @@
+{
+  "account": {
+    "username": "developer",
+    "firstName": "Developer",
+    "email": "dev@rcf.com",
+    "password": "developer@rcf",
+    "verifiedType": "contributor"
+  },
+  "categories": [
+    { "name": "Base", "subCategories": [] },
+    { "name": "Raids", "subCategories": ["Prep"] }
+  ],
+  "filters": [
+    {
+      "key": "scrap-pile",
+      "name": "Scrap Pile",
+      "description": "Comps to feed the recycler",
+      "imagePath": "scrap",
+      "isPublic": true,
+      "outputContainer": "box.wooden.large",
+      "views": 12,
+      "exports": 3,
+      "createdAt": "2026-09-02T18:20:41Z",
+      "updatedAt": "2026-09-02T18:20:41Z",
+      "tags": ["components_box"],
+      "items": [
+        { "item": "scrap" },
+        { "item": "tarp" },
+        { "item": "rope" },
+        { "item": "sheetmetal" },
+        { "item": "propanetank" },
+        { "item": "roadsigns" }
+      ]
+    },
+    {
+      "key": "main-tc",
+      "name": "Main TC",
+      "imagePath": "cupboard.tool",
+      "isPublic": false,
+      "category": "Base",
+      "outputContainer": "cupboard.tool",
+      "views": 0,
+      "exports": 0,
+      "createdAt": "2026-08-11T20:05:17Z",
+      "updatedAt": "2026-09-21T19:42:08Z",
+      "tags": [],
+      "items": [
+        { "item": "wood", "max": 1000 },
+        { "item": "stones", "max": 9000 },
+        { "item": "metal.fragments", "max": 5000 },
+        { "item": "metal.refined", "max": 80 }
+      ]
+    },
+    {
+      "key": "workbench-box-tier-3-mine",
+      "name": "Workbench Box (Tier 3) - my base",
+      "description": "Without the boom",
+      "imagePath": "workbench3",
+      "isPublic": false,
+      "category": "Base",
+      "forkedFrom": {
+        "username": "rustconveyorfilters",
+        "key": "workbench-box-tier-3"
+      },
+      "outputContainer": "box.wooden",
+      "views": 0,
+      "exports": 0,
+      "createdAt": "2026-08-11T20:12:54Z",
+      "updatedAt": "2026-08-11T20:12:54Z",
+      "tags": [],
+      "items": [
+        { "item": "cloth" },
+        { "item": "metal.fragments" },
+        { "item": "lowgradefuel" },
+        { "item": "leather" },
+        { "item": "sewingkit" },
+        { "item": "roadsigns" },
+        { "item": "metal.refined" },
+        { "item": "metalpipe" },
+        { "item": "riflebody" },
+        { "item": "semibody" },
+        { "item": "smgbody" },
+        { "item": "metalspring" },
+        { "item": "techparts" },
+        { "item": "scrap" }
+      ]
+    },
+    {
+      "key": "electric-furnace-feed",
+      "name": "Electric Furnace Feed",
+      "imagePath": "electric.furnace",
+      "isPublic": false,
+      "category": "Base",
+      "outputContainer": "electric.furnace",
+      "views": 0,
+      "exports": 0,
+      "createdAt": "2026-09-05T21:33:29Z",
+      "updatedAt": "2026-09-05T21:33:29Z",
+      "tags": [],
+      "items": [
+        { "item": "metal.ore", "max": 10 },
+        { "item": "sulfur.ore", "max": 18 },
+        { "item": "hq.metal.ore", "max": 6 }
+      ]
+    },
+    {
+      "key": "raid-kit",
+      "name": "Raid Kit",
+      "imagePath": "explosive.timed",
+      "isPublic": false,
+      "category": "Raids",
+      "subCategory": "Prep",
+      "outputContainer": "box.wooden",
+      "views": 0,
+      "exports": 0,
+      "createdAt": "2026-09-12T22:48:03Z",
+      "updatedAt": "2026-09-12T22:48:03Z",
+      "tags": [],
+      "items": [
+        { "item": "explosive.timed" },
+        { "item": "explosive.satchel" },
+        { "item": "ammo.rocket.basic" },
+        { "item": "ammo.rocket.hv", "max": 15 },
+        { "item": "rocket.launcher", "max": 2 },
+        { "item": "syringe.medical", "max": 30 }
+      ]
+    },
+    {
+      "key": "metal-combat-kit-lr",
+      "name": "Metal Combat Kit (LR-300)",
+      "description": "RCF's kit with an LR instead of the AK",
+      "imagePath": "rifle.lr300",
+      "isPublic": true,
+      "category": "Raids",
+      "forkedFrom": {
+        "username": "rustconveyorfilters",
+        "key": "metal-combat-kit"
+      },
+      "outputContainer": "box.wooden.large",
+      "views": 27,
+      "exports": 6,
+      "createdAt": "2026-09-14T19:10:36Z",
+      "updatedAt": "2026-09-14T19:10:36Z",
+      "tags": ["metal_kit_locker", "pvp"],
+      "items": [
+        { "item": "ammo.rifle" },
+        { "item": "rifle.lr300" },
+        { "item": "barricade.wood.cover" },
+        { "item": "metal.facemask" },
+        { "item": "metal.plate.torso" },
+        { "item": "hoodie" },
+        { "item": "roadsign.kilt" },
+        { "item": "pants" },
+        { "item": "shoes.boots" },
+        { "item": "tactical.gloves" },
+        { "item": "syringe.medical" },
+        { "item": "bandage" }
+      ]
+    }
+  ],
+  "shares": [
+    {
+      "to": "rustconveyorfilters",
+      "filters": ["raid-kit", "metal-combat-kit-lr"]
+    }
+  ]
+}

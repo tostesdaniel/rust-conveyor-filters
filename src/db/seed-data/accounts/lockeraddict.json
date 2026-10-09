@@ -1,0 +1,555 @@
+{
+  "account": {
+    "username": "lockeraddict",
+    "firstName": "Locker Addict",
+    "email": "lockeraddict@rcf.com",
+    "password": "lockeraddict@rcf"
+  },
+  "categories": [
+    {
+      "name": "Hazmat Kits",
+      "subCategories": ["Monument", "Cargo"]
+    },
+    {
+      "name": "Roadsign Kits",
+      "subCategories": ["Roam", "Defense"]
+    },
+    {
+      "name": "Metal Kits",
+      "subCategories": ["Raid", "Defense"]
+    }
+  ],
+  "filters": [
+    {
+      "key": "kit-refill-box",
+      "name": "Kit Refill Box",
+      "description": "Ammo and meds that keep the lockers full",
+      "imagePath": "syringe.medical",
+      "isPublic": true,
+      "outputContainer": "box.wooden",
+      "views": 44,
+      "exports": 16,
+      "createdAt": "2026-07-28T18:35:40Z",
+      "updatedAt": "2026-07-28T18:35:40Z",
+      "tags": ["meds_box", "ammo_t1", "ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.rifle"
+        },
+        {
+          "item": "ammo.pistol"
+        },
+        {
+          "item": "syringe.medical"
+        },
+        {
+          "item": "bandage"
+        },
+        {
+          "item": "largemedkit"
+        },
+        {
+          "item": "barricade.wood.cover"
+        }
+      ]
+    },
+    {
+      "key": "hazmat-mp5",
+      "name": "Hazmat + MP5",
+      "imagePath": "smg.mp5",
+      "isPublic": true,
+      "category": "Hazmat Kits",
+      "subCategory": "Monument",
+      "outputContainer": "locker",
+      "views": 88,
+      "exports": 35,
+      "createdAt": "2026-01-17T23:02:14Z",
+      "updatedAt": "2026-01-17T23:02:14Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t3"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "smg.mp5",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 5
+        },
+        {
+          "item": "bandage",
+          "max": 5
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "hazmat-thompson",
+      "name": "Hazmat + Thompson",
+      "imagePath": "smg.thompson",
+      "isPublic": true,
+      "category": "Hazmat Kits",
+      "subCategory": "Monument",
+      "outputContainer": "locker",
+      "views": 37,
+      "exports": 13,
+      "createdAt": "2026-01-17T23:06:51Z",
+      "updatedAt": "2026-01-17T23:06:51Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "smg.thompson",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 5
+        },
+        {
+          "item": "bandage",
+          "max": 5
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "key": "cargo-hazmat-semi",
+      "name": "Cargo Hazmat + Semi",
+      "description": "For the boat ride out",
+      "imagePath": "hazmatsuit",
+      "isPublic": true,
+      "category": "Hazmat Kits",
+      "subCategory": "Cargo",
+      "outputContainer": "locker",
+      "views": 25,
+      "exports": 8,
+      "createdAt": "2026-02-02T19:44:27Z",
+      "updatedAt": "2026-02-02T19:44:27Z",
+      "tags": ["hazmat_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "hazmatsuit",
+          "max": 1
+        },
+        {
+          "item": "rifle.semiauto",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 6
+        },
+        {
+          "item": "largemedkit",
+          "max": 1
+        },
+        {
+          "item": "bandage",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "roadsign-semi-rifle",
+      "name": "Roadsign + Semi Rifle",
+      "imagePath": "rifle.semiauto",
+      "isPublic": true,
+      "category": "Roadsign Kits",
+      "subCategory": "Roam",
+      "outputContainer": "locker",
+      "views": 121,
+      "exports": 49,
+      "createdAt": "2025-12-05T21:18:03Z",
+      "updatedAt": "2026-03-28T22:51:19Z",
+      "tags": ["roadsign_kit_locker", "auto_locker", "pvp"],
+      "items": [
+        {
+          "item": "coffeecan.helmet",
+          "max": 1
+        },
+        {
+          "item": "roadsign.jacket",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "roadsign.gloves",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "rifle.semiauto",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "bandage",
+          "max": 3
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "roadsign-thompson",
+      "name": "Roadsign + Thompson",
+      "imagePath": "smg.thompson",
+      "isPublic": true,
+      "category": "Roadsign Kits",
+      "subCategory": "Roam",
+      "outputContainer": "locker",
+      "views": 46,
+      "exports": 14,
+      "createdAt": "2025-12-05T21:24:38Z",
+      "updatedAt": "2025-12-05T21:24:38Z",
+      "tags": ["roadsign_kit_locker", "auto_locker", "guns_t2"],
+      "items": [
+        {
+          "item": "coffeecan.helmet",
+          "max": 1
+        },
+        {
+          "item": "roadsign.jacket",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "roadsign.gloves",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "smg.thompson",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 6
+        },
+        {
+          "item": "bandage",
+          "max": 3
+        },
+        {
+          "item": "barricade.wood.cover",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "roadsign-mp5",
+      "name": "Roadsign + MP5",
+      "description": "Base defense on a budget",
+      "imagePath": "smg.mp5",
+      "isPublic": true,
+      "category": "Roadsign Kits",
+      "subCategory": "Defense",
+      "outputContainer": "locker",
+      "views": 31,
+      "exports": 9,
+      "createdAt": "2026-03-10T17:07:55Z",
+      "updatedAt": "2026-03-10T17:07:55Z",
+      "tags": ["roadsign_kit_locker", "raid_defense_kit", "guns_t3"],
+      "items": [
+        {
+          "item": "coffeecan.helmet",
+          "max": 1
+        },
+        {
+          "item": "roadsign.jacket",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "roadsign.gloves",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "smg.mp5",
+          "max": 1
+        },
+        {
+          "item": "ammo.pistol",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 6
+        },
+        {
+          "item": "bandage",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "metal-ak-hv",
+      "name": "Metal + AK + HV Rockets",
+      "description": "Outside bedroom raid defense kit",
+      "imagePath": "rocket.launcher",
+      "isPublic": true,
+      "category": "Metal Kits",
+      "subCategory": "Defense",
+      "outputContainer": "locker",
+      "views": 236,
+      "exports": 102,
+      "createdAt": "2025-10-29T22:47:16Z",
+      "updatedAt": "2026-09-14T20:33:58Z",
+      "tags": ["metal_kit_locker", "raid_defense_kit", "pvp"],
+      "items": [
+        {
+          "item": "metal.facemask",
+          "max": 1
+        },
+        {
+          "item": "metal.plate.torso",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "tactical.gloves",
+          "max": 1
+        },
+        {
+          "item": "rifle.ak",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 4
+        },
+        {
+          "item": "rocket.launcher",
+          "max": 1
+        },
+        {
+          "item": "ammo.rocket.hv",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "metal-lr300",
+      "name": "Metal + LR-300",
+      "imagePath": "rifle.lr300",
+      "isPublic": true,
+      "category": "Metal Kits",
+      "subCategory": "Defense",
+      "outputContainer": "locker",
+      "views": 104,
+      "exports": 38,
+      "createdAt": "2025-10-29T22:52:40Z",
+      "updatedAt": "2025-10-29T22:52:40Z",
+      "tags": ["metal_kit_locker", "auto_locker", "guns_t3"],
+      "items": [
+        {
+          "item": "metal.facemask",
+          "max": 1
+        },
+        {
+          "item": "metal.plate.torso",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "tactical.gloves",
+          "max": 1
+        },
+        {
+          "item": "rifle.lr300",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 6
+        },
+        {
+          "item": "bandage",
+          "max": 3
+        }
+      ]
+    },
+    {
+      "key": "metal-bolt",
+      "name": "Metal + Bolty",
+      "description": "Roof camper special",
+      "imagePath": "rifle.bolt",
+      "isPublic": true,
+      "category": "Metal Kits",
+      "subCategory": "Defense",
+      "outputContainer": "locker",
+      "views": 58,
+      "exports": 17,
+      "createdAt": "2026-08-30T21:15:22Z",
+      "updatedAt": "2026-08-30T21:15:22Z",
+      "tags": ["metal_kit_locker", "raid_defense_kit", "guns_t3"],
+      "items": [
+        {
+          "item": "heavy.plate.helmet",
+          "max": 1
+        },
+        {
+          "item": "metal.plate.torso",
+          "max": 1
+        },
+        {
+          "item": "roadsign.kilt",
+          "max": 1
+        },
+        {
+          "item": "hoodie",
+          "max": 1
+        },
+        {
+          "item": "pants",
+          "max": 1
+        },
+        {
+          "item": "shoes.boots",
+          "max": 1
+        },
+        {
+          "item": "tactical.gloves",
+          "max": 1
+        },
+        {
+          "item": "rifle.bolt",
+          "max": 1
+        },
+        {
+          "item": "ammo.rifle",
+          "max": 128
+        },
+        {
+          "item": "syringe.medical",
+          "max": 8
+        }
+      ]
+    }
+  ],
+  "shares": [
+    {
+      "to": "developer",
+      "filters": ["metal-ak-hv"]
+    }
+  ]
+}

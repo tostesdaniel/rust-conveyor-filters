@@ -1,0 +1,446 @@
+{
+  "account": {
+    "username": "barrellover",
+    "firstName": "Barrel Lover",
+    "email": "barrellover@rcf.com",
+    "password": "barrellover@rcf"
+  },
+  "categories": [
+    {
+      "name": "Ammo Barrel",
+      "subCategories": []
+    },
+    {
+      "name": "Gun Barrel",
+      "subCategories": []
+    },
+    {
+      "name": "Clothing Barrel",
+      "subCategories": []
+    },
+    {
+      "name": "Comp Barrel",
+      "subCategories": []
+    },
+    {
+      "name": "Boom Barrel",
+      "subCategories": []
+    },
+    {
+      "name": "Food",
+      "subCategories": []
+    }
+  ],
+  "filters": [
+    {
+      "key": "everything-else",
+      "name": "Everything Else",
+      "description": "Whatever the other barrels don't take",
+      "imagePath": "storage_barrel_b",
+      "isPublic": true,
+      "outputContainer": "storage_barrel_b",
+      "views": 96,
+      "exports": 41,
+      "createdAt": "2025-11-02T18:40:12Z",
+      "updatedAt": "2026-05-19T21:03:44Z",
+      "tags": ["catch_all"],
+      "items": [
+        {
+          "category": "Construction"
+        },
+        {
+          "category": "Items"
+        },
+        {
+          "category": "Electrical"
+        },
+        {
+          "category": "Fun"
+        },
+        {
+          "category": "Traps"
+        },
+        {
+          "category": "Other"
+        }
+      ]
+    },
+    {
+      "key": "pistol-ammo",
+      "name": "Pistol Ammo",
+      "imagePath": "ammo.pistol",
+      "isPublic": true,
+      "category": "Ammo Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 38,
+      "exports": 12,
+      "createdAt": "2025-11-02T18:12:05Z",
+      "updatedAt": "2025-11-02T18:12:05Z",
+      "tags": ["ammo_t1"],
+      "items": [
+        {
+          "item": "ammo.pistol"
+        },
+        {
+          "item": "ammo.pistol.hv"
+        },
+        {
+          "item": "ammo.pistol.fire"
+        }
+      ]
+    },
+    {
+      "key": "rifle-ammo",
+      "name": "5.56",
+      "imagePath": "ammo.rifle",
+      "isPublic": true,
+      "category": "Ammo Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 54,
+      "exports": 19,
+      "createdAt": "2025-11-02T18:14:51Z",
+      "updatedAt": "2026-02-11T16:27:30Z",
+      "tags": ["ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.rifle"
+        },
+        {
+          "item": "ammo.rifle.hv"
+        },
+        {
+          "item": "ammo.rifle.incendiary"
+        },
+        {
+          "item": "ammo.rifle.explosive"
+        }
+      ]
+    },
+    {
+      "key": "shotgun-40mm",
+      "name": "Shotgun & 40mm",
+      "imagePath": "ammo.shotgun",
+      "isPublic": true,
+      "category": "Ammo Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 21,
+      "exports": 6,
+      "createdAt": "2025-11-02T18:17:20Z",
+      "updatedAt": "2025-11-02T18:17:20Z",
+      "tags": ["ammo_t1", "ammo_t2"],
+      "items": [
+        {
+          "item": "ammo.shotgun"
+        },
+        {
+          "item": "ammo.shotgun.slug"
+        },
+        {
+          "item": "ammo.shotgun.fire"
+        },
+        {
+          "item": "ammo.handmade.shell"
+        },
+        {
+          "item": "ammo.grenadelauncher.he"
+        },
+        {
+          "item": "ammo.grenadelauncher.buckshot"
+        }
+      ]
+    },
+    {
+      "key": "attachments",
+      "name": "Attachments",
+      "imagePath": "weapon.mod.holosight",
+      "isPublic": true,
+      "category": "Gun Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 72,
+      "exports": 24,
+      "createdAt": "2025-11-19T19:51:36Z",
+      "updatedAt": "2026-08-04T18:22:10Z",
+      "tags": ["weapon_attachments"],
+      "items": [
+        {
+          "item": "weapon.mod.holosight"
+        },
+        {
+          "item": "weapon.mod.simplesight"
+        },
+        {
+          "item": "weapon.mod.small.scope"
+        },
+        {
+          "item": "weapon.mod.8x.scope"
+        },
+        {
+          "item": "weapon.mod.lasersight"
+        },
+        {
+          "item": "weapon.mod.flashlight"
+        },
+        {
+          "item": "weapon.mod.silencer"
+        },
+        {
+          "item": "weapon.mod.muzzlebrake"
+        },
+        {
+          "item": "weapon.mod.muzzleboost"
+        },
+        {
+          "item": "weapon.mod.extendedmags"
+        }
+      ]
+    },
+    {
+      "key": "helmets",
+      "name": "Helmets",
+      "imagePath": "ballistic.helmet",
+      "isPublic": true,
+      "category": "Clothing Barrel",
+      "outputContainer": "bamboo.barrel",
+      "views": 17,
+      "exports": 4,
+      "createdAt": "2025-12-14T20:05:33Z",
+      "updatedAt": "2025-12-14T20:05:33Z",
+      "tags": ["armor_box"],
+      "items": [
+        {
+          "item": "ballistic.helmet"
+        },
+        {
+          "item": "metal.facemask"
+        },
+        {
+          "item": "coffeecan.helmet"
+        },
+        {
+          "item": "heavy.plate.helmet"
+        },
+        {
+          "item": "riot.helmet"
+        }
+      ]
+    },
+    {
+      "key": "chest-and-legs",
+      "name": "Chest & Legs",
+      "imagePath": "metal.plate.torso",
+      "isPublic": true,
+      "category": "Clothing Barrel",
+      "outputContainer": "bamboo.barrel",
+      "views": 23,
+      "exports": 7,
+      "createdAt": "2025-12-14T20:09:02Z",
+      "updatedAt": "2026-03-01T12:44:18Z",
+      "tags": ["armor_box", "clothing_box"],
+      "items": [
+        {
+          "item": "metal.plate.torso"
+        },
+        {
+          "item": "roadsign.jacket"
+        },
+        {
+          "item": "roadsign.kilt"
+        },
+        {
+          "item": "hoodie"
+        },
+        {
+          "item": "pants"
+        }
+      ]
+    },
+    {
+      "key": "gloves-and-boots",
+      "name": "Gloves & Boots",
+      "imagePath": "tactical.gloves",
+      "isPublic": true,
+      "category": "Clothing Barrel",
+      "outputContainer": "bamboo.barrel",
+      "views": 9,
+      "exports": 2,
+      "createdAt": "2025-12-14T20:11:47Z",
+      "updatedAt": "2025-12-14T20:11:47Z",
+      "tags": ["clothing_box"],
+      "items": [
+        {
+          "item": "tactical.gloves"
+        },
+        {
+          "item": "roadsign.gloves"
+        },
+        {
+          "item": "burlap.gloves"
+        },
+        {
+          "item": "shoes.boots"
+        }
+      ]
+    },
+    {
+      "key": "gun-comps",
+      "name": "Gun Comps",
+      "imagePath": "riflebody",
+      "isPublic": true,
+      "category": "Comp Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 61,
+      "exports": 28,
+      "createdAt": "2026-01-08T15:30:00Z",
+      "updatedAt": "2026-01-08T15:30:00Z",
+      "tags": ["components_box"],
+      "items": [
+        {
+          "item": "riflebody"
+        },
+        {
+          "item": "semibody"
+        },
+        {
+          "item": "smgbody"
+        },
+        {
+          "item": "metalspring"
+        },
+        {
+          "item": "metalpipe"
+        }
+      ]
+    },
+    {
+      "key": "cloth-comps",
+      "name": "Cloth Comps",
+      "imagePath": "sewingkit",
+      "isPublic": true,
+      "category": "Comp Barrel",
+      "outputContainer": "wicker.barrel",
+      "views": 14,
+      "exports": 3,
+      "createdAt": "2026-01-08T15:33:12Z",
+      "updatedAt": "2026-01-08T15:33:12Z",
+      "tags": ["components_box"],
+      "items": [
+        {
+          "item": "sewingkit"
+        },
+        {
+          "item": "tarp"
+        },
+        {
+          "item": "rope"
+        }
+      ]
+    },
+    {
+      "key": "comp-overflow",
+      "name": "Comp Overflow",
+      "description": "Every other component, ready for the recycler",
+      "imagePath": "gears",
+      "isPublic": true,
+      "category": "Comp Barrel",
+      "outputContainer": "storage_barrel_c",
+      "views": 33,
+      "exports": 11,
+      "createdAt": "2026-01-08T15:36:40Z",
+      "updatedAt": "2026-04-22T19:10:05Z",
+      "tags": ["components_box"],
+      "items": [
+        {
+          "category": "Components"
+        }
+      ]
+    },
+    {
+      "key": "boom",
+      "name": "Boom",
+      "description": "Keep it away from the front door",
+      "imagePath": "explosive.timed",
+      "isPublic": true,
+      "category": "Boom Barrel",
+      "outputContainer": "abyss.barrel.vertical",
+      "views": 142,
+      "exports": 57,
+      "createdAt": "2026-02-20T22:18:09Z",
+      "updatedAt": "2026-06-30T23:41:27Z",
+      "tags": ["raid_offense_kit", "ammo_t3"],
+      "items": [
+        {
+          "item": "explosive.timed"
+        },
+        {
+          "item": "explosive.satchel"
+        },
+        {
+          "item": "ammo.rocket.basic"
+        },
+        {
+          "item": "ammo.rocket.hv"
+        },
+        {
+          "item": "ammo.rocket.fire"
+        },
+        {
+          "item": "grenade.beancan"
+        },
+        {
+          "item": "grenade.f1"
+        },
+        {
+          "item": "explosives"
+        },
+        {
+          "item": "rocket.launcher"
+        }
+      ]
+    },
+    {
+      "key": "fridge",
+      "name": "Fridge",
+      "imagePath": "fish.cooked",
+      "isPublic": true,
+      "category": "Food",
+      "outputContainer": "fridge",
+      "views": 47,
+      "exports": 15,
+      "createdAt": "2026-03-15T17:55:21Z",
+      "updatedAt": "2026-03-15T17:55:21Z",
+      "tags": ["food_box"],
+      "items": [
+        {
+          "item": "fish.cooked"
+        },
+        {
+          "item": "bearmeat.cooked"
+        },
+        {
+          "item": "deermeat.cooked"
+        },
+        {
+          "item": "chicken.cooked"
+        },
+        {
+          "item": "wolfmeat.cooked"
+        },
+        {
+          "item": "meat.pork.cooked"
+        },
+        {
+          "item": "horsemeat.cooked"
+        },
+        {
+          "item": "pumpkin"
+        },
+        {
+          "item": "corn"
+        },
+        {
+          "item": "potato"
+        }
+      ]
+    }
+  ]
+}

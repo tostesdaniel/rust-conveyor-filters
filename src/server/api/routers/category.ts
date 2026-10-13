@@ -26,7 +26,7 @@ import {
 } from "@/data/user-categories";
 import { db } from "@/db";
 import { TRPCError } from "@trpc/server";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -501,7 +501,6 @@ export const categoryRouter = createTRPCRouter({
               .set({
                 subCategoryId: null,
                 order: newOrder,
-                updatedAt: sql`now()`,
               })
               .where(
                 and(

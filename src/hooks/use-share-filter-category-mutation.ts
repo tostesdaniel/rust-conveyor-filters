@@ -1,10 +1,6 @@
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 
-interface ShareMutationContext {
-  isTokenValid: boolean;
-}
-
 interface UseShareFilterCategoryMutationProps {
   onShareSuccess: (token: string) => void;
   onTokenInvalid: (token: string) => void;
@@ -14,28 +10,12 @@ export function useShareFilterCategoryMutation({
   onShareSuccess,
   onTokenInvalid,
 }: UseShareFilterCategoryMutationProps) {
-  const utils = api.useUtils();
-
   return api.sharedFilter.shareCategory.useMutation({
-    onMutate: async (variables) => {
-      try {
-        const result = await utils.shareToken.validate.fetch({
-          token: variables.token,
-        });
-        if (!result.valid) throw new Error("Invalid token");
-        return { isTokenValid: result.valid };
-      } catch (error) {
-        throw error;
-      }
-    },
-    onSuccess: (result, variables, context) => {
-      const mutationContext = context as ShareMutationContext;
-      if (mutationContext?.isTokenValid) {
-        onShareSuccess(variables.token);
-        toast.success(
-          `Shared ${result.sharedCount} filters (${result.alreadySharedCount} already shared)`,
-        );
-      }
+    onSuccess: (result, variables) => {
+      onShareSuccess(variables.token);
+      toast.success(
+        `Shared ${result.sharedCount} filters (${result.alreadySharedCount} already shared)`,
+      );
     },
     onError: (error, variables) => {
       switch (error.data?.code) {

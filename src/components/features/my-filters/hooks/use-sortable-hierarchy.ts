@@ -17,6 +17,8 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { toast } from "sonner";
+
+import { useHierarchyCache } from "@/components/features/my-filters/hooks/use-hierarchy-cache";
 import { useUpdatePreferences } from "@/components/features/my-filters/hooks/use-update-preferences";
 
 type Hierarchy = RouterOutputs["category"]["getHierarchy"];
@@ -82,7 +84,6 @@ function parseBucketId(id: string): BucketLocation | null {
 }
 
 export function useSortableHierarchy() {
-  const utils = api.useUtils();
   const hierarchyQuery = api.category.getHierarchy.useQuery();
   const uncategorizedQuery = api.filter.getByCategory.useQuery({
     categoryId: null,
@@ -122,40 +123,39 @@ export function useSortableHierarchy() {
     }),
   );
 
+  const hierarchyCache = useHierarchyCache();
+
   const moveFilter = api.filter.moveToPosition.useMutation({
+    onMutate: hierarchyCache.cancel,
     onError: (err) => {
       toast.error(err.message || "Failed to move filter");
     },
-    onSettled: () => {
-      utils.category.getHierarchy.invalidate();
-      utils.filter.getByCategory.invalidate({ categoryId: null });
-    },
+    onSettled: hierarchyCache.refetch,
   });
 
   const updateCategoryOrder = api.category.updateOrder.useMutation({
+    onMutate: hierarchyCache.cancel,
     onError: (err) => {
       toast.error(err.message || "Failed to reorder categories");
     },
-    onSettled: () => {
-      utils.category.getHierarchy.invalidate();
-    },
+    onSettled: hierarchyCache.refetch,
   });
 
   const updateSubCategoryOrder =
     api.category.updateSubCategoryOrder.useMutation({
+      onMutate: hierarchyCache.cancel,
       onError: (err) => {
         toast.error(err.message || "Failed to reorder subcategories");
       },
-      onSettled: () => {
-        utils.category.getHierarchy.invalidate();
-      },
+      onSettled: hierarchyCache.refetch,
     });
 
   const updatePreferences = useUpdatePreferences();
 
   const findFilterById = (id: number) => {
     for (const f of localUncategorized) {
-      if (f.id === id) return { filter: f, location: bucketLocationForFilter(f) };
+      if (f.id === id)
+        return { filter: f, location: bucketLocationForFilter(f) };
     }
     for (const cat of localCategories) {
       for (const f of cat.filters) {
@@ -269,7 +269,10 @@ export function useSortableHierarchy() {
         const categoryDroppables = args.droppableContainers.filter((d) =>
           String(d.id).startsWith("category-"),
         );
-        return closestCenter({ ...args, droppableContainers: categoryDroppables });
+        return closestCenter({
+          ...args,
+          droppableContainers: categoryDroppables,
+        });
       }
       if (activeId?.startsWith("subcategory-")) {
         const subCategoryDroppables = args.droppableContainers.filter((d) =>
@@ -339,7 +342,9 @@ export function useSortableHierarchy() {
       if (activeSid === overSid) return;
       setLocalCategories((cats) =>
         cats.map((cat) => {
-          const oldIndex = cat.subCategories.findIndex((s) => s.id === activeSid);
+          const oldIndex = cat.subCategories.findIndex(
+            (s) => s.id === activeSid,
+          );
           const newIndex = cat.subCategories.findIndex((s) => s.id === overSid);
           if (oldIndex === -1 || newIndex === -1) return cat;
           return {
@@ -407,7 +412,8 @@ export function useSortableHierarchy() {
 
     if (!over) {
       if (hierarchyQuery.data) setLocalCategories(hierarchyQuery.data);
-      if (uncategorizedQuery.data) setLocalUncategorized(uncategorizedQuery.data);
+      if (uncategorizedQuery.data)
+        setLocalUncategorized(uncategorizedQuery.data);
       return;
     }
 
@@ -453,7 +459,10 @@ export function useSortableHierarchy() {
       if (!parentId) return;
       updateSubCategoryOrder.mutate({
         parentId,
-        subCategories: reorderedSubs.map((s, idx) => ({ id: s.id, order: idx })),
+        subCategories: reorderedSubs.map((s, idx) => ({
+          id: s.id,
+          order: idx,
+        })),
       });
       return;
     }
@@ -469,7 +478,8 @@ export function useSortableHierarchy() {
   return {
     categories: localCategories,
     uncategorizedFilters: localUncategorized,
-    uncategorizedPosition: preferencesQuery.data?.uncategorizedPosition ?? "top",
+    uncategorizedPosition:
+      preferencesQuery.data?.uncategorizedPosition ?? "top",
     activeItem,
     activeId,
     sensors,

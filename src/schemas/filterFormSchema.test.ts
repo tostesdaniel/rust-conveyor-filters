@@ -1,10 +1,11 @@
-import { describe, expect, it } from "vitest";
-
-import { MAX_FILTER_ITEMS } from "@/config/constants";
 import {
+  createFilterRequestSchema,
   createFilterSchema,
   updateFilterSchema,
 } from "@/schemas/filterFormSchema";
+import { describe, expect, it } from "vitest";
+
+import { MAX_FILTER_ITEMS } from "@/config/constants";
 
 function item(itemId: number, extra: Record<string, unknown> = {}) {
   return {
@@ -76,9 +77,7 @@ describe("createFilterSchema", () => {
   });
 
   it("requires an image", () => {
-    const result = createFilterSchema.safeParse(
-      validFilter({ imagePath: "" }),
-    );
+    const result = createFilterSchema.safeParse(validFilter({ imagePath: "" }));
     expect(result.success).toBe(false);
     expect(result.error?.issues[0]?.message).toBe("You must select an image");
   });
@@ -224,6 +223,29 @@ describe("Output container", () => {
     expect(updateFilterSchema.parse({ outputContainer: "box.wooden" })).toEqual(
       { outputContainer: "box.wooden" },
     );
+  });
+});
+
+describe("createFilterRequestSchema", () => {
+  it("accepts a known sort and leaves it optional", () => {
+    expect(
+      createFilterRequestSchema.parse(validFilter({ sort: "dateDesc" })).sort,
+    ).toBe("dateDesc");
+    expect(createFilterRequestSchema.parse(validFilter()).sort).toBeUndefined();
+  });
+
+  it("rejects an unknown sort", () => {
+    const result = createFilterRequestSchema.safeParse(
+      validFilter({ sort: "random" }),
+    );
+    expect(result.success).toBe(false);
+  });
+
+  it("keeps the Latin-character check on public filters", () => {
+    const result = createFilterRequestSchema.safeParse(
+      validFilter({ isPublic: true, name: "Фильтр", sort: "nameAsc" }),
+    );
+    expect(result.success).toBe(false);
   });
 });
 

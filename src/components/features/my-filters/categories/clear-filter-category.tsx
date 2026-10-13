@@ -6,6 +6,11 @@ import { toast } from "sonner";
 
 import type { OwnerFilterDTO } from "@/types/filter";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  moveFilter,
+  UNCATEGORIZED,
+} from "@/components/features/my-filters/hierarchy-cache";
+import { useHierarchyCache } from "@/components/features/my-filters/hooks/use-hierarchy-cache";
 
 interface ClearFilterCategoryProps {
   filter: OwnerFilterDTO;
@@ -17,16 +22,31 @@ export function ClearFilterCategory({
   isSubCategory = false,
 }: ClearFilterCategoryProps) {
   const utils = api.useUtils();
+  const hierarchyCache = useHierarchyCache();
   const { mutate: clearCategory } =
     api.category.clearFilterCategory.useMutation({
+      onMutate: ({ filterId }) =>
+        hierarchyCache.update((data) =>
+          moveFilter(
+            data,
+            filterId,
+            filter.subCategoryId
+              ? { categoryId: filter.categoryId, subCategoryId: null }
+              : UNCATEGORIZED,
+          ),
+        ),
       onSuccess: () => {
         toast.success("Filter category cleared");
-        utils.filter.getByCategory.invalidate({ categoryId: null });
-        utils.category.getHierarchy.invalidate();
       },
-      onError: () => {
+      onError: (_err, _variables, previous) => {
+        hierarchyCache.rollback(previous);
         toast.error("Failed to clear filter category");
       },
+      onSettled: () =>
+        Promise.all([
+          hierarchyCache.refetch(),
+          utils.filter.getAll.invalidate(),
+        ]),
     });
 
   const handleClearCategory = () => {

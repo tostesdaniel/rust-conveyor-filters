@@ -1,6 +1,6 @@
 "use client";
 
-import { api } from "@/trpc/react";
+import { api, type RouterOutputs } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,6 +27,34 @@ const formSchema = z.object({
   filterId: z.number(),
 });
 
+type SharedFilterGroups = RouterOutputs["sharedFilter"]["getAll"];
+
+// The server leaves out senders and categories with no filters, so drop them here too.
+function removeSharedFilter(groups: SharedFilterGroups, filterId: number) {
+  const keep = (filter: { id: number }) => filter.id !== filterId;
+  return groups
+    .map((group) => ({
+      ...group,
+      uncategorizedFilters: group.uncategorizedFilters.filter(keep),
+      categories: group.categories
+        .map((category) => ({
+          ...category,
+          filters: category.filters.filter(keep),
+          subCategories: category.subCategories
+            .map((sub) => ({ ...sub, filters: sub.filters.filter(keep) }))
+            .filter((sub) => sub.filters.length > 0),
+        }))
+        .filter(
+          (category) =>
+            category.filters.length > 0 || category.subCategories.length > 0,
+        ),
+    }))
+    .filter(
+      (group) =>
+        group.uncategorizedFilters.length > 0 || group.categories.length > 0,
+    );
+}
+
 export function DeleteSharedFilterDialog({
   filterId,
   open,
@@ -34,13 +62,23 @@ export function DeleteSharedFilterDialog({
 }: DeleteSharedFilterDialogProps) {
   const utils = api.useUtils();
   const mutation = api.sharedFilter.delete.useMutation({
+    onMutate: async ({ filterId }) => {
+      await utils.sharedFilter.getAll.cancel();
+      const previous = utils.sharedFilter.getAll.getData();
+      utils.sharedFilter.getAll.setData(
+        undefined,
+        (groups) => groups && removeSharedFilter(groups, filterId),
+      );
+      return previous;
+    },
     onSuccess: () => {
-      utils.sharedFilter.getAll.invalidate();
       toast.success("Filter removed from shared filters");
     },
-    onError: (error) => {
+    onError: (error, _variables, previous) => {
+      utils.sharedFilter.getAll.setData(undefined, previous);
       toast.error(error.message);
     },
+    onSettled: () => utils.sharedFilter.getAll.invalidate(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,10 +88,9 @@ export function DeleteSharedFilterDialog({
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    try {
-      await mutation.mutateAsync({ filterId: data.filterId });
-    } catch (error) {}
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    mutation.mutate({ filterId: data.filterId });
+    onOpenChange(false);
   };
 
   return (
@@ -76,9 +113,7 @@ export function DeleteSharedFilterDialog({
               >
                 Cancel
               </Button>
-              <Button type='submit' disabled={mutation.isPending}>
-                {mutation.isPending ? " Removing..." : "Remove"}
-              </Button>
+              <Button type='submit'>Remove</Button>
             </AlertDialogFooter>
           </form>
         </Form>

@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { removeFilter } from "@/components/features/my-filters/hierarchy-cache";
+import { useHierarchyCache } from "@/components/features/my-filters/hooks/use-hierarchy-cache";
 
 type DeleteFilterFormProps = {
   cardId: number;
@@ -33,41 +35,41 @@ export function DeleteFilterForm({ cardId, setOpen }: DeleteFilterFormProps) {
     },
   });
 
+  const hierarchyCache = useHierarchyCache();
   const mutation = api.filter.delete.useMutation({
+    onMutate: ({ filterId }) =>
+      hierarchyCache.update((data) => removeFilter(data, filterId)),
     onSuccess: () => {
       trackEvent("filter_deleted", { filterId: cardId });
       toast.success("Filter deleted successfully");
-      utils.filter.getByCategory.invalidate();
-      utils.filter.getAll.invalidate();
-      utils.category.getHierarchy.invalidate();
-      setOpen(false);
     },
-    onError: () => {
+    onError: (_err, _variables, previous) => {
+      hierarchyCache.rollback(previous);
       toast.error("Error deleting filter");
     },
+    onSettled: () =>
+      Promise.all([
+        hierarchyCache.refetch(),
+        utils.filter.getAll.invalidate(),
+        utils.filter.getPublicListInfinite.invalidate(),
+        utils.bookmark.getAll.invalidate(),
+      ]),
   });
 
-  const { isPending } = mutation;
-
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    try {
-      await mutation.mutateAsync({ filterId: data.cardId });
-    } catch (error) {}
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    mutation.mutate({ filterId: data.cardId });
+    setOpen(false);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <AlertDialogFooter>
-          <AlertDialogCancel
-            disabled={isPending}
-            onClick={() => setOpen(false)}
-            variant='ghost'
-          >
+          <AlertDialogCancel onClick={() => setOpen(false)} variant='ghost'>
             Cancel
           </AlertDialogCancel>
-          <Button type='submit' disabled={isPending} variant='destructive'>
-            {isPending ? "Deleting..." : "Delete"}
+          <Button type='submit' variant='destructive'>
+            Delete
           </Button>
         </AlertDialogFooter>
       </form>

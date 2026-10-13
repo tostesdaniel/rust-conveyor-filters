@@ -1,0 +1,239 @@
+{
+  "account": {
+    "username": "smeltlord",
+    "firstName": "Smelt Lord",
+    "email": "smeltlord@rcf.com",
+    "password": "smeltlord@rcf"
+  },
+  "categories": [
+    { "name": "Furnaces", "subCategories": [] },
+    { "name": "Refinery", "subCategories": [] },
+    { "name": "Farm", "subCategories": ["Seeds", "Clones"] },
+    { "name": "Kitchen", "subCategories": [] }
+  ],
+  "filters": [
+    {
+      "key": "fuel-buffer",
+      "name": "Fuel Buffer",
+      "imagePath": "lowgradefuel",
+      "isPublic": true,
+      "outputContainer": "box.wooden",
+      "views": 29,
+      "exports": 9,
+      "createdAt": "2026-06-03T19:22:48Z",
+      "updatedAt": "2026-06-03T19:22:48Z",
+      "tags": ["resources"],
+      "items": [
+        { "item": "lowgradefuel" },
+        { "item": "crude.oil" },
+        { "item": "fat.animal" },
+        { "item": "diesel_barrel" }
+      ]
+    },
+    {
+      "key": "large-furnace-in",
+      "name": "Large Furnace [In]",
+      "description": "Feeds a large furnace without clogging it",
+      "imagePath": "furnace.large",
+      "isPublic": true,
+      "category": "Furnaces",
+      "outputContainer": "furnace.large",
+      "views": 318,
+      "exports": 131,
+      "createdAt": "2025-10-21T14:02:11Z",
+      "updatedAt": "2026-07-12T10:48:36Z",
+      "tags": ["ore_smelting_box", "industrial_box"],
+      "items": [
+        { "item": "wood", "max": 5 },
+        { "item": "metal.ore", "max": 13 },
+        { "item": "sulfur.ore", "max": 24 },
+        { "item": "hq.metal.ore", "max": 7 }
+      ]
+    },
+    {
+      "key": "large-furnace-out",
+      "name": "Large Furnace [Out]",
+      "imagePath": "metal.fragments",
+      "isPublic": true,
+      "category": "Furnaces",
+      "outputContainer": "box.wooden.large",
+      "views": 187,
+      "exports": 74,
+      "createdAt": "2025-10-21T14:06:39Z",
+      "updatedAt": "2026-07-12T10:49:02Z",
+      "tags": ["ore_smelting_box", "resources"],
+      "items": [
+        { "item": "metal.fragments" },
+        { "item": "metal.refined" },
+        { "item": "sulfur" },
+        { "item": "charcoal" }
+      ]
+    },
+    {
+      "key": "small-furnace-feed",
+      "name": "Small Furnace Feed",
+      "imagePath": "furnace",
+      "isPublic": true,
+      "category": "Furnaces",
+      "outputContainer": "furnace",
+      "views": 64,
+      "exports": 22,
+      "createdAt": "2025-10-23T09:15:57Z",
+      "updatedAt": "2025-10-23T09:15:57Z",
+      "tags": ["ore_smelting_box"],
+      "items": [
+        { "item": "wood", "max": 20 },
+        { "item": "metal.ore", "max": 8 },
+        { "item": "sulfur.ore", "max": 12 }
+      ]
+    },
+    {
+      "key": "refinery-in",
+      "name": "Refinery [In]",
+      "imagePath": "small.oil.refinery",
+      "isPublic": true,
+      "category": "Refinery",
+      "outputContainer": "small.oil.refinery",
+      "views": 75,
+      "exports": 26,
+      "createdAt": "2025-11-30T21:40:15Z",
+      "updatedAt": "2025-11-30T21:40:15Z",
+      "tags": ["ore_smelting_box", "resources"],
+      "items": [
+        { "item": "crude.oil", "max": 4 },
+        { "item": "wood", "max": 7 }
+      ]
+    },
+    {
+      "key": "refinery-out",
+      "name": "Refinery [Out]",
+      "imagePath": "lowgradefuel",
+      "isPublic": true,
+      "category": "Refinery",
+      "outputContainer": "box.wooden",
+      "views": 41,
+      "exports": 12,
+      "createdAt": "2025-11-30T21:43:02Z",
+      "updatedAt": "2025-11-30T21:43:02Z",
+      "tags": ["resources"],
+      "items": [{ "item": "lowgradefuel" }, { "item": "charcoal" }]
+    },
+    {
+      "key": "harvest",
+      "name": "Harvest",
+      "imagePath": "corn",
+      "isPublic": true,
+      "category": "Farm",
+      "outputContainer": "box.wooden.large",
+      "views": 52,
+      "exports": 18,
+      "createdAt": "2026-04-09T16:28:44Z",
+      "updatedAt": "2026-04-09T16:28:44Z",
+      "tags": ["farming_box"],
+      "items": [
+        { "item": "corn" },
+        { "item": "potato" },
+        { "item": "pumpkin" },
+        { "item": "red.berry" },
+        { "item": "blue.berry" },
+        { "item": "black.berry" },
+        { "item": "horsedung" }
+      ]
+    },
+    {
+      "key": "seeds",
+      "name": "Seeds",
+      "imagePath": "seed.hemp",
+      "isPublic": true,
+      "category": "Farm",
+      "subCategory": "Seeds",
+      "outputContainer": "box.wooden",
+      "views": 26,
+      "exports": 8,
+      "createdAt": "2026-04-09T16:31:20Z",
+      "updatedAt": "2026-04-09T16:31:20Z",
+      "tags": ["farming_box"],
+      "items": [
+        { "item": "seed.hemp" },
+        { "item": "seed.corn" },
+        { "item": "seed.potato" },
+        { "item": "seed.pumpkin" },
+        { "item": "seed.blue.berry" },
+        { "item": "seed.green.berry" },
+        { "item": "seed.red.berry" },
+        { "item": "seed.white.berry" },
+        { "item": "seed.yellow.berry" }
+      ]
+    },
+    {
+      "key": "clones",
+      "name": "Clones",
+      "imagePath": "clone.hemp",
+      "isPublic": true,
+      "category": "Farm",
+      "subCategory": "Clones",
+      "outputContainer": "box.wooden",
+      "views": 19,
+      "exports": 5,
+      "createdAt": "2026-04-09T16:33:58Z",
+      "updatedAt": "2026-08-17T13:05:12Z",
+      "tags": ["farming_box"],
+      "items": [
+        { "item": "clone.hemp" },
+        { "item": "clone.corn" },
+        { "item": "clone.potato" },
+        { "item": "clone.pumpkin" },
+        { "item": "clone.blue.berry" },
+        { "item": "clone.green.berry" },
+        { "item": "clone.red.berry" },
+        { "item": "clone.white.berry" },
+        { "item": "clone.yellow.berry" }
+      ]
+    },
+    {
+      "key": "fridge-food",
+      "name": "Fridge Food",
+      "description": "Only the stuff that spoils",
+      "imagePath": "fridge",
+      "isPublic": true,
+      "category": "Kitchen",
+      "outputContainer": "fridge",
+      "views": 58,
+      "exports": 20,
+      "createdAt": "2026-05-24T20:12:33Z",
+      "updatedAt": "2026-05-24T20:12:33Z",
+      "tags": ["food_box"],
+      "items": [
+        { "item": "bearmeat.cooked" },
+        { "item": "deermeat.cooked" },
+        { "item": "chicken.cooked" },
+        { "item": "fish.cooked" },
+        { "item": "meat.pork.cooked" },
+        { "item": "bearmeat" },
+        { "item": "deermeat.raw" },
+        { "item": "chicken.raw" },
+        { "item": "meat.boar" }
+      ]
+    },
+    {
+      "key": "no-fridge-needed",
+      "name": "No Fridge Needed",
+      "imagePath": "can.beans",
+      "isPublic": true,
+      "category": "Kitchen",
+      "outputContainer": "box.wooden",
+      "views": 34,
+      "exports": 10,
+      "createdAt": "2026-05-24T20:15:09Z",
+      "updatedAt": "2026-05-24T20:15:09Z",
+      "tags": ["food_box"],
+      "items": [
+        { "item": "can.beans" },
+        { "item": "can.tuna" },
+        { "item": "granolabar" },
+        { "item": "chocolate" },
+        { "item": "jar.pickle" }
+      ]
+    }
+  ]
+}

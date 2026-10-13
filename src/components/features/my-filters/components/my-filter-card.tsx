@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { invalidateMyFilters } from "@/trpc/invalidate";
 import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useSortable } from "@dnd-kit/sortable";
@@ -83,10 +84,7 @@ export function MyFilterCard({
   const utils = api.useUtils();
   const saveToCollection = api.sharedFilter.saveToCollection.useMutation({
     onSuccess: async () => {
-      await Promise.all([
-        utils.filter.getByCategory.invalidate({ categoryId: null }),
-        utils.category.getHierarchy.invalidate(),
-      ]);
+      await invalidateMyFilters(utils);
       toast.success("Saved to your collection");
     },
     onError: (err) => {
@@ -121,6 +119,7 @@ export function MyFilterCard({
   return (
     <li
       ref={setNodeRef}
+      data-filter-id={filter.id}
       style={style}
       className='relative col-span-1 flex min-w-[300px] overflow-visible rounded-md shadow-xs'
     >

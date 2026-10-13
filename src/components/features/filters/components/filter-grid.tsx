@@ -35,17 +35,26 @@ export function FilterGrid() {
     isPlaceholderData,
   } = useFilters(sort, search, categories, items, tags, container);
 
+  const lastSort = React.useRef(sort);
   React.useEffect(() => {
+    if (lastSort.current === sort) return;
+    lastSort.current = sort;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [sort]);
 
   React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage && !isPlaceholderData) {
       fetchNextPage().catch((err) => {
         console.error("Failed to fetch next page:", err);
       });
     }
-  }, [fetchNextPage, hasNextPage, inView, isFetchingNextPage]);
+  }, [
+    fetchNextPage,
+    hasNextPage,
+    inView,
+    isFetchingNextPage,
+    isPlaceholderData,
+  ]);
 
   if (isError) {
     return (

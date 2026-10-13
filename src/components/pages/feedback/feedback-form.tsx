@@ -5,10 +5,12 @@ import { api } from "@/trpc/react";
 import { trackEvent } from "@/utils/rybbit";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from "motion/react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { useFormDraft } from "@/hooks/use-form-draft";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { DraftRestoreBanner } from "@/components/shared/draft-restore-banner";
 import { LoadingButton } from "@/components/shared/loading-button";
 
 const DevTool = dynamic(
@@ -71,7 +74,7 @@ const formSchema = z.object({
 });
 
 export function FeedbackForm() {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
   const isLoggedIn = isLoaded && isSignedIn;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -80,6 +83,8 @@ export function FeedbackForm() {
       feedback: "",
     },
   });
+
+  const formDraft = useFormDraft(form, user ? `feedback:${user.id}` : null);
 
   const feedbackValue = form.watch("feedback", "");
   const feedbackLength = feedbackValue.replace(/\s+/g, " ").trim().length;
@@ -92,6 +97,7 @@ export function FeedbackForm() {
       });
       toast.success("Feedback submitted successfully!");
       form.reset();
+      formDraft.discard();
     },
     onError: () => {
       toast.error("An error occurred while submitting feedback.");
@@ -105,6 +111,17 @@ export function FeedbackForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='mt-16 space-y-6'>
+        <AnimatePresence>
+          {formDraft.draft && (
+            <DraftRestoreBanner
+              key='draft'
+              savedAt={formDraft.draft.savedAt}
+              onRestore={() => formDraft.restore()}
+              onDiscard={formDraft.discard}
+              className='mb-0 pb-6'
+            />
+          )}
+        </AnimatePresence>
         <FormField
           control={form.control}
           name='feedbackType'

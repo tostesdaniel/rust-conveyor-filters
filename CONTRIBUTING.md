@@ -28,7 +28,7 @@ there. `DATABASE_URL` is set on the container and wins over `.env`.
 **Git and SSH.** You don't copy keys in. VS Code forwards your host's SSH agent
 and copies your `.gitconfig`, so `git push` works with keys that never enter the
 container. It does need an agent running on the host - `ssh-add -l` should list
-your key *outside* the container. macOS and Windows have one; Linux and WSL
+your key _outside_ the container. macOS and Windows have one; Linux and WSL
 usually don't, so add this to your host shell profile:
 
 ```bash
@@ -234,25 +234,28 @@ someone else's code on every contributor's machine.
 
 ## Database Seeding
 
-The project includes a seeding script to populate your development database with test data. The seed script will:
+`bun run db:seed` fills your database with the items, the filter tags and five
+accounts:
 
-1. Create two test accounts:
-   - **RCF Account**: The official site account with public filters
-     - Email: <rcf@rcf.com>
-     - Username: rustconveyorfilters
-     - Password: worldsstrongestpassword
-   - **Developer Account**: A contributor account with private filters
-     - Email: <dev@rcf.com>
-     - Username: developer
-     - Password: developer@rcf
+| Username              | Email                  | Password           | Filters                                            |
+| --------------------- | ---------------------- | ------------------ | -------------------------------------------------- |
+| `rustconveyorfilters` | <rcf@rcf.com>          | `rcf@rcf`          | The filters the official account publishes         |
+| `developer`           | <dev@rcf.com>          | `developer@rcf`    | Mostly private, including forks of two RCF filters |
+| `barrellover`         | <barrellover@rcf.com>  | `barrellover@rcf`  | One barrel per item group, public                  |
+| `smeltlord`           | <smeltlord@rcf.com>    | `smeltlord@rcf`    | Furnace and farm automation, public                |
+| `lockeraddict`        | <lockeraddict@rcf.com> | `lockeraddict@rcf` | Kit lockers, public                                |
 
-2. Populate the database with:
-   - A complete set of Rust items
-   - Categories and user categories
-   - Identical sets of filters for both accounts:
-     - RCF account filters are public (mimicking production)
-     - Developer account filters are private (for testing)
-   - Filter items properly mapped to each account's filters
+`rustconveyorfilters` and `developer` share filters with each other, and
+`lockeraddict` shares one with `developer`, so **Shared with me** has content.
+
+The seed looks each account up in your Clerk instance by username and creates
+it only when it is missing. It never deletes Clerk users. It does **truncate
+every table** in the database before inserting.
+
+Each account lives in `src/db/seed-data/accounts/<username>.json`, with items
+named by shortname. `src/db/seed-accounts.test.ts` fails when a seed file names
+an item the item snapshot no longer has, or one that is not insertable, so an
+item update that breaks the seed shows up in CI.
 
 To seed your database:
 
@@ -263,8 +266,6 @@ bun run db:seed
 # Using npm
 npm run db:seed
 ```
-
-Note: The seed script will clear all existing data before seeding.
 
 For initial setup, you can use the convenience script that combines migrating and seeding the database:
 

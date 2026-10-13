@@ -52,8 +52,10 @@ export function CreateCategoryForm({
             : "Category created successfully",
         );
         setOpen(false);
-        utils.category.getAll.invalidate();
-        utils.category.getHierarchy.invalidate();
+        return Promise.all([
+          utils.category.getAll.invalidate(),
+          utils.category.getHierarchy.invalidate(),
+        ]);
       },
       onError: (error) => {
         toast.error(error.message);

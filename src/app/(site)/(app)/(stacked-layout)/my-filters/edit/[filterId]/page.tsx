@@ -54,6 +54,7 @@ export async function generateMetadata(props: {
 
 export default async function EditFilterPage(props: {
   params: Promise<{ filterId: string }>;
+  searchParams: Promise<{ draft?: string }>;
 }) {
   await auth.protect();
 
@@ -71,13 +72,17 @@ export default async function EditFilterPage(props: {
   }
 
   await api.stats.getItems.prefetch();
+  const { draft } = await props.searchParams;
 
   return (
     <>
       <Typography variant='h1'>Edit Filter</Typography>
       <HydrateClient>
         <FilterFormTour>
-          <EditFilterForm filterId={filterId} />
+          <EditFilterForm
+            filterId={filterId}
+            restoreDraft={draft === "restore"}
+          />
         </FilterFormTour>
       </HydrateClient>
     </>

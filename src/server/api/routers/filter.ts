@@ -9,12 +9,14 @@ import {
 import { getItemIcons, getOutputContainerItemId } from "@/data/items";
 import { db } from "@/db";
 import {
+  createFilterRequestSchema,
   createFilterSchema,
   updateFilterInputSchema,
   validatePublicFilterLatinChars,
 } from "@/schemas/filterFormSchema";
 import { enqueueFilterIfChanged } from "@/services/ai-categorize";
 import { decodeCursor } from "@/utils/cursor";
+import { changedItemRows, isContentChange } from "@/utils/filter-changes";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -23,6 +25,7 @@ import { MAX_FILTER_ITEMS } from "@/config/constants";
 import { getClientIp } from "@/lib/client-ip";
 import { OUTPUT_CONTAINER_SHORTNAMES } from "@/lib/output-containers/container-table";
 import { checkRateLimit, type RateLimitSpec } from "@/lib/rate-limit";
+import { sortFiltersByPreference } from "@/lib/utils/filter-sorting";
 import { filterEvents, filterItems, filters } from "@/db/schema";
 
 import {
@@ -131,7 +134,7 @@ export const filterRouter = createTRPCRouter({
     }),
 
   create: protectedProcedure
-    .input(createFilterSchema)
+    .input(createFilterRequestSchema)
     .mutation(async ({ ctx, input }) => {
       const parsed = createFilterSchema.safeParse(input);
 
@@ -205,65 +208,90 @@ export const filterRouter = createTRPCRouter({
       );
 
       const { category } = parsed.data;
-      const maxOrder = await db.query.filters.findFirst({
-        where: and(
-          eq(filters.authorId, ctx.userId),
-          category.categoryId
-            ? eq(filters.categoryId, category.categoryId)
-            : isNull(filters.categoryId),
-          category.subCategoryId
-            ? eq(filters.subCategoryId, category.subCategoryId)
-            : isNull(filters.subCategoryId),
-        ),
-        columns: { order: true },
-        orderBy: desc(filters.order),
-      });
+      const inCategory = and(
+        eq(filters.authorId, ctx.userId),
+        category.categoryId
+          ? eq(filters.categoryId, category.categoryId)
+          : isNull(filters.categoryId),
+        category.subCategoryId
+          ? eq(filters.subCategoryId, category.subCategoryId)
+          : isNull(filters.subCategoryId),
+      );
 
       try {
-        const [insertedFilter] = await db
-          .insert(filters)
-          .values({
-            name: newFilter.name,
-            description: newFilter.description,
-            authorId: ctx.userId,
-            imagePath: newFilter.imagePath,
-            categoryId: newFilter.category.categoryId,
-            subCategoryId: newFilter.category.subCategoryId,
-            isPublic: newFilter.isPublic,
-            order: maxOrder ? maxOrder.order + 1 : 0,
-            forkedFromId: forkLineage?.forkedFromId ?? null,
-            forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
-            outputContainerId,
-          })
-          .returning();
+        const insertedFilter = await db.transaction(async (tx) => {
+          const maxOrder = await tx.query.filters.findFirst({
+            where: inCategory,
+            columns: { order: true },
+            orderBy: desc(filters.order),
+          });
 
-        const filterItemsData = newFilter.items.map(
-          (item: (typeof newFilter.items)[0], position) => {
-            if ("itemId" in item) {
-              return {
-                filterId: insertedFilter.id,
-                itemId: item.itemId,
-                categoryId: null,
-                max: item.max,
-                buffer: item.buffer,
-                min: item.min,
-                position,
-              };
-            } else {
-              return {
-                filterId: insertedFilter.id,
-                itemId: null,
-                categoryId: item.categoryId,
-                max: item.max,
-                buffer: item.buffer,
-                min: item.min,
-                position,
-              };
-            }
-          },
-        );
+          const [inserted] = await tx
+            .insert(filters)
+            .values({
+              name: newFilter.name,
+              description: newFilter.description,
+              authorId: ctx.userId,
+              imagePath: newFilter.imagePath,
+              categoryId: newFilter.category.categoryId,
+              subCategoryId: newFilter.category.subCategoryId,
+              isPublic: newFilter.isPublic,
+              order: maxOrder ? maxOrder.order + 1 : 0,
+              forkedFromId: forkLineage?.forkedFromId ?? null,
+              forkedFromAuthorId: forkLineage?.forkedFromAuthorId ?? null,
+              outputContainerId,
+            })
+            .returning();
 
-        await db.insert(filterItems).values(filterItemsData);
+          const filterItemsData = newFilter.items.map(
+            (item: (typeof newFilter.items)[0], position) => {
+              if ("itemId" in item) {
+                return {
+                  filterId: inserted.id,
+                  itemId: item.itemId,
+                  categoryId: null,
+                  max: item.max,
+                  buffer: item.buffer,
+                  min: item.min,
+                  position,
+                };
+              } else {
+                return {
+                  filterId: inserted.id,
+                  itemId: null,
+                  categoryId: item.categoryId,
+                  max: item.max,
+                  buffer: item.buffer,
+                  min: item.min,
+                  position,
+                };
+              }
+            },
+          );
+
+          await tx.insert(filterItems).values(filterItemsData);
+
+          if (!input.sort) return inserted;
+
+          const siblings = await tx.query.filters.findMany({
+            where: inCategory,
+            columns: { id: true, name: true, createdAt: true },
+          });
+          const sorted = sortFiltersByPreference(siblings, input.sort);
+          await Promise.all(
+            sorted.map((filter, order) =>
+              tx
+                .update(filters)
+                .set({ order })
+                .where(eq(filters.id, filter.id)),
+            ),
+          );
+
+          return {
+            ...inserted,
+            order: sorted.findIndex((filter) => filter.id === inserted.id),
+          };
+        });
 
         if (insertedFilter.isPublic) {
           try {
@@ -364,7 +392,41 @@ export const filterRouter = createTRPCRouter({
         updateData.subCategoryId = data.category.subCategoryId;
       }
       if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
-      updateData.updatedAt = new Date();
+
+      const existingItems = data.items
+        ? await db.query.filterItems.findMany({
+            where: eq(filterItems.filterId, filterId),
+            columns: {
+              itemId: true,
+              categoryId: true,
+              max: true,
+              buffer: true,
+              min: true,
+              position: true,
+            },
+          })
+        : [];
+      const editedItems = changedItemRows(
+        existingItems,
+        (data.items ?? []).map((item, position) => ({
+          filterId,
+          itemId: "itemId" in item ? item.itemId : null,
+          categoryId: "categoryId" in item ? item.categoryId : null,
+          max: item.max,
+          buffer: item.buffer,
+          min: item.min,
+          position,
+        })),
+      );
+
+      if (
+        isContentChange(currentFilter, updateData) ||
+        editedItems.length > 0 ||
+        (addedItems?.length ?? 0) > 0 ||
+        (removedItems?.length ?? 0) > 0
+      ) {
+        updateData.updatedAt = new Date();
+      }
 
       try {
         if (Object.keys(updateData).length > 0) {
@@ -374,26 +436,13 @@ export const filterRouter = createTRPCRouter({
             .where(eq(filters.id, filterId));
         }
 
-        if (data.items) {
-          const filterItemsData = data.items.map((item, position) => {
-            return {
-              filterId: filterId,
-              itemId: "itemId" in item ? item.itemId : null,
-              categoryId: "categoryId" in item ? item.categoryId : null,
-              max: item.max,
-              buffer: item.buffer,
-              min: item.min,
-              position,
-              updatedAt: new Date(),
-            };
-          });
-
+        if (editedItems.length > 0) {
           await Promise.all(
-            filterItemsData.map((item) => {
+            editedItems.map((item) => {
               const isCategory = item.categoryId !== null;
               return db
                 .update(filterItems)
-                .set(item)
+                .set({ ...item, updatedAt: new Date() })
                 .where(
                   and(
                     eq(filterItems.filterId, item.filterId),
@@ -535,10 +584,7 @@ export const filterRouter = createTRPCRouter({
           const updatePromises = filterUpdates.map(({ filterId, order }) =>
             tx
               .update(filters)
-              .set({
-                order,
-                updatedAt: sql`now()`,
-              })
+              .set({ order })
               .where(
                 and(
                   eq(filters.id, filterId),
@@ -624,7 +670,6 @@ export const filterRouter = createTRPCRouter({
               categoryId: destCategoryId,
               subCategoryId: destSubCategoryId,
               order: clampedIndex,
-              updatedAt: sql`now()`,
             })
             .where(
               and(eq(filters.id, filterId), eq(filters.authorId, ctx.userId)),

@@ -1,21 +1,32 @@
 import * as fs from "fs";
 import path from "path";
+import { SEED_TAGS } from "@/scripts/ai-tags/taxonomy";
+import type { ItemSnapshot } from "@/scripts/items/snapshot";
+import { generateShareToken } from "@/utils/share-token";
 import { clerkClient } from "@clerk/nextjs/server";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "./client";
+import itemSnapshot from "./item-snapshot.json";
 import { syncItemSnapshot } from "./item-sync";
 import {
   categories,
   filterItems,
   filters,
+  filterTagAssignments,
+  filterTags,
   items,
+  sharedFilters,
+  shareTokens,
+  subCategories,
   userCategories,
   type Category,
-  type Filter,
-  type FilterItem,
-  type UserCategory,
 } from "./schema";
+import {
+  findSeedProblems,
+  loadSeedAccounts,
+  type SeedAccount,
+} from "./seed-accounts";
 
 class SeedError extends Error {
   constructor(
@@ -31,6 +42,10 @@ const loadJson = <T>(filePath: string): T => {
   return JSON.parse(fs.readFileSync(path.join(__dirname, filePath), "utf-8"));
 };
 
+type UserIds = Map<string, string>;
+// username -> filter key -> filter row id
+type FilterIds = Map<string, Map<string, number>>;
+
 const seed = async () => {
   if (!process.env.DATABASE_URL) {
     throw new SeedError("DATABASE_URL is not set");
@@ -42,30 +57,41 @@ const seed = async () => {
     throw new SeedError("Clerk secrets are not set");
   }
 
+  const accounts = loadSeedAccounts();
+  const itemCategories = loadJson<Category[]>("seed-data/categories.json");
+  const problems = findSeedProblems(
+    accounts,
+    (itemSnapshot as ItemSnapshot).items,
+    itemCategories.map((c) => c.name),
+    SEED_TAGS.map((t) => t.slug),
+  );
+  if (problems.length > 0) {
+    throw new SeedError(`Seed data is invalid:\n  ${problems.join("\n  ")}`);
+  }
+
   console.log("🌱 Starting database seed...");
   const startTime = Date.now();
 
   try {
+    const userIds = await findOrCreateClerkUsers(accounts);
+
     console.log("\n📦 Clearing database...");
     await clearDatabase();
     console.log("  ✓ Database cleared");
 
-    const userIds = await createClerkUsers();
-    if (!userIds || userIds.length !== 2) {
-      throw new SeedError("Failed to create required users");
-    }
-
-    await insertCategories();
+    await insertCategories(itemCategories);
     await insertItems();
-    const categoryIdMap = await insertUserCategories([
-      userIds[0],
-      userIds[1],
-    ] as UserIds);
-    const filterIdMap = await insertFilters(
-      [userIds[0], userIds[1]] as UserIds,
-      categoryIdMap,
-    );
-    await insertFilterItems([userIds[0], userIds[1]] as UserIds, filterIdMap);
+    await insertTags();
+
+    const filterIds: FilterIds = new Map();
+    for (const account of accounts) {
+      filterIds.set(
+        account.account.username,
+        await insertAccountFilters(account, userIds),
+      );
+    }
+    await linkForks(accounts, userIds, filterIds);
+    await insertShares(accounts, userIds, filterIds);
 
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
     console.log(`\n✨ Seeding completed successfully in ${duration}s\n`);
@@ -78,8 +104,8 @@ const clearDatabase = async () => {
   try {
     await db.transaction(async (tx) => {
       const tables = await tx.execute(sql`
-        SELECT tablename 
-        FROM pg_tables 
+        SELECT tablename
+        FROM pg_tables
         WHERE schemaname = 'public';
       `);
 
@@ -106,55 +132,39 @@ const clearDatabase = async () => {
   }
 };
 
-const createClerkUsers = async () => {
+const findOrCreateClerkUsers = async (accounts: SeedAccount[]) => {
   try {
     console.log("\n📦 Setting up Clerk users...");
     const clerk = await clerkClient();
-    const users = await clerk.users.getUserList();
+    const userIds: UserIds = new Map();
+    const rows = [];
 
-    if (users.data.length > 0) {
-      console.log("  ↪ Found existing users, clearing...");
-      await Promise.all(
-        users.data.map((user) => clerk.users.deleteUser(user.id)),
-      );
-      console.log("  ✓ Existing users cleared");
+    for (const { account } of accounts) {
+      const existing = await clerk.users.getUserList({
+        username: [account.username],
+      });
+      let user = existing.data[0];
+      const created = !user;
+      if (!user) {
+        user = await clerk.users.createUser({
+          emailAddress: [account.email],
+          username: account.username,
+          firstName: account.firstName,
+          password: account.password,
+          skipPasswordChecks: true,
+          publicMetadata: account.verifiedType
+            ? { verifiedType: account.verifiedType }
+            : {},
+        });
+      }
+      userIds.set(account.username, user.id);
+      rows.push({ username: account.username, id: user.id, created });
     }
 
-    console.log("  ↪ Creating new users...");
-    const [rcfUser, devUser] = await Promise.all([
-      clerk.users.createUser({
-        emailAddress: ["rcf@rcf.com"],
-        username: "rustconveyorfilters",
-        firstName: "Rust Conveyor Filters",
-        password: "worldsstrongestpassword",
-        skipPasswordChecks: true,
-        publicMetadata: {
-          verifiedType: "official",
-        },
-      }),
-      clerk.users.createUser({
-        emailAddress: ["dev@rcf.com"],
-        username: "developer",
-        firstName: "Developer",
-        password: "developer@rcf",
-        skipPasswordChecks: true,
-        publicMetadata: {
-          verifiedType: "contributor",
-        },
-      }),
-    ]);
-
-    console.log("  ✓ Created users:");
-    console.table(
-      [rcfUser, devUser].map((user) => ({
-        name: user.fullName,
-        id: user.id,
-        type: user.publicMetadata.verifiedType,
-      })),
-    );
-    return [rcfUser.id, devUser.id];
+    console.table(rows);
+    return userIds;
   } catch (error) {
-    throw new SeedError("Failed to create Clerk users", error);
+    throw new SeedError("Failed to set up Clerk users", error);
   }
 };
 
@@ -168,182 +178,213 @@ const insertItems = async () => {
   }
 };
 
-const insertCategories = async () => {
+const insertCategories = async (values: Category[]) => {
   try {
     console.log("\n📦 Inserting categories...");
-    const values = loadJson<Category[]>("seed-data/categories.json");
-    console.log(`  ↪ Found ${values.length} categories to insert`);
     await db.insert(categories).values(values);
-    console.log("  ✓ Categories inserted successfully");
+    console.log(`  ✓ ${values.length} categories inserted successfully`);
   } catch (error) {
     throw new SeedError("Failed to insert categories", error);
   }
 };
 
-type UserIds = [rcfId: string, devId: string];
-type CategoryIdMap = Map<string, Map<number, number>>;
-type FilterIdMap = Map<string, Map<number, number>>;
-// Item row IDs depend on insertion order, so seed rows name the game item.
-type SeedFilterItem = Omit<FilterItem, "itemId"> & { gameItemId: number };
-
-const insertUserCategories = async ([rcfId, devId]: UserIds) => {
+const insertTags = async () => {
   try {
-    console.log("\n📦 Inserting user categories...");
-    const values = loadJson<UserCategory[]>("seed-data/user_categories.json");
-    console.log(`  ↪ Found ${values.length} categories per user to insert`);
-
-    // Map to store old ID to new ID for each user
-    const categoryIdMap = new Map<string, Map<number, number>>();
-    categoryIdMap.set(rcfId, new Map());
-    categoryIdMap.set(devId, new Map());
-
-    const rcfCategories = await db
-      .insert(userCategories)
-      .values(
-        values.map(({ id, ...value }) => ({
-          ...value,
-          userId: rcfId,
-        })),
-      )
-      .returning();
-
-    // Map old IDs to new IDs for RCF user
-    rcfCategories.forEach((category, index) => {
-      categoryIdMap.get(rcfId)!.set(values[index].id, category.id);
-    });
-
-    const devCategories = await db
-      .insert(userCategories)
-      .values(
-        values.map(({ id, ...value }) => ({
-          ...value,
-          userId: devId,
-        })),
-      )
-      .returning();
-
-    // Map old IDs to new IDs for Dev user
-    devCategories.forEach((category, index) => {
-      categoryIdMap.get(devId)!.set(values[index].id, category.id);
-    });
-
-    console.log(
-      `  ✓ ${rcfCategories.length + devCategories.length} user categories inserted successfully`,
+    console.log("\n📦 Inserting filter tags...");
+    await db.insert(filterTags).values(
+      SEED_TAGS.map((tag, i) => ({
+        slug: tag.slug,
+        label: tag.label,
+        description: tag.description,
+        sortOrder: i,
+      })),
     );
-    return categoryIdMap;
+    console.log(`  ✓ ${SEED_TAGS.length} tags inserted successfully`);
   } catch (error) {
-    throw new SeedError("Failed to insert user categories", error);
+    throw new SeedError("Failed to insert tags", error);
   }
 };
 
-const insertFilters = async (
-  [rcfId, devId]: UserIds,
-  categoryIdMap: CategoryIdMap,
+const insertAccountFilters = async (
+  { account, categories: seedCategories, filters: seedFilters }: SeedAccount,
+  userIds: UserIds,
 ) => {
   try {
-    console.log("\n📦 Inserting filters...");
-    const values = loadJson<Filter[]>("seed-data/filters.json");
-    console.log(`  ↪ Found ${values.length} filters per user to insert`);
+    console.log(`\n📦 Inserting filters for ${account.username}...`);
+    const userId = userIds.get(account.username)!;
 
-    // Map to store old ID to new ID mapping for each user
-    const filterIdMap = new Map<string, Map<number, number>>();
-    filterIdMap.set(rcfId, new Map());
-    filterIdMap.set(devId, new Map());
+    const [itemRows, categoryRows, tagRows] = await Promise.all([
+      db.select({ id: items.id, shortname: items.shortname }).from(items),
+      db.select().from(categories),
+      db.select({ id: filterTags.id, slug: filterTags.slug }).from(filterTags),
+    ]);
+    const itemIds = new Map(itemRows.map((row) => [row.shortname, row.id]));
+    const categoryIds = new Map(categoryRows.map((row) => [row.name, row.id]));
+    const tagIds = new Map(tagRows.map((row) => [row.slug, row.id]));
 
-    const rcfFilters = await db
-      .insert(filters)
-      .values(
-        values.map(({ id, categoryId, ...value }) => ({
-          ...value,
-          categoryId: categoryId
-            ? categoryIdMap.get(rcfId)!.get(categoryId)
-            : null,
-          isPublic: true, // RCF filters are public
-          createdAt: new Date(value.createdAt),
-          updatedAt: new Date(value.updatedAt),
-          authorId: rcfId,
-        })),
-      )
-      .returning();
+    return await db.transaction(async (tx) => {
+      const userCategoryIds = new Map<string, number>();
+      const subCategoryIds = new Map<string, number>();
 
-    // Map old IDs to new IDs for RCF user
-    rcfFilters.forEach((filter, index) => {
-      filterIdMap.get(rcfId)!.set(values[index].id, filter.id);
+      for (const [order, category] of seedCategories.entries()) {
+        const [row] = await tx
+          .insert(userCategories)
+          .values({ name: category.name, userId, order })
+          .returning({ id: userCategories.id });
+        userCategoryIds.set(category.name, row.id);
+
+        for (const [subOrder, name] of category.subCategories.entries()) {
+          const [sub] = await tx
+            .insert(subCategories)
+            .values({ name, userId, parentId: row.id, order: subOrder })
+            .returning({ id: subCategories.id });
+          subCategoryIds.set(`${category.name}/${name}`, sub.id);
+        }
+      }
+
+      const orderInGroup = new Map<string, number>();
+      const filterIds = new Map<string, number>();
+
+      for (const filter of seedFilters) {
+        const group = `${filter.category ?? ""}/${filter.subCategory ?? ""}`;
+        const order = orderInGroup.get(group) ?? 0;
+        orderInGroup.set(group, order + 1);
+
+        const [row] = await tx
+          .insert(filters)
+          .values({
+            name: filter.name,
+            description: filter.description ?? null,
+            authorId: userId,
+            imagePath: filter.imagePath,
+            isPublic: filter.isPublic,
+            categoryId: filter.category
+              ? userCategoryIds.get(filter.category)
+              : null,
+            subCategoryId: filter.subCategory
+              ? subCategoryIds.get(`${filter.category}/${filter.subCategory}`)
+              : null,
+            order,
+            outputContainerId: filter.outputContainer
+              ? itemIds.get(filter.outputContainer)
+              : null,
+            viewCount: filter.views,
+            exportCount: filter.exports,
+            popularityScore: filter.views + filter.exports * 5,
+            createdAt: new Date(filter.createdAt),
+            updatedAt: new Date(filter.updatedAt),
+          })
+          .returning({ id: filters.id });
+        filterIds.set(filter.key, row.id);
+
+        await tx.insert(filterItems).values(
+          filter.items.map((item, position) => ({
+            filterId: row.id,
+            itemId: "item" in item ? itemIds.get(item.item) : null,
+            categoryId:
+              "category" in item ? categoryIds.get(item.category) : null,
+            max: item.max ?? 0,
+            buffer: item.buffer ?? 0,
+            min: item.min ?? 0,
+            position,
+            createdAt: new Date(filter.createdAt),
+            updatedAt: new Date(filter.updatedAt),
+          })),
+        );
+
+        if (filter.tags.length > 0) {
+          await tx.insert(filterTagAssignments).values(
+            filter.tags.map((slug, i) => ({
+              filterId: row.id,
+              tagId: tagIds.get(slug)!,
+              rank: i + 1,
+              modelVersion: "seed",
+            })),
+          );
+        }
+      }
+
+      console.log(`  ✓ ${seedFilters.length} filters inserted successfully`);
+      return filterIds;
     });
-
-    const devFilters = await db
-      .insert(filters)
-      .values(
-        values.map(({ id, categoryId, ...value }) => ({
-          ...value,
-          categoryId: categoryId
-            ? categoryIdMap.get(devId)!.get(categoryId)
-            : null,
-          isPublic: false, // Dev filters are private
-          createdAt: new Date(value.createdAt),
-          updatedAt: new Date(value.updatedAt),
-          authorId: devId,
-        })),
-      )
-      .returning();
-
-    // Map old IDs to new IDs for Dev user
-    devFilters.forEach((filter, index) => {
-      filterIdMap.get(devId)!.set(values[index].id, filter.id);
-    });
-
-    console.log(
-      `  ✓ ${rcfFilters.length + devFilters.length} filters inserted successfully`,
-    );
-    return filterIdMap;
   } catch (error) {
-    throw new SeedError("Failed to insert filters", error);
+    throw new SeedError(
+      `Failed to insert filters for ${account.username}`,
+      error,
+    );
   }
 };
 
-const insertFilterItems = async (
-  [rcfId, devId]: UserIds,
-  filterIdMap: FilterIdMap,
+const linkForks = async (
+  accounts: SeedAccount[],
+  userIds: UserIds,
+  filterIds: FilterIds,
 ) => {
   try {
-    console.log("\n📦 Inserting filter items...");
-    const values = loadJson<SeedFilterItem[]>("seed-data/filter_items.json");
-    console.log(`  ↪ Found ${values.length} filter items per user to insert`);
+    console.log("\n📦 Linking forks...");
+    let count = 0;
+    for (const { account, filters: seedFilters } of accounts) {
+      for (const filter of seedFilters) {
+        if (!filter.forkedFrom) continue;
+        const { username, key } = filter.forkedFrom;
+        const sourceId = filterIds.get(username)!.get(key)!;
 
-    const itemRows = await db
-      .select({ id: items.id, itemId: items.itemId })
-      .from(items);
-    const itemIdMap = new Map(itemRows.map((row) => [row.itemId, row.id]));
-
-    // Create filter items for both users
-    const rcfFilterItems = values.map(
-      ({ id, filterId, gameItemId, ...value }) => ({
-        ...value,
-        itemId: itemIdMap.get(gameItemId)!,
-        filterId: filterIdMap.get(rcfId)!.get(filterId)!, // Map to RCF user's filter ID
-        createdAt: new Date(value.createdAt),
-        updatedAt: new Date(value.updatedAt),
-        authorId: rcfId,
-      }),
-    );
-
-    const devFilterItems = values.map(
-      ({ id, filterId, gameItemId, ...value }) => ({
-        ...value,
-        itemId: itemIdMap.get(gameItemId)!,
-        filterId: filterIdMap.get(devId)!.get(filterId)!, // Map to Dev user's filter ID
-        createdAt: new Date(value.createdAt),
-        updatedAt: new Date(value.updatedAt),
-        authorId: devId,
-      }),
-    );
-
-    await db.insert(filterItems).values([...rcfFilterItems, ...devFilterItems]);
-    console.log(
-      `  ✓ ${rcfFilterItems.length + devFilterItems.length} filter items inserted successfully`,
-    );
+        await db
+          .update(filters)
+          .set({
+            forkedFromId: sourceId,
+            forkedFromAuthorId: userIds.get(username)!,
+          })
+          .where(
+            eq(filters.id, filterIds.get(account.username)!.get(filter.key)!),
+          );
+        // Each fork adds 10 to its source, matching the fork mutation.
+        await db
+          .update(filters)
+          .set({ popularityScore: sql`${filters.popularityScore} + 10` })
+          .where(eq(filters.id, sourceId));
+        count++;
+      }
+    }
+    console.log(`  ✓ ${count} forks linked`);
   } catch (error) {
-    throw new SeedError("Failed to insert filter items", error);
+    throw new SeedError("Failed to link forks", error);
+  }
+};
+
+const insertShares = async (
+  accounts: SeedAccount[],
+  userIds: UserIds,
+  filterIds: FilterIds,
+) => {
+  try {
+    console.log("\n📦 Sharing filters...");
+    const tokens = await db
+      .insert(shareTokens)
+      .values(
+        accounts.map(({ account }) => ({
+          userId: userIds.get(account.username)!,
+          token: generateShareToken(),
+        })),
+      )
+      .returning({ id: shareTokens.id, userId: shareTokens.userId });
+    const tokenIds = new Map(tokens.map((t) => [t.userId, t.id]));
+
+    const rows = accounts.flatMap(({ account, shares = [] }) =>
+      shares.flatMap((share) =>
+        share.filters.map((key) => ({
+          filterId: filterIds.get(account.username)!.get(key)!,
+          shareTokenId: tokenIds.get(userIds.get(share.to)!)!,
+          senderId: userIds.get(account.username)!,
+        })),
+      ),
+    );
+    if (rows.length > 0) {
+      await db.insert(sharedFilters).values(rows);
+    }
+    console.log(`  ✓ ${rows.length} filters shared`);
+  } catch (error) {
+    throw new SeedError("Failed to share filters", error);
   }
 };
 

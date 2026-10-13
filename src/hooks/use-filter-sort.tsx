@@ -65,15 +65,10 @@ export function useFilterSort({
 
   const { mutate: updateOrders } = api.filter.updateOrder.useMutation({
     onSuccess() {
-      if (!categoryId && !subCategoryId) {
-        utils.filter.getByCategory.invalidate({ categoryId });
-      }
-
-      if (categoryId || subCategoryId) {
-        utils.category.getHierarchy.invalidate();
-      }
-
       toast.success("Filter order updated");
+      return categoryId || subCategoryId
+        ? utils.category.getHierarchy.invalidate()
+        : utils.filter.getByCategory.invalidate({ categoryId });
     },
     onError: () => {
       toast.error("Failed to update filter order");

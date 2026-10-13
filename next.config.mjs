@@ -1,6 +1,7 @@
 import createMDX from "@next/mdx";
 
-const rybbitHost = process.env.NEXT_PUBLIC_RYBBIT_HOST;
+const rybbitHost =
+  process.env.RYBBIT_PROXY_TARGET || process.env.NEXT_PUBLIC_RYBBIT_HOST;
 
 const RYBBIT_PROXY_PATHS = [
   "script.js",
